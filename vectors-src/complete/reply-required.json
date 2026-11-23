@@ -1,0 +1,60 @@
+{
+ "format": "tt-reply-required/0.1",
+ "note": "Task versions whose spec.md puts the error reply to a rejection inside a MUST (a consumer MUST list item or sentence that returns, answers or replies with a trust-task-error). SPEC.md 7.2 makes that reply a SHOULD for every other task (O-01). Written by scripts/derive-reply-required.ts from the task-force specification text; an ambiguous task is kept here (its silence stays a FAIL).",
+ "tfCommit": "bd0c05013",
+ "scanned": 1417,
+ "required": {
+  "https://trusttasks.org/spec/did-management/replica/domain/assign/0.1": {
+   "line": 68,
+   "text": "4. Answers a transient failure with a retryable `trust-task-error`, so the control plane keeps the directive queued."
+  },
+  "https://trusttasks.org/spec/did-management/replica/domain/purge/0.1": {
+   "line": 72,
+   "text": "5. Answers a transient failure with a retryable `trust-task-error`, so the control plane keeps the directive queued."
+  },
+  "https://trusttasks.org/spec/did-management/replica/domain/unassign/0.1": {
+   "line": 66,
+   "text": "4. Answers a transient failure with a retryable `trust-task-error`, so the control plane keeps the directive queued."
+  },
+  "https://trusttasks.org/spec/messaging/wake/request/0.1": {
+   "line": 104,
+   "text": "The answer. The mediator MUST answer every request it accepted for processing with the same `{}` response, at the same point — before evaluating rules 1 to 7 or after, but in the same way for every outcome. It MUST NOT answer with a `trust-"
+  },
+  "https://trusttasks.org/spec/peer-check/ask/0.1": {
+   "line": 109,
+   "text": "6. A request whose prompt is open and waiting on the user is held, and a hold is a next step ([SPEC §8.6](/SPEC.md#86-reserved-response-type-slugs)): the responder MUST answer with a next step (`trust-task-next-step` carrying `continuation:"
+  },
+  "https://trusttasks.org/spec/vrc/relationships/issue/0.1": {
+   "line": 109,
+   "text": "3. On acceptance, returns the `#response` receipt carrying `vrcDigestMultibase`, computed over the credential as stored. On refusal, returns a `trust-task-error` with `vrc/relationships/issue:notAccepted`."
+  },
+  "https://trusttasks.org/spec/vrc/relationships/propose/0.1": {
+   "line": 87,
+   "text": "4. On declining, returns a `trust-task-error` with `vrc/relationships/propose:declined`. A decline is an error response, not a message type, on the same grounds `vtc/relationships/request` records."
+  },
+  "https://trusttasks.org/spec/vtc/relationships/request/0.1": {
+   "line": 80,
+   "text": "3. On declining, returns a `trust-task-error` ([SPEC.md §8](/SPEC.md#8-error-responses)) with `vtc/relationships/request:declined` and the reason in `message`."
+  },
+  "https://trusttasks.org/spec/vtc/relationships/request/0.2": {
+   "line": 122,
+   "text": "3. On declining, returns a `trust-task-error` ([SPEC.md §8](/SPEC.md#8-error-responses)) with `vtc/relationships/request:declined` and the reason in `message`."
+  },
+  "https://trusttasks.org/spec/webvh/sync/batch/0.1": {
+   "line": 66,
+   "text": "4. If any entry fails transiently, answers the whole batch with a retryable `trust-task-error`. Re-applying the entries that did land is a no-op (`unchanged`), and acknowledging the batch would settle it with that entry missing."
+  },
+  "https://trusttasks.org/spec/webvh/sync/delete/0.2": {
+   "line": 71,
+   "text": "5. Answers a transient failure with a retryable `trust-task-error`, so the source keeps the delete queued."
+  },
+  "https://trusttasks.org/spec/witness/session/0.1": {
+   "line": 157,
+   "text": "4. On declining, returns a `trust-task-error` with `witness/session:refused`."
+  },
+  "https://trusttasks.org/spec/witness/session/0.2": {
+   "line": 193,
+   "text": "4. On declining, returns a `trust-task-error` with `witness/session:refused`."
+  }
+ }
+}

@@ -1,0 +1,389 @@
+{
+  "format": "community-open-gaps/1",
+  "asOf": "2026-11-23",
+  "maturity": "every task specification involved is draft",
+  "note": "Hand-curated blockers for the ceremony scenarios that have no completed run, and the open items of the vector completion measure. Which scenarios are open comes from ceremony-completion.json; every open scenario must be named by exactly one blocker (test/community-open-gaps.test.ts). Classes are the suite's A to D (CONTRIBUTING, recipe 4): A the implementation differs from the specification, B the vector reads more than the text says, C the specification text is open, D the harness or a stand-in. A blocker with no class says so: the source did not assign one.",
+  "ceremonyBlockers": [
+    {
+      "id": "issuer-seat",
+      "title": "Issuer seat on the wallet (mutual attestation, request from the issuer)",
+      "class": "D",
+      "scenarios": [
+        "FC-MAT-001",
+        "FC-MAT-002",
+        "FC-MAT-003",
+        "FC-CEX-001"
+      ],
+      "blocked": "The wallet has no issuer role for credential-exchange: it never sends an offer or an issue, redeems an offer over HTTP, and receives issues through its persona inbox. So it cannot take either mutual-attestation seat, and VTI is not a person seat. FC-CEX-001 needs the same issuer seat on the wallet side.",
+      "needs": "An issuer seat on a wallet adapter (a platform feature, not a specification fix), or another platform that can take a person seat, so that two independent parties can play the two seats. A stand-in that produced the outcome itself would be a false completion and is not wanted.",
+      "start": [
+        "docs/27-kw-vti-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-mat.json",
+        "vectors/ceremony-scenarios/fc-cex.json"
+      ]
+    },
+    {
+      "id": "wallet-to-wallet",
+      "title": "Wallet-to-wallet runs (relationship credential and witness share)",
+      "class": "D",
+      "scenarios": [
+        "FC-VRC-001",
+        "FC-VRC-002",
+        "FC-WSH-001",
+        "FC-WSH-002",
+        "FC-WSH-003",
+        "FC-WSH-004"
+      ],
+      "blocked": "Two wallets playing both sides is a separate category and is never added to the VTI-wallet figures. The propose step is not reachable from a runner step in the wallet adapter (no ceremony kind for it), relationship-credential delivery and the witness share run on stand-in crypto, and there is no witness party (the reference adapter lists no witness role; the witness server is a containerised DIDComm service).",
+      "needs": "Runner support for wallet-to-wallet: an initiate for the propose step in the wallet adapter, a witness party the runner can seat, and real rather than stand-in crypto for delivery. The smallest next step is FC-VRC-002 alone.",
+      "start": [
+        "docs/26-paired-ceremonies.md",
+        "docs/29-witness-tasks.md",
+        "vectors/ceremony-scenarios/fc-vrc.json",
+        "vectors/ceremony-scenarios/fc-wsh.json",
+        "src/adapters/keyring-wallet/shim.ts"
+      ]
+    },
+    {
+      "id": "version-selector",
+      "title": "Older-release scenarios (a version selector)",
+      "class": "D",
+      "scenarios": [
+        "FC-AUT-011",
+        "FC-DIR-013",
+        "FC-PER-005",
+        "FC-RMS-012",
+        "FC-RMS-017",
+        "FC-VOT-004"
+      ],
+      "blocked": "Each of the six needs a platform that serves an older release of a task, and a host serves one release at a time. A shim that fabricated the older documents would measure the harness, not the platform.",
+      "needs": "A way to select the served task versions on a test host (a version selector on the harness host), or a build of an older VTI release. The cheaper of the two is the selector.",
+      "start": [
+        "docs/26-paired-ceremonies.md",
+        "docs/31-persona-rooms-elections-ceremonies.md",
+        "docs/32-rooms-ballot-ceremonies.md",
+        "src/adapters/vti-inprocess"
+      ]
+    },
+    {
+      "id": "tca-begin",
+      "title": "Task-consent approval ceremony (the begin document)",
+      "class": "B",
+      "scenarios": [
+        "FC-TCA-001",
+        "FC-TCA-002",
+        "FC-TCA-003"
+      ],
+      "blocked": "The scenario requires the suite's own ceremony-document family and starts from a suite-defined begin document sent by the first wallet. The task-consent specifications and the framework text on ceremonies require neither, so the scenario reads more than the specifications say. The same three behaviours already complete with VTI as executor and the wallet as approver in FC-KVC-002, FC-KVC-003 and FC-KVC-004.",
+      "needs": "A task-force view on how the scenario should start, then either a rewrite of its begin as the executor-side gate under new ids (this changes the denominators and is a maintainer decision) or keeping it reference-only and outside the both-can-take-part denominator. A review of the scenario against the task-consent specifications is a good contribution now.",
+      "start": [
+        "docs/27-kw-vti-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-tca.json"
+      ]
+    },
+    {
+      "id": "vetting-seat",
+      "title": "Identity vetting (a vetter or applicant seat on VTI)",
+      "class": null,
+      "scenarios": [
+        "FC-VET-001",
+        "FC-VET-002",
+        "FC-VET-003",
+        "FC-VET-004",
+        "FC-VET-005",
+        "FC-VET-006"
+      ],
+      "blocked": "VTI has no vetter or applicant seat: no dispatcher for the vetting request, session or decline tasks (the community service grants the vetter role, keeps tickets and verifies an attestation, but the desk is the wallet's). The source assigned no A to D class.",
+      "needs": "A decision whether FC-VET stays in the both-can-take-part denominator or is reported separately as wallet-only (the recommendation recorded is to report it separately), or a platform that serves the vetter side.",
+      "start": [
+        "docs/30-onboarding-vetting-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-vet.json"
+      ]
+    },
+    {
+      "id": "wallet-call-site",
+      "title": "Authentication ceremonies the wallet has no call site for",
+      "class": null,
+      "scenarios": [
+        "FC-AUT-008",
+        "FC-AUT-009",
+        "FC-AUT-010",
+        "FC-AUT-012"
+      ],
+      "blocked": "VTI serves these steps; the wallet offers no call site for them (the inventory records 'no live path'). The source assigned no A to D class.",
+      "needs": "A wallet call site for the step, or a decision that the scenario is out of the both-can-take-part set. A harness initiate that stood in for a message the wallet never sends would manufacture the outcome and is not wanted.",
+      "start": [
+        "docs/26-paired-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-aut.json"
+      ]
+    },
+    {
+      "id": "idv-messages",
+      "title": "Identity-verification steps the wallet never sends",
+      "class": "D",
+      "scenarios": [
+        "FC-IDV-004",
+        "FC-IDV-005",
+        "FC-IDV-007",
+        "FC-IDV-008"
+      ],
+      "blocked": "The wallet sends only the vetters and profile messages. A harness initiate would stand in for messages the wallet never sends.",
+      "needs": "Wallet support for the missing messages, or a different platform seat for them.",
+      "start": [
+        "docs/30-onboarding-vetting-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-idv.json"
+      ]
+    },
+    {
+      "id": "one-release-per-host",
+      "title": "Latest-behaviour scenarios (one VTI release per host)",
+      "class": "D",
+      "scenarios": [
+        "FC-KVC-013",
+        "FC-KVC-101"
+      ],
+      "blocked": "On the original pin VTI lacks the latest behaviour (class A for the platform). Both are also limited by the harness: one VTI release per host, and FC-KVC-101 also needs a host that cannot switch the gate on.",
+      "needs": "A host that can serve two releases, or a host with the gate switchable, then a re-run.",
+      "start": [
+        "docs/27-kw-vti-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-kvc.json"
+      ]
+    },
+    {
+      "id": "spec-open-stu-002",
+      "title": "Sign-in ceremony where two specification texts disagree",
+      "class": "C",
+      "scenarios": [
+        "FC-STU-002"
+      ],
+      "blocked": "The framework text (section 8.6) and approve-request 0.5 do not agree about the step. The specification is open here, so the suite does not assert either reading.",
+      "needs": "A discussion with the task force. Do not assert one reading in a vector or an exception; record the question with both quotations.",
+      "start": [
+        "docs/09-draft-questions-for-task-force.md",
+        "docs/26-paired-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-stu.json"
+      ]
+    },
+    {
+      "id": "oob-prove-after-cancel",
+      "title": "Proof after a cancelled sign-in request",
+      "class": "A",
+      "scenarios": [
+        "FC-AUT-007"
+      ],
+      "blocked": "After the approver cancels a claimed out-of-band request, the original VTI answers a later proof with notAuthorized. The draft proof task asks for the request to be claimed and inside its window, and declares requestExpired for a request that has ended. The platform therefore differs from the draft text.",
+      "needs": "A platform change so that a proof after a cancel is answered requestExpired, or a clarification from the specification editors on which code a cancelled request should give. The original may already be fixed upstream; it is older than current main.",
+      "start": [
+        "docs/27-kw-vti-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-aut.json"
+      ]
+    },
+    {
+      "id": "rooms-put-conflict",
+      "title": "Second write of an existing room record (version conflict)",
+      "class": "A",
+      "scenarios": [
+        "FC-RMS-006"
+      ],
+      "blocked": "When a record is written with expected version 0 and the key already exists, the original VTI answers a generic taskFailed (reason conflict). The draft records/put task declares rooms/records/put:versionConflict, carrying the current version. The platform differs from the draft text.",
+      "needs": "A platform change to answer versionConflict with the current version, or a clarification from the specification editors. The original may already be fixed upstream.",
+      "start": [
+        "docs/32-rooms-ballot-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-rms.json"
+      ]
+    },
+    {
+      "id": "proof-invalid-code",
+      "title": "Signed documents with a failing proof (proofInvalid)",
+      "class": "A",
+      "scenarios": [
+        "FC-DIR-011",
+        "FC-MBR-007",
+        "FC-KVX-004",
+        "FC-RMS-005"
+      ],
+      "blocked": "These four scenarios send a signed document whose proof fails (a value changed after signing) and expect the draft trust-task-error code proofInvalid. The original VTI does not give that code: for the community join submission it was seen answering permissionDenied (403), from the holder-authentication layer. For the other three the observed answers were not recorded in detail here, so the exact difference is not yet written down for them.",
+      "needs": "A platform change so that a failing document proof is answered proofInvalid, or a clarification from the specification editors on which layer owns that code. The original may already be fixed upstream.",
+      "start": [
+        "docs/27-kw-vti-ceremonies.md",
+        "docs/30-onboarding-vetting-ceremonies.md",
+        "docs/31-persona-rooms-elections-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-dir.json",
+        "vectors/ceremony-scenarios/fc-mbr.json",
+        "vectors/ceremony-scenarios/fc-kvx.json",
+        "vectors/ceremony-scenarios/fc-rms.json"
+      ]
+    },
+    {
+      "id": "consent-decision-codes",
+      "title": "Task-consent decisions refused without the declared code",
+      "class": "A",
+      "scenarios": [
+        "FC-KVC-003",
+        "FC-KVC-011",
+        "FC-KVC-012"
+      ],
+      "blocked": "The original VTI refuses a decision from a device outside the approver set, a decision naming no pending request, and a decision with the wrong challenge, but the declared code (notAnApprover, noPending, challengeMismatch) appears only in the message text, not in the code field. The draft task-consent decision text declares these codes. The platform differs from the draft text.",
+      "needs": "A platform change to put the declared code on the wire, or a clarification from the specification editors on whether a code in the message text is enough. The original may already be fixed upstream.",
+      "start": [
+        "docs/27-kw-vti-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-kvc.json"
+      ]
+    },
+    {
+      "id": "device-task-codes",
+      "title": "Device tasks refused without the declared code",
+      "class": "A",
+      "scenarios": [
+        "FC-DEV-002",
+        "FC-DEV-003",
+        "FC-DEV-004",
+        "FC-DEV-005"
+      ],
+      "blocked": "For a repeated register, a heartbeat or wake channel from an unregistered phone, and a wipe of an unknown device, the original VTI answers taskFailed with the reason in the message text. The draft device task texts declare alreadyRegistered, notRegistered and notFound. The platform differs from the draft text.",
+      "needs": "A platform change to answer each declared code, or a clarification from the specification editors. The original may already be fixed upstream.",
+      "start": [
+        "docs/27-kw-vti-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-dev.json"
+      ]
+    },
+    {
+      "id": "step-up-challenge-code",
+      "title": "Step-up approval with an unknown challenge",
+      "class": "A",
+      "scenarios": [
+        "FC-STU-005"
+      ],
+      "blocked": "An approval echoing a challenge the agent never issued is refused by the original VTI as taskFailed, with challengeUnknown only in the reason text. The draft approve-response task declares auth/step-up/approve-response:challengeUnknown. The platform differs from the draft text.",
+      "needs": "A platform change to answer the declared code, or a clarification from the specification editors. The original may already be fixed upstream.",
+      "start": [
+        "docs/27-kw-vti-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-stu.json"
+      ]
+    },
+    {
+      "id": "context-id-conflict",
+      "title": "Creating a context that already exists",
+      "class": "A",
+      "scenarios": [
+        "FC-PER-003"
+      ],
+      "blocked": "Creating a context that already exists is refused by the original VTI as taskFailed (reason conflict). The draft contexts/create text asks for idConflict and says the request must not be treated as an update. The platform differs from the draft text.",
+      "needs": "A platform change to answer idConflict, or a clarification from the specification editors. The original may already be fixed upstream.",
+      "start": [
+        "docs/31-persona-rooms-elections-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-per.json"
+      ]
+    },
+    {
+      "id": "key-package-not-invited",
+      "title": "Key package against an invitation that does not verify",
+      "class": "A",
+      "scenarios": [
+        "FC-RMS-014",
+        "FC-RMS-018"
+      ],
+      "blocked": "For an invitation no room issued, and for text that is not a credential, the original VTI refuses with malformedRequest. The draft key-package text asks for notInvited whenever the invitation does not verify, and declares that code. The platform differs from the draft text.",
+      "needs": "A platform change to answer notInvited, or a clarification from the specification editors on whether non-credential text may be refused earlier as malformed (FC-RMS-018 only). The original may already be fixed upstream.",
+      "start": [
+        "docs/32-rooms-ballot-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-rms.json"
+      ]
+    },
+    {
+      "id": "persona-task-versions",
+      "title": "Persona scenarios need newer task versions than VTI offers",
+      "class": "A",
+      "scenarios": [
+        "FC-PER-001",
+        "FC-PER-002",
+        "FC-PER-004"
+      ],
+      "blocked": "These scenarios use the current draft versions of the context, DID-list and access-list tasks. The original VTI offers only an older version of the task they need, so the scenarios cannot run against it. No other behaviour difference is recorded for them.",
+      "needs": "A platform update that offers the current draft task versions. The original is older than current main and may already offer them.",
+      "start": [
+        "docs/31-persona-rooms-elections-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-per.json"
+      ]
+    },
+    {
+      "id": "held-credential-format",
+      "title": "Presenting a held credential (format differs from what the scenario needs)",
+      "class": null,
+      "scenarios": [
+        "FC-KVX-001",
+        "FC-CEX-002",
+        "FC-CEX-003"
+      ],
+      "blocked": "These scenarios need the wallet to present a credential it holds and the VTI verifier to accept it. The held-credential and presentation format of the original platforms differs from what the scenario needs: the presentation is a bare Data-Integrity presentation, and the VTI verifier refused a held credential whose proof context has non-string entries. The only completed runs used a simplified test credential, which does not count here. The cause is not yet classified.",
+      "needs": "Classification first, then a platform change on either side, or a clarification from the specification editors on the presentation and credential format. The original may already be fixed upstream.",
+      "start": [
+        "docs/27-kw-vti-ceremonies.md",
+        "vectors/ceremony-scenarios/fc-kvx.json",
+        "vectors/ceremony-scenarios/fc-cex.json"
+      ]
+    }
+  ],
+  "specOpenItems": [
+    "FC-STU-002: framework section 8.6 against approve-request 0.5.",
+    "present 0.1: the form of the vp_token.",
+    "A submit-receipt that follows submit 0.3.",
+    "An object-valued @context in a Data Integrity proof.",
+    "FC-CEX-002: whether the wallet as verifier trusts the presenter before the exchange (wallet verifier pre-trust)."
+  ],
+  "vectorOpenItems": [
+    {
+      "id": "no-positive",
+      "title": "A task with no positive vector",
+      "count": 1,
+      "tasks": [
+        "vta/credentials/issue 0.2"
+      ],
+      "class": "D",
+      "blocked": "The response schema (allOf with unevaluatedProperties) is one no schema builder in the suite can satisfy, so the generator cannot build a response for the reference adapter to give.",
+      "needs": "An extension of the response builder, or a hand-written vector with a checked response."
+    },
+    {
+      "id": "no-negative",
+      "title": "Tasks with no negative vector",
+      "count": 3,
+      "tasks": [
+        "auth/oob/grant 0.3",
+        "auth/oob/identify 0.1",
+        "trust-task-error 0.6"
+      ],
+      "class": null,
+      "blocked": "No negative could be built from the specification text (a required member, a closed payload, a wrong-type member or an invalid example the specification ships).",
+      "needs": "A negative case read from the text, with the clause quoted, and a mutant that it must catch."
+    },
+    {
+      "id": "weak-only",
+      "title": "Positives that pass on any non-envelope answer",
+      "class": "D",
+      "blocked": "A positive is weak when it passes on any answer that is not an envelope error. It is not asserted where the task changes state, the request names an identifier or free text, or a state-dependent code can legitimately fire. See the per-family table below.",
+      "needs": "Adapter state: a way for the adapter to seed or name the objects a request refers to (identifiers, fixtures), so that the success response can be asserted. This is the largest single block of work."
+    },
+    {
+      "id": "skipped-by-default",
+      "title": "Vectors that need a disposable deployment",
+      "class": "D",
+      "blocked": "A mutating or destructive vector is not run unless the run names a disposable deployment, so it is reported SKIPPED-SAFETY and counted nowhere.",
+      "needs": "A runner configuration pointing at a disposable deployment of the platform (a container or throwaway database), then runs of those vectors."
+    },
+    {
+      "id": "refusal-codes",
+      "title": "Refusal steps accept only two codes",
+      "class": "D",
+      "blocked": "The refusal steps of the other coverage vectors accept only the malformed-request and permission-denied codes. Accepting a task's own standing code there would let one deliberately broken variant of the reference adapter (noPayloadValidation) pass unnoticed.",
+      "needs": "A way to accept a task's own standing codes without losing that check, for example a mutant that tells the two apart."
+    },
+    {
+      "id": "authorised-capability",
+      "title": "Witness vectors that need the authorised capability",
+      "class": "D",
+      "count": 46,
+      "blocked": "46 witness vectors require the adapter to declare the optional capability authorised, meaning that its policy accepts the harness actors. An adapter that does not declare it sees them SKIP.",
+      "needs": "A platform adapter that declares the capability honestly, with the evidence for the declaration."
+    }
+  ]
+}

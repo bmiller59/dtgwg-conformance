@@ -1,0 +1,699 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "WSB",
+  "family": "witness",
+  "clock": {
+    "start": "2026-11-15T12:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "WSB-001",
+      "title": "a submission on a session that was never opened is refused",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/submit/0.2/spec.md (draft) Conformance witness (a submission is accepted only on a session; the code for an unknown session is not stated)",
+        "specs/witness/session/submit/0.2/spec.md (draft) Conformance participating party 1"
+      ],
+      "source": {
+        "slug": "witness/session/submit",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/submit/0.2",
+        "pinnedDigest": "sha256:ffa906edf0386c3c5964180d1d7219547e1d3c68ab6a51c048f154d69b665e10",
+        "tfRef": {
+          "repoPath": "specs/witness/session/submit/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:b39b1f404b3c70c9eec78d754a6792184f12d590d8773c3c1f4aff2c4c2ca2b4",
+        "schemaHash": "sha256:5bdb7e26afb3e1b71dad2897484cd8e6e6f75d9635356ea686aea279a33f2c1f"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(m1)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {
+                  "@context": [
+                    "https://www.w3.org/ns/credentials/v2"
+                  ],
+                  "type": [
+                    "VerifiablePresentation"
+                  ],
+                  "verifiableCredential": [],
+                  "proof": {
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-jcs-2022",
+                    "proofPurpose": "authentication",
+                    "challenge": "00000000000000000000000000000000",
+                    "domain": "unknown",
+                    "verificationMethod": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK#z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+                    "proofValue": "z3FXQjecWufY46yg5abdVZsXqLhxhueuSoZgNRxoJxoKyM8XqjvNgDBiUbqWqLqhYBVyNXBCvmNRSCbkiaZbP1DGu"
+                  }
+                }
+              },
+              "threadId": "$id(nosession)"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal"
+          }
+        }
+      ],
+      "mutants": [
+        "witnessNoSessionCheck"
+      ]
+    },
+    {
+      "id": "WSB-002",
+      "title": "a presentation bound to another challenge is refused challengeMismatch, before any other check",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/submit/0.2/spec.md (draft) Conformance witness 2 (binding verified before any other check; challengeMismatch, distinct from presentationInvalid)",
+        "specs/witness/session/submit/0.2/spec.md (draft) errorCodes (challengeMismatch)"
+      ],
+      "source": {
+        "slug": "witness/session/submit",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/submit/0.2",
+        "pinnedDigest": "sha256:ffa906edf0386c3c5964180d1d7219547e1d3c68ab6a51c048f154d69b665e10",
+        "tfRef": {
+          "repoPath": "specs/witness/session/submit/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:b39b1f404b3c70c9eec78d754a6792184f12d590d8773c3c1f4aff2c4c2ca2b4",
+        "schemaHash": "sha256:5bdb7e26afb3e1b71dad2897484cd8e6e6f75d9635356ea686aea279a33f2c1f"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "capture": {
+            "ch": "/payload/challenge",
+            "chDomain": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            }
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(m1)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {
+                  "@context": [
+                    "https://www.w3.org/ns/credentials/v2"
+                  ],
+                  "type": [
+                    "VerifiablePresentation"
+                  ],
+                  "verifiableCredential": [],
+                  "proof": {
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-jcs-2022",
+                    "proofPurpose": "authentication",
+                    "challenge": "not-the-session-challenge-0123456789",
+                    "domain": "$cap(chDomain)",
+                    "verificationMethod": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK#z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+                    "proofValue": "z3FXQjecWufY46yg5abdVZsXqLhxhueuSoZgNRxoJxoKyM8XqjvNgDBiUbqWqLqhYBVyNXBCvmNRSCbkiaZbP1DGu"
+                  }
+                }
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "witness/session/submit:challengeMismatch",
+            "errorReply": "should"
+          }
+        }
+      ],
+      "mutants": [
+        "witnessBindingAfterVerification"
+      ]
+    },
+    {
+      "id": "WSB-003",
+      "title": "a submission by a party other than the one that opened the session is refused challengeMismatch",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/submit/0.2/spec.md (draft) Conformance witness 3",
+        "specs/witness/session/submit/0.2/spec.md (draft) errorCodes (challengeMismatch)",
+        "specs/witness/session/submit/0.2/spec.md (draft) Conformance participating party 1 (only on a session it opened itself)"
+      ],
+      "source": {
+        "slug": "witness/session/submit",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/submit/0.2",
+        "pinnedDigest": "sha256:ffa906edf0386c3c5964180d1d7219547e1d3c68ab6a51c048f154d69b665e10",
+        "tfRef": {
+          "repoPath": "specs/witness/session/submit/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:b39b1f404b3c70c9eec78d754a6792184f12d590d8773c3c1f4aff2c4c2ca2b4",
+        "schemaHash": "sha256:5bdb7e26afb3e1b71dad2897484cd8e6e6f75d9635356ea686aea279a33f2c1f"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "capture": {
+            "ch": "/payload/challenge",
+            "chDomain": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$X",
+              "partner": "$A",
+              "challenge": "$cap(ch)",
+              "domain": "$cap(chDomain)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpX": "/vp"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(m1)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$X",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpX)"
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            },
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "witness/session/submit:challengeMismatch",
+            "errorReply": "should"
+          }
+        }
+      ],
+      "mutants": [
+        "witnessAnyPartySubmits"
+      ]
+    },
+    {
+      "id": "WSB-004",
+      "title": "a presentation bound to the right challenge that does not verify is refused presentationInvalid",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/submit/0.2/spec.md (draft):59-61 (presentationInvalid: own proof, holder binding or party bindings fail)",
+        "specs/witness/session/submit/0.2/spec.md (draft):293 (binding checked first)",
+        "specs/witness/session/submit/0.2/spec.md (draft):323-326 (minting is the witness's own policy)"
+      ],
+      "source": {
+        "slug": "witness/session/submit",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/submit/0.2",
+        "pinnedDigest": "sha256:ffa906edf0386c3c5964180d1d7219547e1d3c68ab6a51c048f154d69b665e10",
+        "tfRef": {
+          "repoPath": "specs/witness/session/submit/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:b39b1f404b3c70c9eec78d754a6792184f12d590d8773c3c1f4aff2c4c2ca2b4",
+        "schemaHash": "sha256:5bdb7e26afb3e1b71dad2897484cd8e6e6f75d9635356ea686aea279a33f2c1f"
+      },
+      "clarify": "The submit specification maps a failure of the presentation's own proof, its holder binding or its party bindings to presentationInvalid (specs/witness/session/submit/0.2/spec.md:59-61) and fixes only the challenge binding as the first check (spec.md:293). This vector's presentation also carries no credential and no holder. The specification does not state the order of the checks after the binding, nor the code a witness returns when it declines a submission under its own policy (spec.md:323-326), so a refusal on another ground before the proof is checked is also acceptable. The code is observed, not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "binding:didcomm",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "capture": {
+            "ch": "/payload/challenge",
+            "chDomain": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            }
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(m1)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {
+                  "@context": [
+                    "https://www.w3.org/ns/credentials/v2"
+                  ],
+                  "type": [
+                    "VerifiablePresentation"
+                  ],
+                  "verifiableCredential": [],
+                  "proof": {
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-jcs-2022",
+                    "proofPurpose": "authentication",
+                    "challenge": "$cap(ch)",
+                    "domain": "$cap(chDomain)",
+                    "verificationMethod": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK#z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+                    "proofValue": "z3FXQjecWufY46yg5abdVZsXqLhxhueuSoZgNRxoJxoKyM8XqjvNgDBiUbqWqLqhYBVyNXBCvmNRSCbkiaZbP1DGu"
+                  }
+                }
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "witness/session/submit:presentationInvalid",
+            "errorReply": "should"
+          }
+        }
+      ],
+      "mutants": [
+        "witnessSkipsPresentationVerification"
+      ]
+    },
+    {
+      "id": "WSB-006",
+      "title": "a submission without a proof is refused proofRequired: the request proof is REQUIRED",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/submit/0.2/spec.md (draft) front matter proofRequirement (request REQUIRED)",
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target) 7.2 item 7 (a REQUIRED proof that is absent: proofRequired)"
+      ],
+      "source": {
+        "slug": "witness/session/submit",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/submit/0.2",
+        "pinnedDigest": "sha256:ffa906edf0386c3c5964180d1d7219547e1d3c68ab6a51c048f154d69b665e10",
+        "tfRef": {
+          "repoPath": "specs/witness/session/submit/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:b39b1f404b3c70c9eec78d754a6792184f12d590d8773c3c1f4aff2c4c2ca2b4",
+        "schemaHash": "sha256:5bdb7e26afb3e1b71dad2897484cd8e6e6f75d9635356ea686aea279a33f2c1f"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "capture": {
+            "ch": "/payload/challenge",
+            "chDomain": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            }
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(m1)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {
+                  "@context": [
+                    "https://www.w3.org/ns/credentials/v2"
+                  ],
+                  "type": [
+                    "VerifiablePresentation"
+                  ],
+                  "verifiableCredential": [],
+                  "proof": {
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-jcs-2022",
+                    "proofPurpose": "authentication",
+                    "challenge": "$cap(ch)",
+                    "domain": "$cap(chDomain)",
+                    "verificationMethod": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK#z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+                    "proofValue": "z3FXQjecWufY46yg5abdVZsXqLhxhueuSoZgNRxoJxoKyM8XqjvNgDBiUbqWqLqhYBVyNXBCvmNRSCbkiaZbP1DGu"
+                  }
+                }
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "errorReply": "should"
+          }
+        }
+      ],
+      "mutants": [
+        "proofOptional",
+        "proofRequiredAsInvalid"
+      ]
+    },
+    {
+      "id": "WSB-007",
+      "title": "a proof made for the authentication purpose by an authentication key is not refused proofInvalid",
+      "tier": 1,
+      "spec": [
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target) 4.7.3 (the proofPurpose names the relationship to check; the key must be listed under it)",
+        "specs/witness/session/submit/0.2/spec.md (draft) (names no proofPurpose for the request)"
+      ],
+      "source": {
+        "slug": "witness/session/submit",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/submit/0.2",
+        "pinnedDigest": "sha256:ffa906edf0386c3c5964180d1d7219547e1d3c68ab6a51c048f154d69b665e10",
+        "tfRef": {
+          "repoPath": "specs/witness/session/submit/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:b39b1f404b3c70c9eec78d754a6792184f12d590d8773c3c1f4aff2c4c2ca2b4",
+        "schemaHash": "sha256:5bdb7e26afb3e1b71dad2897484cd8e6e6f75d9635356ea686aea279a33f2c1f"
+      },
+      "clarify": "Neither the submit specification nor SPEC.md 4.7.3 pins a purpose for this request, so a consumer that accepts only one purpose is stricter than the text; whether that is a defect or a profile choice needs a task-force reading.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "binding:didcomm",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "capture": {
+            "ch": "/payload/challenge",
+            "chDomain": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            }
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(m1)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {
+                  "@context": [
+                    "https://www.w3.org/ns/credentials/v2"
+                  ],
+                  "type": [
+                    "VerifiablePresentation"
+                  ],
+                  "verifiableCredential": [],
+                  "proof": {
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-jcs-2022",
+                    "proofPurpose": "authentication",
+                    "challenge": "not-the-session-challenge-0123456789",
+                    "domain": "$cap(chDomain)",
+                    "verificationMethod": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK#z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+                    "proofValue": "z3FXQjecWufY46yg5abdVZsXqLhxhueuSoZgNRxoJxoKyM8XqjvNgDBiUbqWqLqhYBVyNXBCvmNRSCbkiaZbP1DGu"
+                  }
+                }
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": {
+              "purpose": "authentication"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "witness/session/submit:challengeMismatch",
+            "errorReply": "should"
+          }
+        }
+      ],
+      "mutants": [
+        "witnessPurposeAssertionOnly"
+      ]
+    },
+    {
+      "id": "WSB-005",
+      "title": "a submission with no vp is refused",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/submit/0.2/payload.schema.json (draft) (vp required)",
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target) 8.3 (malformedRequest)"
+      ],
+      "source": {
+        "slug": "witness/session/submit",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/submit/0.2",
+        "pinnedDigest": "sha256:ffa906edf0386c3c5964180d1d7219547e1d3c68ab6a51c048f154d69b665e10",
+        "tfRef": {
+          "repoPath": "specs/witness/session/submit/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:b39b1f404b3c70c9eec78d754a6792184f12d590d8773c3c1f4aff2c4c2ca2b4",
+        "schemaHash": "sha256:5bdb7e26afb3e1b71dad2897484cd8e6e6f75d9635356ea686aea279a33f2c1f"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "capture": {
+            "ch": "/payload/challenge",
+            "chDomain": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            }
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(m1)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "threadId": "$id(s1)",
+              "payload": {}
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "errorReply": "should"
+          }
+        }
+      ],
+      "mutants": [
+        "noPayloadValidation"
+      ]
+    }
+  ]
+}

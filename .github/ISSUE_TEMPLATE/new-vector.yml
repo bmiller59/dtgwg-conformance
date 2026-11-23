@@ -1,0 +1,43 @@
+name: New vector proposal
+description: Propose a vector or a ceremony scenario for a clause nothing covers yet.
+title: "[new vector] <task or clause>: <short summary>"
+labels: ["new-vector"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This suite is a draft proposal for discussion and review by the DTGWG. Every task specification involved is draft.
+        A new vector starts advisory. It is promoted to gating only through the process in docs/33-registry-promotion.md.
+  - type: textarea
+    id: clause
+    attributes:
+      label: "The clause, quoted"
+      description: "The sentence the vector rests on, with the document, clause, version and the status the specification carries (draft). If no specification text covers it, say so: the vector would be a candidate."
+    validations:
+      required: true
+  - type: dropdown
+    id: channel
+    attributes:
+      label: "Channel you expect"
+      options:
+        - registry (the specification is in the Trust Tasks registry)
+        - pr (the specification is an open pull request; give its number)
+        - proposed (a suite profile over real text)
+        - candidate (no specification home)
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: shape
+    attributes:
+      label: "What to send and what must happen"
+      description: "The steps, the expected answer or state, whether it is positive or negative, and for a negative the faulty behaviour it must catch (the mutant)."
+    validations:
+      required: true
+  - type: textarea
+    id: needs
+    attributes:
+      label: "What an adapter must offer"
+      description: "Capabilities, document types, or seeded state the vector needs. Anything missing makes it SKIP, never a failure."
+    validations:
+      required: false

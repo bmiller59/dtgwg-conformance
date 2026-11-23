@@ -1,0 +1,71 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "VC-DID-MANAGEMENT",
+ "family": "complete",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "VC-DID-MANAGEMENT-001",
+   "title": "did-management/did/register 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/did-management/did/register/0.1 (Trust Tasks specification did-management/did/register 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/did-management/did/register/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "did-management/did/register",
+    "version": "0.1",
+    "ref": "kit:specs/did-management/did/register/0.1",
+    "pinnedDigest": "sha256:c9fbc6ee9726c176229ae9d107f1968521982e4a448817cffff0be4bed8be030",
+    "specHash": "sha256:8ba188d785c7f5a035e8ddeaab13c51320ca18177f7881f06d0752e83ab56e86",
+    "schemaHash": "sha256:ced923f82862c2e9518968b7954133671c3d66b475b4272860f16b02bc6b5f81",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/did-management/did/register/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/did-management/did/register/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/did-management/did/register/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "path": "example",
+        "method": "did:web:alice.example",
+        "didData": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/did-management/did/register/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  }
+ ]
+}

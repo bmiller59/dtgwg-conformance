@@ -1,0 +1,380 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "TE-NTV",
+  "family": "2l-emit",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "TE-NTV-001",
+      "title": "vta/notifications/deposit 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vta/notifications/deposit/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vta/notifications/deposit/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vta/notifications/deposit/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vta/notifications/deposit",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/notifications/deposit/0.1",
+        "pinnedDigest": "sha256:7fe3d795c7342d4d6777689a54f8ad09e24844dd2825765772dd51ab5077c90f",
+        "tfRef": {
+          "repoPath": "specs/vta/notifications/deposit/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:b05e5cfb90d84170b3f9c8bee75ebe26ce02f75af879b804c6be1223519f3a5c",
+        "schemaHash": "sha256:cbeb3d81b0de9737bdac69a227da6ac51adc78128af17bf0adc5116183651ea9"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vta/notifications/deposit/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vta/notifications/deposit/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vta/notifications/deposit/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TE-NTV-002",
+      "title": "vta/notifications/dismiss 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vta/notifications/dismiss/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vta/notifications/dismiss/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vta/notifications/dismiss/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vta/notifications/dismiss",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/notifications/dismiss/0.1",
+        "pinnedDigest": "sha256:865e14395ebb5dcdd1c6fc7b5d422f4edf42b7bba7e103bfeb3576bb0b665e13",
+        "tfRef": {
+          "repoPath": "specs/vta/notifications/dismiss/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:ff448411e581f8ef36c9f84c39efc9cbc3d5f2647cdb0556e074f86ae938d92a",
+        "schemaHash": "sha256:2622a4719105e8861219ec3af465b3524d0e62c1e02a01c8dbd2910564f1d5e9"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vta/notifications/dismiss/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vta/notifications/dismiss/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vta/notifications/dismiss/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TE-NTV-003",
+      "title": "vta/notifications/list 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vta/notifications/list/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vta/notifications/list/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+        "specs/vta/notifications/list/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vta/notifications/list",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/notifications/list/0.1",
+        "pinnedDigest": "sha256:8aea97e86a2badafd6cd9c0293b98c73f45ec997269e535844df2fa2f8e82213",
+        "tfRef": {
+          "repoPath": "specs/vta/notifications/list/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:496056103afa7fb7b7989040d94166637d8d08581dbf790903806b1dc850926d",
+        "schemaHash": "sha256:2e7d42677aa76bc78bf17bc7589bbf148581e689b4884096e8a9c7a1b627662c"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vta/notifications/list/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoRecipient"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vta/notifications/list/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vta/notifications/list/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TE-NTV-004",
+      "title": "vta/notifications/show 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vta/notifications/show/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vta/notifications/show/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+        "specs/vta/notifications/show/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vta/notifications/show",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/notifications/show/0.1",
+        "pinnedDigest": "sha256:2abb10f99723530844694e658d2708981f7d8fe950a9080dba7e2d264ab090a1",
+        "tfRef": {
+          "repoPath": "specs/vta/notifications/show/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:c1098ff8f880f5d3d98f6ba8de069eb4e439668b993e31fb86a2b2e6fa603725",
+        "schemaHash": "sha256:776bd222ef36232a660eef68336be49d10705366b4fb597d1cceef16aa392c9e"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vta/notifications/show/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoRecipient"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vta/notifications/show/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vta/notifications/show/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TE-NTV-005",
+      "title": "vtc/notifications/list 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vtc/notifications/list/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vtc/notifications/list/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=false",
+        "specs/vtc/notifications/list/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vtc/notifications/list",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/notifications/list/0.1",
+        "pinnedDigest": "sha256:375d038566dcf5ad73b2d4b45aad94b0f16e42a0c9c402c4ccfd378622aef555",
+        "tfRef": {
+          "repoPath": "specs/vtc/notifications/list/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:22b75b9d525f72cecd723caf217033e745f29bf2df39c8fc24e441cd0a5320b6",
+        "schemaHash": "sha256:ae1d44fa29efc7f02db24def0ea9b97b3dda504e520db66272a19500831b4976"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vtc/notifications/list/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vtc/notifications/list/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vtc/notifications/list/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TE-NTV-006",
+      "title": "vtc/notifications/relay 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vtc/notifications/relay/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vtc/notifications/relay/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vtc/notifications/relay/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vtc/notifications/relay",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/notifications/relay/0.1",
+        "pinnedDigest": "sha256:5abaae78fc6b703532cd4b389d831b6edb007e1d382217c73ab606f6e3fd2365",
+        "tfRef": {
+          "repoPath": "specs/vtc/notifications/relay/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d5633a6d67e063870ee4d684b7d99c79a08f0219055f7134a4845073c160b24c",
+        "schemaHash": "sha256:892185d7c74aaba0d803f3bbab66eaa94338f39a22d204a1d202789663786b62"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vtc/notifications/relay/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vtc/notifications/relay/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vtc/notifications/relay/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TE-NTV-007",
+      "title": "vtc/notifications/show 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vtc/notifications/show/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vtc/notifications/show/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=false",
+        "specs/vtc/notifications/show/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vtc/notifications/show",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/notifications/show/0.1",
+        "pinnedDigest": "sha256:634171d6fde6d8543c5b81e5db1644275d6f9cfbe8268f92af4dc72f1876cd3a",
+        "tfRef": {
+          "repoPath": "specs/vtc/notifications/show/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:9dc7e42562dd9bd005ba2990d719b6c51502c40895c5a02ab859d8a332618635",
+        "schemaHash": "sha256:98f5daef1850142dce5f411219f8ea8ae6a6bddecdc1d7c81b15432a3f9da617"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vtc/notifications/show/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vtc/notifications/show/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vtc/notifications/show/0.1"
+          }
+        }
+      ]
+    }
+  ]
+}

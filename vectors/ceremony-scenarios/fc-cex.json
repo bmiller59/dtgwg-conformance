@@ -1,0 +1,757 @@
+{
+  "format": "tt-ceremony-scenarios/0.1",
+  "group": "FC-CEX",
+  "family": "ceremony-scenarios",
+  "evidence": "complete-ceremony",
+  "ceremony": {
+    "name": "Credential exchange: offer, request, issue; query, present",
+    "channel": "proposed",
+    "choreography": "docs/25-ceremony-scenarios.md section 4: the next task of an exchange is pushed by the participant that holds the thread; the runner relays each pushed document to its recipient and reads every participant's own state"
+  },
+  "scenarios": [
+    {
+      "id": "FC-CEX-001",
+      "title": "an issuer's offer is answered by the holder's request on the offer's thread and that by the issue on the same thread: the holder keeps the credential issued to it",
+      "spec": [
+        "TF specs/credential-exchange/offer/0.1/spec.md (the holder replies on the offer's thread with a request)",
+        "TF specs/credential-exchange/request/0.1/spec.md (the issuer answers on-thread with an issue)",
+        "TF specs/credential-exchange/issue/0.1/spec.md (a cleartext credential is accepted and kept; no reply document)"
+      ],
+      "source": {
+        "slug": "credential-exchange/offer",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/credential-exchange/offer/0.1",
+        "pinnedDigest": "sha256:dbca4d8c444b73b78016706fdd8cce96a9b290364d05515af52e82b26a0a4dcb",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/offer/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:265edc3f202481579bd7a29fe753d01a24ca22e61c0c8e93f0229b0b56ffb78d",
+        "schemaHash": "sha256:95ffea4830fa5e7ea2fb5a014e51fbe06e68ede3908dcca9ae5324e940391868"
+      },
+      "participants": {
+        "I": {
+          "role": "issuer",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:observe.pushed",
+            "https://trusttasks.org/spec/credential-exchange/request/0.1"
+          ]
+        },
+        "H": {
+          "role": "holder",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:observe.pushed",
+            "https://trusttasks.org/spec/credential-exchange/offer/0.1",
+            "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+          ]
+        }
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 30000,
+      "allowedTerminals": [
+        "completed"
+      ],
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "offer",
+          "source": {
+            "slug": "credential-exchange/offer",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/credential-exchange/offer/0.1",
+            "pinnedDigest": "sha256:dbca4d8c444b73b78016706fdd8cce96a9b290364d05515af52e82b26a0a4dcb",
+            "tfRef": {
+              "repoPath": "specs/credential-exchange/offer/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:265edc3f202481579bd7a29fe753d01a24ca22e61c0c8e93f0229b0b56ffb78d",
+            "schemaHash": "sha256:95ffea4830fa5e7ea2fb5a014e51fbe06e68ede3908dcca9ae5324e940391868"
+          },
+          "do": {
+            "initiate": {
+              "by": "I",
+              "to": "H",
+              "kind": "cex-offer",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "H",
+              "received": {
+                "type": "https://trusttasks.org/spec/credential-exchange/offer/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "H",
+              "ceremony": "open"
+            },
+            {
+              "at": "I",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "credential-exchange/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/credential-exchange/request/0.1",
+            "pinnedDigest": "sha256:4c01c7fffb441a9116767669613cae3ddf5b14ed6e35ae5ab799fb33508e59bd",
+            "tfRef": {
+              "repoPath": "specs/credential-exchange/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:902cfe47c4011ed2a27d41114dac073023d2fa1565d810360054b0154316121c",
+            "schemaHash": "sha256:c58c66590d7cb7b949c544c5b95f14d0ef72b37c2b0e3e6859ce3dd151d1c58e"
+          },
+          "do": {
+            "relayPushed": {
+              "from": "H",
+              "to": "I",
+              "type": "https://trusttasks.org/spec/credential-exchange/request/0.1"
+            }
+          },
+          "expect": [
+            {
+              "at": "I",
+              "received": {
+                "type": "https://trusttasks.org/spec/credential-exchange/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "H",
+              "stored": {
+                "kind": "credential",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "issue",
+          "source": {
+            "slug": "credential-exchange/issue",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/credential-exchange/issue/0.1",
+            "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+            "tfRef": {
+              "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+            "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+          },
+          "do": {
+            "relayPushed": {
+              "from": "I",
+              "to": "H",
+              "type": "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+            }
+          },
+          "expect": [
+            {
+              "at": "H",
+              "received": {
+                "type": "https://trusttasks.org/spec/credential-exchange/issue/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "H",
+              "stored": {
+                "kind": "credential",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "I",
+            "ceremony": "completed"
+          },
+          {
+            "at": "H",
+            "ceremony": "completed"
+          },
+          {
+            "at": "H",
+            "stored": {
+              "kind": "credential",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-CEX-002",
+      "title": "a query to a holder is answered by a presentation bound to the query's nonce on its thread, at once when the holder pre-trusts the verifier and once the holder's human approves when it does not: the verifier keeps it",
+      "spec": [
+        "TF specs/credential-exchange/query/0.1/spec.md (a pre-trusted verifier is answered at once; any other is deferred and, once approved, answered on the original thread)",
+        "TF specs/credential-exchange/present/0.1/spec.md (the presentation is bound to the verifier's nonce and audience, once)"
+      ],
+      "source": {
+        "slug": "credential-exchange/query",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/credential-exchange/query/0.1",
+        "pinnedDigest": "sha256:b0d90216baf8f727455b6ee354c0fda9d19f43c63e9fea7e61fd6fafbe2ba99f",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/query/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5c93aab9be98b056715b694c1db41350f0e0e855d73ea2b56969aa1e33ded102",
+        "schemaHash": "sha256:5dfef314bb3a07806d57690f53c7ed8733ea7769dc6782e13fc0aa1f581c1ea6"
+      },
+      "participants": {
+        "V": {
+          "role": "verifier",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:observe.pushed",
+            "https://trusttasks.org/spec/credential-exchange/present/0.1"
+          ]
+        },
+        "H": {
+          "role": "holder",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:observe.pushed",
+            "optional:trigger.holdCredential",
+            "https://trusttasks.org/spec/credential-exchange/query/0.1"
+          ]
+        }
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 30000,
+      "allowedTerminals": [
+        "completed"
+      ],
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "hold",
+          "do": {
+            "decide": {
+              "by": "H",
+              "action": "holdCredential",
+              "args": {}
+            }
+          }
+        },
+        {
+          "id": "trust",
+          "when": {
+            "at": "H",
+            "offers": "trigger.verifierTrust",
+            "is": true
+          },
+          "do": {
+            "decide": {
+              "by": "H",
+              "action": "verifierTrust",
+              "args": {
+                "vid": "$V"
+              }
+            }
+          }
+        },
+        {
+          "id": "query",
+          "when": {
+            "at": "H",
+            "offers": "trigger.verifierTrust",
+            "is": true
+          },
+          "source": {
+            "slug": "credential-exchange/query",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/credential-exchange/query/0.1",
+            "pinnedDigest": "sha256:b0d90216baf8f727455b6ee354c0fda9d19f43c63e9fea7e61fd6fafbe2ba99f",
+            "tfRef": {
+              "repoPath": "specs/credential-exchange/query/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:5c93aab9be98b056715b694c1db41350f0e0e855d73ea2b56969aa1e33ded102",
+            "schemaHash": "sha256:5dfef314bb3a07806d57690f53c7ed8733ea7769dc6782e13fc0aa1f581c1ea6"
+          },
+          "also": [
+            {
+              "slug": "credential-exchange/present",
+              "version": "0.1",
+              "channel": "proposed",
+              "profile": "ceremony-scenarios",
+              "ref": "kit:specs/credential-exchange/present/0.1",
+              "pinnedDigest": "sha256:d84e4b1344681ade0be140c79e3fd83606d63bc8a7282b646b6725f3ba344a55",
+              "tfRef": {
+                "repoPath": "specs/credential-exchange/present/0.1/spec.md",
+                "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+                "status": "draft"
+              },
+              "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+              "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "specHash": "sha256:4e44387bce318d952a90c0d0eecd951960bd879769ab942c2a735162a591af38",
+              "schemaHash": "sha256:d406cfbf00142bbf81f7edecafbeee334d8da20f8de59ccd35ab31c88d305624"
+            }
+          ],
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "H",
+              "kind": "cex-query",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "H",
+              "received": {
+                "type": "https://trusttasks.org/spec/credential-exchange/query/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "received": {
+                "type": "https://trusttasks.org/spec/credential-exchange/present/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "presentation",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "hold-membership",
+          "when": {
+            "at": "H",
+            "offers": "trigger.verifierTrust",
+            "is": false
+          },
+          "do": {
+            "decide": {
+              "by": "H",
+              "action": "holdCredential",
+              "args": {
+                "type": "MembershipCredential"
+              }
+            }
+          }
+        },
+        {
+          "id": "query-deferred",
+          "when": {
+            "at": "H",
+            "offers": "trigger.verifierTrust",
+            "is": false
+          },
+          "source": {
+            "slug": "credential-exchange/query",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/credential-exchange/query/0.1",
+            "pinnedDigest": "sha256:b0d90216baf8f727455b6ee354c0fda9d19f43c63e9fea7e61fd6fafbe2ba99f",
+            "tfRef": {
+              "repoPath": "specs/credential-exchange/query/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:5c93aab9be98b056715b694c1db41350f0e0e855d73ea2b56969aa1e33ded102",
+            "schemaHash": "sha256:5dfef314bb3a07806d57690f53c7ed8733ea7769dc6782e13fc0aa1f581c1ea6"
+          },
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "H",
+              "kind": "cex-query",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "H",
+              "received": {
+                "type": "https://trusttasks.org/spec/credential-exchange/query/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "H",
+              "ceremony": "held"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "presentation",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "approve",
+          "when": {
+            "at": "H",
+            "offers": "trigger.verifierTrust",
+            "is": false
+          },
+          "do": {
+            "decide": {
+              "by": "H",
+              "action": "queryDecision",
+              "args": {
+                "thread": "$thread:thread",
+                "decision": "approve"
+              }
+            }
+          }
+        },
+        {
+          "id": "present",
+          "when": {
+            "at": "H",
+            "offers": "trigger.verifierTrust",
+            "is": false
+          },
+          "source": {
+            "slug": "credential-exchange/present",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/credential-exchange/present/0.1",
+            "pinnedDigest": "sha256:d84e4b1344681ade0be140c79e3fd83606d63bc8a7282b646b6725f3ba344a55",
+            "tfRef": {
+              "repoPath": "specs/credential-exchange/present/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:4e44387bce318d952a90c0d0eecd951960bd879769ab942c2a735162a591af38",
+            "schemaHash": "sha256:d406cfbf00142bbf81f7edecafbeee334d8da20f8de59ccd35ab31c88d305624"
+          },
+          "do": {
+            "relayPushed": {
+              "from": "H",
+              "to": "V",
+              "type": "https://trusttasks.org/spec/credential-exchange/present/0.1"
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "stored": {
+                "kind": "presentation",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "V",
+            "ceremony": "completed"
+          },
+          {
+            "at": "H",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "presentation",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-CEX-003",
+      "title": "a query to a holder that does not pre-trust the verifier is deferred; once the holder's human approves, the presentation is pushed on the query's thread and the verifier keeps it",
+      "spec": [
+        "TF specs/credential-exchange/query/0.1/spec.md (a deferred query waits for the holder's decision)",
+        "TF specs/credential-exchange/present/0.1/spec.md (for a deferred query, present on the original thread once approval lands)"
+      ],
+      "source": {
+        "slug": "credential-exchange/query",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/credential-exchange/query/0.1",
+        "pinnedDigest": "sha256:b0d90216baf8f727455b6ee354c0fda9d19f43c63e9fea7e61fd6fafbe2ba99f",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/query/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5c93aab9be98b056715b694c1db41350f0e0e855d73ea2b56969aa1e33ded102",
+        "schemaHash": "sha256:5dfef314bb3a07806d57690f53c7ed8733ea7769dc6782e13fc0aa1f581c1ea6"
+      },
+      "participants": {
+        "V": {
+          "role": "verifier",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:observe.pushed",
+            "https://trusttasks.org/spec/credential-exchange/present/0.1"
+          ]
+        },
+        "H": {
+          "role": "holder",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:observe.pushed",
+            "optional:trigger.holdCredential",
+            "optional:trigger.queryDecision",
+            "https://trusttasks.org/spec/credential-exchange/query/0.1"
+          ]
+        }
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 30000,
+      "allowedTerminals": [
+        "completed"
+      ],
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "hold",
+          "do": {
+            "decide": {
+              "by": "H",
+              "action": "holdCredential",
+              "args": {}
+            }
+          }
+        },
+        {
+          "id": "hold-membership",
+          "do": {
+            "decide": {
+              "by": "H",
+              "action": "holdCredential",
+              "args": {
+                "type": "MembershipCredential"
+              }
+            }
+          }
+        },
+        {
+          "id": "query",
+          "source": {
+            "slug": "credential-exchange/query",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/credential-exchange/query/0.1",
+            "pinnedDigest": "sha256:b0d90216baf8f727455b6ee354c0fda9d19f43c63e9fea7e61fd6fafbe2ba99f",
+            "tfRef": {
+              "repoPath": "specs/credential-exchange/query/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:5c93aab9be98b056715b694c1db41350f0e0e855d73ea2b56969aa1e33ded102",
+            "schemaHash": "sha256:5dfef314bb3a07806d57690f53c7ed8733ea7769dc6782e13fc0aa1f581c1ea6"
+          },
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "H",
+              "kind": "cex-query",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "H",
+              "received": {
+                "type": "https://trusttasks.org/spec/credential-exchange/query/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "H",
+              "ceremony": "held"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "presentation",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "approve",
+          "do": {
+            "decide": {
+              "by": "H",
+              "action": "queryDecision",
+              "args": {
+                "thread": "$thread:thread",
+                "decision": "approve"
+              }
+            }
+          }
+        },
+        {
+          "id": "present",
+          "source": {
+            "slug": "credential-exchange/present",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/credential-exchange/present/0.1",
+            "pinnedDigest": "sha256:d84e4b1344681ade0be140c79e3fd83606d63bc8a7282b646b6725f3ba344a55",
+            "tfRef": {
+              "repoPath": "specs/credential-exchange/present/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:4e44387bce318d952a90c0d0eecd951960bd879769ab942c2a735162a591af38",
+            "schemaHash": "sha256:d406cfbf00142bbf81f7edecafbeee334d8da20f8de59ccd35ab31c88d305624"
+          },
+          "do": {
+            "relayPushed": {
+              "from": "H",
+              "to": "V",
+              "type": "https://trusttasks.org/spec/credential-exchange/present/0.1"
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "stored": {
+                "kind": "presentation",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "V",
+            "ceremony": "completed"
+          },
+          {
+            "at": "H",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "presentation",
+              "count": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

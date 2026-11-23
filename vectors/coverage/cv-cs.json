@@ -1,0 +1,1862 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "CV-CS",
+ "family": "coverage",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "CV-CS-001",
+   "title": "consent/approver-list 1.0: the payload is validated against the task's payload schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/consent/approver-list/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [], additionalProperties false",
+    "specs/consent/approver-list/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Built from the registry schema the platforms also build against: not independent evidence of that schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "specs/consent/approver-list/1.0/spec.md front matter errorCodes: consent/approver-list:notAuthorized (the caller's standing): a refusal for it is accepted beside malformedRequest and permissionDenied, because SPEC.md 7.2 items 2 and 10 do not order the payload check against the authorisation check; an object lookup or state code is not accepted"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/approver-list/1.0"
+   ],
+   "mutants": [
+    "openPayload"
+   ],
+   "source": {
+    "slug": "consent/approver-list",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/approver-list/1.0",
+    "pinnedDigest": "sha256:8083c3201faa8edefb0fbf7307fde8d9029ae767554b6b77ddd386ae20d84f24",
+    "tfRef": {
+     "repoPath": "specs/consent/approver-list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:2ce43f0e259f3d2c77e4d6a87d8234eb44d46dc016c1850c9cc8951023bf75f5",
+    "schemaHash": "sha256:983b6b79672b330e080e7c8e2a91a97e418c6ea84cdfed84b38c398a107548a7",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/consent/approver-list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/approver-list:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-002",
+   "title": "consent/approver-list 1.0: the policy the specification declares is enforced (recipient REQUIRED)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+    "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+    "declared policy: https://trusttasks.org/spec/consent/approver-list/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+    "specs/consent/approver-list/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/approver-list/1.0"
+   ],
+   "mutants": [
+    "recipientOptional"
+   ],
+   "source": {
+    "slug": "consent/approver-list",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/approver-list/1.0",
+    "pinnedDigest": "sha256:8083c3201faa8edefb0fbf7307fde8d9029ae767554b6b77ddd386ae20d84f24",
+    "tfRef": {
+     "repoPath": "specs/consent/approver-list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:2ce43f0e259f3d2c77e4d6a87d8234eb44d46dc016c1850c9cc8951023bf75f5",
+    "schemaHash": "sha256:983b6b79672b330e080e7c8e2a91a97e418c6ea84cdfed84b38c398a107548a7",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(e1)",
+       "type": "https://trusttasks.org/spec/consent/approver-list/1.0",
+       "issuer": "$A",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "malformedRequest",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-003",
+   "title": "consent/approver-list 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note",
+    "payload and response schemas of https://trusttasks.org/spec/consent/approver-list/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "specs/consent/approver-list/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/approver-list/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "source": {
+    "slug": "consent/approver-list",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/approver-list/1.0",
+    "pinnedDigest": "sha256:8083c3201faa8edefb0fbf7307fde8d9029ae767554b6b77ddd386ae20d84f24",
+    "tfRef": {
+     "repoPath": "specs/consent/approver-list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:2ce43f0e259f3d2c77e4d6a87d8234eb44d46dc016c1850c9cc8951023bf75f5",
+    "schemaHash": "sha256:983b6b79672b330e080e7c8e2a91a97e418c6ea84cdfed84b38c398a107548a7",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/consent/approver-list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/consent/approver-list/1.0"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-004",
+   "title": "consent/approver-set 1.0: the payload is validated against the task's payload schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/consent/approver-set/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"platform\",\"context\",\"approver\"], additionalProperties false",
+    "specs/consent/approver-set/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Built from the registry schema the platforms also build against: not independent evidence of that schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "specs/consent/approver-set/1.0/spec.md front matter errorCodes: consent/approver-set:notAuthorized (the caller's standing): a refusal for it is accepted beside malformedRequest and permissionDenied, because SPEC.md 7.2 items 2 and 10 do not order the payload check against the authorisation check; an object lookup or state code is not accepted"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/approver-set/1.0"
+   ],
+   "mutants": [
+    "noPayloadValidation",
+    "openPayload"
+   ],
+   "source": {
+    "slug": "consent/approver-set",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/approver-set/1.0",
+    "pinnedDigest": "sha256:9935312521904f3fc75bb48b4a40df4805b82f6b94335a7ae77b56eb71bc7c92",
+    "tfRef": {
+     "repoPath": "specs/consent/approver-set/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:5da9e87dd3e17951f4023af6fb5f72a684561612401e898e06e48cceb26e00d2",
+    "schemaHash": "sha256:cc0def67273182aad742f07a20964e796a2d28f6282d6b188a7d8abe7be72266",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/consent/approver-set/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "context": "example",
+        "approver": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/approver-set:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/consent/approver-set/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "platform": "example",
+        "context": "example",
+        "approver": "did:web:alice.example",
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/approver-set:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p3)",
+       "type": "https://trusttasks.org/spec/consent/approver-set/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "platform": 5,
+        "context": "example",
+        "approver": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/approver-set:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-005",
+   "title": "consent/approver-set 1.0: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+    "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+    "declared policy: https://trusttasks.org/spec/consent/approver-set/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "specs/consent/approver-set/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/approver-set/1.0"
+   ],
+   "mutants": [
+    "recipientOptional",
+    "proofOptional"
+   ],
+   "source": {
+    "slug": "consent/approver-set",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/approver-set/1.0",
+    "pinnedDigest": "sha256:9935312521904f3fc75bb48b4a40df4805b82f6b94335a7ae77b56eb71bc7c92",
+    "tfRef": {
+     "repoPath": "specs/consent/approver-set/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:5da9e87dd3e17951f4023af6fb5f72a684561612401e898e06e48cceb26e00d2",
+    "schemaHash": "sha256:cc0def67273182aad742f07a20964e796a2d28f6282d6b188a7d8abe7be72266",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(e1)",
+       "type": "https://trusttasks.org/spec/consent/approver-set/1.0",
+       "issuer": "$A",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "platform": "example",
+        "context": "example",
+        "approver": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "malformedRequest",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(e2)",
+       "type": "https://trusttasks.org/spec/consent/approver-set/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "platform": "example",
+        "context": "example",
+        "approver": "did:web:alice.example"
+       }
+      },
+      "sign": null
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "proofRequired",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-006",
+   "title": "consent/approver-set 1.0: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+    "specs/consent/approver-set/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)"
+   ],
+   "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code. Any refusal or silence with no side effect is accepted. Not gating.",
+   "clarifyClass": "spec-silent",
+   "clarifySince": "2026-11-18",
+   "clarifyQuestions": [],
+   "requires": [
+    "https://trusttasks.org/spec/consent/approver-set/1.0"
+   ],
+   "mutants": [
+    "noFreshnessWindow"
+   ],
+   "source": {
+    "slug": "consent/approver-set",
+    "version": "1.0",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/approver-set/1.0",
+    "pinnedDigest": "sha256:9935312521904f3fc75bb48b4a40df4805b82f6b94335a7ae77b56eb71bc7c92",
+    "tfRef": {
+     "repoPath": "specs/consent/approver-set/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build).",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:5da9e87dd3e17951f4023af6fb5f72a684561612401e898e06e48cceb26e00d2",
+    "schemaHash": "sha256:cc0def67273182aad742f07a20964e796a2d28f6282d6b188a7d8abe7be72266"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/consent/approver-set/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "payload": {
+        "platform": "example",
+        "context": "example",
+        "approver": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "any-refusal",
+      "noSideEffect": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-007",
+   "title": "consent/approver-set 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note",
+    "payload and response schemas of https://trusttasks.org/spec/consent/approver-set/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "specs/consent/approver-set/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/approver-set/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "source": {
+    "slug": "consent/approver-set",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/approver-set/1.0",
+    "pinnedDigest": "sha256:9935312521904f3fc75bb48b4a40df4805b82f6b94335a7ae77b56eb71bc7c92",
+    "tfRef": {
+     "repoPath": "specs/consent/approver-set/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:5da9e87dd3e17951f4023af6fb5f72a684561612401e898e06e48cceb26e00d2",
+    "schemaHash": "sha256:cc0def67273182aad742f07a20964e796a2d28f6282d6b188a7d8abe7be72266",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/consent/approver-set/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "platform": "example",
+        "context": "example",
+        "approver": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/consent/approver-set/1.0"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-008",
+   "title": "consent/decision 1.0: the payload is validated against the task's payload schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/consent/decision/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"subject\",\"effect\"], additionalProperties false",
+    "specs/consent/decision/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Built from the registry schema the platforms also build against: not independent evidence of that schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "specs/consent/decision/1.0/spec.md front matter errorCodes: consent/decision:notAuthorized (the caller's standing): a refusal for it is accepted beside malformedRequest and permissionDenied, because SPEC.md 7.2 items 2 and 10 do not order the payload check against the authorisation check; an object lookup or state code is not accepted"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/decision/1.0"
+   ],
+   "mutants": [
+    "noPayloadValidation",
+    "openPayload"
+   ],
+   "source": {
+    "slug": "consent/decision",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/decision/1.0",
+    "pinnedDigest": "sha256:0bd57e48ea6201c4a493dac394820fee81323cb49420f7a1acb9c32167c8b2aa",
+    "tfRef": {
+     "repoPath": "specs/consent/decision/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:0e8a012b74c7a66e76001df405dbf0ded05964f11537f6634ff270966a23b826",
+    "schemaHash": "sha256:65d3c1b4daea0ac4ac7fcfabdafbb58398512e71ff03f364d720af0988d31c3d",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/consent/decision/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "effect": "allow"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/decision:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/consent/decision/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "effect": "allow",
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/decision:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p3)",
+       "type": "https://trusttasks.org/spec/consent/decision/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "x",
+        "effect": "allow"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/decision:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-009",
+   "title": "consent/decision 1.0: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+    "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+    "declared policy: https://trusttasks.org/spec/consent/decision/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "specs/consent/decision/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/decision/1.0"
+   ],
+   "mutants": [
+    "recipientOptional",
+    "proofOptional"
+   ],
+   "source": {
+    "slug": "consent/decision",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/decision/1.0",
+    "pinnedDigest": "sha256:0bd57e48ea6201c4a493dac394820fee81323cb49420f7a1acb9c32167c8b2aa",
+    "tfRef": {
+     "repoPath": "specs/consent/decision/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:0e8a012b74c7a66e76001df405dbf0ded05964f11537f6634ff270966a23b826",
+    "schemaHash": "sha256:65d3c1b4daea0ac4ac7fcfabdafbb58398512e71ff03f364d720af0988d31c3d",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(e1)",
+       "type": "https://trusttasks.org/spec/consent/decision/1.0",
+       "issuer": "$A",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "effect": "allow"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "malformedRequest",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(e2)",
+       "type": "https://trusttasks.org/spec/consent/decision/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "effect": "allow"
+       }
+      },
+      "sign": null
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "proofRequired",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-010",
+   "title": "consent/decision 1.0: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+    "specs/consent/decision/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)"
+   ],
+   "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code. Any refusal or silence with no side effect is accepted. Not gating.",
+   "clarifyClass": "spec-silent",
+   "clarifySince": "2026-11-18",
+   "clarifyQuestions": [],
+   "requires": [
+    "https://trusttasks.org/spec/consent/decision/1.0"
+   ],
+   "mutants": [
+    "noFreshnessWindow"
+   ],
+   "source": {
+    "slug": "consent/decision",
+    "version": "1.0",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/decision/1.0",
+    "pinnedDigest": "sha256:0bd57e48ea6201c4a493dac394820fee81323cb49420f7a1acb9c32167c8b2aa",
+    "tfRef": {
+     "repoPath": "specs/consent/decision/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build).",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:0e8a012b74c7a66e76001df405dbf0ded05964f11537f6634ff270966a23b826",
+    "schemaHash": "sha256:65d3c1b4daea0ac4ac7fcfabdafbb58398512e71ff03f364d720af0988d31c3d"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/consent/decision/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "effect": "allow"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "any-refusal",
+      "noSideEffect": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-011",
+   "title": "consent/decision 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note",
+    "payload and response schemas of https://trusttasks.org/spec/consent/decision/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "specs/consent/decision/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/decision/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "source": {
+    "slug": "consent/decision",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/decision/1.0",
+    "pinnedDigest": "sha256:0bd57e48ea6201c4a493dac394820fee81323cb49420f7a1acb9c32167c8b2aa",
+    "tfRef": {
+     "repoPath": "specs/consent/decision/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:0e8a012b74c7a66e76001df405dbf0ded05964f11537f6634ff270966a23b826",
+    "schemaHash": "sha256:65d3c1b4daea0ac4ac7fcfabdafbb58398512e71ff03f364d720af0988d31c3d",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/consent/decision/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "effect": "allow"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/consent/decision/1.0"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-012",
+   "title": "consent/list 1.1: the payload is validated against the task's payload schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/consent/list/1.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [], additionalProperties false",
+    "specs/consent/list/1.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Built from the registry schema the platforms also build against: not independent evidence of that schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "specs/consent/list/1.1/spec.md front matter errorCodes: consent/list:notAuthorized (the caller's standing): a refusal for it is accepted beside malformedRequest and permissionDenied, because SPEC.md 7.2 items 2 and 10 do not order the payload check against the authorisation check; an object lookup or state code is not accepted"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/list/1.1"
+   ],
+   "mutants": [
+    "openPayload"
+   ],
+   "source": {
+    "slug": "consent/list",
+    "version": "1.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/list/1.1",
+    "pinnedDigest": "sha256:03cc47937d866584a26136581e823a4784c58a3647073db4733a47db7b5d72a7",
+    "tfRef": {
+     "repoPath": "specs/consent/list/1.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:d55df9c9b19255be28927cfe066287ba4461e3af8b49ffbe02027220b5f66dd2",
+    "schemaHash": "sha256:7864912aa2335b6d4fb66300ed27ba2cef6b4d749d950628ba92243126b795e2",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/consent/list/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/list:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-013",
+   "title": "consent/list 1.1: the policy the specification declares is enforced (recipient REQUIRED)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+    "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+    "declared policy: https://trusttasks.org/spec/consent/list/1.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+    "specs/consent/list/1.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/list/1.1"
+   ],
+   "mutants": [
+    "recipientOptional"
+   ],
+   "source": {
+    "slug": "consent/list",
+    "version": "1.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/list/1.1",
+    "pinnedDigest": "sha256:03cc47937d866584a26136581e823a4784c58a3647073db4733a47db7b5d72a7",
+    "tfRef": {
+     "repoPath": "specs/consent/list/1.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:d55df9c9b19255be28927cfe066287ba4461e3af8b49ffbe02027220b5f66dd2",
+    "schemaHash": "sha256:7864912aa2335b6d4fb66300ed27ba2cef6b4d749d950628ba92243126b795e2",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(e1)",
+       "type": "https://trusttasks.org/spec/consent/list/1.1",
+       "issuer": "$A",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "malformedRequest",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-014",
+   "title": "consent/list 1.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note",
+    "payload and response schemas of https://trusttasks.org/spec/consent/list/1.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "specs/consent/list/1.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/list/1.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "source": {
+    "slug": "consent/list",
+    "version": "1.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/list/1.1",
+    "pinnedDigest": "sha256:03cc47937d866584a26136581e823a4784c58a3647073db4733a47db7b5d72a7",
+    "tfRef": {
+     "repoPath": "specs/consent/list/1.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:d55df9c9b19255be28927cfe066287ba4461e3af8b49ffbe02027220b5f66dd2",
+    "schemaHash": "sha256:7864912aa2335b6d4fb66300ed27ba2cef6b4d749d950628ba92243126b795e2",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/consent/list/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/consent/list/1.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-015",
+   "title": "consent/request 1.0: the payload is validated against the task's payload schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/consent/request/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"subject\",\"scope\",\"challenge\"], additionalProperties false",
+    "specs/consent/request/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Built from the registry schema the platforms also build against: not independent evidence of that schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/request/1.0"
+   ],
+   "mutants": [
+    "noPayloadValidation",
+    "openPayload"
+   ],
+   "source": {
+    "slug": "consent/request",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/request/1.0",
+    "pinnedDigest": "sha256:a780967bba62c9a67fcc24a40c6729b95a10490c0a76a4a243992bb8d71ba104",
+    "tfRef": {
+     "repoPath": "specs/consent/request/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:8dea8cfa0eccc121eb7b64c012c36a96c2c28f199b0ab0eee7d9a593a49c43c0",
+    "schemaHash": "sha256:1cc8d05e3a88b557365576e5587b95063ea2f9603d0f965527d95e58fea5cee9",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/consent/request/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "scope": "receive",
+        "challenge": "examplexxxxxxxxx"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/consent/request/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": "receive",
+        "challenge": "examplexxxxxxxxx",
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p3)",
+       "type": "https://trusttasks.org/spec/consent/request/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "x",
+        "scope": "receive",
+        "challenge": "examplexxxxxxxxx"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-016",
+   "title": "consent/request 1.0: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+    "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+    "declared policy: https://trusttasks.org/spec/consent/request/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=false",
+    "specs/consent/request/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/request/1.0"
+   ],
+   "mutants": [
+    "recipientOptional",
+    "proofOptional"
+   ],
+   "source": {
+    "slug": "consent/request",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/request/1.0",
+    "pinnedDigest": "sha256:a780967bba62c9a67fcc24a40c6729b95a10490c0a76a4a243992bb8d71ba104",
+    "tfRef": {
+     "repoPath": "specs/consent/request/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:8dea8cfa0eccc121eb7b64c012c36a96c2c28f199b0ab0eee7d9a593a49c43c0",
+    "schemaHash": "sha256:1cc8d05e3a88b557365576e5587b95063ea2f9603d0f965527d95e58fea5cee9",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(e1)",
+       "type": "https://trusttasks.org/spec/consent/request/1.0",
+       "issuer": "$A",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": "receive",
+        "challenge": "examplexxxxxxxxx"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "malformedRequest",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(e2)",
+       "type": "https://trusttasks.org/spec/consent/request/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": "receive",
+        "challenge": "examplexxxxxxxxx"
+       }
+      },
+      "sign": null
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "proofRequired",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-017",
+   "title": "consent/request 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note",
+    "payload and response schemas of https://trusttasks.org/spec/consent/request/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "specs/consent/request/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/request/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "source": {
+    "slug": "consent/request",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/request/1.0",
+    "pinnedDigest": "sha256:a780967bba62c9a67fcc24a40c6729b95a10490c0a76a4a243992bb8d71ba104",
+    "tfRef": {
+     "repoPath": "specs/consent/request/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:8dea8cfa0eccc121eb7b64c012c36a96c2c28f199b0ab0eee7d9a593a49c43c0",
+    "schemaHash": "sha256:1cc8d05e3a88b557365576e5587b95063ea2f9603d0f965527d95e58fea5cee9",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/consent/request/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": "receive",
+        "challenge": "examplexxxxxxxxx"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/consent/request/1.0"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-018",
+   "title": "consent/revoke 1.0: the payload is validated against the task's payload schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/consent/revoke/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"subject\"], additionalProperties false",
+    "specs/consent/revoke/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Built from the registry schema the platforms also build against: not independent evidence of that schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "specs/consent/revoke/1.0/spec.md front matter errorCodes: consent/revoke:notAuthorized (the caller's standing): a refusal for it is accepted beside malformedRequest and permissionDenied, because SPEC.md 7.2 items 2 and 10 do not order the payload check against the authorisation check; an object lookup or state code is not accepted",
+    "Destructive task: only payloads that fail the schema are sent (nothing is sent that could be executed)."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/revoke/1.0"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "consent/revoke",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/revoke/1.0",
+    "pinnedDigest": "sha256:65523b0fd9b89b60d9e71f740a2885ccc9444f3c0ff0489ad0a680346e8d7dd0",
+    "tfRef": {
+     "repoPath": "specs/consent/revoke/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:5252a3902f28c420340f589e943155c1d5409d05a0e517fdb9237bcbebf794ae",
+    "schemaHash": "sha256:9a8cd6f97fee3e09853c8d6521ed98d5313f653346ddefe0f8181d0b334bd36a",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/consent/revoke/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/revoke:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p3)",
+       "type": "https://trusttasks.org/spec/consent/revoke/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "x"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/revoke:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-019",
+   "title": "auth/step-up/approver/redeem/finish 0.1: the payload is validated against the task's payload schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"enrollmentId\",\"approverDid\",\"statement\"], additionalProperties false",
+    "specs/auth/step-up/approver/redeem/finish/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Built from the registry schema the platforms also build against: not independent evidence of that schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation",
+    "openPayload"
+   ],
+   "source": {
+    "slug": "auth/step-up/approver/redeem/finish",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+    "pinnedDigest": "sha256:3d30f83bc3b2f17051e49f8fe50da816614d01f733efbe19542cf3b5dd6603be",
+    "tfRef": {
+     "repoPath": "specs/auth/step-up/approver/redeem/finish/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:a102c134621de90b033ea9869778756200b0acc7fedc1f66a3004204130af38f",
+    "schemaHash": "sha256:b6dae544e03a247f9b8cc5192bb4a23db69f076d7a20f30489f0489a3edaa70b",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "approverDid": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+        "statement": {
+         "member1": "x"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enrollmentId": "example",
+        "approverDid": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+        "statement": {
+         "member1": "x"
+        },
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p3)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enrollmentId": 5,
+        "approverDid": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+        "statement": {
+         "member1": "x"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-020",
+   "title": "auth/step-up/approver/redeem/finish 0.1: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+    "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+    "declared policy: https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "specs/auth/step-up/approver/redeem/finish/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1"
+   ],
+   "mutants": [
+    "recipientOptional",
+    "proofOptional"
+   ],
+   "source": {
+    "slug": "auth/step-up/approver/redeem/finish",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+    "pinnedDigest": "sha256:3d30f83bc3b2f17051e49f8fe50da816614d01f733efbe19542cf3b5dd6603be",
+    "tfRef": {
+     "repoPath": "specs/auth/step-up/approver/redeem/finish/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:a102c134621de90b033ea9869778756200b0acc7fedc1f66a3004204130af38f",
+    "schemaHash": "sha256:b6dae544e03a247f9b8cc5192bb4a23db69f076d7a20f30489f0489a3edaa70b",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(e1)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+       "issuer": "$A",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enrollmentId": "example",
+        "approverDid": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+        "statement": {
+         "member1": "x"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "malformedRequest",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(e2)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enrollmentId": "example",
+        "approverDid": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+        "statement": {
+         "member1": "x"
+        }
+       }
+      },
+      "sign": null
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "proofRequired",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-021",
+   "title": "auth/step-up/approver/redeem/finish 0.1: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+    "specs/auth/step-up/approver/redeem/finish/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)"
+   ],
+   "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code. Any refusal or silence with no side effect is accepted. Not gating.",
+   "clarifyClass": "spec-silent",
+   "clarifySince": "2026-11-18",
+   "clarifyQuestions": [],
+   "requires": [
+    "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1"
+   ],
+   "mutants": [
+    "noFreshnessWindow"
+   ],
+   "source": {
+    "slug": "auth/step-up/approver/redeem/finish",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+    "pinnedDigest": "sha256:3d30f83bc3b2f17051e49f8fe50da816614d01f733efbe19542cf3b5dd6603be",
+    "tfRef": {
+     "repoPath": "specs/auth/step-up/approver/redeem/finish/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build).",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:a102c134621de90b033ea9869778756200b0acc7fedc1f66a3004204130af38f",
+    "schemaHash": "sha256:b6dae544e03a247f9b8cc5192bb4a23db69f076d7a20f30489f0489a3edaa70b"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "payload": {
+        "enrollmentId": "example",
+        "approverDid": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+        "statement": {
+         "member1": "x"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "any-refusal",
+      "noSideEffect": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "CV-CS-022",
+   "title": "auth/step-up/approver/redeem/finish 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note",
+    "payload and response schemas of https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "specs/auth/step-up/approver/redeem/finish/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "source": {
+    "slug": "auth/step-up/approver/redeem/finish",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+    "pinnedDigest": "sha256:3d30f83bc3b2f17051e49f8fe50da816614d01f733efbe19542cf3b5dd6603be",
+    "tfRef": {
+     "repoPath": "specs/auth/step-up/approver/redeem/finish/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:a102c134621de90b033ea9869778756200b0acc7fedc1f66a3004204130af38f",
+    "schemaHash": "sha256:b6dae544e03a247f9b8cc5192bb4a23db69f076d7a20f30489f0489a3edaa70b",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enrollmentId": "example",
+        "approverDid": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+        "statement": {
+         "member1": "x"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1"
+     }
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1154 @@
+{
+  "format": "tt-ceremony-scenarios/0.1",
+  "group": "FC-DEV",
+  "family": "ceremony-scenarios",
+  "evidence": "complete-ceremony",
+  "ceremony": {
+    "name": "Device lifecycle (wallet and agent)",
+    "channel": "proposed",
+    "choreography": "docs/26-paired-ceremonies.md section 5: register, heartbeat, list, set-wake and the wallet's remove flow (wipe then revoke); negatives for a repeated register, a heartbeat or wake before register, an unknown wipe target and a replay"
+  },
+  "scenarios": [
+    {
+      "id": "FC-DEV-001",
+      "title": "device lifecycle: the phone registers itself with its agent, sends a heartbeat, lists the agent's devices and sets its wake channel; a second phone (a stand-in) is then removed by the wallet's own remove flow (wipe, then revoke its access-list entry): its entry and binding are gone and this phone's binding remains",
+      "spec": [
+        "TF specs/device/register/0.2/spec.md (the device claims its binding; one per consumer DID)",
+        "TF specs/device/heartbeat/0.3/spec.md (a registered device tells the maintainer it is still here)",
+        "TF specs/device/list/0.3/spec.md (enumerate the bindings)",
+        "TF specs/device/set-wake/0.2/spec.md (record how to wake the device)",
+        "TF specs/device/wipe/0.2/spec.md (wipe a registered device)",
+        "docs/26-paired-ceremonies.md section 5"
+      ],
+      "source": {
+        "slug": "device/register",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/register/0.2",
+        "pinnedDigest": "sha256:ad71b232da7f435eda1de06258807cbf1779c7c6140a951524c845826d2e3fca",
+        "tfRef": {
+          "repoPath": "specs/device/register/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:58c1bba3dc9c60387cce6fe4582feb1fee457fda78ea680e7e5964c500582060",
+        "schemaHash": "sha256:b713b3cba7ddc3523154ebc9240c8356773c7361fe88adaca484428877d3b905"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/device/register/0.2",
+            "https://trusttasks.org/spec/device/heartbeat/0.3",
+            "https://trusttasks.org/spec/device/list/0.3",
+            "https://trusttasks.org/spec/device/set-wake/0.2",
+            "https://trusttasks.org/spec/device/wipe/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "register",
+          "source": {
+            "slug": "device/register",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/register/0.2",
+            "pinnedDigest": "sha256:ad71b232da7f435eda1de06258807cbf1779c7c6140a951524c845826d2e3fca",
+            "tfRef": {
+              "repoPath": "specs/device/register/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:58c1bba3dc9c60387cce6fe4582feb1fee457fda78ea680e7e5964c500582060",
+            "schemaHash": "sha256:b713b3cba7ddc3523154ebc9240c8356773c7361fe88adaca484428877d3b905"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "device-register",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "device",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "heartbeat",
+          "source": {
+            "slug": "device/heartbeat",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/heartbeat/0.3",
+            "pinnedDigest": "sha256:588d567e4fed69ebf340556725a0bc2468265c65c4a0aeb306d23fe6205e51c5",
+            "tfRef": {
+              "repoPath": "specs/device/heartbeat/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:8c58433202da65f6581b92d60ebcf386c9def0b8b3b5171672ee906c8619051d",
+            "schemaHash": "sha256:42d15381a904d011b153884039a7a0f970c86746786070fafea69d01e5d02c6f"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "device-heartbeat",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "device-live",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "list",
+          "source": {
+            "slug": "device/list",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/list/0.3",
+            "pinnedDigest": "sha256:a3fefe87598cd29320addd4a893ceaf0e1a02cada9a312b60da97cb339f1e23b",
+            "tfRef": {
+              "repoPath": "specs/device/list/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:039ba288354c1b079ba9fa4a9f192b501502f0867499c9a7c1c5505dc53e3d50",
+            "schemaHash": "sha256:2495fd53f472ca43429d15cf682ac9f60592095c13ec24b3f9d3ab8d8b8a7c7d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "device-list",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "set-wake",
+          "source": {
+            "slug": "device/set-wake",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/set-wake/0.2",
+            "pinnedDigest": "sha256:2c674a2feb174f5bd5da261951dd3fa40a93de18cfd2e61a33adbb625db865b3",
+            "tfRef": {
+              "repoPath": "specs/device/set-wake/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:4b2bfe8e3973c687e951436f60229fcad8bd96a60c57bd18bf5ca4d53a4ab121",
+            "schemaHash": "sha256:da1edeb5c1a757815e8450d60b435d9963c938b0df1e90fd9ce790d6f81119dd"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "device-set-wake",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "second-phone",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedDevice",
+              "args": {
+                "seed": 43,
+                "displayName": "Second phone"
+              }
+            }
+          }
+        },
+        {
+          "id": "remove-other",
+          "source": {
+            "slug": "device/wipe",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/wipe/0.2",
+            "pinnedDigest": "sha256:de34f62900cf1b621d03532c8a0dc1c50725bf2c538552dc4b49506e55e8a65f",
+            "tfRef": {
+              "repoPath": "specs/device/wipe/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:bbc18d69e2763b051b6f60ffe87d51df9e32ac28b1232ecc517917268bd5e63e",
+            "schemaHash": "sha256:a12ba0f8fe11bc5856d67c84d9b35fd4b6354aad679ecbe727900806af5404c3"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "device-remove-other",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6Mkj6joiZPz3kKe5PpGNLjCrTphanK4S5PXgpwVQPkyrvVk",
+                "count": 0
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "device",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-subject:did:key:z6Mkj6joiZPz3kKe5PpGNLjCrTphanK4S5PXgpwVQPkyrvVk",
+              "count": 0
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "device",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-DEV-002",
+      "title": "registering the same phone twice: the second register is refused with device/register:alreadyRegistered and there is still one binding",
+      "spec": [
+        "TF specs/device/register/0.2/spec.md (errorCodes: device/register:alreadyRegistered; re-registration is rejected)",
+        "docs/26-paired-ceremonies.md section 5"
+      ],
+      "source": {
+        "slug": "device/register",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/register/0.2",
+        "pinnedDigest": "sha256:ad71b232da7f435eda1de06258807cbf1779c7c6140a951524c845826d2e3fca",
+        "tfRef": {
+          "repoPath": "specs/device/register/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:58c1bba3dc9c60387cce6fe4582feb1fee457fda78ea680e7e5964c500582060",
+        "schemaHash": "sha256:b713b3cba7ddc3523154ebc9240c8356773c7361fe88adaca484428877d3b905"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/device/register/0.2",
+            "https://trusttasks.org/spec/device/heartbeat/0.3",
+            "https://trusttasks.org/spec/device/list/0.3",
+            "https://trusttasks.org/spec/device/set-wake/0.2",
+            "https://trusttasks.org/spec/device/wipe/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "register",
+          "source": {
+            "slug": "device/register",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/register/0.2",
+            "pinnedDigest": "sha256:ad71b232da7f435eda1de06258807cbf1779c7c6140a951524c845826d2e3fca",
+            "tfRef": {
+              "repoPath": "specs/device/register/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:58c1bba3dc9c60387cce6fe4582feb1fee457fda78ea680e7e5964c500582060",
+            "schemaHash": "sha256:b713b3cba7ddc3523154ebc9240c8356773c7361fe88adaca484428877d3b905"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "device-register",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "device",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "register-again",
+          "source": {
+            "slug": "device/register",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/register/0.2",
+            "pinnedDigest": "sha256:ad71b232da7f435eda1de06258807cbf1779c7c6140a951524c845826d2e3fca",
+            "tfRef": {
+              "repoPath": "specs/device/register/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:58c1bba3dc9c60387cce6fe4582feb1fee457fda78ea680e7e5964c500582060",
+            "schemaHash": "sha256:b713b3cba7ddc3523154ebc9240c8356773c7361fe88adaca484428877d3b905"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "device-register",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "device/register:alreadyRegistered",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "device",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "device",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-DEV-003",
+      "title": "a heartbeat from a phone that never registered is refused with device/heartbeat:notRegistered and no binding appears",
+      "spec": [
+        "TF specs/device/heartbeat/0.3/spec.md (errorCodes: device/heartbeat:notRegistered)",
+        "docs/26-paired-ceremonies.md section 5"
+      ],
+      "source": {
+        "slug": "device/heartbeat",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/heartbeat/0.3",
+        "pinnedDigest": "sha256:588d567e4fed69ebf340556725a0bc2468265c65c4a0aeb306d23fe6205e51c5",
+        "tfRef": {
+          "repoPath": "specs/device/heartbeat/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:8c58433202da65f6581b92d60ebcf386c9def0b8b3b5171672ee906c8619051d",
+        "schemaHash": "sha256:42d15381a904d011b153884039a7a0f970c86746786070fafea69d01e5d02c6f"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/device/register/0.2",
+            "https://trusttasks.org/spec/device/heartbeat/0.3",
+            "https://trusttasks.org/spec/device/list/0.3",
+            "https://trusttasks.org/spec/device/set-wake/0.2",
+            "https://trusttasks.org/spec/device/wipe/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "heartbeat",
+          "source": {
+            "slug": "device/heartbeat",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/heartbeat/0.3",
+            "pinnedDigest": "sha256:588d567e4fed69ebf340556725a0bc2468265c65c4a0aeb306d23fe6205e51c5",
+            "tfRef": {
+              "repoPath": "specs/device/heartbeat/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:8c58433202da65f6581b92d60ebcf386c9def0b8b3b5171672ee906c8619051d",
+            "schemaHash": "sha256:42d15381a904d011b153884039a7a0f970c86746786070fafea69d01e5d02c6f"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "device-heartbeat",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "device/heartbeat:notRegistered",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "device",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "device",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-DEV-004",
+      "title": "a wake channel set by a phone that never registered is refused with device/set-wake:notRegistered",
+      "spec": [
+        "TF specs/device/set-wake/0.2/spec.md (errorCodes: device/set-wake:notRegistered)",
+        "docs/26-paired-ceremonies.md section 5"
+      ],
+      "source": {
+        "slug": "device/set-wake",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/set-wake/0.2",
+        "pinnedDigest": "sha256:2c674a2feb174f5bd5da261951dd3fa40a93de18cfd2e61a33adbb625db865b3",
+        "tfRef": {
+          "repoPath": "specs/device/set-wake/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4b2bfe8e3973c687e951436f60229fcad8bd96a60c57bd18bf5ca4d53a4ab121",
+        "schemaHash": "sha256:da1edeb5c1a757815e8450d60b435d9963c938b0df1e90fd9ce790d6f81119dd"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/device/register/0.2",
+            "https://trusttasks.org/spec/device/heartbeat/0.3",
+            "https://trusttasks.org/spec/device/list/0.3",
+            "https://trusttasks.org/spec/device/set-wake/0.2",
+            "https://trusttasks.org/spec/device/wipe/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "set-wake",
+          "source": {
+            "slug": "device/set-wake",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/set-wake/0.2",
+            "pinnedDigest": "sha256:2c674a2feb174f5bd5da261951dd3fa40a93de18cfd2e61a33adbb625db865b3",
+            "tfRef": {
+              "repoPath": "specs/device/set-wake/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:4b2bfe8e3973c687e951436f60229fcad8bd96a60c57bd18bf5ca4d53a4ab121",
+            "schemaHash": "sha256:da1edeb5c1a757815e8450d60b435d9963c938b0df1e90fd9ce790d6f81119dd"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "device-set-wake",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "device/set-wake:notRegistered",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "device",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-DEV-005",
+      "title": "a wipe naming a device the agent does not know is refused with device/wipe:notFound",
+      "spec": [
+        "TF specs/device/wipe/0.2/spec.md (errorCodes: device/wipe:notFound)",
+        "docs/26-paired-ceremonies.md section 5"
+      ],
+      "source": {
+        "slug": "device/wipe",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/wipe/0.2",
+        "pinnedDigest": "sha256:de34f62900cf1b621d03532c8a0dc1c50725bf2c538552dc4b49506e55e8a65f",
+        "tfRef": {
+          "repoPath": "specs/device/wipe/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bbc18d69e2763b051b6f60ffe87d51df9e32ac28b1232ecc517917268bd5e63e",
+        "schemaHash": "sha256:a12ba0f8fe11bc5856d67c84d9b35fd4b6354aad679ecbe727900806af5404c3"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/device/register/0.2",
+            "https://trusttasks.org/spec/device/heartbeat/0.3",
+            "https://trusttasks.org/spec/device/list/0.3",
+            "https://trusttasks.org/spec/device/set-wake/0.2",
+            "https://trusttasks.org/spec/device/wipe/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "wipe-unknown",
+          "source": {
+            "slug": "device/wipe",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/wipe/0.2",
+            "pinnedDigest": "sha256:de34f62900cf1b621d03532c8a0dc1c50725bf2c538552dc4b49506e55e8a65f",
+            "tfRef": {
+              "repoPath": "specs/device/wipe/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:bbc18d69e2763b051b6f60ffe87d51df9e32ac28b1232ecc517917268bd5e63e",
+            "schemaHash": "sha256:a12ba0f8fe11bc5856d67c84d9b35fd4b6354aad679ecbe727900806af5404c3"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "device-wipe",
+              "capture": "thread",
+              "args": {
+                "deviceId": "dev_unknown0000000000",
+                "did": "did:key:z6MksqMR3hRk6hLGgt1MX3qAAgxWDrTpBVbed5xKbkshXCBA"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "device/wipe:notFound",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused",
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "received": {
+              "code": "device/wipe:notFound",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-DEV-006",
+      "title": "the phone's signed register is delivered again unchanged: the agent does not create a second binding",
+      "spec": [
+        "TF specs/device/register/0.2/spec.md (one DeviceBinding per consumer DID)",
+        "SPEC.md 7.2 item 11 (a repeated id is not executed twice)",
+        "docs/26-paired-ceremonies.md section 5"
+      ],
+      "source": {
+        "slug": "device/register",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/register/0.2",
+        "pinnedDigest": "sha256:ad71b232da7f435eda1de06258807cbf1779c7c6140a951524c845826d2e3fca",
+        "tfRef": {
+          "repoPath": "specs/device/register/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:58c1bba3dc9c60387cce6fe4582feb1fee457fda78ea680e7e5964c500582060",
+        "schemaHash": "sha256:b713b3cba7ddc3523154ebc9240c8356773c7361fe88adaca484428877d3b905"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/device/register/0.2",
+            "https://trusttasks.org/spec/device/heartbeat/0.3",
+            "https://trusttasks.org/spec/device/list/0.3",
+            "https://trusttasks.org/spec/device/set-wake/0.2",
+            "https://trusttasks.org/spec/device/wipe/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "register",
+          "source": {
+            "slug": "device/register",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/register/0.2",
+            "pinnedDigest": "sha256:ad71b232da7f435eda1de06258807cbf1779c7c6140a951524c845826d2e3fca",
+            "tfRef": {
+              "repoPath": "specs/device/register/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:58c1bba3dc9c60387cce6fe4582feb1fee457fda78ea680e7e5964c500582060",
+            "schemaHash": "sha256:b713b3cba7ddc3523154ebc9240c8356773c7361fe88adaca484428877d3b905"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "device-register",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "device",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "replay-register",
+          "source": {
+            "slug": "device/register",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/register/0.2",
+            "pinnedDigest": "sha256:ad71b232da7f435eda1de06258807cbf1779c7c6140a951524c845826d2e3fca",
+            "tfRef": {
+              "repoPath": "specs/device/register/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:58c1bba3dc9c60387cce6fe4582feb1fee457fda78ea680e7e5964c500582060",
+            "schemaHash": "sha256:b713b3cba7ddc3523154ebc9240c8356773c7361fe88adaca484428877d3b905"
+          },
+          "do": {
+            "replay": {
+              "step": "register",
+              "by": "K",
+              "to": "V",
+              "mode": "same"
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "stored": {
+                "kind": "device",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "device",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-DEV-007",
+      "title": "wipe without removal: the wallet wipes a second phone and leaves its access-list entry: the binding stays and reads as wiped (read back with both list flags, includeWiped and includeDisabled)",
+      "spec": [
+        "TF specs/device/wipe/0.2/spec.md (a wipe marks the device; the binding is not deleted)",
+        "device/list 0.3 spec (includeDisabled: include devices with disabledAt set; includeWiped has no text)",
+        "docs/26-paired-ceremonies.md section 5"
+      ],
+      "source": {
+        "slug": "device/wipe",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/wipe/0.2",
+        "pinnedDigest": "sha256:de34f62900cf1b621d03532c8a0dc1c50725bf2c538552dc4b49506e55e8a65f",
+        "tfRef": {
+          "repoPath": "specs/device/wipe/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bbc18d69e2763b051b6f60ffe87d51df9e32ac28b1232ecc517917268bd5e63e",
+        "schemaHash": "sha256:a12ba0f8fe11bc5856d67c84d9b35fd4b6354aad679ecbe727900806af5404c3"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/device/register/0.2",
+            "https://trusttasks.org/spec/device/heartbeat/0.3",
+            "https://trusttasks.org/spec/device/list/0.3",
+            "https://trusttasks.org/spec/device/set-wake/0.2",
+            "https://trusttasks.org/spec/device/wipe/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "register",
+          "source": {
+            "slug": "device/register",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/register/0.2",
+            "pinnedDigest": "sha256:ad71b232da7f435eda1de06258807cbf1779c7c6140a951524c845826d2e3fca",
+            "tfRef": {
+              "repoPath": "specs/device/register/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:58c1bba3dc9c60387cce6fe4582feb1fee457fda78ea680e7e5964c500582060",
+            "schemaHash": "sha256:b713b3cba7ddc3523154ebc9240c8356773c7361fe88adaca484428877d3b905"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "device-register",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "device",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "second-phone",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedDevice",
+              "args": {
+                "seed": 43,
+                "displayName": "Second phone"
+              }
+            }
+          }
+        },
+        {
+          "id": "wipe-other",
+          "source": {
+            "slug": "device/wipe",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/wipe/0.2",
+            "pinnedDigest": "sha256:de34f62900cf1b621d03532c8a0dc1c50725bf2c538552dc4b49506e55e8a65f",
+            "tfRef": {
+              "repoPath": "specs/device/wipe/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:bbc18d69e2763b051b6f60ffe87d51df9e32ac28b1232ecc517917268bd5e63e",
+            "schemaHash": "sha256:a12ba0f8fe11bc5856d67c84d9b35fd4b6354aad679ecbe727900806af5404c3"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "device-wipe-other",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "device-wiped",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6Mkj6joiZPz3kKe5PpGNLjCrTphanK4S5PXgpwVQPkyrvVk",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "device-wiped",
+              "count": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

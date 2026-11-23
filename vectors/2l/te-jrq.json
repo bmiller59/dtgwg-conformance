@@ -1,0 +1,278 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "TE-JRQ",
+  "family": "2l-emit",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "TE-JRQ-001",
+      "title": "vtc/join-requests/submit 0.3: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vtc/join-requests/submit/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vtc/join-requests/submit/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vtc/join-requests/submit/0.3/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/submit",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+        "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+        "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vtc/join-requests/submit/0.3"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vtc/join-requests/submit/0.3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TE-JRQ-002",
+      "title": "vtc/join-requests/status 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vtc/join-requests/status/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vtc/join-requests/status/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vtc/join-requests/status/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/status",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+        "pinnedDigest": "sha256:d19f3762549df160fb86190f47f4294e2c719de3b91004863839f4f71e6046ab",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/status/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:de30796f11d6595b7b96b1886811b112a55f0e1ecd7df4759faa57d7e5172045",
+        "schemaHash": "sha256:52fa93ed92a592549ce4fb1644532024295994dd0c0dac772c7f43aba1d91e93"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vtc/join-requests/status/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vtc/join-requests/status/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TE-JRQ-003",
+      "title": "vtc/join-requests/manifest 0.4: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vtc/join-requests/manifest/0.4 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vtc/join-requests/manifest/0.4 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+        "specs/vtc/join-requests/manifest/0.4/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/manifest",
+        "version": "0.4",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+        "pinnedDigest": "sha256:5f0253bd3f5b8e3ce094d7224423bed4e0c9f81f14c96bae42c797b3d6a3082d",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/manifest/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:667878a2693af716703bda1a87a07ea07669e01b1022df9975a4ff44708061fc",
+        "schemaHash": "sha256:d3ece361a6553407a6118e3e1317f0d0f9b50377f3135ce53559b000231bbc4e"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vtc/join-requests/manifest/0.4"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoRecipient"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TE-JRQ-004",
+      "title": "vtc/join-requests/withdraw 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vtc/join-requests/withdraw/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/withdraw",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+        "pinnedDigest": "sha256:188563e801f4d2ff1a485967000ae949b33a79ee2b896756beac71fa07e0e3ed",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/withdraw/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0579534eb696793fefeb4d3ac31dc70283176976d4671a0ecb166b4fed2c71ec",
+        "schemaHash": "sha256:fc920b3a9c870b1f4288b0cc05943f6b50491374db563d1aaa7fb79a79048788"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TE-JRQ-005",
+      "title": "vtc/join-requests/supplement 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vtc/join-requests/supplement/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vtc/join-requests/supplement/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vtc/join-requests/supplement/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/supplement",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+        "pinnedDigest": "sha256:d957600a2ea02907c7ea9b2d6f655a22eae2b25c4f2be93fd97b85499c73e491",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/supplement/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7376d24678152db1b8ba02b5f24238a5c7ce87382f72d8a122a66cce2cad5ab5",
+        "schemaHash": "sha256:c735e6ab8dbaf424a1c074f9569c6506028aa1983526888f66a16d5dc7c1499d"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vtc/join-requests/supplement/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vtc/join-requests/supplement/0.1"
+          }
+        }
+      ]
+    }
+  ]
+}

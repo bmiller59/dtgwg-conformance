@@ -1,0 +1,407 @@
+{
+  "format": "tt-ceremony-scenarios/0.1",
+  "group": "FC-VRC",
+  "family": "ceremony-scenarios",
+  "evidence": "complete-ceremony",
+  "ceremony": {
+    "name": "VRC propose, issue, delivery receipt",
+    "channel": "proposed",
+    "choreography": "docs/25-ceremony-scenarios.md section 4: propose, the responder's decision, then one issue and one delivery receipt in each direction (the delivery receipt is the issue #response, not trust-ceremony-receipt)"
+  },
+  "scenarios": [
+    {
+      "id": "FC-VRC-001",
+      "title": "propose accepted, each party delivers its credential, each delivery receipt matches, both parties read completed",
+      "spec": [
+        "TF specs/vrc/relationships/propose/0.1/spec.md:86 (acceptance carries the responder's relationship DID)",
+        "TF specs/vrc/relationships/issue/0.1/spec.md:5 (performed once in each direction)",
+        "TF specs/vrc/relationships/issue/0.1/spec.md:100-103 (the receipt digest is compared with the credential delivered)",
+        "TF specs/vrc/relationships/issue/0.1/spec.md:109 (the receiving party stores the credential and returns the receipt)",
+        "docs/01-layer-model.md:85"
+      ],
+      "source": {
+        "slug": "vrc/relationships/propose",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vrc/relationships/propose/0.1",
+        "pinnedDigest": "sha256:11a10ba25ab4634551a7237d805e31506356943ca8f490518a41edeb1b43e0cc",
+        "tfRef": {
+          "repoPath": "specs/vrc/relationships/propose/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:e131daaa610db44d0f5c4787400d2da7be95a2d22f549eb2278c8e2f1ec9e459",
+        "schemaHash": "sha256:c520592e166731008d08fd39506e4606c0ad8be98a8153af0765abf580f1f29d"
+      },
+      "participants": {
+        "P": {
+          "role": "proposer",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent"
+          ]
+        },
+        "R": {
+          "role": "responder",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent",
+            "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+            "https://trusttasks.org/spec/vrc/relationships/issue/0.1"
+          ]
+        }
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 30000,
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "decide-accept",
+          "do": {
+            "decide": {
+              "by": "R",
+              "action": "policy",
+              "args": {
+                "propose": "accept"
+              }
+            }
+          }
+        },
+        {
+          "id": "propose",
+          "source": {
+            "slug": "vrc/relationships/propose",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vrc/relationships/propose/0.1",
+            "pinnedDigest": "sha256:11a10ba25ab4634551a7237d805e31506356943ca8f490518a41edeb1b43e0cc",
+            "tfRef": {
+              "repoPath": "specs/vrc/relationships/propose/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:e131daaa610db44d0f5c4787400d2da7be95a2d22f549eb2278c8e2f1ec9e459",
+            "schemaHash": "sha256:c520592e166731008d08fd39506e4606c0ad8be98a8153af0765abf580f1f29d"
+          },
+          "do": {
+            "initiate": {
+              "by": "P",
+              "to": "R",
+              "kind": "vrc-propose",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "R",
+              "received": {
+                "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "P",
+              "ceremony": "open"
+            },
+            {
+              "at": "R",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "issue-pr",
+          "source": {
+            "slug": "vrc/relationships/issue",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vrc/relationships/issue/0.1",
+            "pinnedDigest": "sha256:1538dee01f59dba0532aaf988f592d819d8f72a4a114c16fa0c18488cd01d20f",
+            "tfRef": {
+              "repoPath": "specs/vrc/relationships/issue/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:eb5c6d51d31a10488150cf97d270d4a6f24a0ccb845fed1590d057cb7a3b6c63",
+            "schemaHash": "sha256:5d2b1f52a94b691a85c103d08014649b8b06449982512bd8b36e6f739bd15881"
+          },
+          "do": {
+            "initiate": {
+              "by": "P",
+              "to": "R",
+              "kind": "vrc-issue",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "R",
+              "stored": {
+                "kind": "vrc",
+                "count": 1
+              }
+            },
+            {
+              "receiptMatches": {
+                "step": "issue-pr"
+              }
+            },
+            {
+              "at": "P",
+              "ceremony": "open"
+            },
+            {
+              "at": "R",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "issue-rp",
+          "source": {
+            "slug": "vrc/relationships/issue",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vrc/relationships/issue/0.1",
+            "pinnedDigest": "sha256:1538dee01f59dba0532aaf988f592d819d8f72a4a114c16fa0c18488cd01d20f",
+            "tfRef": {
+              "repoPath": "specs/vrc/relationships/issue/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:eb5c6d51d31a10488150cf97d270d4a6f24a0ccb845fed1590d057cb7a3b6c63",
+            "schemaHash": "sha256:5d2b1f52a94b691a85c103d08014649b8b06449982512bd8b36e6f739bd15881"
+          },
+          "do": {
+            "initiate": {
+              "by": "R",
+              "to": "P",
+              "kind": "vrc-issue",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "P",
+              "stored": {
+                "kind": "vrc",
+                "count": 1
+              }
+            },
+            {
+              "receiptMatches": {
+                "step": "issue-rp"
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "P",
+            "ceremony": "completed"
+          },
+          {
+            "at": "R",
+            "ceremony": "completed"
+          },
+          {
+            "receiptMatches": {
+              "step": "issue-pr"
+            }
+          },
+          {
+            "receiptMatches": {
+              "step": "issue-rp"
+            }
+          },
+          {
+            "at": "P",
+            "stored": {
+              "kind": "vrc",
+              "count": 1
+            }
+          },
+          {
+            "at": "R",
+            "stored": {
+              "kind": "vrc",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-VRC-002",
+      "title": "propose declined: the responder answers with propose:declined and both parties read declined",
+      "spec": [
+        "TF specs/vrc/relationships/propose/0.1/spec.md:87 (a decline is a trust-task-error with vrc/relationships/propose:declined)",
+        "docs/01-layer-model.md:85"
+      ],
+      "source": {
+        "slug": "vrc/relationships/propose",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vrc/relationships/propose/0.1",
+        "pinnedDigest": "sha256:11a10ba25ab4634551a7237d805e31506356943ca8f490518a41edeb1b43e0cc",
+        "tfRef": {
+          "repoPath": "specs/vrc/relationships/propose/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:e131daaa610db44d0f5c4787400d2da7be95a2d22f549eb2278c8e2f1ec9e459",
+        "schemaHash": "sha256:c520592e166731008d08fd39506e4606c0ad8be98a8153af0765abf580f1f29d"
+      },
+      "participants": {
+        "P": {
+          "role": "proposer",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent"
+          ]
+        },
+        "R": {
+          "role": "responder",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent",
+            "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+            "https://trusttasks.org/spec/vrc/relationships/issue/0.1"
+          ]
+        }
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 30000,
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "decide-decline",
+          "do": {
+            "decide": {
+              "by": "R",
+              "action": "policy",
+              "args": {
+                "propose": "decline"
+              }
+            }
+          }
+        },
+        {
+          "id": "propose",
+          "source": {
+            "slug": "vrc/relationships/propose",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vrc/relationships/propose/0.1",
+            "pinnedDigest": "sha256:11a10ba25ab4634551a7237d805e31506356943ca8f490518a41edeb1b43e0cc",
+            "tfRef": {
+              "repoPath": "specs/vrc/relationships/propose/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:e131daaa610db44d0f5c4787400d2da7be95a2d22f549eb2278c8e2f1ec9e459",
+            "schemaHash": "sha256:c520592e166731008d08fd39506e4606c0ad8be98a8153af0765abf580f1f29d"
+          },
+          "do": {
+            "initiate": {
+              "by": "P",
+              "to": "R",
+              "kind": "vrc-propose",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "P",
+              "received": {
+                "code": "vrc/relationships/propose:declined",
+                "count": 1
+              }
+            },
+            {
+              "at": "P",
+              "ceremony": "declined"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "declined"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "P",
+            "ceremony": "declined"
+          },
+          {
+            "at": "R",
+            "ceremony": "declined"
+          },
+          {
+            "at": "R",
+            "stored": {
+              "kind": "vrc",
+              "count": 0
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

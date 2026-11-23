@@ -1,0 +1,1063 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "CX-CS",
+ "family": "coverage",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "CX-CS-001",
+   "title": "auth/step-up/approver/redeem/finish 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of auth/step-up/approver/redeem/finish 0.1 (task-force repository origin/main bd0c05013, specification status draft): 7 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/auth/step-up/approver/redeem/finish/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 6, 7."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "auth/step-up/approver/redeem/finish",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+    "pinnedDigest": "sha256:3d30f83bc3b2f17051e49f8fe50da816614d01f733efbe19542cf3b5dd6603be",
+    "tfRef": {
+     "repoPath": "specs/auth/step-up/approver/redeem/finish/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:a102c134621de90b033ea9869778756200b0acc7fedc1f66a3004204130af38f",
+    "schemaHash": "sha256:b6dae544e03a247f9b8cc5192bb4a23db69f076d7a20f30489f0489a3edaa70b",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enrollmentId": "enr_5b0e3a2e6f4c4b8f9d2a1f0c2b7e4a01",
+        "approverDid": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enrollmentId": "enr_5b0e3a2e6f4c4b8f9d2a1f0c2b7e4a01",
+        "approverDid": "did:web:plugin.example",
+        "statement": {
+         "id": "urn:uuid:3a6c1e0b-9d2f-4b7a-8c15-2e4f6a8b0c02"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enrollmentId": "enr_5b0e3a2e6f4c4b8f9d2a1f0c2b7e4a01",
+        "approverDid": "did:key:zDnaerDaTF5BXEavCrfRZEk316dpbLsfPDZ3WJ5hRTPFU2169",
+        "statement": {
+         "id": "urn:uuid:3a6c1e0b-9d2f-4b7a-8c15-2e4f6a8b0c02"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enrollmentId": "enr_5b0e3a2e6f4c4b8f9d2a1f0c2b7e4a01",
+        "approverDid": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
+        "statement": "eyJhbGciOiJFZERTQSJ9"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enrollmentId": "enr_5b0e3a2e6f4c4b8f9d2a1f0c2b7e4a01",
+        "approverDid": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
+        "label": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "statement": {
+         "id": "urn:uuid:3a6c1e0b-9d2f-4b7a-8c15-2e4f6a8b0c02"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x6)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "approver": {
+         "approverDid": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
+         "subject": "did:webvh:QmAliceScid4:wallet.example:alice",
+         "enrolledAt": "$now+1h"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x7)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approver/redeem/finish/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "approver": {
+         "approverDid": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
+         "subject": "did:webvh:QmAliceScid4:wallet.example:alice",
+         "enrolledAt": "$now+1h",
+         "enrolledVia": "signingKey"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-CS-002",
+   "title": "consent/approver-list 1.0: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of consent/approver-list 1.0 (task-force repository origin/main bd0c05013, specification status draft): 2 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/consent/approver-list/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "specs/consent/approver-list/1.0/spec.md front matter errorCodes: consent/approver-list:notAuthorized (the caller's standing): a refusal for it is accepted beside malformedRequest and permissionDenied, because SPEC.md 7.2 items 2 and 10 do not order the payload check against the authorisation check; an object lookup or state code is not accepted"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/approver-list/1.0"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "consent/approver-list",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/approver-list/1.0",
+    "pinnedDigest": "sha256:8083c3201faa8edefb0fbf7307fde8d9029ae767554b6b77ddd386ae20d84f24",
+    "tfRef": {
+     "repoPath": "specs/consent/approver-list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:2ce43f0e259f3d2c77e4d6a87d8234eb44d46dc016c1850c9cc8951023bf75f5",
+    "schemaHash": "sha256:983b6b79672b330e080e7c8e2a91a97e418c6ea84cdfed84b38c398a107548a7",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/consent/approver-list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "context": "vti-message-bridge",
+        "limit": 50
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/approver-list:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/consent/approver-list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "platform": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/approver-list:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-CS-003",
+   "title": "consent/approver-set 1.0: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of consent/approver-set 1.0 (task-force repository origin/main bd0c05013, specification status draft): 3 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/consent/approver-set/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "specs/consent/approver-set/1.0/spec.md front matter errorCodes: consent/approver-set:notAuthorized (the caller's standing): a refusal for it is accepted beside malformedRequest and permissionDenied, because SPEC.md 7.2 items 2 and 10 do not order the payload check against the authorisation check; an object lookup or state code is not accepted"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/approver-set/1.0"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "consent/approver-set",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/approver-set/1.0",
+    "pinnedDigest": "sha256:9935312521904f3fc75bb48b4a40df4805b82f6b94335a7ae77b56eb71bc7c92",
+    "tfRef": {
+     "repoPath": "specs/consent/approver-set/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:5da9e87dd3e17951f4023af6fb5f72a684561612401e898e06e48cceb26e00d2",
+    "schemaHash": "sha256:cc0def67273182aad742f07a20964e796a2d28f6282d6b188a7d8abe7be72266",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/consent/approver-set/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "platform": "signal",
+        "context": "vti-message-bridge"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/approver-set:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/consent/approver-set/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "platform": "signal",
+        "context": "vti-message-bridge",
+        "approver": "did:web:operator.example",
+        "route": "email"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/approver-set:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/consent/approver-set/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "platform": "signal",
+        "context": "vti-message-bridge",
+        "approver": "did:web:operator.example",
+        "number": "+15551234567"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/approver-set:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-CS-004",
+   "title": "consent/decision 1.0: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of consent/decision 1.0 (task-force repository origin/main bd0c05013, specification status draft): 4 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/consent/decision/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "specs/consent/decision/1.0/spec.md front matter errorCodes: consent/decision:notAuthorized (the caller's standing): a refusal for it is accepted beside malformedRequest and permissionDenied, because SPEC.md 7.2 items 2 and 10 do not order the payload check against the authorisation check; an object lookup or state code is not accepted"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/decision/1.0"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "consent/decision",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/decision/1.0",
+    "pinnedDigest": "sha256:0bd57e48ea6201c4a493dac394820fee81323cb49420f7a1acb9c32167c8b2aa",
+    "tfRef": {
+     "repoPath": "specs/consent/decision/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:0e8a012b74c7a66e76001df405dbf0ded05964f11537f6634ff270966a23b826",
+    "schemaHash": "sha256:65d3c1b4daea0ac4ac7fcfabdafbb58398512e71ff03f364d720af0988d31c3d",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/consent/decision/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "signal",
+         "conversationRef": "sig-1a2b3c4d",
+         "kind": "group",
+         "agent": "did:key:z6MkAgentExample"
+        },
+        "scope": "converse"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/decision:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/consent/decision/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "signal",
+         "conversationRef": "sig-1a2b3c4d",
+         "kind": "group",
+         "agent": "did:key:z6MkAgentExample"
+        },
+        "effect": "maybe"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/decision:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/consent/decision/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "signal",
+         "conversationRef": "sig-1a2b3c4d",
+         "kind": "dm",
+         "agent": "did:key:z6MkAgentExample"
+        },
+        "effect": "allow",
+        "scope": "admin"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/decision:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/consent/decision/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "effect": "deny"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/decision:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-CS-005",
+   "title": "consent/list 1.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of consent/list 1.1 (task-force repository origin/main bd0c05013, specification status draft): 4 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/consent/list/1.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "specs/consent/list/1.1/spec.md front matter errorCodes: consent/list:notAuthorized (the caller's standing): a refusal for it is accepted beside malformedRequest and permissionDenied, because SPEC.md 7.2 items 2 and 10 do not order the payload check against the authorisation check; an object lookup or state code is not accepted"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/list/1.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "consent/list",
+    "version": "1.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/list/1.1",
+    "pinnedDigest": "sha256:03cc47937d866584a26136581e823a4784c58a3647073db4733a47db7b5d72a7",
+    "tfRef": {
+     "repoPath": "specs/consent/list/1.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:d55df9c9b19255be28927cfe066287ba4461e3af8b49ffbe02027220b5f66dd2",
+    "schemaHash": "sha256:7864912aa2335b6d4fb66300ed27ba2cef6b4d749d950628ba92243126b795e2"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/consent/list/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "agent": "did:key:z6MkAgentExample",
+        "limit": 50
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/list:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/consent/list/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "signal",
+         "conversationRef": "sig-1a2b3c4d",
+         "kind": "group"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/list:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/consent/list/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "since": "c-2026-06-17T15:02:00Z"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/list:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/consent/list/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "syncToken": 42
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/list:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-CS-006",
+   "title": "consent/request 1.0: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of consent/request 1.0 (task-force repository origin/main bd0c05013, specification status draft): 5 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/consent/request/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/request/1.0"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "consent/request",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/request/1.0",
+    "pinnedDigest": "sha256:a780967bba62c9a67fcc24a40c6729b95a10490c0a76a4a243992bb8d71ba104",
+    "tfRef": {
+     "repoPath": "specs/consent/request/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:8dea8cfa0eccc121eb7b64c012c36a96c2c28f199b0ab0eee7d9a593a49c43c0",
+    "schemaHash": "sha256:1cc8d05e3a88b557365576e5587b95063ea2f9603d0f965527d95e58fea5cee9",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/consent/request/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "scope": "converse",
+        "challenge": "Q29uc2VudENoYWxsZW5nZU5vbmNlWFla"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/consent/request/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "signal",
+         "conversationRef": "sig-1a2b3c4d",
+         "kind": "group"
+        },
+        "scope": "converse",
+        "challenge": "Q29uc2VudENoYWxsZW5nZU5vbmNlWFla"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/consent/request/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "signal",
+         "conversationRef": "sig-1a2b3c4d",
+         "kind": "broadcast",
+         "agent": "did:key:z6MkAgentExample"
+        },
+        "scope": "converse",
+        "challenge": "Q29uc2VudENoYWxsZW5nZU5vbmNlWFla"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/consent/request/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "signal",
+         "conversationRef": "sig-1a2b3c4d",
+         "kind": "group",
+         "agent": "did:key:z6MkAgentExample"
+        },
+        "scope": "converse",
+        "challenge": "short"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/consent/request/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "signal",
+         "conversationRef": "sig-1a2b3c4d",
+         "kind": "group",
+         "agent": "did:key:z6MkAgentExample"
+        },
+        "scope": "converse",
+        "challenge": "Q29uc2VudENoYWxsZW5nZU5vbmNlWFla",
+        "rawNumber": "+15551234567"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-CS-007",
+   "title": "consent/revoke 1.0: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of consent/revoke 1.0 (task-force repository origin/main bd0c05013, specification status draft): 2 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/consent/revoke/1.0/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "specs/consent/revoke/1.0/spec.md front matter errorCodes: consent/revoke:notAuthorized (the caller's standing): a refusal for it is accepted beside malformedRequest and permissionDenied, because SPEC.md 7.2 items 2 and 10 do not order the payload check against the authorisation check; an object lookup or state code is not accepted",
+    "Destructive task: only payloads that fail the schema are sent (nothing is sent that could be executed)."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/revoke/1.0"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "consent/revoke",
+    "version": "1.0",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/revoke/1.0",
+    "pinnedDigest": "sha256:65523b0fd9b89b60d9e71f740a2885ccc9444f3c0ff0489ad0a680346e8d7dd0",
+    "tfRef": {
+     "repoPath": "specs/consent/revoke/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CS (Consent and step-up): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:5252a3902f28c420340f589e943155c1d5409d05a0e517fdb9237bcbebf794ae",
+    "schemaHash": "sha256:9a8cd6f97fee3e09853c8d6521ed98d5313f653346ddefe0f8181d0b334bd36a",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/consent/revoke/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "reason": "Left the group."
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/revoke:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/consent/revoke/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "conversationRef": "sig-1a2b3c4d",
+         "kind": "group",
+         "agent": "did:key:z6MkAgentExample"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/revoke:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  }
+ ]
+}

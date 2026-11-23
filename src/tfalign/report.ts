@@ -1,0 +1,26 @@
+// SPDX-License-Identifier: Apache-2.0
+import { pct } from "./analyse.ts";
+type J = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+const row = (label: string, n: number, d: number): string => `| ${label} | ${n} | ${d} | ${pct(n, d)} |`;
+
+/** A short markdown report from the result of `analyse`. Counts always print their denominators. */
+export function renderReport(r: J): string {
+  const tfm = r.taskForce, inv = r.inventory, m = r.mapping, s = r.snapshot;
+  const L: string[] = [];
+  L.push("# Task-force alignment report", "", "> **Status: draft proposal.** This is a draft proposal for discussion and review by the DTGWG (Trust over IP Decentralized Trust Graph Working Group). It is not an adopted or endorsed standard or test suite.", "", `> ${r.status}`, "");
+  L.push(`Read: ${tfm.mode === "revision" ? `revision ${tfm.ref}` : "working tree"}, commit ${tfm.commit ?? "unknown"} (${tfm.date ?? "no date"})${tfm.branch === null ? "" : `, branch ${tfm.branch}`}.`);
+  if (tfm.originMain !== null) L.push(`The clone's remote main is ${tfm.originMain.commit.slice(0, 9)} (${tfm.originMain.date}), ${tfm.originMain.aheadOfRead} commits ahead of what was read.`);
+  L.push("", "## Is the suite's snapshot stale?", "", "| Suite input | Commit | Known to checkout | In what was read | Commits read has beyond it | Commits it has beyond read |", "|---|---|---|---|---|---|");
+  for (const p of s.pins as J[]) L.push(`| ${p.source} | ${p.commit === null ? "not recorded" : String(p.commit).slice(0, 9)} | ${p.knownToCheckout ?? "n/a"} | ${p.ancestorOfRead ?? "n/a"} | ${p.commitsInReadNotInPin ?? "n/a"} | ${p.commitsInPinNotInRead ?? "n/a"} |`);
+  L.push("", `Task specifications in what was read but not in the suite's manifest: ${s.tasksNewerThanManifest}${s.newerTasks.length > 0 ? ` (${(s.newerTasks as string[]).slice(0, 8).join(", ")}${s.newerTasks.length > 8 ? ", ..." : ""})` : ""}. In the manifest but gone: ${s.tasksVanishedSinceManifest}. Retired since the manifest: ${s.retiredSinceManifest.length}.`);
+  L.push("", "## What the checkout holds", "", `- Task specifications: ${inv.tasks.total} (${inv.tasks.draft} draft, ${inv.tasks.retired} retired)`, `- Per-task valid example files (payload.examples.json): ${inv.payloadExamplesFiles}`, `- Invalid-example files: ${inv.invalidExampleFiles}, holding ${inv.invalidExamples} examples`, `- Request examples written in the specifications: ${inv.embeddedRequestExamples}; response examples: ${inv.embeddedResponseExamples}`, `- Fixture files: ${inv.fixtureFiles}; ceremony definitions: ${inv.ceremonyDefinitions}; ceremony invalid cases: ${inv.ceremonyInvalidCases}`, `- Reference library test files: ${Object.entries(inv.libraryTestFiles as J).map(([k, v]: [string, any]) => `${k} ${v.testFiles} in ${v.packages} packages`).join("; ")}`, "");
+  L.push("## What the suite uses", "", "Used = a suite vector sends a payload equal to the example (suite tokens such as minted ids match anything). Named only = a vector for the task cites its invalid examples, but this one was not matched. These are reach figures: nothing here says a platform passes.", "", "| Item | Count | Of | Share |", "|---|---|---|---|");
+  const ie = m.invalidExamples, re = m.requestExamplesInSpecs;
+  L.push(row("Invalid examples used (all sets)", ie.exact, ie.total), row("  of those, without the advisory alignment set", ie.exactWithoutAlignmentSet, ie.total), row("  of those, in a vector that expects a refusal", ie.exactExpectingRefusal, ie.total), row("Invalid examples named only", ie.namedOnly, ie.total), row("Invalid examples not mapped", ie.notMatched, ie.total), row("Request examples used", re.exact, re.total), row("Tasks with a vector step", m.tasks.withStep, m.tasks.total), row("Tasks named only in text", m.tasks.mentionedOnly, m.tasks.total), row("Tasks with no vector at all", m.tasks.noVectors, m.tasks.total), row("Fixture files imported unchanged", m.fixtures.importedIdentical, m.fixtures.total), row("Fixture files used by a vector", m.fixtures.usedByAVector, m.fixtures.total), row("Ceremony definitions with a scenario", m.ceremonies.withScenarios, m.ceremonies.definitions), "");
+  L.push("Why invalid examples were not matched:", "", ...Object.entries(ie.reasons as Record<string, number>).map(([k, v]) => `- ${k}: ${v}`), "");
+  L.push("## Citations", "", `- Trust Tasks files the vectors cite: ${m.citations.filesCited}; no longer in the checkout: ${m.citations.missing}; only on a pull request or branch (cited at that head, so not missing): ${m.citations.branchOnly}`, `- Vectors whose recorded text hash was re-checked: ${m.citations.textHashChecked}; unchanged: ${m.citations.textHashUnchanged}; files whose text changed: ${m.citations.changedFiles}`, `- Imported fixture files no longer in the checkout: ${m.fixtures.importedGone}; changed since import: ${m.fixtures.importedChanged}; checkout fixtures not imported: ${m.fixtures.notImported}`);
+  for (const c of m.ceremonies.items as J[]) L.push(`- ${c.path}: ${c.scenarios.length} scenarios cite it${c.quotedShaMatches === null ? "" : c.quotedShaMatches ? "; quoted checksum current" : "; quoted checksum differs from the checkout"}`);
+  L.push("", "Full lists are in tf-alignment.json.", "");
+  return L.join("\n");
+}

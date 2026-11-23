@@ -1,0 +1,519 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "ERR",
+  "family": "framework",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "ERR-001",
+      "title": "error shape, threading, inResponseTo and bounded details",
+      "tier": 1,
+      "spec": [
+        "framework 8.2",
+        "framework 8.2.2",
+        "framework 8.4"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "mutants": [
+        "errorWithoutRetryable",
+        "reuseRequestIdInReply",
+        "oversizedDetails",
+        "expiredAsMalformed"
+      ],
+      "steps": [
+        {
+          "at": "+0s",
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "expiresAt": "$nowAt(-windowSkew,-10s)",
+              "issuedAt": "$nowAt(-windowSkew,-20s)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "expired",
+            "retryable": false,
+            "noSideEffect": true,
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "$carrier",
+              "/payload/inResponseTo/id": "$id(req)"
+            }
+          }
+        }
+      ],
+      "advisoryMutants": [
+        "wrongReplyThread"
+      ],
+      "requires": [
+        "carrier:consequential"
+      ]
+    },
+    {
+      "id": "ERR-002",
+      "title": "an inbound error is never answered",
+      "tier": 1,
+      "spec": [
+        "docs/05 section 1.1 (VTI precedent: an inbound error is dropped, not answered); no specification sentence states it"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "No sentence of the specifications says an inbound error is answered with nothing. VTI does that (docs/05 section 1.1) and ERR-008, the same behaviour, is CLARIFY. Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "mutants": [
+        "answerInboundErrors"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "error.inbound"
+          },
+          "expect": {
+            "disposition": "silence",
+            "noSideEffect": true
+          }
+        }
+      ],
+      "requires": [
+        "carrier:consequential"
+      ]
+    },
+    {
+      "id": "ERR-003",
+      "title": "tier 2: errors are signed by the IUT",
+      "tier": 2,
+      "spec": [
+        "profile:attested (proof on every error)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "mutants": [
+        "unsignedReplies"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "payload": {
+                "$carrierInvalid": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true
+          }
+        }
+      ],
+      "subgroup": "attested",
+      "requires": [
+        "carrier:consequential"
+      ]
+    },
+    {
+      "id": "ERR-004",
+      "title": "the error code is a standard code (or a namespaced extended code), never an invented one",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1237 (8.2 code MUST be a standard or extended code)",
+        "SPEC.md:1294 (8.3 the standard set)",
+        "SPEC.md:1071 (the error reply is a SHOULD; a reply that is sent is checked)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "mutants": [
+        "nonStandardCode"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "payload": {
+                "$carrierInvalid": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(req2)",
+              "type": "https://trusttasks.org/spec/conformance/gadget/0.1"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "unsupportedType",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "requires": [
+        "carrier:consequential"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "ERR-005",
+      "title": "retryable defaults: refusals the producer cannot cure by resending are not marked retryable",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1315 (8.3 default retryable, SHOULD unless task-specific knowledge dictates otherwise)",
+        "SPEC.md:1342-1346 (8.4 retry means the identical document)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "The default retryable column is a SHOULD that yields to task-specific knowledge; the carrier has none, so the vector asserts the default (docs/04 section 11). Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "wrongRecipient",
+            "retryable": false,
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(req2)",
+              "payload": {
+                "$carrierInvalid": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(req3)",
+              "type": "https://trusttasks.org/spec/conformance/gadget/0.1"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "unsupportedType",
+            "retryable": false,
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(req4)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/threadId",
+                "value": "urn:uuid:tampered",
+                "afterSign": true
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofInvalid",
+            "retryable": false,
+            "noSideEffect": true
+          }
+        }
+      ],
+      "advisoryMutants": [
+        "retryableAlways"
+      ],
+      "requires": [
+        "carrier:consequential"
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "ERR-006",
+      "title": "no leak: a message names neither the contested recipient nor the verification method it tried",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1274-1281 (8.2.1 a message MUST NOT carry the contested value or key-status internals)",
+        "SPEC.md:1282 (applies to every code)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "mutants": [
+        "leakRecipientInMessage",
+        "leakVerificationMethod"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "wrongRecipient",
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(req2)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/threadId",
+                "value": "urn:uuid:tampered",
+                "afterSign": true
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofInvalid",
+            "noSideEffect": true
+          }
+        }
+      ],
+      "requires": [
+        "carrier:consequential"
+      ]
+    },
+    {
+      "id": "ERR-007",
+      "title": "bounded details on every error path: at most 4096 bytes and 16 members",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1284-1289 (8.2.2 unbounded details MUST NOT be emitted)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "mutants": [
+        "oversizedDetails",
+        "tooManyDetailMembers"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "wrongRecipient",
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(req2)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/threadId",
+                "value": "urn:uuid:tampered",
+                "afterSign": true
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofInvalid",
+            "noSideEffect": true
+          }
+        }
+      ],
+      "requires": [
+        "carrier:consequential"
+      ]
+    },
+    {
+      "id": "ERR-008",
+      "title": "an inbound error carrying an extended code and oversized details is not answered",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1290 (8.2.2 a receiver ignores oversized details and still honours the code)",
+        "docs/04 section 13 (error hygiene: an inbound error is answered with nothing)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "The specification does not state in a sentence that an error is never answered; the vector asserts the design rule (docs/04 section 13). Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "mutants": [
+        "answerInboundErrors"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "error.inbound",
+            "params": {
+              "payload": {
+                "code": "vrc/relationships/issue:notAccepted",
+                "message": "refused",
+                "retryable": false,
+                "details": {
+                  "pad": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                },
+                "inResponseTo": {
+                  "typeUri": "$carrier",
+                  "id": "$id(req)"
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "silence",
+            "noSideEffect": true
+          }
+        }
+      ],
+      "requires": [
+        "carrier:consequential"
+      ]
+    }
+  ]
+}

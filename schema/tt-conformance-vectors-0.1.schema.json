@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tt-conformance-vectors-0.1",
+  "title": "Trust Task conformance vector file, format tt-conformance-vectors/0.1 (proposed)",
+  "type": "object",
+  "required": ["format", "group", "family", "clock", "vectors"],
+  "additionalProperties": false,
+  "properties": {
+    "format": { "const": "tt-conformance-vectors/0.1" },
+    "group": { "type": "string", "pattern": "^[A-Z0-9][A-Z0-9]*(-[A-Z0-9][A-Z0-9]*)*$" },
+    "family": { "type": "string", "minLength": 1 },
+    "clock": {
+      "type": "object",
+      "required": ["start"],
+      "properties": { "start": { "$ref": "#/$defs/instant" } }
+    },
+    "vectors": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/vector" } }
+  },
+  "$defs": {
+    "instant": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$" },
+    "offset": { "type": "string", "description": "Signed terms: a literal (5m, 30s, 250ms, 1h) or a window member (windowMaxAge, windowSkew, windowHorizon).", "pattern": "^([+-](\\d+(ms|s|m|h)|windowMaxAge|windowSkew|windowHorizon))+$" },
+    "vector": {
+      "type": "object",
+      "required": ["id", "title", "tier", "spec", "source", "clarify", "steps"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Z0-9][A-Z0-9]*(-[A-Z0-9][A-Z0-9]*)*-\\d{3,}$", "description": "<GROUP>-<NNN>; the group part must equal the file's group; unique across the suite." },
+        "title": { "type": "string", "minLength": 1 },
+        "tier": { "enum": [1, 2] },
+        "exactTier": { "type": "boolean" },
+        "exactClock": { "type": "boolean" },
+        "profileWindow": { "type": "boolean" },
+        "spec": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "source": {
+          "description": "Where the rule comes from and how mature that source is (docs/04 section 18). `spec` holds the line-level citations; `source` names the document they point into.",
+          "type": "object",
+          "required": ["slug", "version", "channel", "ref", "pinnedDigest"],
+          "additionalProperties": false,
+          "properties": {
+            "slug": { "type": "string", "minLength": 1 },
+            "version": { "type": "string", "minLength": 1 },
+            "channel": { "enum": ["registry", "pr", "proposed", "candidate"], "description": "registry: in the Trust Tasks registry on main (every registry spec is status draft); pr: an open unmerged PR; proposed: our own text with no task-force home yet. pr and proposed results are advisory." },
+            "ref": { "type": "string", "pattern": "^(kit|suite|pkg):.+", "description": "kit:<path> in the task-force checkout, suite:<path> in this repository, pkg:<name>@<version>#<type URI> in the pinned package." },
+            "pinnedDigest": { "type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$" },
+            "pr": { "type": "object", "required": ["number", "headSha"], "properties": { "number": { "type": "integer" }, "headSha": { "type": "string", "pattern": "^[0-9a-f]{7,40}$" } } },
+            "note": { "type": "string" },
+            "profile": { "type": "string" },
+            "versionRole": { "enum": ["older", "retired"], "description": "Set when the cited task version is not the newest live version of its slug (older) or its specification is retired: the vector is on an older version of the task (O-09). Absent on the newest live version." },
+            "tfRef": { "type": "object", "required": ["status"], "description": "The Trust Tasks repository artifact the vector cites (docs/04 section 18.4)." },
+            "candidate": { "type": "object" },
+            "promotion": { "type": "object", "required": ["batch", "rule", "provisional", "was"], "description": "Registry only: promoted from an advisory channel (docs/33). `was` keeps the former channel and profile.", "properties": { "batch": { "type": "string" }, "rule": { "enum": ["standard", "single-implementer"] }, "provisional": { "type": "boolean" }, "decision": { "type": "string" }, "was": { "type": "object", "required": ["channel"], "properties": { "channel": { "enum": ["proposed", "candidate"] }, "profile": { "type": "string" } } } } },
+            "tfCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$", "description": "The Trust Tasks commit specHash and schemaHash were taken at (docs/23). Required with either hash; required, with specHash, on a vector of a coverage family in channel proposed or candidate." },
+            "specHash": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$", "description": "Hash of the NORMALISED text of the cited Trust Tasks file: catches change, not correctness (docs/23)." },
+            "schemaHash": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$", "description": "Hash of the canonical payload.schema.json of the task the vector exercises (docs/23)." }
+          }
+        },
+        "clarify": { "type": ["string", "null"] },
+        "clarifyClass": { "enum": ["spec-silent", "spec-inconsistent", "vector-overreads", "unclassified"] },
+        "clarifySince": { "type": "string", "pattern": "^(\\d{4}-\\d{2}-\\d{2}|\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z.-]+)?)$" },
+        "clarifyQuestions": { "type": "array", "items": { "type": "string", "pattern": "^(tfq:Q\\d+|d09:\\d+)$" } },
+        "requires": { "type": "array", "items": { "type": "string" } },
+        "skipIfOptional": { "type": "array", "items": { "type": "string" } },
+        "mutants": { "type": "array", "items": { "type": "string" } },
+        "clockStart": { "$ref": "#/$defs/instant" },
+        "origin": { "type": "object", "required": ["source", "fixture"] },
+        "retired": { "type": "object", "required": ["reason", "since"], "properties": { "reason": { "type": "string", "minLength": 1 }, "since": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z.-]+)?$" }, "replacedBy": { "type": "string" } }, "description": "The id is retired (docs/04 section 20.3): kept as a tombstone, never run, counted or reported as SKIP, never reused. since: the suite version that retired it." },
+        "probe": { "const": true, "description": "A suite instrument, not platform behaviour: counted as probe, apart from the candidates, wherever channel counts are shown. Only on a vector in channel candidate (docs/04 section 18.1)." },
+        "excludedFromRun": { "type": "object", "required": ["reason"], "properties": { "reason": { "type": "string", "minLength": 1 }, "note": { "type": "string" } }, "description": "Excluded from every run (never run, counted or reported as SKIP), for example because the cited TF spec is retired (docs/04 section 18.7). Not retirement of the id." },
+        "steps": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/step" } }
+      }
+    },
+    "step": {
+      "type": "object",
+      "properties": {
+        "at": { "$ref": "#/$defs/offset" },
+        "atAbsolute": { "$ref": "#/$defs/instant" },
+        "send": { "$ref": "#/$defs/send" },
+        "verifyProof": {
+          "type": "object",
+          "required": ["file", "expect"],
+          "properties": { "file": { "type": "string" }, "expect": { "enum": ["valid", "invalid"] } }
+        },
+        "verifyReceipt": {
+          "description": "Helper-layer step (optional capability receiptVerify): build the scenario (a fixture ceremony enactment, the receipt issued for it, what the verifier holds) and compare the verdict of verifyReceipt with expect.outcome (one verdict or a list of accepted verdicts).",
+          "type": "object",
+          "required": ["scenario", "expect"],
+          "properties": {
+            "scenario": {
+              "type": "object",
+              "properties": {
+                "ceremony": { "enum": ["linear", "approve", "prefix"] },
+                "instances": { "type": "array", "items": { "type": "string" } },
+                "enumerate": { "type": "array", "items": { "type": "string" } },
+                "hold": { "oneOf": [{ "enum": ["all", "none"] }, { "type": "array", "items": { "type": "string" } }] },
+                "bindings": { "oneOf": [{ "enum": ["full", "none"] }, { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "string" } } }] },
+                "definition": { "enum": ["resolved", "unresolvable", "altered"] },
+                "digest": { "type": "object", "properties": { "hash": { "enum": ["sha2-256", "sha2-512"] }, "saltAt": { "enum": ["suffix", "prefix"] }, "withoutProof": { "type": "boolean" } } },
+                "docMutate": { "type": "object", "additionalProperties": { "type": "array" } },
+                "docProof": { "type": "object", "additionalProperties": { "enum": ["none", "corrupt"] } },
+                "heldMutate": { "type": "object", "additionalProperties": { "type": "array" } },
+                "heldResign": { "type": "array", "items": { "type": "string" } },
+                "heldEnactment": { "const": "other" },
+                "receipt": { "type": "object" }
+              }
+            },
+            "expect": {
+              "type": "object",
+              "required": ["outcome"],
+              "properties": {
+                "outcome": {
+                  "oneOf": [
+                    { "enum": ["complete", "incomplete", "unverifiable", "invalid"] },
+                    { "type": "array", "minItems": 1, "items": { "enum": ["complete", "incomplete", "unverifiable", "invalid"] } }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "trigger": {
+          "type": "object",
+          "required": ["action"],
+          "properties": { "action": { "type": "string" }, "args": { "type": "object" } }
+        },
+        "emit": {
+          "type": "object",
+          "required": ["type"],
+          "properties": { "type": { "type": "string" }, "args": { "type": "object" } }
+        },
+        "observePushed": {
+          "description": "Pushed-document observation (optional capability observe.pushed, docs/20): a document of `type` was pushed to `to` on `threadId` (with optional pointer/match assertions); `none` asserts that none was; `withinMs` bounds a poll.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "to": { "type": "string" }, "type": { "type": "string" }, "threadId": { "type": "string" },
+            "none": { "type": "boolean" }, "count": { "type": "integer", "minimum": 1 },
+            "pointer": { "type": "object" }, "match": { "type": "object", "additionalProperties": { "type": "string" } },
+            "withinMs": { "type": "integer", "minimum": 0, "maximum": 60000 }
+          }
+        },
+        "restart": { "const": true },
+        "when": {
+          "type": "object",
+          "required": ["proposerApproves"],
+          "additionalProperties": false,
+          "properties": { "proposerApproves": { "type": "boolean" } }
+        },
+        "quorum": { "enum": ["begin", "rest", "complete", "pending", "exact", "outsider", "repeat"] },
+        "capture": { "type": "object", "additionalProperties": { "type": "string" } },
+        "expect": { "$ref": "#/$defs/expect" }
+      },
+      "oneOf": [{ "required": ["send", "expect"] }, { "required": ["verifyProof"] }, { "required": ["verifyReceipt"] }, { "required": ["trigger"] }, { "required": ["restart"] }, { "required": ["emit", "expect"] }, { "required": ["observePushed"] }, { "required": ["quorum"] }]
+    },
+    "send": {
+      "type": "object",
+      "properties": {
+        "from": { "description": "actor name, \"none\", or {spoof: actor|vid}" },
+        "template": { "type": "string" },
+        "params": { "type": "object" },
+        "document": {},
+        "raw": { "type": "string" },
+        "substitute": { "type": "object", "additionalProperties": { "type": "string" } },
+        "same": { "const": "previous" },
+        "mutate": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["op"],
+            "properties": {
+              "op": { "enum": ["set", "remove", "reorder", "bom", "truncate"] },
+              "path": { "type": "string" },
+              "value": {},
+              "bytes": { "type": "integer" },
+              "afterSign": { "type": "boolean" }
+            }
+          }
+        },
+        "vrc": { "type": "object" },
+        "witness": { "type": "object" },
+        "http": {
+          "type": "object",
+          "properties": { "method": { "type": "string" }, "path": { "type": "string" }, "contentType": { "type": "string" } }
+        },
+        "sign": {
+          "type": ["object", "null"],
+          "properties": {
+            "as": { "type": "string" },
+            "purpose": { "type": "string" },
+            "created": { "$ref": "#/$defs/offset" },
+            "allowIssuerMismatch": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "expect": {
+      "type": "object",
+      "required": ["disposition"],
+      "properties": {
+        "disposition": { "enum": ["response", "error", "next-step", "silence", "duplicate", "any-refusal", "answered", "emitted"] },
+        "plainType": { "type": "string" },
+        "type": { "type": "string" },
+        "code": { "type": ["string", "array"] },
+        "retryable": { "type": "boolean" },
+        "pointer": { "type": "object" },
+        "noSideEffect": { "type": "boolean" },
+        "match": { "type": "object", "additionalProperties": { "type": "string" } },
+        "notEqual": { "type": "object" },
+        "state": { "type": "object" },
+        "sameErrorAs": { "type": "integer", "minimum": 1 },
+        "hold": { "type": "boolean" },
+        "httpStatus": { "type": ["integer", "array"] },
+        "httpBody": { "enum": ["json", "none"] },
+        "discovery": {
+          "type": "object",
+          "required": ["matches"],
+          "properties": { "matches": { "type": "array", "items": { "type": "string" } }, "sorted": { "type": "boolean" } }
+        },
+        "forbidInReply": { "type": "array", "items": { "type": "string" } },
+        "priorReplyLost": { "type": "boolean" },
+        "errorReply": { "const": "should" },
+        "acknowledgement": { "const": "allowed" }
+      }
+    }
+  }
+}

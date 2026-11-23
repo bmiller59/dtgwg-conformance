@@ -1,0 +1,3510 @@
+{
+  "format": "tt-ceremony-scenarios/0.1",
+  "group": "FC-AUT",
+  "family": "ceremony-scenarios",
+  "evidence": "complete-ceremony",
+  "ceremony": {
+    "name": "Sign-in by trigger link (browser, community service, member's wallet)",
+    "channel": "proposed",
+    "choreography": "docs/26-paired-ceremonies.md section 4: request, claim, the match number shown to the browser only, identify and prove, the grant, respond, redeem; negatives for a wrong number, a second claim, a non-member and a cancel, a stranger's redeem, a proof after a cancel, a respond under the wrong key, a grant for another digest and a broken identify; a version step-down against an older community and an old wallet against a current one"
+  },
+  "scenarios": [
+    {
+      "id": "FC-AUT-001",
+      "title": "sign-in by trigger link: the browser opens a request, the member's wallet claims it, the browser shows the match number, the wallet identifies its member and proves with that number, the member approves, and the browser redeems a session for the member (the wallet's agent is a class D stand-in; the community's DID document is a stand-in carrying the sign-in services)",
+      "spec": [
+        "TF specs/auth/oob/request/0.2/spec.md (the starter opens a request; the service answers a requestId and claimClosesAt)",
+        "TF specs/auth/oob/claim/0.2/spec.md (the approver claims with a fresh lock key; the community's answer is its signed attestation)",
+        "TF specs/auth/oob/redeem/0.2/spec.md (only the starter key's holder is told the match number; a redeem returns the session once approved)",
+        "TF specs/auth/oob/prove/0.3/spec.md (the approver proves with identify and the entered number)",
+        "TF specs/auth/oob/respond/0.3/spec.md (the approver responds with the signed grant)",
+        "TF specs/auth/oob/_shared/0.1/CONVENTIONS.md (request states; proof purposes; disclosure ladder)",
+        "docs/26-paired-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "auth/oob/claim",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+        "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+        "tfRef": {
+          "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+        "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "S"
+      ],
+      "participants": {
+        "S": {
+          "role": "starter",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "service",
+          "requires": []
+        },
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "auth/oob/request",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/request/0.2",
+            "pinnedDigest": "sha256:7025a52435c727d64a33d53015233b44cd4f6dc952787a84ced71fca149b5607",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/request/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:303cbceb99a62341f83bea4c3581a13a63928c2bfd917da926411bbd7b6ac739",
+            "schemaHash": "sha256:2358a665640511a3ae6442fecd64a054144ec4c884982f81a7ebde378ecb5722"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-request",
+              "capture": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                "count": 1
+              },
+              "thread": "start"
+            }
+          ]
+        },
+        {
+          "id": "claim",
+          "source": {
+            "slug": "auth/oob/claim",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+            "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+            "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-claim",
+              "capture": "claim",
+              "args": {
+                "from": "$V",
+                "doc": "$doc:V",
+                "id": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "requestId"
+                  }
+                },
+                "claimClosesAt": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "claimClosesAt"
+                  }
+                }
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "claim"
+            }
+          ]
+        },
+        {
+          "id": "show-number",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "poll",
+              "thread": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                "code": "auth/oob/redeem:pending",
+                "count": 1
+              },
+              "thread": "poll"
+            }
+          ]
+        },
+        {
+          "id": "prove",
+          "source": {
+            "slug": "auth/oob/prove",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/prove/0.3",
+            "pinnedDigest": "sha256:b01b9bd4130a85754aecca3c947d5e6543eee6d2833934a17f67c3145652913e",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/prove/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f167e1ec979388ed20e5dce1c61feedbb9bbab3bc954b89bb1310b3549966fe9",
+            "schemaHash": "sha256:3db277c9e679ce93bc58077e8db092615439cabaa83826dda0c14ef879130ff9"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-prove",
+              "capture": "prove",
+              "args": {
+                "number": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                    "thread": "poll",
+                    "member": "details.matchNumber"
+                  }
+                },
+                "offset": 0
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "prove"
+            }
+          ]
+        },
+        {
+          "id": "respond",
+          "source": {
+            "slug": "auth/oob/respond",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/respond/0.3",
+            "pinnedDigest": "sha256:a775be9164973ee437bebabcc86a0ed2063e0737f9a8ab2da681f80d2b99cbe2",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/respond/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:80402b417c61d3d7ac3c50a20f1aa8a79ec5ac3f265d09843ce29e761a34d02b",
+            "schemaHash": "sha256:5dec0284405e4d99589cf60c32c02aff7743fe15779d11c585ac8d02054ec011"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-approve",
+              "capture": "approve",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "approve"
+            }
+          ]
+        },
+        {
+          "id": "redeem",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "redeemed",
+              "thread": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/redeem/0.2#response",
+                "count": 1
+              },
+              "thread": "redeemed"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "redeemed",
+        "assert": [
+          {
+            "at": "S",
+            "ceremony": "completed",
+            "thread": "redeemed"
+          },
+          {
+            "at": "K",
+            "ceremony": "completed",
+            "thread": "approve"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-AUT-002",
+      "title": "the member types a number that is not the one on the page: the service refuses the proof with auth/oob/prove:numberMismatch and the request is over (one try); the browser's redeem then reads it as declined or refused, never a session",
+      "spec": [
+        "TF specs/auth/oob/prove/0.3/spec.md (consumer step 5: enteredNumber must equal the match number, else auth/oob/prove:numberMismatch)",
+        "TF specs/auth/oob/_shared/0.1/CONVENTIONS.md (a failed prove from the lock holder moves the request to declined: one claim, one proof attempt, one decision, one redemption)",
+        "docs/26-paired-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "auth/oob/prove",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/prove/0.3",
+        "pinnedDigest": "sha256:b01b9bd4130a85754aecca3c947d5e6543eee6d2833934a17f67c3145652913e",
+        "tfRef": {
+          "repoPath": "specs/auth/oob/prove/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f167e1ec979388ed20e5dce1c61feedbb9bbab3bc954b89bb1310b3549966fe9",
+        "schemaHash": "sha256:3db277c9e679ce93bc58077e8db092615439cabaa83826dda0c14ef879130ff9"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "S": {
+          "role": "starter",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "service",
+          "requires": []
+        },
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "auth/oob/request",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/request/0.2",
+            "pinnedDigest": "sha256:7025a52435c727d64a33d53015233b44cd4f6dc952787a84ced71fca149b5607",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/request/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:303cbceb99a62341f83bea4c3581a13a63928c2bfd917da926411bbd7b6ac739",
+            "schemaHash": "sha256:2358a665640511a3ae6442fecd64a054144ec4c884982f81a7ebde378ecb5722"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-request",
+              "capture": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                "count": 1
+              },
+              "thread": "start"
+            }
+          ]
+        },
+        {
+          "id": "claim",
+          "source": {
+            "slug": "auth/oob/claim",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+            "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+            "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-claim",
+              "capture": "claim",
+              "args": {
+                "from": "$V",
+                "doc": "$doc:V",
+                "id": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "requestId"
+                  }
+                },
+                "claimClosesAt": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "claimClosesAt"
+                  }
+                }
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "claim"
+            }
+          ]
+        },
+        {
+          "id": "show-number",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "poll",
+              "thread": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                "code": "auth/oob/redeem:pending",
+                "count": 1
+              },
+              "thread": "poll"
+            }
+          ]
+        },
+        {
+          "id": "prove-wrong",
+          "source": {
+            "slug": "auth/oob/prove",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/prove/0.3",
+            "pinnedDigest": "sha256:b01b9bd4130a85754aecca3c947d5e6543eee6d2833934a17f67c3145652913e",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/prove/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f167e1ec979388ed20e5dce1c61feedbb9bbab3bc954b89bb1310b3549966fe9",
+            "schemaHash": "sha256:3db277c9e679ce93bc58077e8db092615439cabaa83826dda0c14ef879130ff9"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-prove",
+              "capture": "prove",
+              "args": {
+                "number": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                    "thread": "poll",
+                    "member": "details.matchNumber"
+                  }
+                },
+                "offset": 1
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "auth/oob/prove:numberMismatch",
+                "count": 1
+              },
+              "thread": "prove"
+            }
+          ]
+        },
+        {
+          "id": "redeem-after",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "redeemed",
+              "thread": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/redeem/0.2#response",
+                "count": 0
+              },
+              "thread": "redeemed"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "prove",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused",
+            "thread": "prove"
+          },
+          {
+            "at": "S",
+            "received": {
+              "type": "https://trusttasks.org/spec/auth/oob/redeem/0.2#response",
+              "count": 0
+            },
+            "thread": "redeemed"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-AUT-003",
+      "title": "a second device claims a request that is already claimed: the service refuses it with auth/oob/claim:alreadyClaimed and the first claimant can still finish",
+      "spec": [
+        "TF specs/auth/oob/claim/0.2/spec.md (errorCodes: auth/oob/claim:alreadyClaimed; one claim per request)",
+        "docs/26-paired-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "auth/oob/claim",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+        "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+        "tfRef": {
+          "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+        "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "S": {
+          "role": "starter",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "service",
+          "requires": []
+        },
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "auth/oob/request",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/request/0.2",
+            "pinnedDigest": "sha256:7025a52435c727d64a33d53015233b44cd4f6dc952787a84ced71fca149b5607",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/request/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:303cbceb99a62341f83bea4c3581a13a63928c2bfd917da926411bbd7b6ac739",
+            "schemaHash": "sha256:2358a665640511a3ae6442fecd64a054144ec4c884982f81a7ebde378ecb5722"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-request",
+              "capture": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                "count": 1
+              },
+              "thread": "start"
+            }
+          ]
+        },
+        {
+          "id": "claim",
+          "source": {
+            "slug": "auth/oob/claim",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+            "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+            "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-claim",
+              "capture": "claim",
+              "args": {
+                "from": "$V",
+                "doc": "$doc:V",
+                "id": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "requestId"
+                  }
+                },
+                "claimClosesAt": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "claimClosesAt"
+                  }
+                }
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "claim"
+            }
+          ]
+        },
+        {
+          "id": "claim-again",
+          "source": {
+            "slug": "auth/oob/claim",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+            "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+            "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-claim",
+              "capture": "claim2",
+              "args": {
+                "from": "$V",
+                "doc": "$doc:V",
+                "id": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "requestId"
+                  }
+                },
+                "claimClosesAt": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "claimClosesAt"
+                  }
+                }
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "auth/oob/claim:alreadyClaimed",
+                "count": 1
+              },
+              "thread": "claim2"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "claim2",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused",
+            "thread": "claim2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-AUT-004",
+      "title": "a wallet whose member is not a member of the community proves: the service refuses with the generic auth/oob:notAuthorized, the same answer as for a bad signature, so sign-in cannot be used to probe membership",
+      "spec": [
+        "TF specs/auth/oob/prove/0.3/spec.md (a non-member and a bad signature get the same auth/oob:notAuthorized)",
+        "TF specs/auth/oob/_shared/0.1/CONVENTIONS.md (rule 7: generic failures)",
+        "docs/26-paired-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "auth/oob/prove",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/prove/0.3",
+        "pinnedDigest": "sha256:b01b9bd4130a85754aecca3c947d5e6543eee6d2833934a17f67c3145652913e",
+        "tfRef": {
+          "repoPath": "specs/auth/oob/prove/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f167e1ec979388ed20e5dce1c61feedbb9bbab3bc954b89bb1310b3549966fe9",
+        "schemaHash": "sha256:3db277c9e679ce93bc58077e8db092615439cabaa83826dda0c14ef879130ff9"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "S": {
+          "role": "starter",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "service",
+          "requires": []
+        },
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "request",
+          "source": {
+            "slug": "auth/oob/request",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/request/0.2",
+            "pinnedDigest": "sha256:7025a52435c727d64a33d53015233b44cd4f6dc952787a84ced71fca149b5607",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/request/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:303cbceb99a62341f83bea4c3581a13a63928c2bfd917da926411bbd7b6ac739",
+            "schemaHash": "sha256:2358a665640511a3ae6442fecd64a054144ec4c884982f81a7ebde378ecb5722"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-request",
+              "capture": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                "count": 1
+              },
+              "thread": "start"
+            }
+          ]
+        },
+        {
+          "id": "claim",
+          "source": {
+            "slug": "auth/oob/claim",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+            "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+            "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-claim",
+              "capture": "claim",
+              "args": {
+                "from": "$V",
+                "doc": "$doc:V",
+                "id": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "requestId"
+                  }
+                },
+                "claimClosesAt": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "claimClosesAt"
+                  }
+                }
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "claim"
+            }
+          ]
+        },
+        {
+          "id": "show-number",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "poll",
+              "thread": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                "code": "auth/oob/redeem:pending",
+                "count": 1
+              },
+              "thread": "poll"
+            }
+          ]
+        },
+        {
+          "id": "prove-non-member",
+          "source": {
+            "slug": "auth/oob/prove",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/prove/0.3",
+            "pinnedDigest": "sha256:b01b9bd4130a85754aecca3c947d5e6543eee6d2833934a17f67c3145652913e",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/prove/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f167e1ec979388ed20e5dce1c61feedbb9bbab3bc954b89bb1310b3549966fe9",
+            "schemaHash": "sha256:3db277c9e679ce93bc58077e8db092615439cabaa83826dda0c14ef879130ff9"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-prove",
+              "capture": "prove",
+              "args": {
+                "number": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                    "thread": "poll",
+                    "member": "details.matchNumber"
+                  }
+                },
+                "offset": 0
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "auth/oob:notAuthorized",
+                "count": 1
+              },
+              "thread": "prove"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "prove",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused",
+            "thread": "prove"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-AUT-005",
+      "title": "the approver gives up: the wallet cancels a claimed request, and the browser's redeem then does not return a session",
+      "spec": [
+        "TF specs/auth/oob/cancel/0.1/spec.md (the approver cancels with its lock key)",
+        "TF specs/auth/oob/redeem/0.2/spec.md (a cancelled request is final)",
+        "docs/26-paired-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "auth/oob/cancel",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/cancel/0.1",
+        "pinnedDigest": "sha256:b218aeba2f2e5b6e024d2a3a3157be99c3b346e99f39c75d9bf3fdaee4b553ba",
+        "tfRef": {
+          "repoPath": "specs/auth/oob/cancel/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6ddeaf744ee3e9b18b22f4108c736118678f98d5ccd0cedc7f6cc5a32b681eeb",
+        "schemaHash": "sha256:ec5bdc45e2a837948a9402d05f8566b1bd7bd90d36571a7852f4f46a1f894c7a"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "S": {
+          "role": "starter",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "service",
+          "requires": []
+        },
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "auth/oob/request",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/request/0.2",
+            "pinnedDigest": "sha256:7025a52435c727d64a33d53015233b44cd4f6dc952787a84ced71fca149b5607",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/request/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:303cbceb99a62341f83bea4c3581a13a63928c2bfd917da926411bbd7b6ac739",
+            "schemaHash": "sha256:2358a665640511a3ae6442fecd64a054144ec4c884982f81a7ebde378ecb5722"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-request",
+              "capture": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                "count": 1
+              },
+              "thread": "start"
+            }
+          ]
+        },
+        {
+          "id": "claim",
+          "source": {
+            "slug": "auth/oob/claim",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+            "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+            "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-claim",
+              "capture": "claim",
+              "args": {
+                "from": "$V",
+                "doc": "$doc:V",
+                "id": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "requestId"
+                  }
+                },
+                "claimClosesAt": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "claimClosesAt"
+                  }
+                }
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "claim"
+            }
+          ]
+        },
+        {
+          "id": "cancel",
+          "source": {
+            "slug": "auth/oob/cancel",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/cancel/0.1",
+            "pinnedDigest": "sha256:b218aeba2f2e5b6e024d2a3a3157be99c3b346e99f39c75d9bf3fdaee4b553ba",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/cancel/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:6ddeaf744ee3e9b18b22f4108c736118678f98d5ccd0cedc7f6cc5a32b681eeb",
+            "schemaHash": "sha256:ec5bdc45e2a837948a9402d05f8566b1bd7bd90d36571a7852f4f46a1f894c7a"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-cancel",
+              "capture": "cancel",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "cancel"
+            }
+          ]
+        },
+        {
+          "id": "redeem-after",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "redeemed",
+              "thread": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/redeem/0.2#response",
+                "count": 0
+              },
+              "thread": "redeemed"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "cancel",
+        "assert": [
+          {
+            "at": "S",
+            "received": {
+              "type": "https://trusttasks.org/spec/auth/oob/redeem/0.2#response",
+              "count": 0
+            },
+            "thread": "redeemed"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-AUT-006",
+      "title": "a browser that did not open the request tries to redeem it with a key of its own: the service refuses with auth/oob:notStarter, and only the starter key's holder is ever told anything about the request",
+      "spec": [
+        "TF specs/auth/oob/redeem/0.2/spec.md (service item 1: the issuer must equal the starter key, else auth/oob:notStarter)",
+        "TF specs/auth/oob/_shared/0.1/CONVENTIONS.md (rule 3: authority goes to the starter key, through redeem only)",
+        "docs/26-paired-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "auth/oob/redeem",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+        "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+        "tfRef": {
+          "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+        "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "S"
+      ],
+      "participants": {
+        "S": {
+          "role": "starter",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "service",
+          "requires": []
+        },
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "auth/oob/request",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/request/0.2",
+            "pinnedDigest": "sha256:7025a52435c727d64a33d53015233b44cd4f6dc952787a84ced71fca149b5607",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/request/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:303cbceb99a62341f83bea4c3581a13a63928c2bfd917da926411bbd7b6ac739",
+            "schemaHash": "sha256:2358a665640511a3ae6442fecd64a054144ec4c884982f81a7ebde378ecb5722"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-request",
+              "capture": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                "count": 1
+              },
+              "thread": "start"
+            }
+          ]
+        },
+        {
+          "id": "claim",
+          "source": {
+            "slug": "auth/oob/claim",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+            "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+            "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-claim",
+              "capture": "claim",
+              "args": {
+                "from": "$V",
+                "doc": "$doc:V",
+                "id": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "requestId"
+                  }
+                },
+                "claimClosesAt": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "claimClosesAt"
+                  }
+                }
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "claim"
+            }
+          ]
+        },
+        {
+          "id": "stranger-redeem",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "stranger",
+              "thread": "start",
+              "args": {
+                "as": "stranger"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                "code": "auth/oob:notStarter",
+                "count": 1
+              },
+              "thread": "stranger"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "stranger",
+        "assert": [
+          {
+            "at": "S",
+            "ceremony": "refused",
+            "thread": "stranger"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-AUT-007",
+      "title": "the approver cancels a claimed request and then tries to prove: the cancelled request is final, so the proof is refused (auth/oob:requestExpired or auth/oob:alreadyDecided; the specification names no code for a proof after a cancel) and no identity is established",
+      "spec": [
+        "TF specs/auth/oob/cancel/0.1/spec.md (a cancelled request is final)",
+        "TF specs/auth/oob/prove/0.3/spec.md (service item 1: the request must be claimed and inside its decision window, else auth/oob:requestExpired)",
+        "TF specs/auth/oob/_shared/0.1/CONVENTIONS.md (cancelled is a final state)",
+        "docs/26-paired-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "auth/oob/cancel",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/cancel/0.1",
+        "pinnedDigest": "sha256:b218aeba2f2e5b6e024d2a3a3157be99c3b346e99f39c75d9bf3fdaee4b553ba",
+        "tfRef": {
+          "repoPath": "specs/auth/oob/cancel/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6ddeaf744ee3e9b18b22f4108c736118678f98d5ccd0cedc7f6cc5a32b681eeb",
+        "schemaHash": "sha256:ec5bdc45e2a837948a9402d05f8566b1bd7bd90d36571a7852f4f46a1f894c7a"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "S": {
+          "role": "starter",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "service",
+          "requires": []
+        },
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "auth/oob/request",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/request/0.2",
+            "pinnedDigest": "sha256:7025a52435c727d64a33d53015233b44cd4f6dc952787a84ced71fca149b5607",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/request/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:303cbceb99a62341f83bea4c3581a13a63928c2bfd917da926411bbd7b6ac739",
+            "schemaHash": "sha256:2358a665640511a3ae6442fecd64a054144ec4c884982f81a7ebde378ecb5722"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-request",
+              "capture": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                "count": 1
+              },
+              "thread": "start"
+            }
+          ]
+        },
+        {
+          "id": "claim",
+          "source": {
+            "slug": "auth/oob/claim",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+            "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+            "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-claim",
+              "capture": "claim",
+              "args": {
+                "from": "$V",
+                "doc": "$doc:V",
+                "id": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "requestId"
+                  }
+                },
+                "claimClosesAt": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "claimClosesAt"
+                  }
+                }
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "claim"
+            }
+          ]
+        },
+        {
+          "id": "show-number",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "poll",
+              "thread": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                "code": "auth/oob/redeem:pending",
+                "count": 1
+              },
+              "thread": "poll"
+            }
+          ]
+        },
+        {
+          "id": "cancel",
+          "source": {
+            "slug": "auth/oob/cancel",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/cancel/0.1",
+            "pinnedDigest": "sha256:b218aeba2f2e5b6e024d2a3a3157be99c3b346e99f39c75d9bf3fdaee4b553ba",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/cancel/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:6ddeaf744ee3e9b18b22f4108c736118678f98d5ccd0cedc7f6cc5a32b681eeb",
+            "schemaHash": "sha256:ec5bdc45e2a837948a9402d05f8566b1bd7bd90d36571a7852f4f46a1f894c7a"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-cancel",
+              "capture": "cancel",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "cancel"
+            }
+          ]
+        },
+        {
+          "id": "prove-after-cancel",
+          "source": {
+            "slug": "auth/oob/prove",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/prove/0.3",
+            "pinnedDigest": "sha256:b01b9bd4130a85754aecca3c947d5e6543eee6d2833934a17f67c3145652913e",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/prove/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f167e1ec979388ed20e5dce1c61feedbb9bbab3bc954b89bb1310b3549966fe9",
+            "schemaHash": "sha256:3db277c9e679ce93bc58077e8db092615439cabaa83826dda0c14ef879130ff9"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-prove",
+              "capture": "prove",
+              "args": {
+                "number": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                    "thread": "poll",
+                    "member": "details.matchNumber"
+                  }
+                },
+                "offset": 0
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "auth/oob:requestExpired|auth/oob:alreadyDecided",
+                "count": 1
+              },
+              "thread": "prove"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "prove",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused",
+            "thread": "prove"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-AUT-008",
+      "title": "a respond signed with a key that is not the lock is refused with auth/oob:notClaimant and no session follows (the approver is a sender of deliberately broken documents, class D: a wallet never sends one)",
+      "spec": [
+        "TF specs/auth/oob/respond/0.3/spec.md (service item 1: the outer issuer must equal the lock, else auth/oob:notClaimant)",
+        "TF specs/auth/oob/_shared/0.1/CONVENTIONS.md (rule 4: the lock key signs everything the approver sends)",
+        "docs/26-paired-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "auth/oob/respond",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/respond/0.3",
+        "pinnedDigest": "sha256:a775be9164973ee437bebabcc86a0ed2063e0737f9a8ab2da681f80d2b99cbe2",
+        "tfRef": {
+          "repoPath": "specs/auth/oob/respond/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:80402b417c61d3d7ac3c50a20f1aa8a79ec5ac3f265d09843ce29e761a34d02b",
+        "schemaHash": "sha256:5dec0284405e4d99589cf60c32c02aff7743fe15779d11c585ac8d02054ec011"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "S": {
+          "role": "starter",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "service",
+          "requires": []
+        },
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received",
+            "optional:initiate.oobTamper"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "auth/oob/request",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/request/0.2",
+            "pinnedDigest": "sha256:7025a52435c727d64a33d53015233b44cd4f6dc952787a84ced71fca149b5607",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/request/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:303cbceb99a62341f83bea4c3581a13a63928c2bfd917da926411bbd7b6ac739",
+            "schemaHash": "sha256:2358a665640511a3ae6442fecd64a054144ec4c884982f81a7ebde378ecb5722"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-request",
+              "capture": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                "count": 1
+              },
+              "thread": "start"
+            }
+          ]
+        },
+        {
+          "id": "claim",
+          "source": {
+            "slug": "auth/oob/claim",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+            "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+            "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-claim",
+              "capture": "claim",
+              "args": {
+                "from": "$V",
+                "doc": "$doc:V",
+                "id": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "requestId"
+                  }
+                },
+                "claimClosesAt": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "claimClosesAt"
+                  }
+                }
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "claim"
+            }
+          ]
+        },
+        {
+          "id": "show-number",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "poll",
+              "thread": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                "code": "auth/oob/redeem:pending",
+                "count": 1
+              },
+              "thread": "poll"
+            }
+          ]
+        },
+        {
+          "id": "prove",
+          "source": {
+            "slug": "auth/oob/prove",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/prove/0.3",
+            "pinnedDigest": "sha256:b01b9bd4130a85754aecca3c947d5e6543eee6d2833934a17f67c3145652913e",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/prove/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f167e1ec979388ed20e5dce1c61feedbb9bbab3bc954b89bb1310b3549966fe9",
+            "schemaHash": "sha256:3db277c9e679ce93bc58077e8db092615439cabaa83826dda0c14ef879130ff9"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-prove",
+              "capture": "prove",
+              "args": {
+                "number": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                    "thread": "poll",
+                    "member": "details.matchNumber"
+                  }
+                },
+                "offset": 0
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "prove"
+            }
+          ]
+        },
+        {
+          "id": "respond-wrong-key",
+          "source": {
+            "slug": "auth/oob/respond",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/respond/0.3",
+            "pinnedDigest": "sha256:a775be9164973ee437bebabcc86a0ed2063e0737f9a8ab2da681f80d2b99cbe2",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/respond/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:80402b417c61d3d7ac3c50a20f1aa8a79ec5ac3f265d09843ce29e761a34d02b",
+            "schemaHash": "sha256:5dec0284405e4d99589cf60c32c02aff7743fe15779d11c585ac8d02054ec011"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-respond-wrong-key",
+              "capture": "approve",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "auth/oob:notClaimant",
+                "count": 1
+              },
+              "thread": "approve"
+            }
+          ]
+        },
+        {
+          "id": "redeem-after",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "redeemed",
+              "thread": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/redeem/0.2#response",
+                "count": 0
+              },
+              "thread": "redeemed"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "approve",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused",
+            "thread": "approve"
+          },
+          {
+            "at": "S",
+            "received": {
+              "type": "https://trusttasks.org/spec/auth/oob/redeem/0.2#response",
+              "count": 0
+            },
+            "thread": "redeemed"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-AUT-009",
+      "title": "a grant whose contextDigest is not the digest of the step 2 the member was shown is refused with auth/oob/respond:contextMismatch and no session follows (class D approver that sends a broken grant)",
+      "spec": [
+        "TF specs/auth/oob/respond/0.3/spec.md (service item 3: contextDigest must equal the stored digest of the signed step 2, else auth/oob/respond:contextMismatch)",
+        "TF specs/auth/oob/grant/0.3/spec.md (the grant binds what the member was shown)",
+        "docs/26-paired-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "auth/oob/respond",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/respond/0.3",
+        "pinnedDigest": "sha256:a775be9164973ee437bebabcc86a0ed2063e0737f9a8ab2da681f80d2b99cbe2",
+        "tfRef": {
+          "repoPath": "specs/auth/oob/respond/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:80402b417c61d3d7ac3c50a20f1aa8a79ec5ac3f265d09843ce29e761a34d02b",
+        "schemaHash": "sha256:5dec0284405e4d99589cf60c32c02aff7743fe15779d11c585ac8d02054ec011"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "S": {
+          "role": "starter",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "service",
+          "requires": []
+        },
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received",
+            "optional:initiate.oobTamper"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "auth/oob/request",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/request/0.2",
+            "pinnedDigest": "sha256:7025a52435c727d64a33d53015233b44cd4f6dc952787a84ced71fca149b5607",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/request/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:303cbceb99a62341f83bea4c3581a13a63928c2bfd917da926411bbd7b6ac739",
+            "schemaHash": "sha256:2358a665640511a3ae6442fecd64a054144ec4c884982f81a7ebde378ecb5722"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-request",
+              "capture": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                "count": 1
+              },
+              "thread": "start"
+            }
+          ]
+        },
+        {
+          "id": "claim",
+          "source": {
+            "slug": "auth/oob/claim",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+            "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+            "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-claim",
+              "capture": "claim",
+              "args": {
+                "from": "$V",
+                "doc": "$doc:V",
+                "id": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "requestId"
+                  }
+                },
+                "claimClosesAt": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "claimClosesAt"
+                  }
+                }
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "claim"
+            }
+          ]
+        },
+        {
+          "id": "show-number",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "poll",
+              "thread": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                "code": "auth/oob/redeem:pending",
+                "count": 1
+              },
+              "thread": "poll"
+            }
+          ]
+        },
+        {
+          "id": "prove",
+          "source": {
+            "slug": "auth/oob/prove",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/prove/0.3",
+            "pinnedDigest": "sha256:b01b9bd4130a85754aecca3c947d5e6543eee6d2833934a17f67c3145652913e",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/prove/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f167e1ec979388ed20e5dce1c61feedbb9bbab3bc954b89bb1310b3549966fe9",
+            "schemaHash": "sha256:3db277c9e679ce93bc58077e8db092615439cabaa83826dda0c14ef879130ff9"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-prove",
+              "capture": "prove",
+              "args": {
+                "number": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                    "thread": "poll",
+                    "member": "details.matchNumber"
+                  }
+                },
+                "offset": 0
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "prove"
+            }
+          ]
+        },
+        {
+          "id": "respond-wrong-digest",
+          "source": {
+            "slug": "auth/oob/respond",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/respond/0.3",
+            "pinnedDigest": "sha256:a775be9164973ee437bebabcc86a0ed2063e0737f9a8ab2da681f80d2b99cbe2",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/respond/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:80402b417c61d3d7ac3c50a20f1aa8a79ec5ac3f265d09843ce29e761a34d02b",
+            "schemaHash": "sha256:5dec0284405e4d99589cf60c32c02aff7743fe15779d11c585ac8d02054ec011"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-respond-wrong-digest",
+              "capture": "approve",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "auth/oob/respond:contextMismatch",
+                "count": 1
+              },
+              "thread": "approve"
+            }
+          ]
+        },
+        {
+          "id": "redeem-after",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "redeemed",
+              "thread": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/redeem/0.2#response",
+                "count": 0
+              },
+              "thread": "redeemed"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "approve",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused",
+            "thread": "approve"
+          },
+          {
+            "at": "S",
+            "received": {
+              "type": "https://trusttasks.org/spec/auth/oob/redeem/0.2#response",
+              "count": 0
+            },
+            "thread": "redeemed"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-AUT-010",
+      "title": "a member's identify with a broken signature is refused with the same generic auth/oob:notAuthorized as a non-member (class D approver that sends a broken identify)",
+      "spec": [
+        "TF specs/auth/oob/prove/0.3/spec.md (service items 4 and 7: the identify is verified against the issuer's authentication relationship; a non-member and a bad signature get the same auth/oob:notAuthorized)",
+        "TF specs/auth/oob/_shared/0.1/CONVENTIONS.md (rule 7: generic failures)",
+        "docs/26-paired-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "auth/oob/prove",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/prove/0.3",
+        "pinnedDigest": "sha256:b01b9bd4130a85754aecca3c947d5e6543eee6d2833934a17f67c3145652913e",
+        "tfRef": {
+          "repoPath": "specs/auth/oob/prove/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f167e1ec979388ed20e5dce1c61feedbb9bbab3bc954b89bb1310b3549966fe9",
+        "schemaHash": "sha256:3db277c9e679ce93bc58077e8db092615439cabaa83826dda0c14ef879130ff9"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "S": {
+          "role": "starter",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "service",
+          "requires": []
+        },
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received",
+            "optional:initiate.oobTamper"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "auth/oob/request",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/request/0.2",
+            "pinnedDigest": "sha256:7025a52435c727d64a33d53015233b44cd4f6dc952787a84ced71fca149b5607",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/request/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:303cbceb99a62341f83bea4c3581a13a63928c2bfd917da926411bbd7b6ac739",
+            "schemaHash": "sha256:2358a665640511a3ae6442fecd64a054144ec4c884982f81a7ebde378ecb5722"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-request",
+              "capture": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                "count": 1
+              },
+              "thread": "start"
+            }
+          ]
+        },
+        {
+          "id": "claim",
+          "source": {
+            "slug": "auth/oob/claim",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+            "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+            "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-claim",
+              "capture": "claim",
+              "args": {
+                "from": "$V",
+                "doc": "$doc:V",
+                "id": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "requestId"
+                  }
+                },
+                "claimClosesAt": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "claimClosesAt"
+                  }
+                }
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "claim"
+            }
+          ]
+        },
+        {
+          "id": "show-number",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "poll",
+              "thread": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                "code": "auth/oob/redeem:pending",
+                "count": 1
+              },
+              "thread": "poll"
+            }
+          ]
+        },
+        {
+          "id": "prove-bad-signature",
+          "source": {
+            "slug": "auth/oob/prove",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/prove/0.3",
+            "pinnedDigest": "sha256:b01b9bd4130a85754aecca3c947d5e6543eee6d2833934a17f67c3145652913e",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/prove/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f167e1ec979388ed20e5dce1c61feedbb9bbab3bc954b89bb1310b3549966fe9",
+            "schemaHash": "sha256:3db277c9e679ce93bc58077e8db092615439cabaa83826dda0c14ef879130ff9"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-prove-bad-signature",
+              "capture": "prove",
+              "args": {
+                "number": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                    "thread": "poll",
+                    "member": "details.matchNumber"
+                  }
+                },
+                "offset": 0
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "auth/oob:notAuthorized",
+                "count": 1
+              },
+              "thread": "prove"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "prove",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused",
+            "thread": "prove"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-AUT-011",
+      "title": "version step-down: a community from before the 2026-10-24 renaming (claim 0.1, prove, grant and respond 0.1 or 0.2, instants as epoch seconds) is signed in to by a wallet that asks the newest version first and steps down once per task, never resending a refusal at another version (the old community is a class D stand-in: a deployment's release, set by the harness)",
+      "spec": [
+        "TF specs/auth/oob/claim/0.2/spec.md (Changes from 0.1: decisionDeadline renamed decisionClosesAt)",
+        "TF specs/auth/oob/prove/0.3/spec.md and respond/0.3 (versioned together)",
+        "TF specs/auth/oob/_shared/0.1/CONVENTIONS.md (rule 5: the earlier versions carry instants as epoch seconds)",
+        "SPEC.md 5.2 and 8.3 (a type version not implemented is refused unsupportedVersion; the details member servedVersions is not named by the specification, so it is not asserted)",
+        "docs/26-paired-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "auth/oob/claim",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+        "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+        "tfRef": {
+          "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+        "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "S"
+      ],
+      "participants": {
+        "S": {
+          "role": "starter",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "service",
+          "requires": [
+            "optional:trigger.serveVersions"
+          ]
+        },
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "serve-legacy",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "serveVersions",
+              "args": {
+                "profile": "legacy"
+              }
+            }
+          }
+        },
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "auth/oob/request",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/request/0.2",
+            "pinnedDigest": "sha256:7025a52435c727d64a33d53015233b44cd4f6dc952787a84ced71fca149b5607",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/request/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:303cbceb99a62341f83bea4c3581a13a63928c2bfd917da926411bbd7b6ac739",
+            "schemaHash": "sha256:2358a665640511a3ae6442fecd64a054144ec4c884982f81a7ebde378ecb5722"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-request",
+              "capture": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                "count": 1
+              },
+              "thread": "start"
+            }
+          ]
+        },
+        {
+          "id": "claim",
+          "source": {
+            "slug": "auth/oob/claim",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+            "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+            "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-claim",
+              "capture": "claim",
+              "args": {
+                "from": "$V",
+                "doc": "$doc:V",
+                "id": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "requestId"
+                  }
+                },
+                "claimClosesAt": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "claimClosesAt"
+                  }
+                }
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "claim"
+            }
+          ]
+        },
+        {
+          "id": "show-number",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "poll",
+              "thread": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                "code": "auth/oob/redeem:pending",
+                "count": 1
+              },
+              "thread": "poll"
+            }
+          ]
+        },
+        {
+          "id": "prove",
+          "source": {
+            "slug": "auth/oob/prove",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/prove/0.3",
+            "pinnedDigest": "sha256:b01b9bd4130a85754aecca3c947d5e6543eee6d2833934a17f67c3145652913e",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/prove/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f167e1ec979388ed20e5dce1c61feedbb9bbab3bc954b89bb1310b3549966fe9",
+            "schemaHash": "sha256:3db277c9e679ce93bc58077e8db092615439cabaa83826dda0c14ef879130ff9"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-prove",
+              "capture": "prove",
+              "args": {
+                "number": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/trust-task-error/0.6",
+                    "thread": "poll",
+                    "member": "details.matchNumber"
+                  }
+                },
+                "offset": 0
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "prove"
+            }
+          ]
+        },
+        {
+          "id": "respond",
+          "source": {
+            "slug": "auth/oob/respond",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/respond/0.3",
+            "pinnedDigest": "sha256:a775be9164973ee437bebabcc86a0ed2063e0737f9a8ab2da681f80d2b99cbe2",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/respond/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:80402b417c61d3d7ac3c50a20f1aa8a79ec5ac3f265d09843ce29e761a34d02b",
+            "schemaHash": "sha256:5dec0284405e4d99589cf60c32c02aff7743fe15779d11c585ac8d02054ec011"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-approve",
+              "capture": "approve",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "approve"
+            }
+          ]
+        },
+        {
+          "id": "redeem",
+          "source": {
+            "slug": "auth/oob/redeem",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+            "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+            "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-redeem",
+              "capture": "redeemed",
+              "thread": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/redeem/0.2#response",
+                "count": 1
+              },
+              "thread": "redeemed"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "redeemed",
+        "assert": [
+          {
+            "at": "S",
+            "ceremony": "completed",
+            "thread": "redeemed"
+          },
+          {
+            "at": "K",
+            "ceremony": "completed",
+            "thread": "approve"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-AUT-012",
+      "title": "a wallet that only knows claim 0.1 meets a current community (claim 0.2 only): the community refuses the type as unsupportedVersion before it touches the request, and the request is still claimable at 0.2 (the approver sends only the versions it is told, class D: a wallet asks 0.2 first)",
+      "spec": [
+        "TF specs/auth/oob/claim/0.2/spec.md (Changes from 0.1)",
+        "SPEC.md 5.2 and 8.3 (unsupportedVersion; details.servedVersions is not named by the specification, so it is not asserted)",
+        "TF specs/auth/oob/_shared/0.1/CONVENTIONS.md (a failed claim leaves the request as it was)",
+        "docs/26-paired-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "auth/oob/claim",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+        "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+        "tfRef": {
+          "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+        "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "S": {
+          "role": "starter",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "service",
+          "requires": []
+        },
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received",
+            "optional:initiate.oobTamper"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "auth/oob/request",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/request/0.2",
+            "pinnedDigest": "sha256:7025a52435c727d64a33d53015233b44cd4f6dc952787a84ced71fca149b5607",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/request/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:303cbceb99a62341f83bea4c3581a13a63928c2bfd917da926411bbd7b6ac739",
+            "schemaHash": "sha256:2358a665640511a3ae6442fecd64a054144ec4c884982f81a7ebde378ecb5722"
+          },
+          "do": {
+            "initiate": {
+              "by": "S",
+              "to": "V",
+              "kind": "oob-request",
+              "capture": "start"
+            }
+          },
+          "expect": [
+            {
+              "at": "S",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                "count": 1
+              },
+              "thread": "start"
+            }
+          ]
+        },
+        {
+          "id": "claim-old",
+          "source": {
+            "slug": "auth/oob/claim",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+            "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+            "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-claim",
+              "capture": "old",
+              "args": {
+                "from": "$V",
+                "doc": "$doc:V",
+                "id": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "requestId"
+                  }
+                },
+                "claimClosesAt": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "claimClosesAt"
+                  }
+                },
+                "only": [
+                  "0.1"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "unsupportedVersion|unsupportedType",
+                "count": 1
+              },
+              "thread": "old"
+            }
+          ]
+        },
+        {
+          "id": "claim-new",
+          "source": {
+            "slug": "auth/oob/claim",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+            "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+            "tfRef": {
+              "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+            "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "oob-claim",
+              "capture": "claim",
+              "args": {
+                "from": "$V",
+                "doc": "$doc:V",
+                "id": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "requestId"
+                  }
+                },
+                "claimClosesAt": {
+                  "$received": {
+                    "at": "S",
+                    "type": "https://trusttasks.org/spec/auth/oob/request/0.2#response",
+                    "thread": "start",
+                    "member": "claimClosesAt"
+                  }
+                }
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed",
+              "thread": "claim"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "claim",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed",
+            "thread": "claim"
+          },
+          {
+            "at": "K",
+            "ceremony": "refused",
+            "thread": "old"
+          }
+        ]
+      }
+    }
+  ]
+}

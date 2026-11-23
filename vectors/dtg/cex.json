@@ -1,0 +1,2369 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "CEX",
+  "family": "dtg-credential-exchange",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "CEX-001",
+      "title": "a cleartext credential delivered by its issuer to its subject is accepted: no reply document, and the holder keeps the credential",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/issue/0.1/spec.md (Conformance, consumer: verify the credential's own issuer signature; Retention: the holder keeps the credential)",
+        "specs/credential-exchange/issue/0.1/spec.md (the task defines no response document)",
+        "SPEC.md:217-223 (4.4.2 a courtesy acknowledgement #response with payload {} is allowed; its absence carries no information)"
+      ],
+      "source": {
+        "slug": "credential-exchange/issue",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/issue/0.1",
+        "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+        "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+      ],
+      "mutants": [
+        "cexNeverStores"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.issue",
+            "credential": {}
+          },
+          "expect": {
+            "disposition": "silence",
+            "acknowledgement": "allowed",
+            "state": {
+              "storedCredential": 1,
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-002",
+      "title": "a payload carrying neither credential_response nor sealed, and one carrying both, are malformedRequest, and nothing is kept",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/issue/0.1/spec.md (consumer: reject a payload carrying both members or neither)",
+        "specs/credential-exchange/issue/0.1/spec.md payload.invalid-examples.json (neither; both)"
+      ],
+      "source": {
+        "slug": "credential-exchange/issue",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/issue/0.1",
+        "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+        "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+      ],
+      "mutants": [
+        "cexAcceptsBoth"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.issue"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "state": {
+              "storedCredential": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.issue",
+            "params": {
+              "id": "$id(cxi2)",
+              "payload": {
+                "sealed": "-----BEGIN VTA SEALED-----\nAAAA\n-----END VTA SEALED-----"
+              }
+            },
+            "credential": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "state": {
+              "storedCredential": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-003",
+      "title": "a credential whose issuer signature does not verify is refused and not kept: a flipped proof value, and a proof made by another key than the issuer's",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/issue/0.1/spec.md (consumer: verify the credential's own issuer signature; the envelope proving who delivered it says nothing about who issued it)"
+      ],
+      "source": {
+        "slug": "credential-exchange/issue",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/issue/0.1",
+        "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+        "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+      ],
+      "mutants": [
+        "cexNoCredentialProofCheck"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.issue",
+            "credential": {
+              "corrupt": true
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "storedCredential": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.issue",
+            "params": {
+              "id": "$id(cxi2)"
+            },
+            "credential": {
+              "signer": "X"
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "storedCredential": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-004",
+      "title": "a sealed bundle the holder cannot process or open is refused with unsupportedFormat or unopenableBundle and nothing is kept",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/issue/0.1/spec.md (errorCodes unsupportedFormat, unopenableBundle; sealed: verify the out-of-band digest before opening)"
+      ],
+      "source": {
+        "slug": "credential-exchange/issue",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/issue/0.1",
+        "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+        "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+      ],
+      "mutants": [
+        "cexSealedStored"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.issue",
+            "params": {
+              "payload": {
+                "sealed": "-----BEGIN VTA SEALED-----\nAAAA\n-----END VTA SEALED-----"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "credential-exchange/issue:unsupportedFormat",
+              "credential-exchange/issue:unopenableBundle"
+            ],
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedCredential": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-005",
+      "title": "a credential given as a compact string that does not verify is refused and not kept",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/issue/0.1/spec.md (Format-agnostic: a JSON string is an SD-JWT-VC; consumer: verify the credential's own issuer signature)"
+      ],
+      "source": {
+        "slug": "credential-exchange/issue",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/issue/0.1",
+        "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+        "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+      ],
+      "mutants": [
+        "cexStringStored"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.issue",
+            "params": {
+              "payload": {
+                "credential_response": {
+                  "credential": "eyJhbGciOiJFZERTQSJ9.eyJpc3MiOiJ4In0.c2ln~"
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "storedCredential": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-006",
+      "title": "an issue document without a proof is refused with proofRequired and nothing is kept",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/issue/0.1/spec.md (proofRequirement REQUIRED: the delivery is attributed by an envelope proof)"
+      ],
+      "source": {
+        "slug": "credential-exchange/issue",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/issue/0.1",
+        "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+        "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+      ],
+      "mutants": [
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.issue",
+            "credential": {},
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "state": {
+              "storedCredential": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-007",
+      "title": "an issue payload the schema does not allow is malformedRequest: credential_response as a string, an empty sealed, an unknown member",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/issue/0.1/spec.md payload.invalid-examples.json (credential_response must be an object; sealed must be non-empty; unknown member)"
+      ],
+      "source": {
+        "slug": "credential-exchange/issue",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/issue/0.1",
+        "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+        "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.issue",
+            "params": {
+              "id": "$id(cxi1)",
+              "payload": {
+                "credential_response": "eyJhbGciOiJF"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "state": {
+              "storedCredential": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.issue",
+            "params": {
+              "id": "$id(cxi2)",
+              "payload": {
+                "sealed": ""
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "state": {
+              "storedCredential": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.issue",
+            "params": {
+              "id": "$id(cxi3)"
+            },
+            "credential": {},
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/extra",
+                "value": true
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "state": {
+              "storedCredential": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-008",
+      "title": "the same credential delivered again in a second document is kept once",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/issue/0.1/spec.md (Retention: the holder keeps the credential)"
+      ],
+      "source": {
+        "slug": "credential-exchange/issue",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/issue/0.1",
+        "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+        "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+      },
+      "clarify": "The specification does not say whether a second delivery of a credential already held is stored again. The vector asserts one copy. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+      ],
+      "mutants": [
+        "cexStoresDuplicates"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.issue",
+            "credential": {}
+          },
+          "expect": {
+            "disposition": "silence",
+            "state": {
+              "storedCredential": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.issue",
+            "params": {
+              "id": "$id(cxi2)"
+            },
+            "credential": {}
+          },
+          "expect": {
+            "disposition": "silence",
+            "state": {
+              "storedCredential": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-009",
+      "title": "a credential whose proof purpose is authentication rather than assertionMethod is refused and not kept",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/issue/0.1/spec.md (consumer: verify the credential's own issuer signature)",
+        "W3C Data Integrity (a credential is an assertion: assertionMethod)"
+      ],
+      "source": {
+        "slug": "credential-exchange/issue",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/issue/0.1",
+        "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+        "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+      },
+      "clarify": "The task specification does not name the proof purpose of the carried credential; assertionMethod is the Data Integrity reading and VRC-ISS asserts it for relationship credentials. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+      ],
+      "mutants": [
+        "cexAnyCredentialPurpose"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.issue",
+            "credential": {
+              "purpose": "authentication"
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "storedCredential": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-010",
+      "title": "a credential about another party than the holder is refused and not kept",
+      "tier": 2,
+      "spec": [
+        "specs/credential-exchange/issue/0.1/spec.md (Authorization: the consumer's own decision; the specification does not name this rule)",
+        "docs/04-suite-design.md section 10 (profile:attested)"
+      ],
+      "source": {
+        "slug": "credential-exchange/issue",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/issue/0.1",
+        "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+        "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+      ],
+      "mutants": [
+        "cexAcceptsOtherSubject"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.issue",
+            "credential": {
+              "subject": "$Q"
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "storedCredential": 0
+            }
+          }
+        }
+      ],
+      "subgroup": "attested"
+    },
+    {
+      "id": "CEX-011",
+      "title": "a presentation bound to the nonce the verifier issued and to the verifier as audience, made by the holder over a genuine credential, is accepted: no reply document, and the presentation is kept",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.1/spec.md (Holder binding is mandatory; consumer: verify holder binding, freshness and audience before reading any claim)"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.1",
+        "pinnedDigest": "sha256:d84e4b1344681ade0be140c79e3fd83606d63bc8a7282b646b6725f3ba344a55",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4e44387bce318d952a90c0d0eecd951960bd879769ab942c2a735162a591af38",
+        "schemaHash": "sha256:d406cfbf00142bbf81f7edecafbeee334d8da20f8de59ccd35ab31c88d305624"
+      },
+      "clarify": "The specification says the proof carries the verifier's nonce and domain; Data Integrity names the first member `challenge`, and where the verifier's nonce comes from (the query task) is outside this suite. The vector sends `challenge` and takes the nonce from the helper `presentationNonce`. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.1",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cexNeverStores"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "presentation": {}
+          },
+          "expect": {
+            "disposition": "silence",
+            "state": {
+              "storedPresentation": 1,
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-012",
+      "title": "a presentation bound to a nonce the verifier did not issue is refused with credential-exchange/present:staleNonce",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.1/spec.md (errorCodes staleNonce; consumer MUST verify the nonce and reject with staleNonce)"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.1",
+        "pinnedDigest": "sha256:d84e4b1344681ade0be140c79e3fd83606d63bc8a7282b646b6725f3ba344a55",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4e44387bce318d952a90c0d0eecd951960bd879769ab942c2a735162a591af38",
+        "schemaHash": "sha256:d406cfbf00142bbf81f7edecafbeee334d8da20f8de59ccd35ab31c88d305624"
+      },
+      "clarify": "As CEX-011: the nonce member name and the nonce's source are not fixed by the specification. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.1",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cexNoNonceCheck",
+        "cexCodesSwapped"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "presentation": {
+              "nonce": "zNeverIssuedNonce"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "credential-exchange/present:staleNonce",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-013",
+      "title": "a presentation bound to another audience than the verifier is refused with credential-exchange/present:audienceMismatch",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.1/spec.md (errorCodes audienceMismatch; consumer MUST verify the audience and reject with audienceMismatch)"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.1",
+        "pinnedDigest": "sha256:d84e4b1344681ade0be140c79e3fd83606d63bc8a7282b646b6725f3ba344a55",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4e44387bce318d952a90c0d0eecd951960bd879769ab942c2a735162a591af38",
+        "schemaHash": "sha256:d406cfbf00142bbf81f7edecafbeee334d8da20f8de59ccd35ab31c88d305624"
+      },
+      "clarify": "As CEX-011: the audience is the proof's `domain` in the Data Integrity reading; the specification names it only as the audience. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.1",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cexNoAudienceCheck",
+        "cexCodesSwapped"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "presentation": {
+              "audience": "$Q"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "credential-exchange/present:audienceMismatch",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-014",
+      "title": "a nonce is good for one presentation: a second presentation on the same thread with the same nonce is refused with staleNonce",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.1/spec.md (errorCodes staleNonce: the nonce the verifier no longer considers fresh)"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.1",
+        "pinnedDigest": "sha256:d84e4b1344681ade0be140c79e3fd83606d63bc8a7282b646b6725f3ba344a55",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4e44387bce318d952a90c0d0eecd951960bd879769ab942c2a735162a591af38",
+        "schemaHash": "sha256:d406cfbf00142bbf81f7edecafbeee334d8da20f8de59ccd35ab31c88d305624"
+      },
+      "clarify": "Whether a nonce is single use is the verifier's policy; the specification says only that a nonce it no longer considers fresh is stale. Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.1",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cexNonceReusable"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "presentation": {}
+          },
+          "expect": {
+            "disposition": "silence",
+            "state": {
+              "storedPresentation": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "id": "$id(cxp2)"
+            },
+            "presentation": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "credential-exchange/present:staleNonce",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-015",
+      "title": "a presentation carrying a credential whose issuer signature does not verify is refused and not kept",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.1/spec.md (consumer: verify the underlying credential's issuer signature)"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.1",
+        "pinnedDigest": "sha256:d84e4b1344681ade0be140c79e3fd83606d63bc8a7282b646b6725f3ba344a55",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4e44387bce318d952a90c0d0eecd951960bd879769ab942c2a735162a591af38",
+        "schemaHash": "sha256:d406cfbf00142bbf81f7edecafbeee334d8da20f8de59ccd35ab31c88d305624"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.1",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cexNoPresentedCredentialCheck"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "presentation": {
+              "credential": {
+                "corrupt": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-016",
+      "title": "a vp_token that is neither a string nor an object, a payload without it, and a payload with an unknown member are malformedRequest, and nothing is kept",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.1/spec.md payload.invalid-examples.json (vp_token required; array; number; unknown member)"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.1",
+        "pinnedDigest": "sha256:d84e4b1344681ade0be140c79e3fd83606d63bc8a7282b646b6725f3ba344a55",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4e44387bce318d952a90c0d0eecd951960bd879769ab942c2a735162a591af38",
+        "schemaHash": "sha256:d406cfbf00142bbf81f7edecafbeee334d8da20f8de59ccd35ab31c88d305624"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.1",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cexVpTokenUnchecked",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "id": "$id(cxp1)",
+              "payload": {
+                "vp_token": 42
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "id": "$id(cxp2)",
+              "payload": {
+                "vp_token": [
+                  "a",
+                  "b"
+                ]
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "id": "$id(cxp3)",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "id": "$id(cxp4)"
+            },
+            "presentation": {},
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/extra",
+                "value": true
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-017",
+      "title": "a presentation made by a holder that is not the sender of the document is refused and not kept",
+      "tier": 2,
+      "spec": [
+        "specs/credential-exchange/present/0.1/spec.md (Authorization: holder binding, that the presenting party controls the credential it presents; the specification does not name this rule)",
+        "docs/04-suite-design.md section 10 (profile:attested)"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.1",
+        "pinnedDigest": "sha256:d84e4b1344681ade0be140c79e3fd83606d63bc8a7282b646b6725f3ba344a55",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4e44387bce318d952a90c0d0eecd951960bd879769ab942c2a735162a591af38",
+        "schemaHash": "sha256:d406cfbf00142bbf81f7edecafbeee334d8da20f8de59ccd35ab31c88d305624"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.1",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cexHolderNotSender"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "presentation": {
+              "holder": "X"
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 0
+            }
+          }
+        }
+      ],
+      "subgroup": "attested"
+    },
+    {
+      "id": "CEX-018",
+      "title": "a presentation of a credential about another party than the holder is refused and not kept",
+      "tier": 2,
+      "spec": [
+        "specs/credential-exchange/present/0.1/spec.md (Authorization: holder binding; the specification does not name this rule)",
+        "docs/04-suite-design.md section 10 (profile:attested)"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.1",
+        "pinnedDigest": "sha256:d84e4b1344681ade0be140c79e3fd83606d63bc8a7282b646b6725f3ba344a55",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4e44387bce318d952a90c0d0eecd951960bd879769ab942c2a735162a591af38",
+        "schemaHash": "sha256:d406cfbf00142bbf81f7edecafbeee334d8da20f8de59ccd35ab31c88d305624"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.1",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cexAcceptsOtherSubject"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "presentation": {
+              "credential": {
+                "subject": "$Q"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 0
+            }
+          }
+        }
+      ],
+      "subgroup": "attested"
+    },
+    {
+      "id": "CEX-019",
+      "title": "a query whose purpose is missing, empty, not a string or longer than 500 characters is malformedRequest, and nothing is deferred",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/query/0.1/spec.md (\"`purpose` is REQUIRED and MUST be non-empty. A verifier cannot ask for a credential without stating why.\")",
+        "specs/credential-exchange/query/0.1/spec.md payload.invalid-examples.json (purpose is required; purpose must be non-empty)",
+        "specs/credential-exchange/query/0.1/spec.md (Security & Privacy: \"`purpose` ... is bounded at 500 characters ... It is **REQUIRED**\")"
+      ],
+      "source": {
+        "slug": "credential-exchange/query",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/query/0.1",
+        "pinnedDigest": "sha256:b0d90216baf8f727455b6ee354c0fda9d19f43c63e9fea7e61fd6fafbe2ba99f",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/query/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5c93aab9be98b056715b694c1db41350f0e0e855d73ea2b56969aa1e33ded102",
+        "schemaHash": "sha256:5dfef314bb3a07806d57690f53c7ed8733ea7769dc6782e13fc0aa1f581c1ea6"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/query/0.1",
+        "optional:trigger.holdCredential",
+        "optional:observe.deferred"
+      ],
+      "mutants": [
+        "qryPurposeOptional",
+        "qryPurposeUnbounded",
+        "noPayloadValidation"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "holdCredential",
+            "args": {
+              "type": "https://example.org/conformance#ConformanceCredential"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query",
+            "params": {
+              "id": "$id(q1)"
+            },
+            "mutate": [
+              {
+                "op": "remove",
+                "path": "/payload/purpose"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "errorReply": "should",
+            "state": {
+              "deferred": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query",
+            "params": {
+              "id": "$id(q2)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/purpose",
+                "value": ""
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "errorReply": "should",
+            "state": {
+              "deferred": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query",
+            "params": {
+              "id": "$id(q3)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/purpose",
+                "value": 42
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "errorReply": "should",
+            "state": {
+              "deferred": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query",
+            "params": {
+              "id": "$id(q4)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/purpose",
+                "value": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "errorReply": "should",
+            "state": {
+              "deferred": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-020",
+      "title": "a query payload the schema does not allow is malformedRequest, and nothing is deferred: no dcql_query, no nonce, an empty nonce, a dcql_query that is not an object, an unknown member",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/query/0.1/spec.md payload.invalid-examples.json (dcql_query is required; nonce is required; nonce must be non-empty; unknown top-level member is rejected)",
+        "specs/credential-exchange/query/0.1/spec.md payload.schema.json (additionalProperties false; dcql_query is an object)"
+      ],
+      "source": {
+        "slug": "credential-exchange/query",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/query/0.1",
+        "pinnedDigest": "sha256:b0d90216baf8f727455b6ee354c0fda9d19f43c63e9fea7e61fd6fafbe2ba99f",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/query/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5c93aab9be98b056715b694c1db41350f0e0e855d73ea2b56969aa1e33ded102",
+        "schemaHash": "sha256:5dfef314bb3a07806d57690f53c7ed8733ea7769dc6782e13fc0aa1f581c1ea6"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/query/0.1",
+        "optional:trigger.holdCredential",
+        "optional:observe.deferred"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "holdCredential",
+            "args": {
+              "type": "https://example.org/conformance#ConformanceCredential"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query",
+            "params": {
+              "id": "$id(q1)"
+            },
+            "mutate": [
+              {
+                "op": "remove",
+                "path": "/payload/dcql_query"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "errorReply": "should",
+            "state": {
+              "deferred": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query",
+            "params": {
+              "id": "$id(q2)"
+            },
+            "mutate": [
+              {
+                "op": "remove",
+                "path": "/payload/nonce"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "errorReply": "should",
+            "state": {
+              "deferred": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query",
+            "params": {
+              "id": "$id(q3)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/nonce",
+                "value": ""
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "errorReply": "should",
+            "state": {
+              "deferred": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query",
+            "params": {
+              "id": "$id(q4)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/dcql_query",
+                "value": "credentials"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "errorReply": "should",
+            "state": {
+              "deferred": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query",
+            "params": {
+              "id": "$id(q5)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/extra",
+                "value": true
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "errorReply": "should",
+            "state": {
+              "deferred": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-021",
+      "title": "a query that names no credential type contributes no candidates: nothing is presented and nothing is deferred, although the holder holds a credential",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/query/0.1/spec.md (\"a query carrying no type discriminator contributes **no** candidates. It does not mean \"everything\". A holder MUST NOT blind-scan its wallet to answer a query\")"
+      ],
+      "source": {
+        "slug": "credential-exchange/query",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/query/0.1",
+        "pinnedDigest": "sha256:b0d90216baf8f727455b6ee354c0fda9d19f43c63e9fea7e61fd6fafbe2ba99f",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/query/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5c93aab9be98b056715b694c1db41350f0e0e855d73ea2b56969aa1e33ded102",
+        "schemaHash": "sha256:5dfef314bb3a07806d57690f53c7ed8733ea7769dc6782e13fc0aa1f581c1ea6"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/query/0.1",
+        "optional:trigger.holdCredential",
+        "optional:observe.deferred"
+      ],
+      "mutants": [
+        "qryEnumerates"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "holdCredential",
+            "args": {
+              "type": "https://example.org/conformance#ConformanceCredential"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query",
+            "params": {
+              "id": "$id(q1)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/dcql_query",
+                "value": {
+                  "credentials": [
+                    {
+                      "id": "any",
+                      "format": "ldp_vc"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "deferred": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query",
+            "params": {
+              "id": "$id(q2)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/dcql_query",
+                "value": {
+                  "credentials": [
+                    {
+                      "id": "any",
+                      "format": "ldp_vc",
+                      "meta": {
+                        "type_values": []
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "deferred": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-022",
+      "title": "a query for a credential the holder holds, from a verifier it does not pre-trust, is deferred: the holder keeps the query for a decision, tells the verifier credential-exchange/query:consentRequired, and presents nothing",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/query/0.1/spec.md (\"Any other verifier is **deferred**: the query is persisted, the verifier is told `consentRequired`, and the decision moves out of band\")",
+        "specs/credential-exchange/query/0.1/spec.md (errorCodes: consentRequired, The holder deferred the query for an out-of-band decision; retryable: true)"
+      ],
+      "source": {
+        "slug": "credential-exchange/query",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/query/0.1",
+        "pinnedDigest": "sha256:b0d90216baf8f727455b6ee354c0fda9d19f43c63e9fea7e61fd6fafbe2ba99f",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/query/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5c93aab9be98b056715b694c1db41350f0e0e855d73ea2b56969aa1e33ded102",
+        "schemaHash": "sha256:5dfef314bb3a07806d57690f53c7ed8733ea7769dc6782e13fc0aa1f581c1ea6"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/query/0.1",
+        "optional:trigger.holdCredential",
+        "optional:observe.deferred"
+      ],
+      "mutants": [
+        "qryAutoPresents",
+        "qryNoDeferral"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "holdCredential",
+            "args": {
+              "type": "https://example.org/conformance#ConformanceCredential"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "credential-exchange/query:consentRequired",
+            "retryable": true,
+            "state": {
+              "deferred": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-023",
+      "title": "a query for a credential type the holder does not hold is answered credential-exchange/query:noMatch, and nothing is deferred",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/query/0.1/spec.md (errorCodes: noMatch, The holder holds no credential satisfying the query; retryable: false)",
+        "specs/credential-exchange/query/0.1/spec.md (Conformance: \"Expect three outcomes: a presentation, `consentRequired`, or `noMatch`.\")"
+      ],
+      "source": {
+        "slug": "credential-exchange/query",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/query/0.1",
+        "pinnedDigest": "sha256:b0d90216baf8f727455b6ee354c0fda9d19f43c63e9fea7e61fd6fafbe2ba99f",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/query/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5c93aab9be98b056715b694c1db41350f0e0e855d73ea2b56969aa1e33ded102",
+        "schemaHash": "sha256:5dfef314bb3a07806d57690f53c7ed8733ea7769dc6782e13fc0aa1f581c1ea6"
+      },
+      "clarify": "For a verifier the holder does not pre-trust, the query specification tells the holder to defer a matched query and tell the verifier consentRequired (spec.md:73-76), defines noMatch for a query nothing satisfies (errorCodes), and requires that noMatch and \"held but not consented\" be indistinguishable to the verifier (spec.md:84 and 141-142; pending/deny 105-106: a denial is indistinguishable from silence). An immediate noMatch for an unheld type is distinguishable from the immediate consentRequired a held type gets, so the text admits both noMatch and a consentRequired-style answer (or a deferral) for an unmatched query; the vector asserts noMatch with nothing deferred. No sentence obliges the holder to send noMatch at all (SPEC.md:1196 MAY, 1071 SHOULD). Same question as CEX-024; for the task force. Not gating.",
+      "clarifyClass": "spec-inconsistent",
+      "clarifySince": "2026-11-17",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/query/0.1",
+        "optional:trigger.holdCredential",
+        "optional:observe.deferred"
+      ],
+      "mutants": [
+        "qryDefersUnmatched"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "holdCredential",
+            "args": {
+              "type": "https://example.org/conformance#OtherCredential"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "credential-exchange/query:noMatch",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "deferred": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-024",
+      "title": "the verifier cannot tell a credential the holder holds but will not present from one it does not hold: both queries get the same refusal",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/query/0.1/spec.md (\"Never disclose which credentials are held in a refusal — `noMatch` and \"held but not consented\" MUST be indistinguishable to the verifier, or refusal itself becomes an enumeration primitive.\")",
+        "specs/credential-exchange/query/0.1/spec.md (Correlation: \"a refusal that discriminates between them is an enumeration primitive wearing an error code\")"
+      ],
+      "source": {
+        "slug": "credential-exchange/query",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/query/0.1",
+        "pinnedDigest": "sha256:b0d90216baf8f727455b6ee354c0fda9d19f43c63e9fea7e61fd6fafbe2ba99f",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/query/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5c93aab9be98b056715b694c1db41350f0e0e855d73ea2b56969aa1e33ded102",
+        "schemaHash": "sha256:5dfef314bb3a07806d57690f53c7ed8733ea7769dc6782e13fc0aa1f581c1ea6"
+      },
+      "clarify": "The specification asks for two things that cannot both hold for a held credential and a verifier that is not pre-trusted: the deferred query is answered `consentRequired` (errorCodes and \"Answer, defer, or refuse\") and `noMatch` and \"held but not consented\" MUST be indistinguishable. Which reading governs (consentRequired for a deferral and the indistinguishability rule for a refusal after a decision, or one code for both) is a question for the task force. The vector asserts the second reading. Not gating.",
+      "clarifyClass": "spec-inconsistent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/query/0.1",
+        "optional:trigger.holdCredential",
+        "optional:observe.deferred"
+      ],
+      "mutants": [
+        "qryRefusalDiscriminates"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "holdCredential",
+            "args": {
+              "type": "https://example.org/conformance#ConformanceCredential"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query",
+            "params": {
+              "id": "$id(q1)",
+              "threadId": "$id(q1)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/dcql_query",
+                "value": {
+                  "credentials": [
+                    {
+                      "id": "u",
+                      "format": "ldp_vc",
+                      "meta": {
+                        "type_values": [
+                          [
+                            "https://example.org/conformance#UnheldCredential"
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "credential-exchange/query:noMatch",
+              "credential-exchange/query:consentRequired"
+            ]
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query",
+            "params": {
+              "id": "$id(q2)",
+              "threadId": "$id(q2)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "credential-exchange/query:noMatch",
+              "credential-exchange/query:consentRequired"
+            ],
+            "sameErrorAs": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-025",
+      "title": "a verifier the holder pre-trusts is answered at once: the holder presents on the query's thread, bound to the query's nonce and to the verifier",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/query/0.1/spec.md (\"A **pre-trusted** verifier is auto-consented; the holder answers immediately with present on the same thread.\")",
+        "specs/credential-exchange/query/0.1/spec.md (nonce: \"Verifier freshness value, bound into the resulting presentation so it cannot be replayed to another verifier or at another time\")"
+      ],
+      "source": {
+        "slug": "credential-exchange/query",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/query/0.1",
+        "pinnedDigest": "sha256:b0d90216baf8f727455b6ee354c0fda9d19f43c63e9fea7e61fd6fafbe2ba99f",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/query/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5c93aab9be98b056715b694c1db41350f0e0e855d73ea2b56969aa1e33ded102",
+        "schemaHash": "sha256:5dfef314bb3a07806d57690f53c7ed8733ea7769dc6782e13fc0aa1f581c1ea6"
+      },
+      "clarify": "Which verifiers are pre-trusted is the holder's policy and the helper only states it. The specification says the presentation carries the query's nonce and the verifier as audience; Data Integrity names the first member `challenge` and the audience `domain` (as for CEX-011). Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/query/0.1",
+        "optional:trigger.holdCredential",
+        "optional:trigger.verifierTrust"
+      ],
+      "mutants": [
+        "qryPresentNoNonce"
+      ],
+      "advisoryMutants": [
+        "qryPresentOtherThread"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "holdCredential",
+            "args": {
+              "type": "https://example.org/conformance#ConformanceCredential"
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "verifierTrust",
+            "args": {
+              "vid": "$A"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/credential-exchange/present/0.1",
+            "pointer": {
+              "/threadId": "$id(qry)",
+              "/payload/vp_token/proof/challenge": "qry-nonce-0001",
+              "/payload/vp_token/proof/domain": "$A"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-026",
+      "title": "a deferred query that the holder's human approves is presented on the query's original thread, bound to the query's nonce and to the verifier",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/query/0.1/spec.md (\"If approved, the holder presents on the original thread.\")",
+        "specs/credential-exchange/query/0.1/spec.md (nonce: bound into the resulting presentation)"
+      ],
+      "source": {
+        "slug": "credential-exchange/query",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/query/0.1",
+        "pinnedDigest": "sha256:b0d90216baf8f727455b6ee354c0fda9d19f43c63e9fea7e61fd6fafbe2ba99f",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/query/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5c93aab9be98b056715b694c1db41350f0e0e855d73ea2b56969aa1e33ded102",
+        "schemaHash": "sha256:5dfef314bb3a07806d57690f53c7ed8733ea7769dc6782e13fc0aa1f581c1ea6"
+      },
+      "clarify": "The decision is out of band (pending/approve); the helper stands for it. The nonce member and the audience member are as for CEX-025. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/query/0.1",
+        "optional:trigger.holdCredential",
+        "optional:trigger.queryDecision",
+        "optional:observe.deferred"
+      ],
+      "mutants": [
+        "qryNoDeferral",
+        "qryPresentNoNonce"
+      ],
+      "advisoryMutants": [
+        "qryPresentOtherThread"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "holdCredential",
+            "args": {
+              "type": "https://example.org/conformance#ConformanceCredential"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query"
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "state": {
+              "deferred": 1
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "queryDecision",
+            "args": {
+              "thread": "$id(qry)",
+              "decision": "approve"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/credential-exchange/present/0.1",
+            "pointer": {
+              "/threadId": "$id(qry)",
+              "/payload/vp_token/proof/challenge": "qry-nonce-0001",
+              "/payload/vp_token/proof/domain": "$A"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-027",
+      "title": "a query without a proof is not refused for that: the proof of a query is OPTIONAL, so the holder defers it as it would a signed one",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/query/0.1/spec.md (proofRequirement OPTIONAL: An authcrypted transport proves which DID is asking ... A document proof is permitted where the envelope's authentication does not survive relaying.)"
+      ],
+      "source": {
+        "slug": "credential-exchange/query",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/query/0.1",
+        "pinnedDigest": "sha256:b0d90216baf8f727455b6ee354c0fda9d19f43c63e9fea7e61fd6fafbe2ba99f",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/query/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5c93aab9be98b056715b694c1db41350f0e0e855d73ea2b56969aa1e33ded102",
+        "schemaHash": "sha256:5dfef314bb3a07806d57690f53c7ed8733ea7769dc6782e13fc0aa1f581c1ea6"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/query/0.1",
+        "optional:trigger.holdCredential",
+        "optional:observe.deferred"
+      ],
+      "mutants": [
+        "qryProofRequired"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "holdCredential",
+            "args": {
+              "type": "https://example.org/conformance#ConformanceCredential"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query",
+            "sign": null
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "state": {
+              "deferred": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-028",
+      "title": "an offer payload the schema does not allow is malformedRequest: no credential_offer, a credential_offer that is a string, an unknown member",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/offer/0.1/spec.md payload.invalid-examples.json (credential_offer is required; must be an object, not a string; unknown top-level member is rejected)"
+      ],
+      "source": {
+        "slug": "credential-exchange/offer",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/offer/0.1",
+        "pinnedDigest": "sha256:dbca4d8c444b73b78016706fdd8cce96a9b290364d05515af52e82b26a0a4dcb",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/offer/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:265edc3f202481579bd7a29fe753d01a24ca22e61c0c8e93f0229b0b56ffb78d",
+        "schemaHash": "sha256:95ffea4830fa5e7ea2fb5a014e51fbe06e68ede3908dcca9ae5324e940391868"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/offer/0.1"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.offer",
+            "params": {
+              "id": "$id(o1)"
+            },
+            "mutate": [
+              {
+                "op": "remove",
+                "path": "/payload/credential_offer"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "cex.offer",
+            "params": {
+              "id": "$id(o2)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/credential_offer",
+                "value": "https://issuer.example/offer"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "cex.offer",
+            "params": {
+              "id": "$id(o3)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/extra",
+                "value": true
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-029",
+      "title": "an offer that names only credential configurations the holder cannot accept is answered credential-exchange/offer:unsupportedCredential rather than abandoned",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/offer/0.1/spec.md (Conformance, consumer: \"A holder that supports none of the offered configurations SHOULD say so with `unsupportedCredential` rather than abandoning the thread silently\")",
+        "specs/credential-exchange/offer/0.1/spec.md (errorCodes: unsupportedCredential, The holder cannot accept any credential configuration named in the offer)"
+      ],
+      "source": {
+        "slug": "credential-exchange/offer",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/offer/0.1",
+        "pinnedDigest": "sha256:dbca4d8c444b73b78016706fdd8cce96a9b290364d05515af52e82b26a0a4dcb",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/offer/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:265edc3f202481579bd7a29fe753d01a24ca22e61c0c8e93f0229b0b56ffb78d",
+        "schemaHash": "sha256:95ffea4830fa5e7ea2fb5a014e51fbe06e68ede3908dcca9ae5324e940391868"
+      },
+      "clarify": "The specification says SHOULD, and which configurations a holder supports is its own. An implementation that supports the vector's configuration, or one that stays silent, is within the text. Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/offer/0.1"
+      ],
+      "mutants": [
+        "offerNoUnsupportedCode"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.offer",
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/credential_offer/credential_configuration_ids",
+                "value": [
+                  "https://example.org/conformance#UnsupportedCredential"
+                ]
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "credential-exchange/offer:unsupportedCredential",
+            "retryable": false,
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-030",
+      "title": "a request payload the schema does not allow is malformedRequest: no credential_request, a credential_request that is an array, an unknown member",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/request/0.1/spec.md payload.invalid-examples.json (credential_request is required; must be an object, not an array; unknown top-level member is rejected)"
+      ],
+      "source": {
+        "slug": "credential-exchange/request",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/request/0.1",
+        "pinnedDigest": "sha256:4c01c7fffb441a9116767669613cae3ddf5b14ed6e35ae5ab799fb33508e59bd",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:902cfe47c4011ed2a27d41114dac073023d2fa1565d810360054b0154316121c",
+        "schemaHash": "sha256:c58c66590d7cb7b949c544c5b95f14d0ef72b37c2b0e3e6859ce3dd151d1c58e"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/request/0.1"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.request",
+            "params": {
+              "id": "$id(r1)"
+            },
+            "mutate": [
+              {
+                "op": "remove",
+                "path": "/payload/credential_request"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "cex.request",
+            "params": {
+              "id": "$id(r2)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/credential_request",
+                "value": []
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "cex.request",
+            "params": {
+              "id": "$id(r3)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/extra",
+                "value": true
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-031",
+      "title": "a request that corresponds to no offer the issuer made is refused with credential-exchange/request:unknownOffer (or invalidProof, the key-binding proof not verifying) and nothing is issued",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/request/0.1/spec.md (errorCodes: unknownOffer, The request does not correspond to an offer this issuer made; invalidProof, The key-binding proof is missing, malformed, or does not verify)",
+        "specs/credential-exchange/request/0.1/spec.md (Conformance, consumer: \"verify the key-binding proof before minting anything, and reject with `invalidProof` if it does not verify\")",
+        "specs/credential-exchange/request/0.1/spec.md payload.schema.json (credential_request is a bare object: no member is required of it)",
+        "SPEC.md:1196 (an error reply is a MAY, :1071 a SHOULD)"
+      ],
+      "source": {
+        "slug": "credential-exchange/request",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/request/0.1",
+        "pinnedDigest": "sha256:4c01c7fffb441a9116767669613cae3ddf5b14ed6e35ae5ab799fb33508e59bd",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:902cfe47c4011ed2a27d41114dac073023d2fa1565d810360054b0154316121c",
+        "schemaHash": "sha256:c58c66590d7cb7b949c544c5b95f14d0ef72b37c2b0e3e6859ce3dd151d1c58e"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/request/0.1"
+      ],
+      "mutants": [
+        "reqAcceptsUnknownOffer"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.request"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "credential-exchange/request:unknownOffer",
+              "credential-exchange/request:invalidProof"
+            ],
+            "retryable": false,
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-032",
+      "title": "a request without a document proof is refused with proofRequired and nothing is issued",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/request/0.1/spec.md (proofRequirement REQUIRED: The document proof is required because execution acts with the subject's authority to obtain a credential in their name)"
+      ],
+      "source": {
+        "slug": "credential-exchange/request",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/request/0.1",
+        "pinnedDigest": "sha256:4c01c7fffb441a9116767669613cae3ddf5b14ed6e35ae5ab799fb33508e59bd",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:902cfe47c4011ed2a27d41114dac073023d2fa1565d810360054b0154316121c",
+        "schemaHash": "sha256:c58c66590d7cb7b949c544c5b95f14d0ef72b37c2b0e3e6859ce3dd151d1c58e"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/request/0.1"
+      ],
+      "mutants": [
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.request",
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true
+          }
+        }
+      ]
+    }
+  ]
+}

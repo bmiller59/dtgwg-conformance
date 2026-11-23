@@ -1,0 +1,42 @@
+{
+  "name": "dtgwg-conformance",
+  "license": "Apache-2.0",
+  "version": "0.1.0-draft",
+  "private": true,
+  "type": "module",
+  "description": "Conformance suite foundation for Trust Task based trust ceremonies (vectors, runner, reference adapter).",
+  "engines": {
+    "node": ">=22.16.0"
+  },
+  "scripts": {
+    "test": "node --experimental-strip-types --disable-warning=ExperimentalWarning --test \"test/**/*.test.ts\"",
+    "typecheck": "tsc --noEmit",
+    "check:pins": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/check-pins.ts",
+    "check:spec-drift": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/check-spec-drift.ts",
+    "tf-alignment": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/tf-alignment.ts",
+    "backfill-spec-hashes": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/backfill-spec-hashes.ts",
+    "repin": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/repin.ts",
+    "pins": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/refresh-pins.ts",
+    "governance": "node --experimental-strip-types --disable-warning=ExperimentalWarning src/governance/cli.ts",
+    "suite": "node --experimental-strip-types --disable-warning=ExperimentalWarning src/runner/cli.ts",
+    "resolve-tf-refs": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/resolve-tf-refs.ts",
+    "at-a-glance": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/at-a-glance.ts",
+    "docs-blocks": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/docs-blocks.ts",
+    "coverage-pages": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/coverage-pages.ts",
+    "regen": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/regen.ts",
+    "ceremony": "node --experimental-strip-types --disable-warning=ExperimentalWarning src/ceremony/cli.ts",
+    "crossed": "node --experimental-strip-types --disable-warning=ExperimentalWarning src/crossed/cli.ts",
+    "traceability": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/traceability.ts",
+    "lint:claims": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/lint-claims.ts",
+    "check:docs": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/regen.ts --check",
+    "coverage-matrix": "node --experimental-strip-types --disable-warning=ExperimentalWarning src/coverage/matrix/cli.ts"
+  },
+  "dependencies": {
+    "@openvtc/trust-tasks": "0.29.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.0",
+    "typescript": "5.8.3"
+  },
+  "packageManager": "yarn@4.9.2+sha512.1fc009bc09d13cfd0e19efa44cbfc2b9cf6ca61482725eb35bbc5e257e093ebf4130db6dfe15d604ff4b79efd8e1e8e99b25fa7d0a6197c9f9826358d4d65c3c"
+}

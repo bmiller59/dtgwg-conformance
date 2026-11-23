@@ -1,0 +1,3392 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "PP-POL",
+  "family": "plain",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "PP-POL-001",
+      "title": "policy/activate 0.1: the payload is validated against the task's payload schema (missing required member id; unknown member in a closed payload; wrong type for id)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/policy/activate/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"id\",\"purpose\"], additionalProperties false",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "source": {
+        "slug": "policy/activate",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/activate/0.1",
+        "pinnedDigest": "sha256:3b7f1c9ce4af1f42fb9c2dd621ceecf29ed580737f0972f33c90d3b8af97582a",
+        "tfRef": {
+          "repoPath": "specs/policy/activate/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:14c89327c9f8f99edfabef0457b4db786bb65b7682666a67b3cc9403b17f60c6",
+        "schemaHash": "sha256:ff63ad681431fc239cc454f027a3ab700863b338f79c84289a44e4ef894a80ff"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/activate/0.1"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p1)",
+              "type": "https://trusttasks.org/spec/policy/activate/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "purpose": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/policy/activate/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "id": "example",
+                "purpose": "example",
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p3)",
+              "type": "https://trusttasks.org/spec/policy/activate/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "id": 5,
+                "purpose": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-002",
+      "title": "policy/activate 0.1: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/policy/activate/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true"
+      ],
+      "source": {
+        "slug": "policy/activate",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/activate/0.1",
+        "pinnedDigest": "sha256:3b7f1c9ce4af1f42fb9c2dd621ceecf29ed580737f0972f33c90d3b8af97582a",
+        "tfRef": {
+          "repoPath": "specs/policy/activate/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:14c89327c9f8f99edfabef0457b4db786bb65b7682666a67b3cc9403b17f60c6",
+        "schemaHash": "sha256:ff63ad681431fc239cc454f027a3ab700863b338f79c84289a44e4ef894a80ff"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/activate/0.1"
+      ],
+      "mutants": [
+        "recipientOptional",
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/policy/activate/0.1",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "id": "example",
+                "purpose": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(e2)",
+              "type": "https://trusttasks.org/spec/policy/activate/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "id": "example",
+                "purpose": "example"
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-003",
+      "title": "policy/activate 0.1: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+        "declared policy: https://trusttasks.org/spec/policy/activate/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true"
+      ],
+      "source": {
+        "slug": "policy/activate",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/activate/0.1",
+        "pinnedDigest": "sha256:3b7f1c9ce4af1f42fb9c2dd621ceecf29ed580737f0972f33c90d3b8af97582a",
+        "tfRef": {
+          "repoPath": "specs/policy/activate/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:14c89327c9f8f99edfabef0457b4db786bb65b7682666a67b3cc9403b17f60c6",
+        "schemaHash": "sha256:ff63ad681431fc239cc454f027a3ab700863b338f79c84289a44e4ef894a80ff"
+      },
+      "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/policy/activate/0.1"
+      ],
+      "mutants": [
+        "noFreshnessWindow"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(i1)",
+              "type": "https://trusttasks.org/spec/policy/activate/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "payload": {
+                "id": "example",
+                "purpose": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-004",
+      "title": "policy/activate 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/policy/activate/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/policy/activate/0.1#response",
+        "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+      ],
+      "source": {
+        "slug": "policy/activate",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/activate/0.1",
+        "pinnedDigest": "sha256:3b7f1c9ce4af1f42fb9c2dd621ceecf29ed580737f0972f33c90d3b8af97582a",
+        "tfRef": {
+          "repoPath": "specs/policy/activate/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:14c89327c9f8f99edfabef0457b4db786bb65b7682666a67b3cc9403b17f60c6",
+        "schemaHash": "sha256:ff63ad681431fc239cc454f027a3ab700863b338f79c84289a44e4ef894a80ff"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/activate/0.1"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/policy/activate/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "id": "example",
+                "purpose": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/policy/activate/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-005",
+      "title": "policy/active 0.1: the payload is validated against the task's payload schema (unknown member in a closed payload)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/policy/active/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [], additionalProperties false",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "source": {
+        "slug": "policy/active",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/active/0.1",
+        "pinnedDigest": "sha256:6cee582229735cb923a025291c35dd3bb8f14b0e016f2ef2f13e211c3796c221",
+        "tfRef": {
+          "repoPath": "specs/policy/active/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:c65d206b869ee593d5ad6b957d8423057df150fe7064655ec3f05a7c5940650f",
+        "schemaHash": "sha256:bde9b68d6f5e6e0daafe73b3e2b5247cdaaab3534f451bbbdc957ceec8ac4fdd"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/active/0.1"
+      ],
+      "mutants": [
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/policy/active/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-006",
+      "title": "policy/active 0.1: the policy the specification declares is enforced (recipient REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/policy/active/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false"
+      ],
+      "source": {
+        "slug": "policy/active",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/active/0.1",
+        "pinnedDigest": "sha256:6cee582229735cb923a025291c35dd3bb8f14b0e016f2ef2f13e211c3796c221",
+        "tfRef": {
+          "repoPath": "specs/policy/active/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:c65d206b869ee593d5ad6b957d8423057df150fe7064655ec3f05a7c5940650f",
+        "schemaHash": "sha256:bde9b68d6f5e6e0daafe73b3e2b5247cdaaab3534f451bbbdc957ceec8ac4fdd"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/active/0.1"
+      ],
+      "mutants": [
+        "recipientOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/policy/active/0.1",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-007",
+      "title": "policy/active 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/policy/active/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/policy/active/0.1#response",
+        "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+      ],
+      "source": {
+        "slug": "policy/active",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/active/0.1",
+        "pinnedDigest": "sha256:6cee582229735cb923a025291c35dd3bb8f14b0e016f2ef2f13e211c3796c221",
+        "tfRef": {
+          "repoPath": "specs/policy/active/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:c65d206b869ee593d5ad6b957d8423057df150fe7064655ec3f05a7c5940650f",
+        "schemaHash": "sha256:bde9b68d6f5e6e0daafe73b3e2b5247cdaaab3534f451bbbdc957ceec8ac4fdd"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/active/0.1"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/policy/active/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/policy/active/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-008",
+      "title": "policy/delete 0.1: the payload is validated against the task's payload schema (missing required member id; unknown member in a closed payload; wrong type for id)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/policy/delete/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"id\"], additionalProperties false",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "source": {
+        "slug": "policy/delete",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/delete/0.1",
+        "pinnedDigest": "sha256:863a2f329e9df7192f7a7b939c7b579bd0628d5d3e2c40fb914b48781c4e3e13",
+        "tfRef": {
+          "repoPath": "specs/policy/delete/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:924bcd4907b029cb7445d2e857ba6e213bcaebd532a45f0bde45af4a69c4baef",
+        "schemaHash": "sha256:d6d2973d5f1c388eab7ece95b79b6acdb0e66d6039da05cf559506c0d90b734c"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/delete/0.1"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p1)",
+              "type": "https://trusttasks.org/spec/policy/delete/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/policy/delete/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "id": "example",
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p3)",
+              "type": "https://trusttasks.org/spec/policy/delete/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "id": 5
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-009",
+      "title": "policy/delete 0.1: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/policy/delete/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true"
+      ],
+      "source": {
+        "slug": "policy/delete",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/delete/0.1",
+        "pinnedDigest": "sha256:863a2f329e9df7192f7a7b939c7b579bd0628d5d3e2c40fb914b48781c4e3e13",
+        "tfRef": {
+          "repoPath": "specs/policy/delete/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:924bcd4907b029cb7445d2e857ba6e213bcaebd532a45f0bde45af4a69c4baef",
+        "schemaHash": "sha256:d6d2973d5f1c388eab7ece95b79b6acdb0e66d6039da05cf559506c0d90b734c"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/delete/0.1"
+      ],
+      "mutants": [
+        "recipientOptional",
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/policy/delete/0.1",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "id": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(e2)",
+              "type": "https://trusttasks.org/spec/policy/delete/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "id": "example"
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-010",
+      "title": "policy/delete 0.1: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+        "declared policy: https://trusttasks.org/spec/policy/delete/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true"
+      ],
+      "source": {
+        "slug": "policy/delete",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/delete/0.1",
+        "pinnedDigest": "sha256:863a2f329e9df7192f7a7b939c7b579bd0628d5d3e2c40fb914b48781c4e3e13",
+        "tfRef": {
+          "repoPath": "specs/policy/delete/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:924bcd4907b029cb7445d2e857ba6e213bcaebd532a45f0bde45af4a69c4baef",
+        "schemaHash": "sha256:d6d2973d5f1c388eab7ece95b79b6acdb0e66d6039da05cf559506c0d90b734c"
+      },
+      "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/policy/delete/0.1"
+      ],
+      "mutants": [
+        "noFreshnessWindow"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(i1)",
+              "type": "https://trusttasks.org/spec/policy/delete/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "payload": {
+                "id": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-011",
+      "title": "policy/delete 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/policy/delete/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/policy/delete/0.1#response",
+        "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+      ],
+      "source": {
+        "slug": "policy/delete",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/delete/0.1",
+        "pinnedDigest": "sha256:863a2f329e9df7192f7a7b939c7b579bd0628d5d3e2c40fb914b48781c4e3e13",
+        "tfRef": {
+          "repoPath": "specs/policy/delete/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:924bcd4907b029cb7445d2e857ba6e213bcaebd532a45f0bde45af4a69c4baef",
+        "schemaHash": "sha256:d6d2973d5f1c388eab7ece95b79b6acdb0e66d6039da05cf559506c0d90b734c"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/delete/0.1"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/policy/delete/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "id": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/policy/delete/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-012",
+      "title": "policy/evaluate 0.1: the payload is validated against the task's payload schema (missing required member input; unknown member in a closed payload; wrong type for input)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/policy/evaluate/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"input\"], additionalProperties false",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "source": {
+        "slug": "policy/evaluate",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/evaluate/0.1",
+        "pinnedDigest": "sha256:164a8ca1bd107a095256fd9cb2b48283da1136f9e1a0cf28bc0753501e181bbd",
+        "tfRef": {
+          "repoPath": "specs/policy/evaluate/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:676879bb583e3174bdd4974af0ef59602e0612ad60795b279a6f403575c2d95e",
+        "schemaHash": "sha256:e0f9d3cdf1ed24e67fb0b641855370a9c029f21ae7c06fdba9af10b8674ade49",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/evaluate/0.1"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p1)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": {
+                  "request": {
+                    "kind": "proxy_login"
+                  },
+                  "site": {
+                    "kind": "web-origin",
+                    "origin": "https://example.org/x"
+                  },
+                  "contextId": "example",
+                  "consumer": {
+                    "did": "example"
+                  }
+                },
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p3)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": "x"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-013",
+      "title": "policy/evaluate 0.1: the policy the specification declares is enforced (recipient REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/policy/evaluate/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false"
+      ],
+      "source": {
+        "slug": "policy/evaluate",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/evaluate/0.1",
+        "pinnedDigest": "sha256:164a8ca1bd107a095256fd9cb2b48283da1136f9e1a0cf28bc0753501e181bbd",
+        "tfRef": {
+          "repoPath": "specs/policy/evaluate/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:676879bb583e3174bdd4974af0ef59602e0612ad60795b279a6f403575c2d95e",
+        "schemaHash": "sha256:e0f9d3cdf1ed24e67fb0b641855370a9c029f21ae7c06fdba9af10b8674ade49",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/evaluate/0.1"
+      ],
+      "mutants": [
+        "recipientOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.1",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": {
+                  "request": {
+                    "kind": "proxy_login"
+                  },
+                  "site": {
+                    "kind": "web-origin",
+                    "origin": "https://example.org/x"
+                  },
+                  "contextId": "example",
+                  "consumer": {
+                    "did": "example"
+                  }
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-014",
+      "title": "policy/evaluate 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/policy/evaluate/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/policy/evaluate/0.1#response",
+        "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+      ],
+      "source": {
+        "slug": "policy/evaluate",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/evaluate/0.1",
+        "pinnedDigest": "sha256:164a8ca1bd107a095256fd9cb2b48283da1136f9e1a0cf28bc0753501e181bbd",
+        "tfRef": {
+          "repoPath": "specs/policy/evaluate/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:676879bb583e3174bdd4974af0ef59602e0612ad60795b279a6f403575c2d95e",
+        "schemaHash": "sha256:e0f9d3cdf1ed24e67fb0b641855370a9c029f21ae7c06fdba9af10b8674ade49",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/evaluate/0.1"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": {
+                  "request": {
+                    "kind": "proxy_login"
+                  },
+                  "site": {
+                    "kind": "web-origin",
+                    "origin": "https://example.org/x"
+                  },
+                  "contextId": "example",
+                  "consumer": {
+                    "did": "example"
+                  }
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/policy/evaluate/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-015",
+      "title": "policy/evaluate 0.2: the payload is validated against the task's payload schema (missing required member input; unknown member in a closed payload; wrong type for input)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/policy/evaluate/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"input\"], additionalProperties false",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "source": {
+        "slug": "policy/evaluate",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/evaluate/0.2",
+        "pinnedDigest": "sha256:e88d0e0320d5cb8e65fbfbd209b4d4882c95f37996aa7a15271d4ceecf311847",
+        "tfRef": {
+          "repoPath": "specs/policy/evaluate/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3424bb926b20a8a219381d99b7e426dfa41f1c902ef752a75ffd1e5ef6299da5",
+        "schemaHash": "sha256:a1eaf824c709c6ac7b79ced787f02a9099f8e1264ff7706263f77dc1a8b40a0c",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/evaluate/0.2"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p1)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": {
+                  "request": {
+                    "kind": "proxyLogin"
+                  },
+                  "site": {
+                    "kind": "webOrigin",
+                    "origin": "https://example.org/x"
+                  },
+                  "contextId": "example",
+                  "consumer": {
+                    "did": "example"
+                  }
+                },
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p3)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": "x"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-016",
+      "title": "policy/evaluate 0.2: the policy the specification declares is enforced (recipient REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/policy/evaluate/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false"
+      ],
+      "source": {
+        "slug": "policy/evaluate",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/evaluate/0.2",
+        "pinnedDigest": "sha256:e88d0e0320d5cb8e65fbfbd209b4d4882c95f37996aa7a15271d4ceecf311847",
+        "tfRef": {
+          "repoPath": "specs/policy/evaluate/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3424bb926b20a8a219381d99b7e426dfa41f1c902ef752a75ffd1e5ef6299da5",
+        "schemaHash": "sha256:a1eaf824c709c6ac7b79ced787f02a9099f8e1264ff7706263f77dc1a8b40a0c",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/evaluate/0.2"
+      ],
+      "mutants": [
+        "recipientOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.2",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": {
+                  "request": {
+                    "kind": "proxyLogin"
+                  },
+                  "site": {
+                    "kind": "webOrigin",
+                    "origin": "https://example.org/x"
+                  },
+                  "contextId": "example",
+                  "consumer": {
+                    "did": "example"
+                  }
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-017",
+      "title": "policy/evaluate 0.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/policy/evaluate/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/policy/evaluate/0.2#response",
+        "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+      ],
+      "source": {
+        "slug": "policy/evaluate",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/evaluate/0.2",
+        "pinnedDigest": "sha256:e88d0e0320d5cb8e65fbfbd209b4d4882c95f37996aa7a15271d4ceecf311847",
+        "tfRef": {
+          "repoPath": "specs/policy/evaluate/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3424bb926b20a8a219381d99b7e426dfa41f1c902ef752a75ffd1e5ef6299da5",
+        "schemaHash": "sha256:a1eaf824c709c6ac7b79ced787f02a9099f8e1264ff7706263f77dc1a8b40a0c",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/evaluate/0.2"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": {
+                  "request": {
+                    "kind": "proxyLogin"
+                  },
+                  "site": {
+                    "kind": "webOrigin",
+                    "origin": "https://example.org/x"
+                  },
+                  "contextId": "example",
+                  "consumer": {
+                    "did": "example"
+                  }
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/policy/evaluate/0.2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-018",
+      "title": "policy/evaluate 0.3: the payload is validated against the task's payload schema (missing required member input; unknown member in a closed payload; wrong type for input)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/policy/evaluate/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"input\"], additionalProperties false",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "source": {
+        "slug": "policy/evaluate",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/evaluate/0.3",
+        "pinnedDigest": "sha256:5e92878b31355a520c5b89853ee0b8aba6dd64ab76aecb1a56e5f17757499b5c",
+        "tfRef": {
+          "repoPath": "specs/policy/evaluate/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7552e21e34b6bfb40feea57def87ddee52efb3c5de2b5fb0926d7fa9998e9461",
+        "schemaHash": "sha256:34528a179f70170133f69bbfae7e1f900298d4abe6f6604b8c9a5a7a1726ee7c",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/evaluate/0.3"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p1)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": {
+                  "request": {
+                    "typeUri": "example",
+                    "sideEffects": "none",
+                    "exposure": {
+                      "discloses": "none",
+                      "actsAsSubject": false
+                    }
+                  },
+                  "site": {
+                    "kind": "webOrigin",
+                    "origin": "https://example.org/x"
+                  },
+                  "contextId": "example",
+                  "consumer": {
+                    "did": "example"
+                  }
+                },
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p3)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": "x"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-019",
+      "title": "policy/evaluate 0.3: the policy the specification declares is enforced (recipient REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/policy/evaluate/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false"
+      ],
+      "source": {
+        "slug": "policy/evaluate",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/evaluate/0.3",
+        "pinnedDigest": "sha256:5e92878b31355a520c5b89853ee0b8aba6dd64ab76aecb1a56e5f17757499b5c",
+        "tfRef": {
+          "repoPath": "specs/policy/evaluate/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7552e21e34b6bfb40feea57def87ddee52efb3c5de2b5fb0926d7fa9998e9461",
+        "schemaHash": "sha256:34528a179f70170133f69bbfae7e1f900298d4abe6f6604b8c9a5a7a1726ee7c",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/evaluate/0.3"
+      ],
+      "mutants": [
+        "recipientOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.3",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": {
+                  "request": {
+                    "typeUri": "example",
+                    "sideEffects": "none",
+                    "exposure": {
+                      "discloses": "none",
+                      "actsAsSubject": false
+                    }
+                  },
+                  "site": {
+                    "kind": "webOrigin",
+                    "origin": "https://example.org/x"
+                  },
+                  "contextId": "example",
+                  "consumer": {
+                    "did": "example"
+                  }
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-020",
+      "title": "policy/evaluate 0.3: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/policy/evaluate/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/policy/evaluate/0.3#response",
+        "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+      ],
+      "source": {
+        "slug": "policy/evaluate",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/evaluate/0.3",
+        "pinnedDigest": "sha256:5e92878b31355a520c5b89853ee0b8aba6dd64ab76aecb1a56e5f17757499b5c",
+        "tfRef": {
+          "repoPath": "specs/policy/evaluate/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7552e21e34b6bfb40feea57def87ddee52efb3c5de2b5fb0926d7fa9998e9461",
+        "schemaHash": "sha256:34528a179f70170133f69bbfae7e1f900298d4abe6f6604b8c9a5a7a1726ee7c",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/evaluate/0.3"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": {
+                  "request": {
+                    "typeUri": "example",
+                    "sideEffects": "none",
+                    "exposure": {
+                      "discloses": "none",
+                      "actsAsSubject": false
+                    }
+                  },
+                  "site": {
+                    "kind": "webOrigin",
+                    "origin": "https://example.org/x"
+                  },
+                  "contextId": "example",
+                  "consumer": {
+                    "did": "example"
+                  }
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/policy/evaluate/0.3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-021",
+      "title": "policy/evaluate 0.4: the payload is validated against the task's payload schema (missing required member input; unknown member in a closed payload; wrong type for input)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/policy/evaluate/0.4 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"input\"], additionalProperties false",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "source": {
+        "slug": "policy/evaluate",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/evaluate/0.4",
+        "pinnedDigest": "sha256:4300d06cf62860be41d72392f1412d58632db6032674e4108a4a18ccc44ee5b3",
+        "tfRef": {
+          "repoPath": "specs/policy/evaluate/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7d324e3480a34bf1e9cfbcfc0c17b02bf40b0e5abb75a9fe39c1469b4331f9df",
+        "schemaHash": "sha256:3f9e023d203375a36c18780fd601f06880c3285fc15e596cf2877694d284fbd5"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/evaluate/0.4"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p1)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.4",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.4",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": {
+                  "request": {
+                    "typeUri": "example",
+                    "sideEffects": "none",
+                    "exposure": {
+                      "discloses": "none",
+                      "actsAsSubject": false
+                    }
+                  },
+                  "site": {
+                    "kind": "webOrigin",
+                    "origin": "https://example.org/x"
+                  },
+                  "contextId": "example",
+                  "consumer": {
+                    "did": "example"
+                  }
+                },
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p3)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.4",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": "x"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-022",
+      "title": "policy/evaluate 0.4: the policy the specification declares is enforced (recipient REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/policy/evaluate/0.4 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false"
+      ],
+      "source": {
+        "slug": "policy/evaluate",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/evaluate/0.4",
+        "pinnedDigest": "sha256:4300d06cf62860be41d72392f1412d58632db6032674e4108a4a18ccc44ee5b3",
+        "tfRef": {
+          "repoPath": "specs/policy/evaluate/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7d324e3480a34bf1e9cfbcfc0c17b02bf40b0e5abb75a9fe39c1469b4331f9df",
+        "schemaHash": "sha256:3f9e023d203375a36c18780fd601f06880c3285fc15e596cf2877694d284fbd5"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/evaluate/0.4"
+      ],
+      "mutants": [
+        "recipientOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.4",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": {
+                  "request": {
+                    "typeUri": "example",
+                    "sideEffects": "none",
+                    "exposure": {
+                      "discloses": "none",
+                      "actsAsSubject": false
+                    }
+                  },
+                  "site": {
+                    "kind": "webOrigin",
+                    "origin": "https://example.org/x"
+                  },
+                  "contextId": "example",
+                  "consumer": {
+                    "did": "example"
+                  }
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-023",
+      "title": "policy/evaluate 0.4: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/policy/evaluate/0.4 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/policy/evaluate/0.4#response",
+        "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+      ],
+      "source": {
+        "slug": "policy/evaluate",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/evaluate/0.4",
+        "pinnedDigest": "sha256:4300d06cf62860be41d72392f1412d58632db6032674e4108a4a18ccc44ee5b3",
+        "tfRef": {
+          "repoPath": "specs/policy/evaluate/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7d324e3480a34bf1e9cfbcfc0c17b02bf40b0e5abb75a9fe39c1469b4331f9df",
+        "schemaHash": "sha256:3f9e023d203375a36c18780fd601f06880c3285fc15e596cf2877694d284fbd5"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/evaluate/0.4"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/policy/evaluate/0.4",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "input": {
+                  "request": {
+                    "typeUri": "example",
+                    "sideEffects": "none",
+                    "exposure": {
+                      "discloses": "none",
+                      "actsAsSubject": false
+                    }
+                  },
+                  "site": {
+                    "kind": "webOrigin",
+                    "origin": "https://example.org/x"
+                  },
+                  "contextId": "example",
+                  "consumer": {
+                    "did": "example"
+                  }
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/policy/evaluate/0.4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-024",
+      "title": "policy/get 0.1: the payload is validated against the task's payload schema (missing required member id; unknown member in a closed payload; wrong type for id)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/policy/get/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"id\"], additionalProperties false",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "source": {
+        "slug": "policy/get",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/get/0.1",
+        "pinnedDigest": "sha256:dfbe4d80035cb91dbfd3cc6dfabcbdab3f3f6b85e2e4fa09bbe56bb5a7329f08",
+        "tfRef": {
+          "repoPath": "specs/policy/get/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2124063947fb4fa2b49e7f0aa4f5d203fc0b20c81f63da9263aac5e5a3b583c3",
+        "schemaHash": "sha256:21f9b4a1eab4980128f34d5d20ecae4924a9394247f3717d01fd6768f3230b1d"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/get/0.1"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p1)",
+              "type": "https://trusttasks.org/spec/policy/get/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/policy/get/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "id": "example",
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p3)",
+              "type": "https://trusttasks.org/spec/policy/get/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "id": 5
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-025",
+      "title": "policy/get 0.1: the policy the specification declares is enforced (recipient REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/policy/get/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false"
+      ],
+      "source": {
+        "slug": "policy/get",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/get/0.1",
+        "pinnedDigest": "sha256:dfbe4d80035cb91dbfd3cc6dfabcbdab3f3f6b85e2e4fa09bbe56bb5a7329f08",
+        "tfRef": {
+          "repoPath": "specs/policy/get/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2124063947fb4fa2b49e7f0aa4f5d203fc0b20c81f63da9263aac5e5a3b583c3",
+        "schemaHash": "sha256:21f9b4a1eab4980128f34d5d20ecae4924a9394247f3717d01fd6768f3230b1d"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/get/0.1"
+      ],
+      "mutants": [
+        "recipientOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/policy/get/0.1",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "id": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-026",
+      "title": "policy/get 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/policy/get/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/policy/get/0.1#response",
+        "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+      ],
+      "source": {
+        "slug": "policy/get",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/get/0.1",
+        "pinnedDigest": "sha256:dfbe4d80035cb91dbfd3cc6dfabcbdab3f3f6b85e2e4fa09bbe56bb5a7329f08",
+        "tfRef": {
+          "repoPath": "specs/policy/get/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2124063947fb4fa2b49e7f0aa4f5d203fc0b20c81f63da9263aac5e5a3b583c3",
+        "schemaHash": "sha256:21f9b4a1eab4980128f34d5d20ecae4924a9394247f3717d01fd6768f3230b1d"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/get/0.1"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/policy/get/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "id": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/policy/get/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-027",
+      "title": "policy/list 0.1: the payload is validated against the task's payload schema (unknown member in a closed payload)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/policy/list/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [], additionalProperties false",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "source": {
+        "slug": "policy/list",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/list/0.1",
+        "pinnedDigest": "sha256:796d50f89b65fcec32ad23703f6d285d91d1ff49900191553e159bba56520fde",
+        "tfRef": {
+          "repoPath": "specs/policy/list/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:ad0f9b6d5b9046659b6b7ebe75ef544cad50e33c15459c5e992a36e5356a38e5",
+        "schemaHash": "sha256:342c4d4c0377dcb716500f5e5f7429ea7a2f11c80f2659dd3d270d3bf54137ab",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/list/0.1"
+      ],
+      "mutants": [
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/policy/list/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-028",
+      "title": "policy/list 0.1: the policy the specification declares is enforced (recipient REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/policy/list/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false"
+      ],
+      "source": {
+        "slug": "policy/list",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/list/0.1",
+        "pinnedDigest": "sha256:796d50f89b65fcec32ad23703f6d285d91d1ff49900191553e159bba56520fde",
+        "tfRef": {
+          "repoPath": "specs/policy/list/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:ad0f9b6d5b9046659b6b7ebe75ef544cad50e33c15459c5e992a36e5356a38e5",
+        "schemaHash": "sha256:342c4d4c0377dcb716500f5e5f7429ea7a2f11c80f2659dd3d270d3bf54137ab",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/list/0.1"
+      ],
+      "mutants": [
+        "recipientOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/policy/list/0.1",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-029",
+      "title": "policy/list 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/policy/list/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/policy/list/0.1#response",
+        "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+      ],
+      "source": {
+        "slug": "policy/list",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/list/0.1",
+        "pinnedDigest": "sha256:796d50f89b65fcec32ad23703f6d285d91d1ff49900191553e159bba56520fde",
+        "tfRef": {
+          "repoPath": "specs/policy/list/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:ad0f9b6d5b9046659b6b7ebe75ef544cad50e33c15459c5e992a36e5356a38e5",
+        "schemaHash": "sha256:342c4d4c0377dcb716500f5e5f7429ea7a2f11c80f2659dd3d270d3bf54137ab",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/list/0.1"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/policy/list/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/policy/list/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-030",
+      "title": "policy/list 0.2: the payload is validated against the task's payload schema (unknown member in a closed payload)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/policy/list/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [], additionalProperties false",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "source": {
+        "slug": "policy/list",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/list/0.2",
+        "pinnedDigest": "sha256:bae3aa715d3313e695663c1d7b663fe56a44f2047c5a7794d93c8d9147cdd4f8",
+        "tfRef": {
+          "repoPath": "specs/policy/list/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:77721505ccece6332b1a391805cb8de77f1041ecfcfdc74491482a07bc2703ae",
+        "schemaHash": "sha256:31da3d0c48a612573a70f21172d25e04ef3b61a576d77c9166b5ade9c8516c43",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/list/0.2"
+      ],
+      "mutants": [
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/policy/list/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-031",
+      "title": "policy/list 0.2: the policy the specification declares is enforced (recipient REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/policy/list/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false"
+      ],
+      "source": {
+        "slug": "policy/list",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/list/0.2",
+        "pinnedDigest": "sha256:bae3aa715d3313e695663c1d7b663fe56a44f2047c5a7794d93c8d9147cdd4f8",
+        "tfRef": {
+          "repoPath": "specs/policy/list/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:77721505ccece6332b1a391805cb8de77f1041ecfcfdc74491482a07bc2703ae",
+        "schemaHash": "sha256:31da3d0c48a612573a70f21172d25e04ef3b61a576d77c9166b5ade9c8516c43",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/list/0.2"
+      ],
+      "mutants": [
+        "recipientOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/policy/list/0.2",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-032",
+      "title": "policy/list 0.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/policy/list/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/policy/list/0.2#response",
+        "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+      ],
+      "source": {
+        "slug": "policy/list",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/list/0.2",
+        "pinnedDigest": "sha256:bae3aa715d3313e695663c1d7b663fe56a44f2047c5a7794d93c8d9147cdd4f8",
+        "tfRef": {
+          "repoPath": "specs/policy/list/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:77721505ccece6332b1a391805cb8de77f1041ecfcfdc74491482a07bc2703ae",
+        "schemaHash": "sha256:31da3d0c48a612573a70f21172d25e04ef3b61a576d77c9166b5ade9c8516c43",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/list/0.2"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/policy/list/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/policy/list/0.2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-033",
+      "title": "policy/list 0.3: the payload is validated against the task's payload schema (unknown member in a closed payload)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/policy/list/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [], additionalProperties false",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "source": {
+        "slug": "policy/list",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/list/0.3",
+        "pinnedDigest": "sha256:e23e3724e95564df50ffebfc50087ad01aaa2332ca9c02645125f8339c368a6a",
+        "tfRef": {
+          "repoPath": "specs/policy/list/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:b350179823f275ece25319a9fda3d78031a7464488af8dc7d25dedbe5f7afd72",
+        "schemaHash": "sha256:bda53bd99c3cf74cc0b19d51196a52aced99be7354668a87b30443a26469901c"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/list/0.3"
+      ],
+      "mutants": [
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/policy/list/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-034",
+      "title": "policy/list 0.3: the policy the specification declares is enforced (recipient REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/policy/list/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false"
+      ],
+      "source": {
+        "slug": "policy/list",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/list/0.3",
+        "pinnedDigest": "sha256:e23e3724e95564df50ffebfc50087ad01aaa2332ca9c02645125f8339c368a6a",
+        "tfRef": {
+          "repoPath": "specs/policy/list/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:b350179823f275ece25319a9fda3d78031a7464488af8dc7d25dedbe5f7afd72",
+        "schemaHash": "sha256:bda53bd99c3cf74cc0b19d51196a52aced99be7354668a87b30443a26469901c"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/list/0.3"
+      ],
+      "mutants": [
+        "recipientOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/policy/list/0.3",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-035",
+      "title": "policy/list 0.3: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/policy/list/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/policy/list/0.3#response",
+        "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+      ],
+      "source": {
+        "slug": "policy/list",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/list/0.3",
+        "pinnedDigest": "sha256:e23e3724e95564df50ffebfc50087ad01aaa2332ca9c02645125f8339c368a6a",
+        "tfRef": {
+          "repoPath": "specs/policy/list/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:b350179823f275ece25319a9fda3d78031a7464488af8dc7d25dedbe5f7afd72",
+        "schemaHash": "sha256:bda53bd99c3cf74cc0b19d51196a52aced99be7354668a87b30443a26469901c"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/list/0.3"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/policy/list/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/policy/list/0.3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-036",
+      "title": "policy/upsert 0.1: the payload is validated against the task's payload schema (missing required member name; unknown member in a closed payload; wrong type for name)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/policy/upsert/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"name\",\"module\"], additionalProperties false",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+        "Governance is the deployment's choice, never the suite's (docs/02 section 5): this vector fixes no role name, role meaning or authority rule; a role value is taken from the adapter's declared governance.roles."
+      ],
+      "source": {
+        "slug": "policy/upsert",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/upsert/0.1",
+        "pinnedDigest": "sha256:c62ef1688b7a227204899bf9c76bf633a295deca55f18f947d45dd9ea5cd19fa",
+        "tfRef": {
+          "repoPath": "specs/policy/upsert/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:ead7d44d52e82763f440a021a7857e9b1772d57448bbcf6771d0a2bff687ff3b",
+        "schemaHash": "sha256:e80df599573ca281983436671497a4249fceb5c81f518e6fc890323acb7be037",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/upsert/0.1",
+        "optional:governance.content"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p1)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": "example",
+                "module": "example",
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p3)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": 5,
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-037",
+      "title": "policy/upsert 0.1: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/policy/upsert/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "Governance is the deployment's choice, never the suite's (docs/02 section 5): this vector fixes no role name, role meaning or authority rule; a role value is taken from the adapter's declared governance.roles."
+      ],
+      "source": {
+        "slug": "policy/upsert",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/upsert/0.1",
+        "pinnedDigest": "sha256:c62ef1688b7a227204899bf9c76bf633a295deca55f18f947d45dd9ea5cd19fa",
+        "tfRef": {
+          "repoPath": "specs/policy/upsert/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:ead7d44d52e82763f440a021a7857e9b1772d57448bbcf6771d0a2bff687ff3b",
+        "schemaHash": "sha256:e80df599573ca281983436671497a4249fceb5c81f518e6fc890323acb7be037",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/upsert/0.1",
+        "optional:governance.content"
+      ],
+      "mutants": [
+        "recipientOptional",
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.1",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": "example",
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(e2)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": "example",
+                "module": "example"
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-038",
+      "title": "policy/upsert 0.1: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+        "declared policy: https://trusttasks.org/spec/policy/upsert/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "Governance is the deployment's choice, never the suite's (docs/02 section 5): this vector fixes no role name, role meaning or authority rule; a role value is taken from the adapter's declared governance.roles."
+      ],
+      "source": {
+        "slug": "policy/upsert",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/upsert/0.1",
+        "pinnedDigest": "sha256:c62ef1688b7a227204899bf9c76bf633a295deca55f18f947d45dd9ea5cd19fa",
+        "tfRef": {
+          "repoPath": "specs/policy/upsert/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:ead7d44d52e82763f440a021a7857e9b1772d57448bbcf6771d0a2bff687ff3b",
+        "schemaHash": "sha256:e80df599573ca281983436671497a4249fceb5c81f518e6fc890323acb7be037",
+        "versionRole": "older"
+      },
+      "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/policy/upsert/0.1",
+        "optional:governance.content"
+      ],
+      "mutants": [
+        "noFreshnessWindow"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(i1)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "payload": {
+                "name": "example",
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-039",
+      "title": "policy/upsert 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/policy/upsert/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/policy/upsert/0.1#response",
+        "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)",
+        "Governance is the deployment's choice, never the suite's (docs/02 section 5): this vector fixes no role name, role meaning or authority rule; a role value is taken from the adapter's declared governance.roles."
+      ],
+      "source": {
+        "slug": "policy/upsert",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/upsert/0.1",
+        "pinnedDigest": "sha256:c62ef1688b7a227204899bf9c76bf633a295deca55f18f947d45dd9ea5cd19fa",
+        "tfRef": {
+          "repoPath": "specs/policy/upsert/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:ead7d44d52e82763f440a021a7857e9b1772d57448bbcf6771d0a2bff687ff3b",
+        "schemaHash": "sha256:e80df599573ca281983436671497a4249fceb5c81f518e6fc890323acb7be037",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/upsert/0.1",
+        "optional:governance.content"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": "example",
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/policy/upsert/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-040",
+      "title": "policy/upsert 0.2: the payload is validated against the task's payload schema (missing required member name; unknown member in a closed payload; wrong type for name)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/policy/upsert/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"name\",\"module\"], additionalProperties false",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+        "Governance is the deployment's choice, never the suite's (docs/02 section 5): this vector fixes no role name, role meaning or authority rule; a role value is taken from the adapter's declared governance.roles."
+      ],
+      "source": {
+        "slug": "policy/upsert",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/upsert/0.2",
+        "pinnedDigest": "sha256:ba33ec4105b70df7461bf8ae0edb20f1b78de323da67f60e0c1fe881a8a27c9e",
+        "tfRef": {
+          "repoPath": "specs/policy/upsert/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6e3a4e3443095319df93de3565421afd4d75fd6cc90424ec4fc1b690f6c46d71",
+        "schemaHash": "sha256:e6af1610a7c6fbb2abcb1bb7f76238019251f7b4525dddc8f7866c4633b46263",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/upsert/0.2",
+        "optional:governance.content"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p1)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": "example",
+                "module": "example",
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p3)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": 5,
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-041",
+      "title": "policy/upsert 0.2: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/policy/upsert/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "Governance is the deployment's choice, never the suite's (docs/02 section 5): this vector fixes no role name, role meaning or authority rule; a role value is taken from the adapter's declared governance.roles."
+      ],
+      "source": {
+        "slug": "policy/upsert",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/upsert/0.2",
+        "pinnedDigest": "sha256:ba33ec4105b70df7461bf8ae0edb20f1b78de323da67f60e0c1fe881a8a27c9e",
+        "tfRef": {
+          "repoPath": "specs/policy/upsert/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6e3a4e3443095319df93de3565421afd4d75fd6cc90424ec4fc1b690f6c46d71",
+        "schemaHash": "sha256:e6af1610a7c6fbb2abcb1bb7f76238019251f7b4525dddc8f7866c4633b46263",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/upsert/0.2",
+        "optional:governance.content"
+      ],
+      "mutants": [
+        "recipientOptional",
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.2",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": "example",
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(e2)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": "example",
+                "module": "example"
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-042",
+      "title": "policy/upsert 0.2: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+        "declared policy: https://trusttasks.org/spec/policy/upsert/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "Governance is the deployment's choice, never the suite's (docs/02 section 5): this vector fixes no role name, role meaning or authority rule; a role value is taken from the adapter's declared governance.roles."
+      ],
+      "source": {
+        "slug": "policy/upsert",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/upsert/0.2",
+        "pinnedDigest": "sha256:ba33ec4105b70df7461bf8ae0edb20f1b78de323da67f60e0c1fe881a8a27c9e",
+        "tfRef": {
+          "repoPath": "specs/policy/upsert/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6e3a4e3443095319df93de3565421afd4d75fd6cc90424ec4fc1b690f6c46d71",
+        "schemaHash": "sha256:e6af1610a7c6fbb2abcb1bb7f76238019251f7b4525dddc8f7866c4633b46263",
+        "versionRole": "older"
+      },
+      "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/policy/upsert/0.2",
+        "optional:governance.content"
+      ],
+      "mutants": [
+        "noFreshnessWindow"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(i1)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "payload": {
+                "name": "example",
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-043",
+      "title": "policy/upsert 0.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/policy/upsert/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/policy/upsert/0.2#response",
+        "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)",
+        "Governance is the deployment's choice, never the suite's (docs/02 section 5): this vector fixes no role name, role meaning or authority rule; a role value is taken from the adapter's declared governance.roles."
+      ],
+      "source": {
+        "slug": "policy/upsert",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/upsert/0.2",
+        "pinnedDigest": "sha256:ba33ec4105b70df7461bf8ae0edb20f1b78de323da67f60e0c1fe881a8a27c9e",
+        "tfRef": {
+          "repoPath": "specs/policy/upsert/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6e3a4e3443095319df93de3565421afd4d75fd6cc90424ec4fc1b690f6c46d71",
+        "schemaHash": "sha256:e6af1610a7c6fbb2abcb1bb7f76238019251f7b4525dddc8f7866c4633b46263",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/upsert/0.2",
+        "optional:governance.content"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": "example",
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/policy/upsert/0.2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-044",
+      "title": "policy/upsert 0.3: the payload is validated against the task's payload schema (missing required member name; unknown member in a closed payload; wrong type for name)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/policy/upsert/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"name\",\"module\"], additionalProperties false",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+        "Governance is the deployment's choice, never the suite's (docs/02 section 5): this vector fixes no role name, role meaning or authority rule; a role value is taken from the adapter's declared governance.roles."
+      ],
+      "source": {
+        "slug": "policy/upsert",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/upsert/0.3",
+        "pinnedDigest": "sha256:849e33770de6fdee29ff741104a3443dbaf5767449859b4c1ce31cf595e41604",
+        "tfRef": {
+          "repoPath": "specs/policy/upsert/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:91b3ab406ee4180a5514e7fdd7af53701ee995a484f333af3de43d84fe0a8667",
+        "schemaHash": "sha256:d03c471967b8c2eac1c99992fdf1de279db5f0f24c7fb448c83c4068d85638bf"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/upsert/0.3",
+        "optional:governance.content"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p1)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": "example",
+                "module": "example",
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p3)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": 5,
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-045",
+      "title": "policy/upsert 0.3: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/policy/upsert/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "Governance is the deployment's choice, never the suite's (docs/02 section 5): this vector fixes no role name, role meaning or authority rule; a role value is taken from the adapter's declared governance.roles."
+      ],
+      "source": {
+        "slug": "policy/upsert",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/upsert/0.3",
+        "pinnedDigest": "sha256:849e33770de6fdee29ff741104a3443dbaf5767449859b4c1ce31cf595e41604",
+        "tfRef": {
+          "repoPath": "specs/policy/upsert/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:91b3ab406ee4180a5514e7fdd7af53701ee995a484f333af3de43d84fe0a8667",
+        "schemaHash": "sha256:d03c471967b8c2eac1c99992fdf1de279db5f0f24c7fb448c83c4068d85638bf"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/upsert/0.3",
+        "optional:governance.content"
+      ],
+      "mutants": [
+        "recipientOptional",
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.3",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": "example",
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(e2)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": "example",
+                "module": "example"
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-046",
+      "title": "policy/upsert 0.3: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+        "declared policy: https://trusttasks.org/spec/policy/upsert/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "Governance is the deployment's choice, never the suite's (docs/02 section 5): this vector fixes no role name, role meaning or authority rule; a role value is taken from the adapter's declared governance.roles."
+      ],
+      "source": {
+        "slug": "policy/upsert",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/upsert/0.3",
+        "pinnedDigest": "sha256:849e33770de6fdee29ff741104a3443dbaf5767449859b4c1ce31cf595e41604",
+        "tfRef": {
+          "repoPath": "specs/policy/upsert/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:91b3ab406ee4180a5514e7fdd7af53701ee995a484f333af3de43d84fe0a8667",
+        "schemaHash": "sha256:d03c471967b8c2eac1c99992fdf1de279db5f0f24c7fb448c83c4068d85638bf"
+      },
+      "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/policy/upsert/0.3",
+        "optional:governance.content"
+      ],
+      "mutants": [
+        "noFreshnessWindow"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(i1)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "payload": {
+                "name": "example",
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "PP-POL-047",
+      "title": "policy/upsert 0.3: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/policy/upsert/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/policy/upsert/0.3#response",
+        "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)",
+        "Governance is the deployment's choice, never the suite's (docs/02 section 5): this vector fixes no role name, role meaning or authority rule; a role value is taken from the adapter's declared governance.roles."
+      ],
+      "source": {
+        "slug": "policy/upsert",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/policy/upsert/0.3",
+        "pinnedDigest": "sha256:849e33770de6fdee29ff741104a3443dbaf5767449859b4c1ce31cf595e41604",
+        "tfRef": {
+          "repoPath": "specs/policy/upsert/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:91b3ab406ee4180a5514e7fdd7af53701ee995a484f333af3de43d84fe0a8667",
+        "schemaHash": "sha256:d03c471967b8c2eac1c99992fdf1de279db5f0f24c7fb448c83c4068d85638bf"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/policy/upsert/0.3",
+        "optional:governance.content"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/policy/upsert/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "name": "example",
+                "module": "example"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/policy/upsert/0.3"
+          }
+        }
+      ]
+    }
+  ]
+}

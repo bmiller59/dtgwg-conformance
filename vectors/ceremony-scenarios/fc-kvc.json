@@ -1,0 +1,4380 @@
+{
+  "format": "tt-ceremony-scenarios/0.1",
+  "group": "FC-KVC",
+  "family": "ceremony-scenarios",
+  "evidence": "complete-ceremony",
+  "ceremony": {
+    "name": "KW-to-VTI task-consent: an executor holds a gated task, approvers decide",
+    "channel": "proposed",
+    "choreography": "docs/27-kw-vti-ceremonies.md section 2: the requester submits a gated task, the executor refuses it for consent and asks its approvers, each approver's decision (built and signed by the approver's own code) is relayed back, the requester re-submits and the executor executes once. The steps are the same whichever executor (the reference oracle, a VTA) and whichever approver (the reference, the wallet) plays."
+  },
+  "scenarios": [
+    {
+      "id": "FC-KVC-001",
+      "title": "one approver: the executor refuses the gated task for consent, the approver's decision is accepted, the requester's re-submit executes it once",
+      "spec": [
+        "TF specs/task-consent/request/0.1/spec.md (the executor asks an enrolled approver)",
+        "TF specs/task-consent/decision/0.2/spec.md (the decision echoes the challenge and payloadDigest of the request; its proof by the approver's own DID is the authorization)",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E"
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentSetup",
+            "https://trusttasks.org/spec/task-consent/decision/0.2"
+          ]
+        },
+        "K1": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "setup",
+          "do": {
+            "decide": {
+              "by": "E",
+              "action": "consentSetup",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ],
+                "minApprovals": 1
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "resubmit",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-resubmit",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "completed"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "completed"
+          },
+          {
+            "at": "E",
+            "stored": {
+              "kind": "ceremony-effect",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-KVC-002",
+      "title": "two approvers, both required: one decision holds the task, the second lets it execute once",
+      "spec": [
+        "TF specs/task-consent/request/0.1/spec.md",
+        "TF specs/task-consent/decision/0.2/spec.md (the approval threshold: the task runs only at the k-th distinct approval)",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E"
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentSetup",
+            "https://trusttasks.org/spec/task-consent/decision/0.2"
+          ]
+        },
+        "K1": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        },
+        "K2": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "enrol-K2",
+          "do": {
+            "decide": {
+              "by": "K2",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "setup",
+          "do": {
+            "decide": {
+              "by": "E",
+              "action": "consentSetup",
+              "args": {
+                "approvers": [
+                  "$K1",
+                  "$K2"
+                ],
+                "minApprovals": 2
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1",
+                  "$K2"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "ask-K2",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K2",
+              "kind": "consent-request",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K2",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide-K1",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide-K2",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K2",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K2",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "resubmit",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-resubmit",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "completed"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "completed"
+          },
+          {
+            "at": "E",
+            "stored": {
+              "kind": "ceremony-effect",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-KVC-003",
+      "title": "a device outside the approver set that holds a copy of the request cannot approve: its decision is refused notAnApprover and not counted; the declared approver then completes it",
+      "spec": [
+        "TF specs/task-consent/decision/0.2/spec.md (notAnApprover: the proven signer is not a member of the approver set)",
+        "docs/27 section 2 (the outsider's copy of the request is the harness's stand-in, class D)",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E"
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentSetup",
+            "https://trusttasks.org/spec/task-consent/decision/0.2"
+          ]
+        },
+        "K1": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        },
+        "O": {
+          "role": "outsider",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "enrol-O",
+          "do": {
+            "decide": {
+              "by": "O",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "setup",
+          "do": {
+            "decide": {
+              "by": "E",
+              "action": "consentSetup",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ],
+                "minApprovals": 1
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "ask-O",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "O",
+              "kind": "consent-request",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "O",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "outsider-decides",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "O",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "O",
+              "received": {
+                "code": "task-consent/decision:notAnApprover",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "resubmit",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-resubmit",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "completed"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "completed"
+          },
+          {
+            "at": "E",
+            "stored": {
+              "kind": "ceremony-effect",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-KVC-004",
+      "title": "a decision delivered twice is counted once: the executor stays one short at k=2 until the second approver decides, and executes once",
+      "spec": [
+        "TF specs/task-consent/decision/0.2/spec.md (single-use: a decision authorises one execution)",
+        "SPEC.md section 7.2 item 11 (a repeated document does not cause a second effect)",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E"
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentSetup",
+            "https://trusttasks.org/spec/task-consent/decision/0.2"
+          ]
+        },
+        "K1": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        },
+        "K2": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "enrol-K2",
+          "do": {
+            "decide": {
+              "by": "K2",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "setup",
+          "do": {
+            "decide": {
+              "by": "E",
+              "action": "consentSetup",
+              "args": {
+                "approvers": [
+                  "$K1",
+                  "$K2"
+                ],
+                "minApprovals": 2
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1",
+                  "$K2"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "ask-K2",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K2",
+              "kind": "consent-request",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K2",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide-K1-twice",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread",
+              "args": {
+                "repeat": true
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide-K2",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K2",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K2",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "resubmit",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-resubmit",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "completed"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "completed"
+          },
+          {
+            "at": "E",
+            "stored": {
+              "kind": "ceremony-effect",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-KVC-005",
+      "title": "the approver denies: the pending task is closed, nothing executes and the executor reads aborted",
+      "spec": [
+        "TF specs/task-consent/decision/0.2/spec.md (a denial closes the pending request for every approver)",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E"
+      ],
+      "allowedTerminals": [
+        "aborted"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentSetup",
+            "https://trusttasks.org/spec/task-consent/decision/0.2"
+          ]
+        },
+        "K1": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "setup",
+          "do": {
+            "decide": {
+              "by": "E",
+              "action": "consentSetup",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ],
+                "minApprovals": 1
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "deny",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread",
+              "args": {
+                "decision": "deny"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "aborted"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "aborted"
+          },
+          {
+            "at": "E",
+            "stored": {
+              "kind": "ceremony-effect",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-KVC-006",
+      "title": "a decision whose proof is made for authentication, not assertionMethod is refused and not counted; the approver's real decision then completes the task, which executes once",
+      "spec": [
+        "TF specs/task-consent/decision/0.2/spec.md (consumer 1: refuse a proof whose proofPurpose is not assertionMethod)",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E"
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentSetup",
+            "https://trusttasks.org/spec/task-consent/decision/0.2"
+          ]
+        },
+        "K1": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "setup",
+          "do": {
+            "decide": {
+              "by": "E",
+              "action": "consentSetup",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ],
+                "minApprovals": 1
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "tampered",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread",
+              "args": {
+                "tamper": "wrongPurpose"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "refused"
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "resubmit",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-resubmit",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "completed"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "completed"
+          },
+          {
+            "at": "E",
+            "stored": {
+              "kind": "ceremony-effect",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-KVC-007",
+      "title": "a decision with no proof is refused and not counted; the approver's real decision then completes the task, which executes once",
+      "spec": [
+        "SPEC.md section 7.2 item 7 (proofRequired) and decision 0.2 proofRequirement REQUIRED",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E"
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentSetup",
+            "https://trusttasks.org/spec/task-consent/decision/0.2"
+          ]
+        },
+        "K1": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "setup",
+          "do": {
+            "decide": {
+              "by": "E",
+              "action": "consentSetup",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ],
+                "minApprovals": 1
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "tampered",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread",
+              "args": {
+                "tamper": "noProof"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K1",
+              "received": {
+                "code": "proofRequired",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "resubmit",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-resubmit",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "completed"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "completed"
+          },
+          {
+            "at": "E",
+            "stored": {
+              "kind": "ceremony-effect",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-KVC-008",
+      "title": "a decision whose signature does not verify is refused and not counted; the approver's real decision then completes the task, which executes once",
+      "spec": [
+        "SPEC.md section 7.2 item 7 (proofInvalid)",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E"
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentSetup",
+            "https://trusttasks.org/spec/task-consent/decision/0.2"
+          ]
+        },
+        "K1": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "setup",
+          "do": {
+            "decide": {
+              "by": "E",
+              "action": "consentSetup",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ],
+                "minApprovals": 1
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "tampered",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread",
+              "args": {
+                "tamper": "badSignature"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K1",
+              "received": {
+                "code": "proofInvalid",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "resubmit",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-resubmit",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "completed"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "completed"
+          },
+          {
+            "at": "E",
+            "stored": {
+              "kind": "ceremony-effect",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-KVC-009",
+      "title": "a decision addressed to another party is refused and not counted; the approver's real decision then completes the task, which executes once",
+      "spec": [
+        "SPEC.md section 8.3 (wrongRecipient)",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E"
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentSetup",
+            "https://trusttasks.org/spec/task-consent/decision/0.2"
+          ]
+        },
+        "K1": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "setup",
+          "do": {
+            "decide": {
+              "by": "E",
+              "action": "consentSetup",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ],
+                "minApprovals": 1
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "tampered",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread",
+              "args": {
+                "tamper": "wrongRecipient"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K1",
+              "received": {
+                "code": "wrongRecipient",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "resubmit",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-resubmit",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "completed"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "completed"
+          },
+          {
+            "at": "E",
+            "stored": {
+              "kind": "ceremony-effect",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-KVC-010",
+      "title": "a decision issued long outside the acceptance window is refused and not counted; the approver's real decision then completes the task, which executes once",
+      "spec": [
+        "decision 0.2 issuedAtRequirement (a replayed decision must not authorise a second execution) and SPEC.md section 7.2 item 11",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E"
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentSetup",
+            "https://trusttasks.org/spec/task-consent/decision/0.2"
+          ]
+        },
+        "K1": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "setup",
+          "do": {
+            "decide": {
+              "by": "E",
+              "action": "consentSetup",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ],
+                "minApprovals": 1
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "tampered",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread",
+              "args": {
+                "tamper": "staleIssuedAt"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "refused"
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "resubmit",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-resubmit",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "completed"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "completed"
+          },
+          {
+            "at": "E",
+            "stored": {
+              "kind": "ceremony-effect",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-KVC-011",
+      "title": "a decision whose payloadDigest names no pending request is refused and not counted; the approver's real decision then completes the task, which executes once",
+      "spec": [
+        "TF specs/task-consent/decision/0.2/spec.md (consumer 2: absent or lapsed is noPending)",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E"
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentSetup",
+            "https://trusttasks.org/spec/task-consent/decision/0.2"
+          ]
+        },
+        "K1": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "setup",
+          "do": {
+            "decide": {
+              "by": "E",
+              "action": "consentSetup",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ],
+                "minApprovals": 1
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "tampered",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread",
+              "args": {
+                "tamper": "wrongDigest"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K1",
+              "received": {
+                "code": "task-consent/decision:noPending",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "resubmit",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-resubmit",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "completed"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "completed"
+          },
+          {
+            "at": "E",
+            "stored": {
+              "kind": "ceremony-effect",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-KVC-012",
+      "title": "a decision whose challenge is not the one issued is refused and not counted; the approver's real decision then completes the task, which executes once",
+      "spec": [
+        "TF specs/task-consent/decision/0.2/spec.md (consumer 3: challengeMismatch)",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E"
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentSetup",
+            "https://trusttasks.org/spec/task-consent/decision/0.2"
+          ]
+        },
+        "K1": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "setup",
+          "do": {
+            "decide": {
+              "by": "E",
+              "action": "consentSetup",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ],
+                "minApprovals": 1
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "tampered",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread",
+              "args": {
+                "tamper": "wrongChallenge"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K1",
+              "received": {
+                "code": "task-consent/decision:challengeMismatch",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "resubmit",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-resubmit",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "completed"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "completed"
+          },
+          {
+            "at": "E",
+            "stored": {
+              "kind": "ceremony-effect",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-KVC-013",
+      "title": "version skew: an executor that serves only task-consent/decision 0.1 refuses the wallet's 0.2 decision as unsupportedVersion; the wallet steps down once by its own ladder and the 0.1 decision is accepted",
+      "spec": [
+        "SPEC.md section 5.2 and 8.3 (unsupportedVersion, an executor serving an older minor version)",
+        "decision 0.2 'What changed from 0.1' (a 0.1 decision re-typed as 0.2 means the same: both versions carry the same members)",
+        "KW taskVersions.ts (step down only on unsupportedVersion/unsupportedType, once per rung)",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E"
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor-v01",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentSetup",
+            "https://trusttasks.org/spec/task-consent/decision/0.1"
+          ]
+        },
+        "K1": {
+          "role": "approver-laddered",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "setup",
+          "do": {
+            "decide": {
+              "by": "E",
+              "action": "consentSetup",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ],
+                "minApprovals": 1
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide-0.2",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "code": "unsupportedVersion",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide-stepped-down",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "resubmit",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-resubmit",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "completed"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "completed"
+          },
+          {
+            "at": "E",
+            "stored": {
+              "kind": "ceremony-effect",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-KVC-014",
+      "title": "an approver who decides twice with two different documents is counted once: at k=2 the executor stays one short until the second approver decides",
+      "spec": [
+        "TF specs/task-consent/decision/0.2/spec.md (the approval threshold counts distinct approvers)",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E"
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentSetup",
+            "https://trusttasks.org/spec/task-consent/decision/0.2"
+          ]
+        },
+        "K1": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        },
+        "K2": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "enrol-K2",
+          "do": {
+            "decide": {
+              "by": "K2",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "setup",
+          "do": {
+            "decide": {
+              "by": "E",
+              "action": "consentSetup",
+              "args": {
+                "approvers": [
+                  "$K1",
+                  "$K2"
+                ],
+                "minApprovals": 2
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1",
+                  "$K2"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "ask-K2",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K2",
+              "kind": "consent-request",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K2",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide-K1",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "held"
+            }
+          ]
+        },
+        {
+          "id": "decide-K1-again",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "held"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide-K2",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K2",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K2",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "resubmit",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-resubmit",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "E",
+              "ceremony": "completed"
+            },
+            {
+              "at": "E",
+              "stored": {
+                "kind": "ceremony-effect",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "completed"
+          },
+          {
+            "at": "E",
+            "stored": {
+              "kind": "ceremony-effect",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-KVC-101",
+      "title": "decision leg only (the gate cannot be raised on this host): the approver's real decision is verified and routed, and answered noPending because no request was raised",
+      "spec": [
+        "TF specs/task-consent/decision/0.2/spec.md (consumer 1 and 2: the proof is verified first, then the pending request is looked up: absent is noPending)",
+        "docs/27 section 3 (this scenario exists because the gated flow needs the host's policy configuration; the request is the harness's stand-in, class D)",
+        "docs/27-kw-vti-ceremonies.md section 2 (the choreography and its stand-ins)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 60000,
+      "reads": [
+        "E",
+        "K1"
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "participants": {
+        "E": {
+          "role": "executor-leg",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "https://trusttasks.org/spec/task-consent/decision/0.2"
+          ]
+        },
+        "K1": {
+          "role": "approver",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consentEnrol"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "enrol-K1",
+          "do": {
+            "decide": {
+              "by": "K1",
+              "action": "enrolExecutor",
+              "args": {
+                "vid": "$E"
+              }
+            }
+          }
+        },
+        {
+          "id": "gate",
+          "source": {
+            "slug": "task-consent/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/request/0.1",
+            "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+            "tfRef": {
+              "repoPath": "specs/task-consent/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+            "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+          },
+          "do": {
+            "initiate": {
+              "by": "E",
+              "to": "K1",
+              "kind": "consent-gate",
+              "capture": "thread",
+              "args": {
+                "approvers": [
+                  "$K1"
+                ]
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "type": "https://trusttasks.org/spec/task-consent/request/0.1",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide",
+          "source": {
+            "slug": "task-consent/decision",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/task-consent/decision/0.2",
+            "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+            "tfRef": {
+              "repoPath": "specs/task-consent/decision/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+            "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+          },
+          "do": {
+            "initiate": {
+              "by": "K1",
+              "to": "E",
+              "kind": "consent-decision",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K1",
+              "received": {
+                "code": "task-consent/decision:noPending",
+                "count": 1
+              }
+            },
+            {
+              "at": "K1",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "E",
+            "ceremony": "refused"
+          },
+          {
+            "at": "K1",
+            "ceremony": "refused"
+          }
+        ]
+      }
+    }
+  ]
+}

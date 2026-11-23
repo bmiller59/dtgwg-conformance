@@ -1,0 +1,3319 @@
+{
+  "format": "tt-ceremony-scenarios/0.1",
+  "group": "FC-RMS",
+  "family": "ceremony-scenarios",
+  "evidence": "complete-ceremony",
+  "ceremony": {
+    "name": "Rooms: an open room offered by the community, joined, written to and uploaded to, with the member's agent as key holder (wallet, community, agent)",
+    "channel": "proposed",
+    "choreography": "docs/32-rooms-ballot-ceremonies.md sections 3 to 5: offers, accept, memberships, a write, an upload, the refusals (replay, versionConflict, expired, wrong recipient, not a member, outsider, invalid manifest, not invited, type not actable, issuer not a principal) and two version step-downs. Open tier only."
+  },
+  "scenarios": [
+    {
+      "id": "FC-RMS-001",
+      "title": "the community offers an open room to a member: the member's offers list (0.4) holds one open offer with the credentials the room issued",
+      "spec": [
+        "TF specs/vtc/rooms/offers/list/0.4/spec.md (a member's open offers, each with the invitation, membership and authority credentials)",
+        "docs/32-rooms-ballot-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/rooms/offers/list",
+        "version": "0.4",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+        "pinnedDigest": "sha256:65ea067a44bc4ea46c6e5e22e65dcd786b77e1ed8a660591cf70803fb81e4a79",
+        "tfRef": {
+          "repoPath": "specs/vtc/rooms/offers/list/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:ed45f99aeec0844a30b56ab9d98a01d7009d67fddd5b0797b1902a6b4e5f1ef6",
+        "schemaHash": "sha256:8a4c5271fcb37f9446a3353479394e33cdb940852bdc9549f78a75454efac43d"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "https://trusttasks.org/spec/vtc/rooms/offers/accept/0.1",
+            "https://trusttasks.org/spec/vtc/rooms/memberships/list/0.1",
+            "https://trusttasks.org/spec/rooms/records/put/0.3",
+            "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offer-room",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "offerRoom",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offers",
+          "source": {
+            "slug": "vtc/rooms/offers/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "pinnedDigest": "sha256:65ea067a44bc4ea46c6e5e22e65dcd786b77e1ed8a660591cf70803fb81e4a79",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ed45f99aeec0844a30b56ab9d98a01d7009d67fddd5b0797b1902a6b4e5f1ef6",
+            "schemaHash": "sha256:8a4c5271fcb37f9446a3353479394e33cdb940852bdc9549f78a75454efac43d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-offers",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:offers:1",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:offer-state:open",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:offer-creds",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:offers-version:0.4",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:offers:1",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-002",
+      "title": "the member accepts the offer of an open room (no KeyPackage: an open room has no group): the community answers admitted, and the memberships list shows the room admitted",
+      "spec": [
+        "TF specs/vtc/rooms/offers/accept/0.1/spec.md (on an open room accepting records that the member took up the offer; item 2: no KeyPackage on an open room)",
+        "TF specs/vtc/rooms/memberships/list/0.1/spec.md",
+        "docs/32-rooms-ballot-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/rooms/offers/accept",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vtc/rooms/offers/accept/0.1",
+        "pinnedDigest": "sha256:e127003f5970507be5879ac3613da51037fd5ccb38ec1329ac46807e26efd924",
+        "tfRef": {
+          "repoPath": "specs/vtc/rooms/offers/accept/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:9cccf9ad4521aadf4cde3d057df29724ec8e039579fc950b92465b55406b3186",
+        "schemaHash": "sha256:e7021cc96c57623779d70c9b0cca34fdd04036a85f900b2af63ba9df233834ad"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "https://trusttasks.org/spec/vtc/rooms/offers/accept/0.1",
+            "https://trusttasks.org/spec/vtc/rooms/memberships/list/0.1",
+            "https://trusttasks.org/spec/rooms/records/put/0.3",
+            "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offer-room",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "offerRoom",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offers",
+          "source": {
+            "slug": "vtc/rooms/offers/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "pinnedDigest": "sha256:65ea067a44bc4ea46c6e5e22e65dcd786b77e1ed8a660591cf70803fb81e4a79",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ed45f99aeec0844a30b56ab9d98a01d7009d67fddd5b0797b1902a6b4e5f1ef6",
+            "schemaHash": "sha256:8a4c5271fcb37f9446a3353479394e33cdb940852bdc9549f78a75454efac43d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-offers",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:offers:1",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "accept",
+          "source": {
+            "slug": "vtc/rooms/offers/accept",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/rooms/offers/accept/0.1",
+            "pinnedDigest": "sha256:e127003f5970507be5879ac3613da51037fd5ccb38ec1329ac46807e26efd924",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/accept/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:9cccf9ad4521aadf4cde3d057df29724ec8e039579fc950b92465b55406b3186",
+            "schemaHash": "sha256:e7021cc96c57623779d70c9b0cca34fdd04036a85f900b2af63ba9df233834ad"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-accept",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:accepted:admitted",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "memberships",
+          "source": {
+            "slug": "vtc/rooms/memberships/list",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/memberships/list/0.1",
+            "pinnedDigest": "sha256:c897059f1281e2c43394465dffd45123d723d9a352db6d579781766a9fb3f8a9",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/memberships/list/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:5243f98f609866c77679dba787adc1af9e000a2940cd3eddb04ba8a2d32dfe6c",
+            "schemaHash": "sha256:f38d74234163a4c5bfd9992f33b24a22664798768f3c22b0d05b4b274fa2c809"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-memberships",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:membership:admitted",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:membership:admitted",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-003",
+      "title": "the admitted member writes a note to the open room with the presentation the offer carried (rooms/records/put 0.3): the host stores one record and answers its key and version",
+      "spec": [
+        "TF specs/rooms/records/put/0.3/spec.md (consumer items 1 and 12: verify the chain; cleartext on an open room)",
+        "docs/32-rooms-ballot-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "rooms/records/put",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/rooms/records/put/0.3",
+        "pinnedDigest": "sha256:cbd3083e8176bd77aca09f5eceb30aea587e3f5f2e0a9f13f07978aa78145b04",
+        "tfRef": {
+          "repoPath": "specs/rooms/records/put/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:a1f0e556781666faa9871e6150a047b125013c47de12033c0fad8bc999f4e10c",
+        "schemaHash": "sha256:11e0f03f07c08ded666f906137f40e2d6a30b3215c75f72cce28cb51e88885aa"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "https://trusttasks.org/spec/vtc/rooms/offers/accept/0.1",
+            "https://trusttasks.org/spec/vtc/rooms/memberships/list/0.1",
+            "https://trusttasks.org/spec/rooms/records/put/0.3",
+            "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offer-room",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "offerRoom",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offers",
+          "source": {
+            "slug": "vtc/rooms/offers/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "pinnedDigest": "sha256:65ea067a44bc4ea46c6e5e22e65dcd786b77e1ed8a660591cf70803fb81e4a79",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ed45f99aeec0844a30b56ab9d98a01d7009d67fddd5b0797b1902a6b4e5f1ef6",
+            "schemaHash": "sha256:8a4c5271fcb37f9446a3353479394e33cdb940852bdc9549f78a75454efac43d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-offers",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:offers:1",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "accept",
+          "source": {
+            "slug": "vtc/rooms/offers/accept",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/rooms/offers/accept/0.1",
+            "pinnedDigest": "sha256:e127003f5970507be5879ac3613da51037fd5ccb38ec1329ac46807e26efd924",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/accept/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:9cccf9ad4521aadf4cde3d057df29724ec8e039579fc950b92465b55406b3186",
+            "schemaHash": "sha256:e7021cc96c57623779d70c9b0cca34fdd04036a85f900b2af63ba9df233834ad"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-accept",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:accepted:admitted",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "put",
+          "source": {
+            "slug": "rooms/records/put",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/records/put/0.3",
+            "pinnedDigest": "sha256:cbd3083e8176bd77aca09f5eceb30aea587e3f5f2e0a9f13f07978aa78145b04",
+            "tfRef": {
+              "repoPath": "specs/rooms/records/put/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:a1f0e556781666faa9871e6150a047b125013c47de12033c0fad8bc999f4e10c",
+            "schemaHash": "sha256:11e0f03f07c08ded666f906137f40e2d6a30b3215c75f72cce28cb51e88885aa"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-put",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:put:ok",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:put:ok",
+              "count": 1
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "rooms-records:1",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-004",
+      "title": "the admitted member opens an upload for a file (rooms/blobs/upload/begin 0.2, proxied: a consistent manifest of two chunks): the host opens one upload and names the chunks it lacks",
+      "spec": [
+        "TF specs/rooms/blobs/upload/begin/0.2/spec.md (the manifest; a presentation conferring write)",
+        "docs/32-rooms-ballot-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "rooms/blobs/upload/begin",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/rooms/blobs/upload/begin/0.2",
+        "pinnedDigest": "sha256:7eb4d8e4deac75a3d45123b6f98b6b2746c2007e5620bc7314d978612808c69d",
+        "tfRef": {
+          "repoPath": "specs/rooms/blobs/upload/begin/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:27e5fc6ab008321e7271b61760d3f5083bc455cc060733fa2f1b1afb86c85a65",
+        "schemaHash": "sha256:64bede96e0da9406c2f2f02647020110a099473d67ac6dbaac2a9c7aea2327d7"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "https://trusttasks.org/spec/vtc/rooms/offers/accept/0.1",
+            "https://trusttasks.org/spec/vtc/rooms/memberships/list/0.1",
+            "https://trusttasks.org/spec/rooms/records/put/0.3",
+            "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offer-room",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "offerRoom",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offers",
+          "source": {
+            "slug": "vtc/rooms/offers/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "pinnedDigest": "sha256:65ea067a44bc4ea46c6e5e22e65dcd786b77e1ed8a660591cf70803fb81e4a79",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ed45f99aeec0844a30b56ab9d98a01d7009d67fddd5b0797b1902a6b4e5f1ef6",
+            "schemaHash": "sha256:8a4c5271fcb37f9446a3353479394e33cdb940852bdc9549f78a75454efac43d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-offers",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:offers:1",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "accept",
+          "source": {
+            "slug": "vtc/rooms/offers/accept",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/rooms/offers/accept/0.1",
+            "pinnedDigest": "sha256:e127003f5970507be5879ac3613da51037fd5ccb38ec1329ac46807e26efd924",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/accept/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:9cccf9ad4521aadf4cde3d057df29724ec8e039579fc950b92465b55406b3186",
+            "schemaHash": "sha256:e7021cc96c57623779d70c9b0cca34fdd04036a85f900b2af63ba9df233834ad"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-accept",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:accepted:admitted",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "begin",
+          "source": {
+            "slug": "rooms/blobs/upload/begin",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/blobs/upload/begin/0.2",
+            "pinnedDigest": "sha256:7eb4d8e4deac75a3d45123b6f98b6b2746c2007e5620bc7314d978612808c69d",
+            "tfRef": {
+              "repoPath": "specs/rooms/blobs/upload/begin/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:27e5fc6ab008321e7271b61760d3f5083bc455cc060733fa2f1b1afb86c85a65",
+            "schemaHash": "sha256:64bede96e0da9406c2f2f02647020110a099473d67ac6dbaac2a9c7aea2327d7"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-blob-begin",
+              "capture": "thread",
+              "args": {
+                "size": 20000
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:upload:ok",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:upload:ok",
+              "count": 1
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "rooms-uploads:1",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-005",
+      "title": "the member's signed write is delivered again unchanged, with a value changed after signing, and with its proof removed: the unchanged copy does not apply a second write, the changed and unsigned copies are refused (proofInvalid, proofRequired); the room holds one record from one write",
+      "spec": [
+        "TF specs/rooms/records/put/0.3/spec.md (proofRequirement REQUIRED)",
+        "SPEC.md 7.2 (a document whose proof does not verify, or that carries none where one is REQUIRED, is refused; a repeated id is not executed twice)",
+        "docs/32-rooms-ballot-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "rooms/records/put",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/rooms/records/put/0.3",
+        "pinnedDigest": "sha256:cbd3083e8176bd77aca09f5eceb30aea587e3f5f2e0a9f13f07978aa78145b04",
+        "tfRef": {
+          "repoPath": "specs/rooms/records/put/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:a1f0e556781666faa9871e6150a047b125013c47de12033c0fad8bc999f4e10c",
+        "schemaHash": "sha256:11e0f03f07c08ded666f906137f40e2d6a30b3215c75f72cce28cb51e88885aa"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "https://trusttasks.org/spec/vtc/rooms/offers/accept/0.1",
+            "https://trusttasks.org/spec/vtc/rooms/memberships/list/0.1",
+            "https://trusttasks.org/spec/rooms/records/put/0.3",
+            "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offer-room",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "offerRoom",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offers",
+          "source": {
+            "slug": "vtc/rooms/offers/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "pinnedDigest": "sha256:65ea067a44bc4ea46c6e5e22e65dcd786b77e1ed8a660591cf70803fb81e4a79",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ed45f99aeec0844a30b56ab9d98a01d7009d67fddd5b0797b1902a6b4e5f1ef6",
+            "schemaHash": "sha256:8a4c5271fcb37f9446a3353479394e33cdb940852bdc9549f78a75454efac43d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-offers",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:offers:1",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "accept",
+          "source": {
+            "slug": "vtc/rooms/offers/accept",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/rooms/offers/accept/0.1",
+            "pinnedDigest": "sha256:e127003f5970507be5879ac3613da51037fd5ccb38ec1329ac46807e26efd924",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/accept/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:9cccf9ad4521aadf4cde3d057df29724ec8e039579fc950b92465b55406b3186",
+            "schemaHash": "sha256:e7021cc96c57623779d70c9b0cca34fdd04036a85f900b2af63ba9df233834ad"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-accept",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:accepted:admitted",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "put",
+          "source": {
+            "slug": "rooms/records/put",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/records/put/0.3",
+            "pinnedDigest": "sha256:cbd3083e8176bd77aca09f5eceb30aea587e3f5f2e0a9f13f07978aa78145b04",
+            "tfRef": {
+              "repoPath": "specs/rooms/records/put/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:a1f0e556781666faa9871e6150a047b125013c47de12033c0fad8bc999f4e10c",
+            "schemaHash": "sha256:11e0f03f07c08ded666f906137f40e2d6a30b3215c75f72cce28cb51e88885aa"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-put",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:put:ok",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "replay-same",
+          "source": {
+            "slug": "rooms/records/put",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/records/put/0.3",
+            "pinnedDigest": "sha256:cbd3083e8176bd77aca09f5eceb30aea587e3f5f2e0a9f13f07978aa78145b04",
+            "tfRef": {
+              "repoPath": "specs/rooms/records/put/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:a1f0e556781666faa9871e6150a047b125013c47de12033c0fad8bc999f4e10c",
+            "schemaHash": "sha256:11e0f03f07c08ded666f906137f40e2d6a30b3215c75f72cce28cb51e88885aa"
+          },
+          "do": {
+            "replay": {
+              "step": "put",
+              "by": "K",
+              "to": "V",
+              "mode": "same",
+              "index": 0
+            }
+          },
+          "expect": []
+        },
+        {
+          "id": "replay-tampered",
+          "source": {
+            "slug": "rooms/records/put",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/records/put/0.3",
+            "pinnedDigest": "sha256:cbd3083e8176bd77aca09f5eceb30aea587e3f5f2e0a9f13f07978aa78145b04",
+            "tfRef": {
+              "repoPath": "specs/rooms/records/put/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:a1f0e556781666faa9871e6150a047b125013c47de12033c0fad8bc999f4e10c",
+            "schemaHash": "sha256:11e0f03f07c08ded666f906137f40e2d6a30b3215c75f72cce28cb51e88885aa"
+          },
+          "do": {
+            "replay": {
+              "step": "put",
+              "by": "K",
+              "to": "V",
+              "mode": "tamper",
+              "index": 0
+            }
+          },
+          "expect": [
+            {
+              "reply": {
+                "code": "proofInvalid"
+              }
+            }
+          ]
+        },
+        {
+          "id": "replay-no-proof",
+          "source": {
+            "slug": "rooms/records/put",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/records/put/0.3",
+            "pinnedDigest": "sha256:cbd3083e8176bd77aca09f5eceb30aea587e3f5f2e0a9f13f07978aa78145b04",
+            "tfRef": {
+              "repoPath": "specs/rooms/records/put/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:a1f0e556781666faa9871e6150a047b125013c47de12033c0fad8bc999f4e10c",
+            "schemaHash": "sha256:11e0f03f07c08ded666f906137f40e2d6a30b3215c75f72cce28cb51e88885aa"
+          },
+          "do": {
+            "replay": {
+              "step": "put",
+              "by": "K",
+              "to": "V",
+              "mode": "stripProof",
+              "index": 0
+            }
+          },
+          "expect": [
+            {
+              "reply": {
+                "code": "proofRequired"
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "rooms-records:1",
+              "count": 1
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "rooms-writes:1",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-006",
+      "title": "the member writes the same key again as a new record (a second document, expected version 0): the host refuses it with rooms/records/put:versionConflict and the room keeps the first record",
+      "spec": [
+        "TF specs/rooms/records/put/0.3/spec.md (consumer item 6: return the current version with a versionConflict rather than a bare rejection)",
+        "docs/32-rooms-ballot-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "rooms/records/put",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/rooms/records/put/0.3",
+        "pinnedDigest": "sha256:cbd3083e8176bd77aca09f5eceb30aea587e3f5f2e0a9f13f07978aa78145b04",
+        "tfRef": {
+          "repoPath": "specs/rooms/records/put/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:a1f0e556781666faa9871e6150a047b125013c47de12033c0fad8bc999f4e10c",
+        "schemaHash": "sha256:11e0f03f07c08ded666f906137f40e2d6a30b3215c75f72cce28cb51e88885aa"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "https://trusttasks.org/spec/vtc/rooms/offers/accept/0.1",
+            "https://trusttasks.org/spec/vtc/rooms/memberships/list/0.1",
+            "https://trusttasks.org/spec/rooms/records/put/0.3",
+            "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offer-room",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "offerRoom",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offers",
+          "source": {
+            "slug": "vtc/rooms/offers/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "pinnedDigest": "sha256:65ea067a44bc4ea46c6e5e22e65dcd786b77e1ed8a660591cf70803fb81e4a79",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ed45f99aeec0844a30b56ab9d98a01d7009d67fddd5b0797b1902a6b4e5f1ef6",
+            "schemaHash": "sha256:8a4c5271fcb37f9446a3353479394e33cdb940852bdc9549f78a75454efac43d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-offers",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:offers:1",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "accept",
+          "source": {
+            "slug": "vtc/rooms/offers/accept",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/rooms/offers/accept/0.1",
+            "pinnedDigest": "sha256:e127003f5970507be5879ac3613da51037fd5ccb38ec1329ac46807e26efd924",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/accept/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:9cccf9ad4521aadf4cde3d057df29724ec8e039579fc950b92465b55406b3186",
+            "schemaHash": "sha256:e7021cc96c57623779d70c9b0cca34fdd04036a85f900b2af63ba9df233834ad"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-accept",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:accepted:admitted",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "put",
+          "source": {
+            "slug": "rooms/records/put",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/records/put/0.3",
+            "pinnedDigest": "sha256:cbd3083e8176bd77aca09f5eceb30aea587e3f5f2e0a9f13f07978aa78145b04",
+            "tfRef": {
+              "repoPath": "specs/rooms/records/put/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:a1f0e556781666faa9871e6150a047b125013c47de12033c0fad8bc999f4e10c",
+            "schemaHash": "sha256:11e0f03f07c08ded666f906137f40e2d6a30b3215c75f72cce28cb51e88885aa"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-put",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:put:ok",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "put-again",
+          "source": {
+            "slug": "rooms/records/put",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/records/put/0.3",
+            "pinnedDigest": "sha256:cbd3083e8176bd77aca09f5eceb30aea587e3f5f2e0a9f13f07978aa78145b04",
+            "tfRef": {
+              "repoPath": "specs/rooms/records/put/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:a1f0e556781666faa9871e6150a047b125013c47de12033c0fad8bc999f4e10c",
+            "schemaHash": "sha256:11e0f03f07c08ded666f906137f40e2d6a30b3215c75f72cce28cb51e88885aa"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-put",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "rooms/records/put:versionConflict",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:refused:versionConflict",
+              "count": 1
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "rooms-records:1",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-007",
+      "title": "the offer's end has passed when the member accepts: the community refuses the accept with vtc/rooms/offers/accept:offerExpired and admits no one",
+      "spec": [
+        "TF specs/vtc/rooms/offers/accept/0.1/spec.md (errorCodes: offerExpired; the offer's validUntil has passed)",
+        "docs/32-rooms-ballot-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vtc/rooms/offers/accept",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vtc/rooms/offers/accept/0.1",
+        "pinnedDigest": "sha256:e127003f5970507be5879ac3613da51037fd5ccb38ec1329ac46807e26efd924",
+        "tfRef": {
+          "repoPath": "specs/vtc/rooms/offers/accept/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:9cccf9ad4521aadf4cde3d057df29724ec8e039579fc950b92465b55406b3186",
+        "schemaHash": "sha256:e7021cc96c57623779d70c9b0cca34fdd04036a85f900b2af63ba9df233834ad"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "https://trusttasks.org/spec/vtc/rooms/offers/accept/0.1",
+            "https://trusttasks.org/spec/vtc/rooms/memberships/list/0.1",
+            "https://trusttasks.org/spec/rooms/records/put/0.3",
+            "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offer-room",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "offerRoom",
+              "args": {
+                "vid": "$K",
+                "expired": true
+              }
+            }
+          }
+        },
+        {
+          "id": "wait",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "waitPast",
+              "args": {}
+            }
+          }
+        },
+        {
+          "id": "offers",
+          "source": {
+            "slug": "vtc/rooms/offers/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "pinnedDigest": "sha256:65ea067a44bc4ea46c6e5e22e65dcd786b77e1ed8a660591cf70803fb81e4a79",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ed45f99aeec0844a30b56ab9d98a01d7009d67fddd5b0797b1902a6b4e5f1ef6",
+            "schemaHash": "sha256:8a4c5271fcb37f9446a3353479394e33cdb940852bdc9549f78a75454efac43d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-offers",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "accept",
+          "source": {
+            "slug": "vtc/rooms/offers/accept",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/rooms/offers/accept/0.1",
+            "pinnedDigest": "sha256:e127003f5970507be5879ac3613da51037fd5ccb38ec1329ac46807e26efd924",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/accept/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:9cccf9ad4521aadf4cde3d057df29724ec8e039579fc950b92465b55406b3186",
+            "schemaHash": "sha256:e7021cc96c57623779d70c9b0cca34fdd04036a85f900b2af63ba9df233834ad"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-accept",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "vtc/rooms/offers/accept:offerExpired",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:refused:offerExpired",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-008",
+      "title": "the member addresses its accept to another community than the one that receives it: the community refuses it (wrongRecipient) and admits no one",
+      "spec": [
+        "TF specs/vtc/rooms/offers/accept/0.1/spec.md (parties: the community maintainer is the recipient)",
+        "SPEC.md 8.3 (wrongRecipient)",
+        "docs/32-rooms-ballot-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vtc/rooms/offers/accept",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vtc/rooms/offers/accept/0.1",
+        "pinnedDigest": "sha256:e127003f5970507be5879ac3613da51037fd5ccb38ec1329ac46807e26efd924",
+        "tfRef": {
+          "repoPath": "specs/vtc/rooms/offers/accept/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:9cccf9ad4521aadf4cde3d057df29724ec8e039579fc950b92465b55406b3186",
+        "schemaHash": "sha256:e7021cc96c57623779d70c9b0cca34fdd04036a85f900b2af63ba9df233834ad"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "https://trusttasks.org/spec/vtc/rooms/offers/accept/0.1",
+            "https://trusttasks.org/spec/vtc/rooms/memberships/list/0.1",
+            "https://trusttasks.org/spec/rooms/records/put/0.3",
+            "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offer-room",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "offerRoom",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offers",
+          "source": {
+            "slug": "vtc/rooms/offers/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "pinnedDigest": "sha256:65ea067a44bc4ea46c6e5e22e65dcd786b77e1ed8a660591cf70803fb81e4a79",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ed45f99aeec0844a30b56ab9d98a01d7009d67fddd5b0797b1902a6b4e5f1ef6",
+            "schemaHash": "sha256:8a4c5271fcb37f9446a3353479394e33cdb940852bdc9549f78a75454efac43d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-offers",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:offers:1",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "accept-misaddressed",
+          "source": {
+            "slug": "vtc/rooms/offers/accept",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/rooms/offers/accept/0.1",
+            "pinnedDigest": "sha256:e127003f5970507be5879ac3613da51037fd5ccb38ec1329ac46807e26efd924",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/accept/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:9cccf9ad4521aadf4cde3d057df29724ec8e039579fc950b92465b55406b3186",
+            "schemaHash": "sha256:e7021cc96c57623779d70c9b0cca34fdd04036a85f900b2af63ba9df233834ad"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-accept",
+              "capture": "thread",
+              "args": {
+                "recipient": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "wrongRecipient",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:refused:wrongRecipient",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-009",
+      "title": "a wallet whose persona is not an active member of the community asks for its offers: the community refuses it with vtc/rooms/offers/list:notAMember",
+      "spec": [
+        "TF specs/vtc/rooms/offers/list/0.4/spec.md (errorCodes: notAMember)",
+        "docs/32-rooms-ballot-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vtc/rooms/offers/list",
+        "version": "0.4",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+        "pinnedDigest": "sha256:65ea067a44bc4ea46c6e5e22e65dcd786b77e1ed8a660591cf70803fb81e4a79",
+        "tfRef": {
+          "repoPath": "specs/vtc/rooms/offers/list/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:ed45f99aeec0844a30b56ab9d98a01d7009d67fddd5b0797b1902a6b4e5f1ef6",
+        "schemaHash": "sha256:8a4c5271fcb37f9446a3353479394e33cdb940852bdc9549f78a75454efac43d"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "https://trusttasks.org/spec/vtc/rooms/offers/accept/0.1",
+            "https://trusttasks.org/spec/vtc/rooms/memberships/list/0.1",
+            "https://trusttasks.org/spec/rooms/records/put/0.3",
+            "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "offers",
+          "source": {
+            "slug": "vtc/rooms/offers/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "pinnedDigest": "sha256:65ea067a44bc4ea46c6e5e22e65dcd786b77e1ed8a660591cf70803fb81e4a79",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ed45f99aeec0844a30b56ab9d98a01d7009d67fddd5b0797b1902a6b4e5f1ef6",
+            "schemaHash": "sha256:8a4c5271fcb37f9446a3353479394e33cdb940852bdc9549f78a75454efac43d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-offers",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "vtc/rooms/offers/list:notAMember",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:refused:notAMember",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-010",
+      "title": "an outsider's write: the member presents credentials the room issued to someone else: the host refuses the write with the standard permissionDenied and stores nothing",
+      "spec": [
+        "TF specs/rooms/records/put/0.3/spec.md (consumer item 12: an unauthorized presentation is refused with the standard permissionDenied)",
+        "docs/32-rooms-ballot-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "rooms/records/put",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/rooms/records/put/0.3",
+        "pinnedDigest": "sha256:cbd3083e8176bd77aca09f5eceb30aea587e3f5f2e0a9f13f07978aa78145b04",
+        "tfRef": {
+          "repoPath": "specs/rooms/records/put/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:a1f0e556781666faa9871e6150a047b125013c47de12033c0fad8bc999f4e10c",
+        "schemaHash": "sha256:11e0f03f07c08ded666f906137f40e2d6a30b3215c75f72cce28cb51e88885aa"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "https://trusttasks.org/spec/vtc/rooms/offers/accept/0.1",
+            "https://trusttasks.org/spec/vtc/rooms/memberships/list/0.1",
+            "https://trusttasks.org/spec/rooms/records/put/0.3",
+            "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offer-room",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "offerRoom",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offers",
+          "source": {
+            "slug": "vtc/rooms/offers/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "pinnedDigest": "sha256:65ea067a44bc4ea46c6e5e22e65dcd786b77e1ed8a660591cf70803fb81e4a79",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ed45f99aeec0844a30b56ab9d98a01d7009d67fddd5b0797b1902a6b4e5f1ef6",
+            "schemaHash": "sha256:8a4c5271fcb37f9446a3353479394e33cdb940852bdc9549f78a75454efac43d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-offers",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:offers:1",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "accept",
+          "source": {
+            "slug": "vtc/rooms/offers/accept",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/rooms/offers/accept/0.1",
+            "pinnedDigest": "sha256:e127003f5970507be5879ac3613da51037fd5ccb38ec1329ac46807e26efd924",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/accept/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:9cccf9ad4521aadf4cde3d057df29724ec8e039579fc950b92465b55406b3186",
+            "schemaHash": "sha256:e7021cc96c57623779d70c9b0cca34fdd04036a85f900b2af63ba9df233834ad"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-accept",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:accepted:admitted",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "put-foreign",
+          "source": {
+            "slug": "rooms/records/put",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/records/put/0.3",
+            "pinnedDigest": "sha256:cbd3083e8176bd77aca09f5eceb30aea587e3f5f2e0a9f13f07978aa78145b04",
+            "tfRef": {
+              "repoPath": "specs/rooms/records/put/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:a1f0e556781666faa9871e6150a047b125013c47de12033c0fad8bc999f4e10c",
+            "schemaHash": "sha256:11e0f03f07c08ded666f906137f40e2d6a30b3215c75f72cce28cb51e88885aa"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-put",
+              "capture": "thread",
+              "args": {
+                "presentation": "foreign"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "permissionDenied",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:refused:permissionDenied",
+              "count": 1
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "rooms-records:0",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-011",
+      "title": "an upload with a manifest that does not add up (the chunk count is not the size over the chunk size): the host refuses it with rooms/blobs/upload/begin:invalidManifest and opens no upload",
+      "spec": [
+        "TF specs/rooms/blobs/upload/begin/0.2/spec.md (errorCodes: invalidManifest)",
+        "docs/32-rooms-ballot-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "rooms/blobs/upload/begin",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/rooms/blobs/upload/begin/0.2",
+        "pinnedDigest": "sha256:7eb4d8e4deac75a3d45123b6f98b6b2746c2007e5620bc7314d978612808c69d",
+        "tfRef": {
+          "repoPath": "specs/rooms/blobs/upload/begin/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:27e5fc6ab008321e7271b61760d3f5083bc455cc060733fa2f1b1afb86c85a65",
+        "schemaHash": "sha256:64bede96e0da9406c2f2f02647020110a099473d67ac6dbaac2a9c7aea2327d7"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "https://trusttasks.org/spec/vtc/rooms/offers/accept/0.1",
+            "https://trusttasks.org/spec/vtc/rooms/memberships/list/0.1",
+            "https://trusttasks.org/spec/rooms/records/put/0.3",
+            "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offer-room",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "offerRoom",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offers",
+          "source": {
+            "slug": "vtc/rooms/offers/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.4",
+            "pinnedDigest": "sha256:65ea067a44bc4ea46c6e5e22e65dcd786b77e1ed8a660591cf70803fb81e4a79",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ed45f99aeec0844a30b56ab9d98a01d7009d67fddd5b0797b1902a6b4e5f1ef6",
+            "schemaHash": "sha256:8a4c5271fcb37f9446a3353479394e33cdb940852bdc9549f78a75454efac43d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-offers",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:offers:1",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "accept",
+          "source": {
+            "slug": "vtc/rooms/offers/accept",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/rooms/offers/accept/0.1",
+            "pinnedDigest": "sha256:e127003f5970507be5879ac3613da51037fd5ccb38ec1329ac46807e26efd924",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/accept/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:9cccf9ad4521aadf4cde3d057df29724ec8e039579fc950b92465b55406b3186",
+            "schemaHash": "sha256:e7021cc96c57623779d70c9b0cca34fdd04036a85f900b2af63ba9df233834ad"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-accept",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:accepted:admitted",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "begin-bad",
+          "source": {
+            "slug": "rooms/blobs/upload/begin",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/blobs/upload/begin/0.2",
+            "pinnedDigest": "sha256:7eb4d8e4deac75a3d45123b6f98b6b2746c2007e5620bc7314d978612808c69d",
+            "tfRef": {
+              "repoPath": "specs/rooms/blobs/upload/begin/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:27e5fc6ab008321e7271b61760d3f5083bc455cc060733fa2f1b1afb86c85a65",
+            "schemaHash": "sha256:64bede96e0da9406c2f2f02647020110a099473d67ac6dbaac2a9c7aea2327d7"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-blob-begin",
+              "capture": "thread",
+              "args": {
+                "size": 20000,
+                "corrupt": true
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "rooms/blobs/upload/begin:invalidManifest",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:refused:invalidManifest",
+              "count": 1
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "rooms-uploads:0",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-012",
+      "title": "the version skew on the community leg: the member asks for its offers at 0.4 of a community that serves 0.3 only: the community names what it serves, the member asks again at 0.3 and reads the offer (a labelled step-down against a legacy profile)",
+      "spec": [
+        "TF specs/vtc/rooms/offers/list/0.3 and 0.4 (two served versions of one task)",
+        "SPEC.md 8.3 (unsupportedVersion)",
+        "docs/32-rooms-ballot-ceremonies.md section 5"
+      ],
+      "source": {
+        "slug": "vtc/rooms/offers/list",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.3",
+        "pinnedDigest": "sha256:e08a113495bb5a664bc5df675e3639e9656e50cd32dc22e982f99d88b2ef1905",
+        "tfRef": {
+          "repoPath": "specs/vtc/rooms/offers/list/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:8aeb89ce83a59f027d5c597623309e98e5ede89892d6eab348efa36a2f761285",
+        "schemaHash": "sha256:e2ca4110e1d2ffd2b3640f8daad28b733fb0440fd7bded681abb1257272279c5"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "optional:trigger.serveVersions"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "serve-legacy",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "serveVersions",
+              "args": {
+                "profile": "legacy"
+              }
+            }
+          }
+        },
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offer-room",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "offerRoom",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "offers",
+          "source": {
+            "slug": "vtc/rooms/offers/list",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/offers/list/0.3",
+            "pinnedDigest": "sha256:e08a113495bb5a664bc5df675e3639e9656e50cd32dc22e982f99d88b2ef1905",
+            "tfRef": {
+              "repoPath": "specs/vtc/rooms/offers/list/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:8aeb89ce83a59f027d5c597623309e98e5ede89892d6eab348efa36a2f761285",
+            "schemaHash": "sha256:e2ca4110e1d2ffd2b3640f8daad28b733fb0440fd7bded681abb1257272279c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "rooms-offers",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "unsupportedVersion",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:offers:1",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:offers-version:0.3",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "serve-current",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "serveVersions",
+              "args": {
+                "profile": "current"
+              }
+            }
+          }
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:offers-version:0.3",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-013",
+      "title": "the member asks its agent which rooms it holds keys for (rooms/keys/list 0.2): the agent holds none (an open room has no group)",
+      "spec": [
+        "TF specs/rooms/keys/list/0.2/spec.md (the rooms the key holder can open; an open room is not one)",
+        "docs/32-rooms-ballot-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "rooms/keys/list",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/rooms/keys/list/0.2",
+        "pinnedDigest": "sha256:73fd3c9a976f1b685f4ffcd98800995fcbf6aa73f47b0793f43825d5e8531348",
+        "tfRef": {
+          "repoPath": "specs/rooms/keys/list/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:a187336cdc8aeb27dd5fbb55cf26c390db56c2f10168fa1e8cc4469c2324990f",
+        "schemaHash": "sha256:0aaaa23db2bbe0f2144e8cb239e0b63ec76b11451b1fe5de5fd5188ad9eeea2f"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "A": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/rooms/keys/list/0.2",
+            "https://trusttasks.org/spec/rooms/keys/key-package/0.2",
+            "https://trusttasks.org/spec/rooms/keys/act/0.9"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "keys-list",
+          "source": {
+            "slug": "rooms/keys/list",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/keys/list/0.2",
+            "pinnedDigest": "sha256:73fd3c9a976f1b685f4ffcd98800995fcbf6aa73f47b0793f43825d5e8531348",
+            "tfRef": {
+              "repoPath": "specs/rooms/keys/list/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:a187336cdc8aeb27dd5fbb55cf26c390db56c2f10168fa1e8cc4469c2324990f",
+            "schemaHash": "sha256:0aaaa23db2bbe0f2144e8cb239e0b63ec76b11451b1fe5de5fd5188ad9eeea2f"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "A",
+              "kind": "rooms-keys-list",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "rooms:keys:0",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:keys:0",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-014",
+      "title": "the member asks its agent for a KeyPackage against a well-formed invitation credential that no room issued (it parses and does not verify): the agent refuses with rooms/keys/key-package:notInvited and mints nothing",
+      "spec": [
+        "TF specs/rooms/keys/key-package/0.2/spec.md (consumer item 1: refuse an invitation that does not verify with notInvited)",
+        "docs/32-rooms-ballot-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "rooms/keys/key-package",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/rooms/keys/key-package/0.2",
+        "pinnedDigest": "sha256:d2fdb58644111d98194dca1a42c439a308f54506e2e83405b406d116edf7bab1",
+        "tfRef": {
+          "repoPath": "specs/rooms/keys/key-package/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:534be7829a0d89e9ccc70f9534ac7f4c55c4e450df4d482842985160712857ed",
+        "schemaHash": "sha256:5eac6c62b3255eebdc8e07826aaf75c524746e0b83313430b7cbee2b8b6daef9"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "A": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/rooms/keys/list/0.2",
+            "https://trusttasks.org/spec/rooms/keys/key-package/0.2",
+            "https://trusttasks.org/spec/rooms/keys/act/0.9"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "key-package",
+          "source": {
+            "slug": "rooms/keys/key-package",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/keys/key-package/0.2",
+            "pinnedDigest": "sha256:d2fdb58644111d98194dca1a42c439a308f54506e2e83405b406d116edf7bab1",
+            "tfRef": {
+              "repoPath": "specs/rooms/keys/key-package/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:534be7829a0d89e9ccc70f9534ac7f4c55c4e450df4d482842985160712857ed",
+            "schemaHash": "sha256:5eac6c62b3255eebdc8e07826aaf75c524746e0b83313430b7cbee2b8b6daef9"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "A",
+              "kind": "rooms-key-package",
+              "capture": "thread",
+              "args": {
+                "invitation": "foreign"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "rooms/keys/key-package:notInvited",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:refused:notInvited",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-015",
+      "title": "the member asks its agent to complete, as the member, a request whose type is not one of the host-bound requests the task acts for: the agent refuses with rooms/keys/act:typeNotActable and signs nothing",
+      "spec": [
+        "TF specs/rooms/keys/act/0.9/spec.md (errorCodes: typeNotActable)",
+        "docs/32-rooms-ballot-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "rooms/keys/act",
+        "version": "0.9",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/rooms/keys/act/0.9",
+        "pinnedDigest": "sha256:f6ed240b35a86da119357a317fd06e01adf80ea7b827a81d382c518cff97c4ec",
+        "tfRef": {
+          "repoPath": "specs/rooms/keys/act/0.9/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:022f2f716c42e933cdf2df30eb4fc12af2f10a50d2b6e0b8fad702cf7aa9cc6a",
+        "schemaHash": "sha256:46b35d0e0cd09687f92bea874b3a2aaff565fcd1474a6bbb8b411e27916dae35"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "A": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/rooms/keys/list/0.2",
+            "https://trusttasks.org/spec/rooms/keys/key-package/0.2",
+            "https://trusttasks.org/spec/rooms/keys/act/0.9"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "act-other-type",
+          "source": {
+            "slug": "rooms/keys/act",
+            "version": "0.9",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/keys/act/0.9",
+            "pinnedDigest": "sha256:f6ed240b35a86da119357a317fd06e01adf80ea7b827a81d382c518cff97c4ec",
+            "tfRef": {
+              "repoPath": "specs/rooms/keys/act/0.9/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:022f2f716c42e933cdf2df30eb4fc12af2f10a50d2b6e0b8fad702cf7aa9cc6a",
+            "schemaHash": "sha256:46b35d0e0cd09687f92bea874b3a2aaff565fcd1474a6bbb8b411e27916dae35"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "A",
+              "kind": "rooms-act",
+              "capture": "thread",
+              "args": {
+                "actType": "rooms/keys/list/0.2"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "rooms/keys/act:typeNotActable",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:refused:typeNotActable",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-016",
+      "title": "the member asks its agent to complete a write naming the member's DID as issuer, where the agent holds the keys of no such member: the agent refuses with rooms/keys/act:issuerNotPrincipal (the issuer is not a member it may act as for its caller) and signs nothing",
+      "spec": [
+        "TF specs/rooms/keys/act/0.9/spec.md (errorCodes: issuerNotPrincipal; recipient: a named issuer the key holder may not act as; notAMember is the answer when no issuer is named and no member can be acted as, which the wallet never sends)",
+        "docs/32-rooms-ballot-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "rooms/keys/act",
+        "version": "0.9",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/rooms/keys/act/0.9",
+        "pinnedDigest": "sha256:f6ed240b35a86da119357a317fd06e01adf80ea7b827a81d382c518cff97c4ec",
+        "tfRef": {
+          "repoPath": "specs/rooms/keys/act/0.9/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:022f2f716c42e933cdf2df30eb4fc12af2f10a50d2b6e0b8fad702cf7aa9cc6a",
+        "schemaHash": "sha256:46b35d0e0cd09687f92bea874b3a2aaff565fcd1474a6bbb8b411e27916dae35"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "A": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/rooms/keys/list/0.2",
+            "https://trusttasks.org/spec/rooms/keys/key-package/0.2",
+            "https://trusttasks.org/spec/rooms/keys/act/0.9"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "act-no-membership",
+          "source": {
+            "slug": "rooms/keys/act",
+            "version": "0.9",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/keys/act/0.9",
+            "pinnedDigest": "sha256:f6ed240b35a86da119357a317fd06e01adf80ea7b827a81d382c518cff97c4ec",
+            "tfRef": {
+              "repoPath": "specs/rooms/keys/act/0.9/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:022f2f716c42e933cdf2df30eb4fc12af2f10a50d2b6e0b8fad702cf7aa9cc6a",
+            "schemaHash": "sha256:46b35d0e0cd09687f92bea874b3a2aaff565fcd1474a6bbb8b411e27916dae35"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "A",
+              "kind": "rooms-act",
+              "capture": "thread",
+              "args": {
+                "actType": "rooms/records/put/0.3"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "rooms/keys/act:issuerNotPrincipal",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:refused:issuerNotPrincipal",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-017",
+      "title": "the version skew on the agent leg: the member asks its agent to act at 0.9 of an agent that serves 0.8 only: the agent names what it serves, the member asks again at 0.8 (a labelled step-down against a legacy profile)",
+      "spec": [
+        "TF specs/rooms/keys/act/0.8 and 0.9 (versions of one task; the wallet's ladder is 0.9, 0.8, 0.6, 0.5)",
+        "SPEC.md 8.3 (unsupportedVersion)",
+        "docs/32-rooms-ballot-ceremonies.md section 5"
+      ],
+      "source": {
+        "slug": "rooms/keys/act",
+        "version": "0.8",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/rooms/keys/act/0.8",
+        "pinnedDigest": "sha256:f4eb1e02fa4c0b1e550d8d45015911334deb40b0bbcdedd62dd89c32ce7c1576",
+        "tfRef": {
+          "repoPath": "specs/rooms/keys/act/0.8/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:14ff23a0b93a8bb544c42a0b8e9f6cafeefc8b986c57ba863457dedc40acee5b",
+        "schemaHash": "sha256:5c37bb4627d01a4e4fdd99d19c5ba8e44f33f2f5b7d9637b4a782b757844f0b9"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "A": {
+          "role": "agent",
+          "requires": [
+            "optional:trigger.serveVersions"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "serve-legacy",
+          "do": {
+            "decide": {
+              "by": "A",
+              "action": "serveVersions",
+              "args": {
+                "profile": "legacy"
+              }
+            }
+          }
+        },
+        {
+          "id": "act",
+          "source": {
+            "slug": "rooms/keys/act",
+            "version": "0.8",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/keys/act/0.8",
+            "pinnedDigest": "sha256:f4eb1e02fa4c0b1e550d8d45015911334deb40b0bbcdedd62dd89c32ce7c1576",
+            "tfRef": {
+              "repoPath": "specs/rooms/keys/act/0.8/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:14ff23a0b93a8bb544c42a0b8e9f6cafeefc8b986c57ba863457dedc40acee5b",
+            "schemaHash": "sha256:5c37bb4627d01a4e4fdd99d19c5ba8e44f33f2f5b7d9637b4a782b757844f0b9"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "A",
+              "kind": "rooms-act",
+              "capture": "thread",
+              "args": {
+                "actType": "rooms/records/put/0.3"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "unsupportedVersion",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "received": {
+                "code": "rooms/keys/act:issuerNotPrincipal",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        },
+        {
+          "id": "serve-current",
+          "do": {
+            "decide": {
+              "by": "A",
+              "action": "serveVersions",
+              "args": {
+                "profile": "current"
+              }
+            }
+          }
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:refused:issuerNotPrincipal",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-RMS-018",
+      "title": "the member asks its agent for a KeyPackage against text that is not a credential at all: the specification names one refusal for an invitation that does not verify (notInvited); a platform that refuses it earlier as a malformed request is a difference the run records, not a failure of the scenario's reading",
+      "spec": [
+        "TF specs/rooms/keys/key-package/0.2/spec.md (consumer item 1: refuse an invitation that does not verify with notInvited; the schema types the field as the credential serialized per the governing profile)",
+        "docs/32-rooms-ballot-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "rooms/keys/key-package",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/rooms/keys/key-package/0.2",
+        "pinnedDigest": "sha256:d2fdb58644111d98194dca1a42c439a308f54506e2e83405b406d116edf7bab1",
+        "tfRef": {
+          "repoPath": "specs/rooms/keys/key-package/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:534be7829a0d89e9ccc70f9534ac7f4c55c4e450df4d482842985160712857ed",
+        "schemaHash": "sha256:5eac6c62b3255eebdc8e07826aaf75c524746e0b83313430b7cbee2b8b6daef9"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "A": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/rooms/keys/list/0.2",
+            "https://trusttasks.org/spec/rooms/keys/key-package/0.2",
+            "https://trusttasks.org/spec/rooms/keys/act/0.9"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "key-package-text",
+          "source": {
+            "slug": "rooms/keys/key-package",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/rooms/keys/key-package/0.2",
+            "pinnedDigest": "sha256:d2fdb58644111d98194dca1a42c439a308f54506e2e83405b406d116edf7bab1",
+            "tfRef": {
+              "repoPath": "specs/rooms/keys/key-package/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:534be7829a0d89e9ccc70f9534ac7f4c55c4e450df4d482842985160712857ed",
+            "schemaHash": "sha256:5eac6c62b3255eebdc8e07826aaf75c524746e0b83313430b7cbee2b8b6daef9"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "A",
+              "kind": "rooms-key-package",
+              "capture": "thread",
+              "args": {
+                "invitation": "not-a-credential"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "rooms/keys/key-package:notInvited",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "rooms:refused:notInvited",
+              "count": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

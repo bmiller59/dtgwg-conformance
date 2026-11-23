@@ -1,0 +1,1337 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "VC-GIT-NS",
+ "family": "complete",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "VC-GIT-NS-001",
+   "title": "git-ns/account/link-status 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the specification names git-ns/account/link-status:unknownLink, which a conforming implementation may return for this request depending on state)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/account/link-status/0.1 (Trust Tasks specification git-ns/account/link-status 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/account/link-status/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/account/link-status",
+    "version": "0.1",
+    "ref": "kit:specs/git-ns/account/link-status/0.1",
+    "pinnedDigest": "sha256:92488fad798549860973b023ef69a6e37c1b5679625efe062dfdbe4f339df0f5",
+    "specHash": "sha256:fb33e279fa370f676395a1cc68cce1804f65c85559a570f36057265a6ae0e9c3",
+    "schemaHash": "sha256:6f483c7ccbd1cd02c5af840381ceab3b20f97f33e8eb35d4eca171ec1ca768f4",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/account/link-status/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/account/link-status/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/account/link-status/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "linkId": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/account/link-status/0.1"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-002",
+   "title": "git-ns/account/link 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/account/link/0.1 (Trust Tasks specification git-ns/account/link 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/account/link/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/account/link",
+    "version": "0.1",
+    "ref": "kit:specs/git-ns/account/link/0.1",
+    "pinnedDigest": "sha256:94025567a883fbc7c741775c42c4d737c41ffaf669c671f908bf048e70e8a57c",
+    "specHash": "sha256:53dbeff6482efcb1bb4d1f72580c60399e1f5f7dc2f4f8a36f689918a8ac2aaf",
+    "schemaHash": "sha256:7627a42bdf0210ab6ca57252a31699c1304bf4ad6273295708dbc451d6f06896",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/account/link/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/account/link/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/account/link/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "forge": "1.0.0"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/account/link/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-003",
+   "title": "git-ns/account/unlink 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/account/unlink/0.1 (Trust Tasks specification git-ns/account/unlink 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/account/unlink/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/account/unlink",
+    "version": "0.1",
+    "ref": "kit:specs/git-ns/account/unlink/0.1",
+    "pinnedDigest": "sha256:d559aed85dffe4e2cbd2dc7624b738a61677b2911647c2df60de46b86bd2ec0d",
+    "specHash": "sha256:3e0f195168d2fe478737f70b522979947b9d309cf8fe404bb30f03d844967303",
+    "schemaHash": "sha256:97393fc081950f3e62a595e15e799548fa6c42f71ecd01e4c45de2c5fc773711",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/account/unlink/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/account/unlink/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/account/unlink/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "forge": "1.0.0"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/account/unlink/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-004",
+   "title": "git-ns/bridge/event 0.6: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/bridge/event/0.6 (Trust Tasks specification git-ns/bridge/event 0.6 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/bridge/event/0.6#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/bridge/event",
+    "version": "0.6",
+    "ref": "kit:specs/git-ns/bridge/event/0.6",
+    "pinnedDigest": "sha256:b3c55a330e8512fa6bba97469a2f917a3df7a3742f65cc5e84a1d95400bf4b1a",
+    "specHash": "sha256:7a4cc94344660d3dff30523b7022ef757cac982659c217ec799d06ed7b98d183",
+    "schemaHash": "sha256:0faa09453bc2af744023e256fc7a857a1353d335899abc8dd90d6096cf5fde0e",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/bridge/event/0.6/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/bridge/event/0.6"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "example",
+        "event": {
+         "type": "installationRemoved"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/bridge/event/0.6"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-005",
+   "title": "git-ns/bridge/result 0.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/bridge/result/0.2 (Trust Tasks specification git-ns/bridge/result 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/bridge/result/0.2#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/bridge/result",
+    "version": "0.2",
+    "ref": "kit:specs/git-ns/bridge/result/0.2",
+    "pinnedDigest": "sha256:487ba7f7fa0eba6f1e561d5cf3f01b54dee7e3cd1b984eb8ee7f0697fda59ddf",
+    "specHash": "sha256:0c5bbbe2dfab06bec3910fcfc2581ef57e22ba9cc02e22748c9445847d23884e",
+    "schemaHash": "sha256:56056870d2105635fdfa3b07373c999b7ad1c573e92ac3bbb234f314bf19fb93",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/bridge/result/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/bridge/result/0.2"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/result/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "jobId": "example",
+        "outcome": "succeeded"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/bridge/result/0.2"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-006",
+   "title": "git-ns/drift/resolve 0.4: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/drift/resolve/0.4 (Trust Tasks specification git-ns/drift/resolve 0.4 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/drift/resolve/0.4#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/drift/resolve",
+    "version": "0.4",
+    "ref": "kit:specs/git-ns/drift/resolve/0.4",
+    "pinnedDigest": "sha256:774aaba8165eb656fdeec677a89c16ab58d3e4793b0ed35d6fc19a5508d2da66",
+    "specHash": "sha256:0337a4b6561854262720ff5b1173a1b656c85a4db990aed902c1b6aed39304e8",
+    "schemaHash": "sha256:f42fb04f588e4b4f523b1d2c5603e6b0938fd1556c02dcd51b514b712437fd6c",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/drift/resolve/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/drift/resolve/0.4"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/drift/resolve/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "resource": "a.a/a/a",
+        "drift": {
+         "type": "roleAdded"
+        },
+        "action": "adopt"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/drift/resolve/0.4"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-007",
+   "title": "git-ns/namespace/list 0.2: a schema-valid, signed, addressed request is answered with the task's response, which conforms to the response schema (success asserted)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/namespace/list/0.2 (Trust Tasks specification git-ns/namespace/list 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/namespace/list/0.2#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Success asserted: the specification defines the response, the task changes nothing, the request names no identifier or free text, and the vector requires optional:authorised (SPEC.md 7.2 item 10: authorisation is the deployment's, never the suite's)",
+    "Front-matter error code git-ns/namespace/list:notAdministrator (spec.md line 42): not reachable here (standing (administrator, membership or the witness's own policy): covered by optional:authorised)"
+   ],
+   "source": {
+    "slug": "git-ns/namespace/list",
+    "version": "0.2",
+    "ref": "kit:specs/git-ns/namespace/list/0.2",
+    "pinnedDigest": "sha256:18cd4547f27f92adf8f211f55cbf18f909d3cb1a07da405e81de9852950ae4dd",
+    "specHash": "sha256:fea1c6cd5249efced37d8dc0f9861c0c022ff47c3031bea14cb745583db8648b",
+    "schemaHash": "sha256:db8dc7881d7a5de273250b174e4daa76f9d021913a99c78c2c3657c1dfaf41ec",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/namespace/list/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/namespace/list/0.2",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "plainBadResponse",
+    "plainInternalError"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/namespace/list/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/namespace/list/0.2",
+      "success": true
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "asserted"
+  },
+  {
+   "id": "VC-GIT-NS-008",
+   "title": "git-ns/namespace/reseat 0.4: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is destructive and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/namespace/reseat/0.4 (Trust Tasks specification git-ns/namespace/reseat 0.4 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/namespace/reseat/0.4#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/namespace/reseat",
+    "version": "0.4",
+    "ref": "kit:specs/git-ns/namespace/reseat/0.4",
+    "pinnedDigest": "sha256:3b12c8306fbd3081d489aef7a92d1ea257d9fa1e29a7cfa9c7405aa5b0bc7b89",
+    "specHash": "sha256:a0c59e3ce7aae20331001cb17f6b64c3c463f42d2305e686c253590566ea56e3",
+    "schemaHash": "sha256:ca785d6373c4445d89388a3957bb97ae54e83357932ebd3175c4b701b68f2b38",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/namespace/reseat/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/namespace/reseat/0.4"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/namespace/reseat/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "example",
+        "subject": "did:web:alice.example",
+        "statement": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/namespace/reseat/0.4"
+     }
+    }
+   ],
+   "effect": "destructive",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-009",
+   "title": "git-ns/namespace/unbind 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is destructive and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/namespace/unbind/0.1 (Trust Tasks specification git-ns/namespace/unbind 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/namespace/unbind/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/namespace/unbind",
+    "version": "0.1",
+    "ref": "kit:specs/git-ns/namespace/unbind/0.1",
+    "pinnedDigest": "sha256:1147795b55790898776727d5c1738e9693460d93ada658fdd058f158a45c8b34",
+    "specHash": "sha256:6c0f4b755a10ccc811e90269485fde9841cb14f2c359f4e66146aacc4aad040c",
+    "schemaHash": "sha256:41570d482bbd93c5777e5d713e15f0410204b04c6edee62503f2870e33ddacff",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/namespace/unbind/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/namespace/unbind/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/namespace/unbind/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/namespace/unbind/0.1"
+     }
+    }
+   ],
+   "effect": "destructive",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-010",
+   "title": "git-ns/projection/show 0.3: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the specification names git-ns/projection/show:notCommunityAdministrator, which a conforming implementation may return for this request depending on state)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/projection/show/0.3 (Trust Tasks specification git-ns/projection/show 0.3 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/projection/show/0.3#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds",
+    "Front-matter error code git-ns/projection/show:notCommunityAdministrator (spec.md line 42): reachable for a valid request, so success is not asserted"
+   ],
+   "source": {
+    "slug": "git-ns/projection/show",
+    "version": "0.3",
+    "ref": "kit:specs/git-ns/projection/show/0.3",
+    "pinnedDigest": "sha256:ab17834faae810d9f7f1aa9dab1f9c5841319d75567f456ae128b8d82dd0b30c",
+    "specHash": "sha256:f981b505e6d9396c5f82af3eb0d0b6f15503764c39004cae7f8ae9e948d9e781",
+    "schemaHash": "sha256:e7598abe0c2f3c4affd258d7dced644bec3fe9f9bc92ffab67a97bbf6de87add",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/projection/show/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/projection/show/0.3"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/projection/show/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/projection/show/0.3"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-011",
+   "title": "git-ns/repo/adopt 0.3: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/repo/adopt/0.3 (Trust Tasks specification git-ns/repo/adopt 0.3 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/repo/adopt/0.3#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/repo/adopt",
+    "version": "0.3",
+    "ref": "kit:specs/git-ns/repo/adopt/0.3",
+    "pinnedDigest": "sha256:2ef31dcafca3837a2987c5210c28562ac65120abb23fd27ec4a24c88bb847a43",
+    "specHash": "sha256:d0bb6a2729f1719de0741aec9c76a4b83ecdf89b2739af23b0009b3075423d73",
+    "schemaHash": "sha256:55f0e10be2496c8ea4c8c262c08c678d79336f26c6f3b3916fd4aa0254af2bbb",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/repo/adopt/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/repo/adopt/0.3"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/adopt/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "resource": "a.a/a/a",
+        "owners": [
+         "did:web:alice.example"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/repo/adopt/0.3"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-012",
+   "title": "git-ns/repo/archive 0.3: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is destructive and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/repo/archive/0.3 (Trust Tasks specification git-ns/repo/archive 0.3 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/repo/archive/0.3#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/repo/archive",
+    "version": "0.3",
+    "ref": "kit:specs/git-ns/repo/archive/0.3",
+    "pinnedDigest": "sha256:3eaffe9c9568b862e1f8e4ad5afedccf765e6802982fee5ab2f609f2b548d705",
+    "specHash": "sha256:e91f3a2f1b005b158974df9d124af8e5ac0179e55e593bc975be8d5cc3ad329f",
+    "schemaHash": "sha256:577522015bb20ef025e427a69f9a891fe3dce7e9df40c6a1b6bc17b6ad815a8e",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/repo/archive/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/repo/archive/0.3"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/archive/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "resource": "a.a/a/a"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/repo/archive/0.3"
+     }
+    }
+   ],
+   "effect": "destructive",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-013",
+   "title": "git-ns/repo/create 0.4: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/repo/create/0.4 (Trust Tasks specification git-ns/repo/create 0.4 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/repo/create/0.4#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/repo/create",
+    "version": "0.4",
+    "ref": "kit:specs/git-ns/repo/create/0.4",
+    "pinnedDigest": "sha256:29216ec232609e81a09339c05d1bc9a2a084f28d8e7d089c6b7988a670687ab9",
+    "specHash": "sha256:81545d09efbc97f7eb7ce1104e78bdc645b814cacbd431578bd76be7b52869b0",
+    "schemaHash": "sha256:1c26978888f291592288f712ec31429dd17b12bae8e3ca1ca368466f07d539b6",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/repo/create/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/repo/create/0.4"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/create/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "example",
+        "name": "a",
+        "visibility": "public"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/repo/create/0.4"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-014",
+   "title": "git-ns/repo/list 0.2: a schema-valid, signed, addressed request is answered with the task's response, which conforms to the response schema (success asserted)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/repo/list/0.2 (Trust Tasks specification git-ns/repo/list 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/repo/list/0.2#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Success asserted: the specification defines the response, the task changes nothing, the request names no identifier or free text, and the vector requires optional:authorised (SPEC.md 7.2 item 10: authorisation is the deployment's, never the suite's)",
+    "Front-matter error code git-ns/repo/list:notAdministrator (spec.md line 42): not reachable here (standing (administrator, membership or the witness's own policy): covered by optional:authorised)"
+   ],
+   "source": {
+    "slug": "git-ns/repo/list",
+    "version": "0.2",
+    "ref": "kit:specs/git-ns/repo/list/0.2",
+    "pinnedDigest": "sha256:846e90e9eeb5a52a4f426a6b8223bcfcce8ca5392a1db528dd39934f524efb5e",
+    "specHash": "sha256:e97ed7cf85f95e2ad2f4a420d55ab68d3c8f3548a41a57eb9dfafee41957fd5c",
+    "schemaHash": "sha256:71b0eaa8506244d4f124b988dcb89819dbd0d0567228a1ac51e2eb8eaa9af7a4",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/repo/list/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/repo/list/0.2",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "plainBadResponse",
+    "plainInternalError"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/list/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/repo/list/0.2",
+      "success": true
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "asserted"
+  },
+  {
+   "id": "VC-GIT-NS-015",
+   "title": "git-ns/repo/transfer 0.3: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/repo/transfer/0.3 (Trust Tasks specification git-ns/repo/transfer 0.3 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/repo/transfer/0.3#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/repo/transfer",
+    "version": "0.3",
+    "ref": "kit:specs/git-ns/repo/transfer/0.3",
+    "pinnedDigest": "sha256:84a8038569233b4ad0063a13e0d8727b3c3bb23cbdc2fa5ee9225dec5b57b44e",
+    "specHash": "sha256:8c744400df5f085aae44efb33e2289b83abdfd6bb19205459cc3149a1762bcf6",
+    "schemaHash": "sha256:4faa4f77d500812da72181ea42157c5f2f85c00b98315084dd26f191efa92103",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/repo/transfer/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/repo/transfer/0.3"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/transfer/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "resource": "a.a/a/a",
+        "to": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/repo/transfer/0.3"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-016",
+   "title": "git-ns/right/break-glass 0.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is destructive and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/right/break-glass/0.2 (Trust Tasks specification git-ns/right/break-glass 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/right/break-glass/0.2#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/right/break-glass",
+    "version": "0.2",
+    "ref": "kit:specs/git-ns/right/break-glass/0.2",
+    "pinnedDigest": "sha256:e5f05464ad020ee3eb6238eab1485d8039cf5ff6f6b6e69aad78d3307becdaee",
+    "specHash": "sha256:30921928c39e868b7e3bc19f692f2bbad9c798171cc4afa959e3fcf336496e6c",
+    "schemaHash": "sha256:6ca7039ea3f4636a9533afa9cc2de753717a049fb7d32d3d96793558a22ed345",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/right/break-glass/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/right/break-glass/0.2"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/right/break-glass/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "right": "git.ns.admin",
+        "resource": "a.a/a",
+        "justification": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/right/break-glass/0.2"
+     }
+    }
+   ],
+   "effect": "destructive",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-017",
+   "title": "git-ns/right/grant 0.4: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/right/grant/0.4 (Trust Tasks specification git-ns/right/grant 0.4 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/right/grant/0.4#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/right/grant",
+    "version": "0.4",
+    "ref": "kit:specs/git-ns/right/grant/0.4",
+    "pinnedDigest": "sha256:7def82beaee814db281e58e4eec140c0de593832e1019c5ebbb620b189631294",
+    "specHash": "sha256:adcf7330d167d807a7b065516cd13286382724be08a621ffd70831dafa34b16d",
+    "schemaHash": "sha256:3ea3232ac8c871db08c0a029361fb0673ad95082608685202315373b5eb21d3f",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/right/grant/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/right/grant/0.4"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/right/grant/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:alice.example",
+        "right": "git.ns.admin",
+        "resource": "a.a/a"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/right/grant/0.4"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-018",
+   "title": "git-ns/right/issued-by-departed 0.3: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the specification names git-ns/right/issued-by-departed:notCommunityAdministrator, which a conforming implementation may return for this request depending on state)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/right/issued-by-departed/0.3 (Trust Tasks specification git-ns/right/issued-by-departed 0.3 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/right/issued-by-departed/0.3#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds",
+    "Front-matter error code git-ns/right/issued-by-departed:notCommunityAdministrator (spec.md line 42): reachable for a valid request, so success is not asserted"
+   ],
+   "source": {
+    "slug": "git-ns/right/issued-by-departed",
+    "version": "0.3",
+    "ref": "kit:specs/git-ns/right/issued-by-departed/0.3",
+    "pinnedDigest": "sha256:92e73cdef2006533fba617151c3aea4f2a80492f893c3cdce9004b376526d2c8",
+    "specHash": "sha256:e8a2738dbc4fd005f6a1f5f420c3a0a65e470e4068a9cb4e5d53489a7c503326",
+    "schemaHash": "sha256:794908a5ed149391baf8b3c570a7ebb2f28263e85a9a1d8315b4a7a8e029d942",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/right/issued-by-departed/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/right/issued-by-departed/0.3"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/right/issued-by-departed/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/right/issued-by-departed/0.3"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-019",
+   "title": "git-ns/right/ratify 0.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/right/ratify/0.2 (Trust Tasks specification git-ns/right/ratify 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/right/ratify/0.2#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/right/ratify",
+    "version": "0.2",
+    "ref": "kit:specs/git-ns/right/ratify/0.2",
+    "pinnedDigest": "sha256:88a8f09f9a049a7a4bdf45bf1c35b4b271942935f62940fca4258807e47bafaa",
+    "specHash": "sha256:09089f316230c640cf99f0f5a834e1001197310c561db0252f0470749d2e4f3a",
+    "schemaHash": "sha256:f3bf505a8e18d959cb663c89753f3acd207e8bcee3eda8821853ab9c745fdc53",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/right/ratify/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/right/ratify/0.2"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/right/ratify/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:alice.example",
+        "right": "git.ns.admin",
+        "resource": "a.a/a",
+        "breakGlassAt": "2026-11-12T10:00:00Z"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/right/ratify/0.2"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-020",
+   "title": "git-ns/right/revoke 0.4: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/right/revoke/0.4 (Trust Tasks specification git-ns/right/revoke 0.4 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/right/revoke/0.4#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/right/revoke",
+    "version": "0.4",
+    "ref": "kit:specs/git-ns/right/revoke/0.4",
+    "pinnedDigest": "sha256:67c591ecdf25a314a3654566f3b97547846a04e66be3a18f719f3e3299838a73",
+    "specHash": "sha256:d355cae73f6b7f915fd1e8b0dbe7b5caee4e8887a881834daf8a539f4219afe8",
+    "schemaHash": "sha256:cf697813e3598b9b8d75be1ee6d2afab53d130b397bdc3cd5c50d9e5b3f37dd4",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/right/revoke/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/right/revoke/0.4"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/right/revoke/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:alice.example",
+        "right": "git.ns.admin",
+        "resource": "a.a/a"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/right/revoke/0.4"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-021",
+   "title": "git-ns/roles/reproject 0.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/roles/reproject/0.2 (Trust Tasks specification git-ns/roles/reproject 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/roles/reproject/0.2#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "git-ns/roles/reproject",
+    "version": "0.2",
+    "ref": "kit:specs/git-ns/roles/reproject/0.2",
+    "pinnedDigest": "sha256:39c3e44ed1dd4eb7f3b0a4807f11c86350de286d43809d256914e8897c8a679b",
+    "specHash": "sha256:a393e126e767c998844dfbb2ff0151a45b4612d037cc1205705a0bb31f53b1ae",
+    "schemaHash": "sha256:7a549bd90613f5041030378d5f2e45dda3a47016f2cae1a3ee4317fed1b923cb",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/roles/reproject/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/roles/reproject/0.2"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/roles/reproject/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "resource": "a.a/a"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/roles/reproject/0.2"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-GIT-NS-022",
+   "title": "git-ns/view 0.6: a schema-valid, signed, addressed request is answered with the task's response, which conforms to the response schema (success asserted)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/git-ns/view/0.6 (Trust Tasks specification git-ns/view 0.6 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/git-ns/view/0.6#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Success asserted: the specification defines the response, the task changes nothing, the request names no identifier or free text, and the vector requires optional:authorised (SPEC.md 7.2 item 10: authorisation is the deployment's, never the suite's)",
+    "Front-matter error code git-ns/view:notAdministrator (spec.md line 39): not reachable here (standing (administrator, membership or the witness's own policy): covered by optional:authorised)"
+   ],
+   "source": {
+    "slug": "git-ns/view",
+    "version": "0.6",
+    "ref": "kit:specs/git-ns/view/0.6",
+    "pinnedDigest": "sha256:2434eedf2a9fdc445e3c17ddfa56bd9f1ea0e18e1aa40a1929df22d2f788b454",
+    "specHash": "sha256:fed27b39fa3fabc86eccd22b76fb0cb67d4b4e9d04d53857be5049d72c7d50bb",
+    "schemaHash": "sha256:a768f3240b6ee062fd3a6f8cb1b29557c8ecffa9a43b2014e6364e2d296e438f",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/git-ns/view/0.6/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/view/0.6",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "plainBadResponse",
+    "plainInternalError"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/git-ns/view/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/git-ns/view/0.6",
+      "success": true
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "asserted"
+  }
+ ]
+}

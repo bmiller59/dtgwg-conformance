@@ -1,0 +1,90 @@
+# bammediator: one loopback stack for a real DIDComm v2 wire (VTA + VTC + redis + mediator).
+# The mediator owns the network namespace; the VTA and VTC share it, so every DID host is localhost:<port>
+# (http, loopback), the same trick the starter uses for the VTC. DEV ONLY.
+services:
+  redis:
+    image: ${REDIS_IMAGE:-redis:7.4.6-alpine}
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  mediator:
+    image: ${MEDIATOR_IMAGE:-mediator-buildathon:e6e2c636}
+    entrypoint: ["/bin/sh", "/mediator-entrypoint.sh"]
+    command: []
+    user: "0:0"
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      MEDIATOR_HOST: "localhost:${MEDIATOR_PORT}"
+      MEDIATOR_PORT: "${MEDIATOR_PORT}"
+      VTA_ALLOW_PRIVATE_ENDPOINTS: "1"
+      REDIS_URL: "redis://redis:6379/"
+    ports:
+      - "127.0.0.1:${MEDIATOR_PORT}:${MEDIATOR_PORT}"
+      - "127.0.0.1:${VTA_PORT}:${VTA_PORT}"
+      - "127.0.0.1:${VTC_PORT}:${VTC_PORT}"
+    volumes:
+      - mediator-data:/conf
+      - ./mediator-entrypoint.sh:/mediator-entrypoint.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:${MEDIATOR_PORT}/mediator/v1/livez >/dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+  vta:
+    image: ${VTA_IMAGE:-vta-buildathon:26d0da81}
+    network_mode: "service:mediator"
+    depends_on:
+      mediator:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "/vta-entrypoint.sh"]
+    command: []
+    env_file: .vta/admin.env
+    environment:
+      VTA_ALLOW_PRIVATE_ENDPOINTS: "1"
+      VTA_PORT: "${VTA_PORT}"
+      MEDIATOR_DID: "${MEDIATOR_DID:-}"
+      VTA_DID_KIND: "${VTA_DID_KIND:-key}"
+      # the starter's approvals demo seed: switches policy enforcement on at first boot (the step-up and consent ceremonies need it); the approver
+      # set is then replaced through policy/upsert at run time, so the value here is a throw-away did:key
+      APPROVER_DID: "${APPROVER_DID:-}"
+    volumes:
+      - vta-data2:/var/lib/vta
+      - ./vta-entrypoint.sh:/vta-entrypoint.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:$${VTA_PORT}/health >/dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+  vtc:
+    profiles: ["vtc"]
+    image: ${VTC_IMAGE:-vtc-buildathon:26d0da81}
+    network_mode: "service:mediator"
+    depends_on:
+      vta:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "/vtc-entrypoint.sh"]
+    command: []
+    env_file: .vta/admin.env
+    user: "1000"
+    environment:
+      VTA_ALLOW_PRIVATE_ENDPOINTS: "1"
+      VTA_PORT: "${VTA_PORT}"
+      MEDIATOR_DID: "${MEDIATOR_DID:-}"
+      MEDIATOR_HOST: "localhost:${MEDIATOR_PORT}"
+      VTC_PORT: "${VTC_PORT}"
+      VTC_SERVER_PORT: "${VTC_PORT}"
+      VTC_CONTEXT: "vtc"
+    volumes:
+      - vtc-data:/var/lib/vtc
+      - ./vtc-entrypoint.sh:/vtc-entrypoint.sh:ro
+volumes:
+  vta-data2:
+  vtc-data:
+  mediator-data:

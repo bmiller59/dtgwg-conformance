@@ -1,0 +1,537 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "TL-AUD",
+  "family": "2l",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "TL-AUD-001",
+      "title": "audit/list 0.2: the payload is validated against the task's payload schema (unknown member in a closed payload)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/audit/list/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [], additionalProperties false",
+        "specs/audit/list/0.2/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/audit/list/0.2"
+      ],
+      "mutants": [
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/audit/list/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "audit/list",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/audit/list/0.2",
+        "pinnedDigest": "sha256:5a7aa8cc538dc7f54c84ed5dfe8780dba3e981342dcde668cd9c454f2891a875",
+        "tfRef": {
+          "repoPath": "specs/audit/list/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-4 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). Promoted to the registry channel in batch B2b (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:cd5f60c9d6802fe7470557ba7ff24fe38d983e69bbe9ffccd8fb361c3621aa02",
+        "schemaHash": "sha256:b4dee12b059340e08bffb64906967e1907d9aee6f5f34acba1f64cc82931d615",
+        "promotion": {
+          "batch": "B2b",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-AUD-002",
+      "title": "audit/list 0.2: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/audit/list/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/audit/list/0.2/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/audit/list/0.2"
+      ],
+      "mutants": [
+        "recipientOptional",
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/audit/list/0.2",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(e2)",
+              "type": "https://trusttasks.org/spec/audit/list/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "audit/list",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/audit/list/0.2",
+        "pinnedDigest": "sha256:5a7aa8cc538dc7f54c84ed5dfe8780dba3e981342dcde668cd9c454f2891a875",
+        "tfRef": {
+          "repoPath": "specs/audit/list/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-4 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:cd5f60c9d6802fe7470557ba7ff24fe38d983e69bbe9ffccd8fb361c3621aa02",
+        "schemaHash": "sha256:b4dee12b059340e08bffb64906967e1907d9aee6f5f34acba1f64cc82931d615",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-AUD-003",
+      "title": "audit/list 0.2: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+        "declared policy: https://trusttasks.org/spec/audit/list/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/audit/list/0.2/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/audit/list/0.2"
+      ],
+      "mutants": [
+        "noFreshnessWindow"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(i1)",
+              "type": "https://trusttasks.org/spec/audit/list/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        }
+      ],
+      "source": {
+        "slug": "audit/list",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/audit/list/0.2",
+        "pinnedDigest": "sha256:5a7aa8cc538dc7f54c84ed5dfe8780dba3e981342dcde668cd9c454f2891a875",
+        "tfRef": {
+          "repoPath": "specs/audit/list/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-4 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft).",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:cd5f60c9d6802fe7470557ba7ff24fe38d983e69bbe9ffccd8fb361c3621aa02",
+        "schemaHash": "sha256:b4dee12b059340e08bffb64906967e1907d9aee6f5f34acba1f64cc82931d615"
+      }
+    },
+    {
+      "id": "TL-AUD-004",
+      "title": "audit/list 0.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/audit/list/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/audit/list/0.2#response",
+        "specs/audit/list/0.2/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "Mechanics only: this vector does not assert that the request is authorised, admitted, retained or what it does (that is the deployment's governance)."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/audit/list/0.2"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/audit/list/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/audit/list/0.2"
+          }
+        }
+      ],
+      "source": {
+        "slug": "audit/list",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/audit/list/0.2",
+        "pinnedDigest": "sha256:5a7aa8cc538dc7f54c84ed5dfe8780dba3e981342dcde668cd9c454f2891a875",
+        "tfRef": {
+          "repoPath": "specs/audit/list/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-4 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:cd5f60c9d6802fe7470557ba7ff24fe38d983e69bbe9ffccd8fb361c3621aa02",
+        "schemaHash": "sha256:b4dee12b059340e08bffb64906967e1907d9aee6f5f34acba1f64cc82931d615",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-AUD-005",
+      "title": "audit/list 0.2: a cursor the maintainer did not issue is refused, never answered with entries",
+      "tier": 1,
+      "spec": [
+        "specs/audit/list/0.2/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft): errorCodes audit/list:invalidCursor (\"The supplied cursor failed to verify ... The consumer restarts from the first page rather than retrying\"); Paging (\"a maintainer MUST NOT accept a cursor it did not issue\")",
+        "The audit-read gate is the deployment's governance: a refusal for lack of the audit-read capability (permissionDenied) is accepted in place of invalidCursor, so no authorisation outcome is asserted",
+        "Mechanics only: this vector does not assert that the request is authorised, admitted, retained or what it does (that is the deployment's governance)."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/audit/list/0.2"
+      ],
+      "mutants": [
+        "auditCursorAccepted"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(m1)",
+              "type": "https://trusttasks.org/spec/audit/list/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "cursor": "conformance-cursor-this-maintainer-never-issued"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "audit/list:invalidCursor",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "audit/list",
+        "version": "0.2",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/audit/list/0.2",
+        "pinnedDigest": "sha256:5a7aa8cc538dc7f54c84ed5dfe8780dba3e981342dcde668cd9c454f2891a875",
+        "tfRef": {
+          "repoPath": "specs/audit/list/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-4 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft).",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:cd5f60c9d6802fe7470557ba7ff24fe38d983e69bbe9ffccd8fb361c3621aa02",
+        "schemaHash": "sha256:b4dee12b059340e08bffb64906967e1907d9aee6f5f34acba1f64cc82931d615"
+      }
+    },
+    {
+      "id": "TL-AUD-006",
+      "title": "audit/verify 0.1: the payload is validated against the task's payload schema (unknown member in a closed payload)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/audit/verify/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [], additionalProperties false",
+        "specs/audit/verify/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/audit/verify/0.1"
+      ],
+      "mutants": [
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/audit/verify/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "audit/verify",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/audit/verify/0.1",
+        "pinnedDigest": "sha256:3b2b6a006479263ed20b38dfb0d4a92db0de4dd42860cda88daad9a9566c5283",
+        "tfRef": {
+          "repoPath": "specs/audit/verify/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-4 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). Promoted to the registry channel in batch B2b (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:05cc36138d8506536f8f1ed56577169bbda3638264f42388f181e93f2438a51e",
+        "schemaHash": "sha256:db10f9c03cbd0c414bc05d880bdd87c3ef99bf7935aedad607f0c7df73b8451a",
+        "promotion": {
+          "batch": "B2b",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-AUD-007",
+      "title": "audit/verify 0.1: the policy the specification declares is enforced (recipient REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/audit/verify/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+        "specs/audit/verify/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/audit/verify/0.1"
+      ],
+      "mutants": [
+        "recipientOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/audit/verify/0.1",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "audit/verify",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/audit/verify/0.1",
+        "pinnedDigest": "sha256:3b2b6a006479263ed20b38dfb0d4a92db0de4dd42860cda88daad9a9566c5283",
+        "tfRef": {
+          "repoPath": "specs/audit/verify/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-4 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:05cc36138d8506536f8f1ed56577169bbda3638264f42388f181e93f2438a51e",
+        "schemaHash": "sha256:db10f9c03cbd0c414bc05d880bdd87c3ef99bf7935aedad607f0c7df73b8451a",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-AUD-008",
+      "title": "audit/verify 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/audit/verify/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/audit/verify/0.1#response",
+        "specs/audit/verify/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "Mechanics only: this vector does not assert that the request is authorised, admitted, retained or what it does (that is the deployment's governance)."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/audit/verify/0.1"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/audit/verify/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/audit/verify/0.1"
+          }
+        }
+      ],
+      "source": {
+        "slug": "audit/verify",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/audit/verify/0.1",
+        "pinnedDigest": "sha256:3b2b6a006479263ed20b38dfb0d4a92db0de4dd42860cda88daad9a9566c5283",
+        "tfRef": {
+          "repoPath": "specs/audit/verify/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-4 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:05cc36138d8506536f8f1ed56577169bbda3638264f42388f181e93f2438a51e",
+        "schemaHash": "sha256:db10f9c03cbd0c414bc05d880bdd87c3ef99bf7935aedad607f0c7df73b8451a",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    }
+  ]
+}

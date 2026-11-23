@@ -1,0 +1,114 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "GE-CNS",
+ "family": "gap",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "GE-CNS-001",
+   "title": "consent/approve-request 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/consent/approve-request/0.1 (Trust Tasks specification consent/approve-request 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=false",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "consent/approve-request",
+    "version": "0.1",
+    "ref": "kit:specs/consent/approve-request/0.1",
+    "pinnedDigest": "sha256:23223389061f0be18c972a2131096eccee654b856cac4edeee1e4ae8993e5503",
+    "specHash": "sha256:9d54884d32d26f6e0d3fcab3c8700ae6643e5fe20f227ace4c11597283f973ae",
+    "schemaHash": "sha256:8a23a45dcac1131dbb36628e3a412a576cbb2b4920e181230b20bf00317e0f86",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/consent/approve-request/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/consent/approve-request/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/consent/approve-request/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-CNS-002",
+   "title": "consent/list 1.0: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/consent/list/1.0 (Trust Tasks specification consent/list 1.0 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "consent/list",
+    "version": "1.0",
+    "ref": "kit:specs/consent/list/1.0",
+    "pinnedDigest": "sha256:4da44c3fb269e7e26a80bc1478d01d80e4b7826649a5ae246ebf9013e8fee42b",
+    "specHash": "sha256:ca9163ea10970dfbec775c333d347329b713742c1f820462dcbf5f6187f4ca0b",
+    "schemaHash": "sha256:372bd1931225e696626572ec7027cda864e9bd52e0742d04c4c3d895b39b0058",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/consent/list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/consent/list/1.0"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoRecipient"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/consent/list/1.0",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/consent/list/1.0"
+     }
+    }
+   ]
+  }
+ ]
+}

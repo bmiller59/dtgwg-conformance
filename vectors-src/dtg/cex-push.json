@@ -1,0 +1,492 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "CEX",
+  "family": "dtg-credential-exchange",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "CEX-033",
+      "title": "a holder that accepts an offer answers it with a credential-exchange/request pushed to the issuer on the offer's thread",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/offer/0.1/spec.md:59-61 (Conformance: the offer opens a thread that the holder's request replies on; consumer: read the offer, then reply on-thread) [kit spec status: draft]",
+        "specs/credential-exchange/request/0.1/spec.md:72 (Producer: reply on the offer's thread)"
+      ],
+      "source": {
+        "slug": "credential-exchange/offer",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/offer/0.1",
+        "pinnedDigest": "sha256:dbca4d8c444b73b78016706fdd8cce96a9b290364d05515af52e82b26a0a4dcb",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/offer/0.1/spec.md",
+          "commit": "0dbc98f1c059af300ff84eb1ab407edea16a16c1",
+          "status": "draft"
+        }
+      },
+      "clarify": "Both kit specs are status draft. They state that the holder replies on the offer's thread with a request, but not that the reply is automatic or immediate (a holder's human may decide first), and an offer may be declined. The vector asks for the request within the bounded wait. Not gating.",
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/offer/0.1",
+        "optional:observe.pushed"
+      ],
+      "mutants": [
+        "noPush",
+        "pushedWrongThread",
+        "pushedWrongRecipient",
+        "pushedWrongType"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.offer"
+          },
+          "expect": {
+            "disposition": "silence",
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "observePushed": {
+            "to": "$A",
+            "type": "https://trusttasks.org/spec/credential-exchange/request/0.1",
+            "threadId": "$id(off)",
+            "withinMs": 250,
+            "pointer": {
+              "/payload/credential_request/credential_configuration_id": "https://example.org/conformance#ConformanceCredential"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-034",
+      "title": "a holder that refuses an offer (no configuration it supports) pushes no request to the issuer",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/offer/0.1/spec.md:61 (a holder that supports none of the offered configurations says so with unsupportedCredential rather than abandoning the thread) [kit spec status: draft]",
+        "specs/credential-exchange/request/0.1/spec.md:72 (a request is the answer to an offer the holder takes up)"
+      ],
+      "source": {
+        "slug": "credential-exchange/offer",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/offer/0.1",
+        "pinnedDigest": "sha256:dbca4d8c444b73b78016706fdd8cce96a9b290364d05515af52e82b26a0a4dcb",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/offer/0.1/spec.md",
+          "commit": "0dbc98f1c059af300ff84eb1ab407edea16a16c1",
+          "status": "draft"
+        }
+      },
+      "clarify": "As CEX-029 the refusal is a SHOULD, and the kit specs are status draft. What the vector adds is only that a refused offer is not also followed by a request. Not gating.",
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/offer/0.1",
+        "optional:observe.pushed"
+      ],
+      "mutants": [
+        "pushOnRefusal"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.offer",
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/credential_offer/credential_configuration_ids",
+                "value": [
+                  "https://example.org/conformance#UnsupportedCredential"
+                ]
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "credential-exchange/offer:unsupportedCredential",
+            "retryable": false,
+            "noSideEffect": true
+          }
+        },
+        {
+          "observePushed": {
+            "to": "$A",
+            "type": "https://trusttasks.org/spec/credential-exchange/request/0.1",
+            "threadId": "$id(off)",
+            "none": true,
+            "withinMs": 100
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-035",
+      "title": "an issuer that receives a request on the thread of an offer it made answers it with a credential-exchange/issue pushed to the holder on that thread, issued by itself",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/request/0.1/spec.md:74 (Consumer: answer on-thread with issue) [kit spec status: draft]",
+        "specs/credential-exchange/offer/0.1/spec.md:59 (the holder's request and the eventual issue both reply on the offer's thread)"
+      ],
+      "source": {
+        "slug": "credential-exchange/request",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/request/0.1",
+        "pinnedDigest": "sha256:4c01c7fffb441a9116767669613cae3ddf5b14ed6e35ae5ab799fb33508e59bd",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/request/0.1/spec.md",
+          "commit": "0dbc98f1c059af300ff84eb1ab407edea16a16c1",
+          "status": "draft"
+        }
+      },
+      "clarify": "The kit specs are status draft. Answering on-thread with issue is stated; whether issuance is immediate is the issuer's policy (a person may review first, request spec Consent/purpose). The helper makeOffer stands for the issuer having made the offer. Not gating.",
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/request/0.1",
+        "https://trusttasks.org/spec/credential-exchange/issue/0.1",
+        "optional:observe.pushed",
+        "optional:trigger.makeOffer"
+      ],
+      "mutants": [
+        "noPush",
+        "pushedWrongThread",
+        "pushedWrongRecipient",
+        "pushedWrongType"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "makeOffer",
+            "args": {
+              "to": "$A"
+            }
+          },
+          "capture": {
+            "offThread": "/threadId"
+          }
+        },
+        {
+          "observePushed": {
+            "to": "$A",
+            "type": "https://trusttasks.org/spec/credential-exchange/offer/0.1",
+            "threadId": "$cap(offThread)"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.request",
+            "params": {
+              "threadId": "$cap(offThread)"
+            }
+          },
+          "expect": {
+            "disposition": "silence",
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "observePushed": {
+            "to": "$A",
+            "type": "https://trusttasks.org/spec/credential-exchange/issue/0.1",
+            "threadId": "$cap(offThread)",
+            "withinMs": 250,
+            "pointer": {
+              "/payload/credential_response/credential/issuer": "$iut"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-036",
+      "title": "a request that corresponds to no offer the issuer made is refused and nothing is pushed to the sender",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/request/0.1/spec.md:47-49 (errorCodes: unknownOffer, the request does not correspond to an offer this issuer made) [kit spec status: draft]",
+        "specs/credential-exchange/request/0.1/spec.md:74 (issue answers a request that was verified)"
+      ],
+      "source": {
+        "slug": "credential-exchange/request",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/request/0.1",
+        "pinnedDigest": "sha256:4c01c7fffb441a9116767669613cae3ddf5b14ed6e35ae5ab799fb33508e59bd",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/request/0.1/spec.md",
+          "commit": "0dbc98f1c059af300ff84eb1ab407edea16a16c1",
+          "status": "draft"
+        }
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/request/0.1",
+        "optional:observe.pushed"
+      ],
+      "mutants": [
+        "pushOnRefusal"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.request"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "credential-exchange/request:unknownOffer",
+              "credential-exchange/request:invalidProof"
+            ],
+            "retryable": false,
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "observePushed": {
+            "to": "$A",
+            "type": "https://trusttasks.org/spec/credential-exchange/issue/0.1",
+            "none": true,
+            "withinMs": 100
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-037",
+      "title": "a deferred query that the holder's human approves is answered by a credential-exchange/present pushed to the verifier on the query's thread, bound to the query's nonce and the verifier",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.1/spec.md:77 (Producer: reply on the query's thread; for a deferred query, present on the original thread once approval lands; bind the verifier's nonce and audience) [kit spec status: draft]",
+        "specs/credential-exchange/query/0.1/spec.md (\"If approved, the holder presents on the original thread.\")"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.1",
+        "pinnedDigest": "sha256:d84e4b1344681ade0be140c79e3fd83606d63bc8a7282b646b6725f3ba344a55",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.1/spec.md",
+          "commit": "0dbc98f1c059af300ff84eb1ab407edea16a16c1",
+          "status": "draft"
+        }
+      },
+      "clarify": "As CEX-026: the decision is out of band (pending/approve) and the helper stands for it; the nonce and audience members are as for CEX-025. The kit specs are status draft. Not gating.",
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/query/0.1",
+        "optional:trigger.holdCredential",
+        "optional:trigger.queryDecision",
+        "optional:observe.deferred",
+        "optional:observe.pushed"
+      ],
+      "mutants": [
+        "noPush",
+        "pushedWrongThread",
+        "pushedWrongRecipient",
+        "pushedWrongType"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "holdCredential",
+            "args": {
+              "type": "https://example.org/conformance#ConformanceCredential"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query"
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "state": {
+              "deferred": 1
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "queryDecision",
+            "args": {
+              "thread": "$id(qry)",
+              "decision": "approve"
+            }
+          }
+        },
+        {
+          "observePushed": {
+            "to": "$A",
+            "type": "https://trusttasks.org/spec/credential-exchange/present/0.1",
+            "threadId": "$id(qry)",
+            "withinMs": 250,
+            "pointer": {
+              "/payload/vp_token/proof/challenge": "qry-nonce-0001",
+              "/payload/vp_token/proof/domain": "$A"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-038",
+      "title": "a deferred query that the holder's human declines is not answered by a presentation: nothing is pushed to the verifier",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.1/spec.md:77 (present only once approval lands) [kit spec status: draft]",
+        "specs/credential-exchange/query/0.1/spec.md (\"If approved, the holder presents on the original thread.\")"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.1",
+        "pinnedDigest": "sha256:d84e4b1344681ade0be140c79e3fd83606d63bc8a7282b646b6725f3ba344a55",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.1/spec.md",
+          "commit": "0dbc98f1c059af300ff84eb1ab407edea16a16c1",
+          "status": "draft"
+        }
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/query/0.1",
+        "optional:trigger.holdCredential",
+        "optional:trigger.queryDecision",
+        "optional:observe.deferred",
+        "optional:observe.pushed"
+      ],
+      "mutants": [
+        "pushOnDecline"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "holdCredential",
+            "args": {
+              "type": "https://example.org/conformance#ConformanceCredential"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.query"
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "state": {
+              "deferred": 1
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "queryDecision",
+            "args": {
+              "thread": "$id(qry)",
+              "decision": "decline"
+            }
+          }
+        },
+        {
+          "observePushed": {
+            "to": "$A",
+            "type": "https://trusttasks.org/spec/credential-exchange/present/0.1",
+            "threadId": "$id(qry)",
+            "none": true,
+            "withinMs": 100
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-039",
+      "title": "two offers on two threads are each answered by a request on its own thread: pushed documents correlate by thread id",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/offer/0.1/spec.md:59 (an offer opens a thread; the holder's request replies on it) [kit spec status: draft]",
+        "specs/credential-exchange/request/0.1/spec.md:72 (Producer: reply on the offer's thread)"
+      ],
+      "source": {
+        "slug": "credential-exchange/offer",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/offer/0.1",
+        "pinnedDigest": "sha256:dbca4d8c444b73b78016706fdd8cce96a9b290364d05515af52e82b26a0a4dcb",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/offer/0.1/spec.md",
+          "commit": "0dbc98f1c059af300ff84eb1ab407edea16a16c1",
+          "status": "draft"
+        }
+      },
+      "clarify": "As CEX-033: the kit specs are status draft and do not make the reply automatic. Not gating.",
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/offer/0.1",
+        "optional:observe.pushed"
+      ],
+      "mutants": [
+        "noPush",
+        "pushedWrongThread",
+        "pushedWrongRecipient",
+        "pushedWrongType"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "cex.offer"
+          },
+          "expect": {
+            "disposition": "silence",
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.offer",
+            "params": {
+              "id": "$id(off2)",
+              "threadId": "$id(off2)"
+            }
+          },
+          "expect": {
+            "disposition": "silence",
+            "state": {
+              "handled": 2
+            }
+          }
+        },
+        {
+          "observePushed": {
+            "to": "$A",
+            "type": "https://trusttasks.org/spec/credential-exchange/request/0.1",
+            "threadId": "$id(off)",
+            "withinMs": 250,
+            "count": 1
+          }
+        },
+        {
+          "observePushed": {
+            "to": "$A",
+            "type": "https://trusttasks.org/spec/credential-exchange/request/0.1",
+            "threadId": "$id(off2)",
+            "withinMs": 250,
+            "count": 1
+          }
+        }
+      ]
+    }
+  ]
+}

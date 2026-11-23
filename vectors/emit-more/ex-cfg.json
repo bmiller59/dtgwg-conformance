@@ -1,0 +1,55 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "EX-CFG",
+  "family": "emit",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "EX-CFG-001",
+      "title": "config/show 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/config/show/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "config/show",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/config/show/0.1",
+        "pinnedDigest": "sha256:afa6ae1c9da4399c15161222ae73f85f6979b9523add722fb03bb79e4ae763b7",
+        "tfRef": {
+          "repoPath": "specs/config/show/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:443a7f5609d59d735bf5b2d4ffb1cc7177844809a37d839adb071a6059ca1dff",
+        "schemaHash": "sha256:12cdf96c1358f2977e247d8153e64530911d527eefcf6165668b550ba5a572c0"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/config/show/0.1"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/config/show/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/config/show/0.1"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1212 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "DIS",
+  "family": "trust-task-discovery",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "DIS-001",
+      "title": "a query with no patterns lists exactly the task types the implementation declares, as bare Type URIs without duplicates",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md:77 (an absent or empty patterns list is the single pattern *)",
+        "specs/trust-task-discovery/0.4/spec.md:78-79 (bare Type URIs, no duplicates)",
+        "specs/trust-task-discovery/0.4/payload.schema.json (response schema)",
+        "docs/04 section 11.2 (the list is the declared supportedTypes)",
+        "specs/trust-task-discovery/0.3/spec.md:77-79 (same text in 0.3)",
+        "specs/trust-task-discovery/0.4/spec.md:162 (a responder SHOULD answer in the version it was asked; a discoverer SHOULD ask 0.4 and MAY fall back to 0.3)",
+        "specs/trust-task-discovery/0.3/spec.md:148 (the same rule for 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "discovery"
+      ],
+      "mutants": [
+        "discoveryNoDefaultStar",
+        "discoveryListsUnserved",
+        "discoveryOmitsServed",
+        "discoveryFragmentsListed",
+        "discoveryDuplicates",
+        "discoveryTwoPartVersion"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-002",
+      "title": "an empty patterns array is the same as *",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md:77",
+        "specs/trust-task-discovery/0.4/payload.schema.json (patterns: omitted or empty means *)",
+        "specs/trust-task-discovery/0.3/spec.md:77 (same text in 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "discovery"
+      ],
+      "mutants": [
+        "discoveryNoDefaultStar"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": []
+              }
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-003",
+      "title": "the pattern * lists every supported type",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md:164-170 (pattern grammar: * matches every slug)",
+        "specs/trust-task-discovery/0.3/spec.md:156 (same text in 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "discovery"
+      ],
+      "mutants": [
+        "discoveryOmitsServed",
+        "discoveryListsUnserved"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  "*"
+                ]
+              }
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": [
+                "*"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-004",
+      "title": "a <prefix>/* pattern lists the types whose slug starts with the prefix and the slash",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md:171 (<prefix>/* matches slugs starting with the literal <prefix>/)",
+        "specs/trust-task-discovery/0.3/spec.md:157 (same text in 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "discovery",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1"
+      ],
+      "mutants": [
+        "discoveryIgnoresPatterns"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  "vrc/*"
+                ]
+              }
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": [
+                "vrc/*"
+              ]
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  "trust-task-discovery"
+                ]
+              },
+              "id": "$id(d2)"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": [
+                "trust-task-discovery"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-005",
+      "title": "the prefix includes its slash: vrc/relationships/p/* matches nothing although vrc/relationships/propose exists",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md:171 (the literal <prefix>/ including the slash)",
+        "specs/trust-task-discovery/0.3/spec.md:157 (same text in 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "discovery",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1"
+      ],
+      "mutants": [
+        "discoveryPrefixNoSlash"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  "vrc/relationships/p/*"
+                ]
+              }
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": [
+                "vrc/relationships/p/*"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-006",
+      "title": "an exact slug lists only that slug, and a partial slug is not a prefix",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md:172 (\"<slug>\" is an exact match)",
+        "specs/trust-task-discovery/0.4/spec.md:174 (any other shape is an exact slug match)",
+        "specs/trust-task-discovery/0.3/spec.md:158-160 (same text in 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "discovery",
+        "https://trusttasks.org/spec/vrc/relationships/issue/0.1"
+      ],
+      "mutants": [
+        "discoveryExactAsPrefix",
+        "discoveryIgnoresPatterns"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  "vrc/relationships/prop"
+                ]
+              }
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": [
+                "vrc/relationships/prop"
+              ]
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  "vrc/relationships/issue"
+                ]
+              },
+              "id": "$id(d2)"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": [
+                "vrc/relationships/issue"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-007",
+      "title": "a wildcard anywhere but the trailing /* is literal and matches no slug",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md:174 (wildcards elsewhere are matched literally; acl/*-handoff matches no slug)",
+        "specs/trust-task-discovery/0.3/spec.md:160 (same text in 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "discovery",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1"
+      ],
+      "mutants": [
+        "discoveryWildcardInterpreted"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  "vrc/relationships/pro*se"
+                ]
+              }
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": [
+                "vrc/relationships/pro*se"
+              ]
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  "vrc/*/issue"
+                ]
+              },
+              "id": "$id(d2)"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": [
+                "vrc/*/issue"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-008",
+      "title": "several patterns combine with OR",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md:176 (multiple patterns are combined with OR semantics)",
+        "specs/trust-task-discovery/0.3/spec.md:162 (same text in 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "discovery",
+        "https://trusttasks.org/spec/vrc/relationships/issue/0.1"
+      ],
+      "mutants": [
+        "discoveryAndSemantics",
+        "discoveryFirstPatternOnly"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  "vrc/relationships/issue",
+                  "trust-task-discovery"
+                ]
+              }
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": [
+                "vrc/relationships/issue",
+                "trust-task-discovery"
+              ]
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  "no/such/*",
+                  "trust-task-discovery"
+                ]
+              },
+              "id": "$id(d2)"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": [
+                "no/such/*",
+                "trust-task-discovery"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-009",
+      "title": "a query that matches nothing is answered with an empty list, not an error",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md:77 (the subset the responder supports that matches)",
+        "SPEC.md:1594 (a response with supportedTypes [] is conformant)",
+        "specs/trust-task-discovery/0.3/spec.md:77 (same text in 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "discovery"
+      ],
+      "mutants": [
+        "discoveryEmptyAsError"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  "no/such/*"
+                ]
+              }
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": [
+                "no/such/*"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-010",
+      "title": "sixteen patterns are accepted and seventeen are refused malformedRequest",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md:178 (the array is bounded at 16 entries)",
+        "specs/trust-task-discovery/0.4/payload.schema.json (patterns maxItems 16)",
+        "specs/trust-task-discovery/0.3/spec.md:164 (same text in 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "discovery"
+      ],
+      "mutants": [
+        "discoveryNoPatternBound",
+        "discoveryBoundOffByOne",
+        "noPayloadValidation"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  "p0/*",
+                  "p1/*",
+                  "p2/*",
+                  "p3/*",
+                  "p4/*",
+                  "p5/*",
+                  "p6/*",
+                  "p7/*",
+                  "p8/*",
+                  "p9/*",
+                  "p10/*",
+                  "p11/*",
+                  "p12/*",
+                  "p13/*",
+                  "p14/*",
+                  "p15/*"
+                ]
+              }
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": [
+                "p0/*",
+                "p1/*",
+                "p2/*",
+                "p3/*",
+                "p4/*",
+                "p5/*",
+                "p6/*",
+                "p7/*",
+                "p8/*",
+                "p9/*",
+                "p10/*",
+                "p11/*",
+                "p12/*",
+                "p13/*",
+                "p14/*",
+                "p15/*"
+              ]
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  "p0/*",
+                  "p1/*",
+                  "p2/*",
+                  "p3/*",
+                  "p4/*",
+                  "p5/*",
+                  "p6/*",
+                  "p7/*",
+                  "p8/*",
+                  "p9/*",
+                  "p10/*",
+                  "p11/*",
+                  "p12/*",
+                  "p13/*",
+                  "p14/*",
+                  "p15/*",
+                  "p16/*"
+                ]
+              },
+              "id": "$id(d2)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-011",
+      "title": "the request payload is a closed object of non-empty string patterns: an unknown member, a non-array or an empty pattern is malformedRequest",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/payload.schema.json (additionalProperties false; patterns items minLength 1)",
+        "SPEC.md:1012 (7.2 item 2 payload validation)",
+        "SPEC.md:1071 (the error reply is a SHOULD)",
+        "specs/trust-task-discovery/0.3/spec.md:172-178 (the request payload is the same in 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "discovery"
+      ],
+      "mutants": [
+        "discoveryOpenPayload",
+        "noPayloadValidation"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  "*"
+                ],
+                "extra": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": "*"
+              },
+              "id": "$id(d2)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  ""
+                ]
+              },
+              "id": "$id(d3)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "payload": {
+                "patterns": [
+                  5
+                ]
+              },
+              "id": "$id(d4)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-012",
+      "title": "the response states a window no wider than the one enforced: a document at the advertised maximum age, and one at the advertised skew ahead, are accepted",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md:130-133 (responder rules, the MUST sentences at 132: a responder MUST state a window no wider than the one it applies)",
+        "specs/trust-task-discovery/0.4/spec.md:124 (refuses past acceptance end plus skew, or issuedAt beyond now plus skew)",
+        "specs/trust-task-discovery/0.3/spec.md:121-123 (responder rule 1: a responder MUST state a window no wider than the one it applies)",
+        "specs/trust-task-discovery/0.3/spec.md:117 (the refusal rule: now > issuedAt + maxAgeSeconds + clockSkewSeconds, or issuedAt > now + clockSkewSeconds)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "discovery",
+        "optional:discovery.acceptanceWindow"
+      ],
+      "mutants": [
+        "discoveryWindowWiderMaxAge",
+        "discoveryWindowWiderSkew"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request"
+          },
+          "capture": {
+            "maxAge": "/payload/acceptanceWindow/maxAgeSeconds",
+            "skew": "/payload/acceptanceWindow/clockSkewSeconds"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": []
+            }
+          }
+        },
+        {
+          "at": "+0s",
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(old)",
+              "issuedAt": "$nowAt(-maxAge)"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(ahead)",
+              "issuedAt": "$nowAt(+skew)"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "state": {
+              "handled": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-013",
+      "title": "an advertised expiry horizon is honoured: a document issued almost a horizon ago with an expiresAt inside it is accepted",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md:118-122 (acceptance end with expiryHorizonSeconds)",
+        "specs/trust-task-discovery/0.4/spec.md:130-133 (responder rules, the MUST sentences at 132: a responder MUST NOT state a wider horizon than it applies; window rows at 118-124)",
+        "specs/trust-task-discovery/0.4/spec.md:156 (0.4 adds one thing: the optional expiryHorizonSeconds member; the 0.3 window is closed, so this vector runs against discovery 0.4 only)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/trust-task-discovery/0.4",
+        "optional:discovery.expiryHorizon"
+      ],
+      "mutants": [
+        "discoveryHorizonWide"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request"
+          },
+          "capture": {
+            "horizon": "/payload/acceptanceWindow/expiryHorizonSeconds"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": []
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(old)",
+              "issuedAt": "$nowAt(-horizon,+300s)",
+              "expiresAt": "$nowAt(+300s)"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "state": {
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-014",
+      "title": "the list is sorted lexicographically by Type URI",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md:88 (a conforming responder SHOULD sort supportedTypes)",
+        "specs/trust-task-discovery/0.3/spec.md:88 (same text in 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": "Sorting is a SHOULD of the discovery specification, not a MUST. Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "discovery"
+      ],
+      "mutants": [
+        "discoveryUnsorted"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": [],
+              "sorted": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-015",
+      "title": "a discovery request without a proof is answered at Tier 1 (the proof is RECOMMENDED, not required)",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md:24-25 (proofRequirement RECOMMENDED)",
+        "SPEC.md:1610 (10.5 item 1: RECOMMENDED, not OPTIONAL and not REQUIRED)",
+        "specs/trust-task-discovery/0.3/spec.md:24-25 (same text in 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": "The proof is RECOMMENDED on the request, but the specification does not say a responder must answer an unsigned query: a responder may refuse it by its own permission policy (VTI answers discovery only to signed callers). Not gating; the Tier 2 profile signs.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "discovery"
+      ],
+      "skipIfOptional": [
+        "attested"
+      ],
+      "mutants": [
+        "discoveryProofRequired"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request",
+            "sign": null
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIS-016",
+      "title": "tier 2: the discovery response is signed by the IUT under the request's recipient",
+      "tier": 2,
+      "spec": [
+        "profile:attested (proof on every response)",
+        "specs/trust-task-discovery/0.4/spec.md:24-25",
+        "specs/trust-task-discovery/0.3/spec.md:24-25 (same text in 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "discovery"
+      ],
+      "mutants": [
+        "unsignedReplies",
+        "replySignedByOtherKey"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$discoveryResponse",
+            "noSideEffect": true,
+            "discovery": {
+              "matches": []
+            }
+          }
+        }
+      ],
+      "subgroup": "attested"
+    },
+    {
+      "id": "DIS-017",
+      "title": "a discovery request addressed to another recipient is wrongRecipient",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5)",
+        "specs/trust-task-discovery/0.4/spec.md:17-23 (the parties: the responder is the recipient)",
+        "specs/trust-task-discovery/0.3/spec.md:17-23 (same text in 0.3)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "discovery"
+      ],
+      "mutants": [
+        "noRecipientCheck"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "discovery.request",
+            "params": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "wrongRecipient",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: Apache-2.0
+# Template for the in-process VTC host: the launcher copies it to a build directory outside both repositories, replacing
+# @VTI_ROOT@ with the path of the VTI checkout (read only; never written) and copying that checkout's Cargo.lock.
+[package]
+name = "vtc-inprocess-host"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[workspace]
+
+[dependencies]
+vtc-service = { path = "@VTI_ROOT@/vtc-service", features = ["test-support"] }
+vti-common = { path = "@VTI_ROOT@/vti-common" }
+tokio = { version = "1.49", features = ["full"] }
+serde_json = "1"
+axum = "0.8"
+vti-rooms = { path = "@VTI_ROOT@/vti-rooms" }
+vti-rooms-dtg = { path = "@VTI_ROOT@/vti-rooms-dtg", features = ["test-support"] }
+dtg-credentials = "0.13"
+trust-tasks-rs = { version = "0.36.2", default-features = false, features = ["validate"] }
+async-trait = "0.1"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+# the messaging stand-in (VTC_HOST_MESSAGING=1): the crates VTI's own transport harness uses; the versions are the checkout's own (its Cargo.lock decides)
+affinidi-messaging-test-mediator = { version = "*", features = ["tsp"] }
+affinidi-tdk = "*"
+affinidi-secrets-resolver = "*"
+
+[profile.dev]
+debug = false
+incremental = true
+
+[profile.dev.package."*"]
+debug = false
+opt-level = 1

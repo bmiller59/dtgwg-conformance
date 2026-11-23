@@ -1,0 +1,4805 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "WIT",
+  "family": "witness-session",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "WIT-001",
+      "title": "a session opened by a named party is answered with a fresh challenge of at least 16 characters and a domain, on the session's thread",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (Conformance, witness item 3; response schema)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsShortChallenge"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-002",
+      "title": "the session response is signed (the proof is REQUIRED on it)",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (front matter proofRequirement.response REQUIRED)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsNoResponseProof"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/proof/proofValue": "^z",
+              "/payload/challenge": "^.{16,}$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-003",
+      "title": "a session response carries the request's parentThreadId (every document of the session does)",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (\"The nesting\", rule 2: parentThreadId on every document including responses)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsDropsParentThreadId"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "parentThreadId": "$id(rel)"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)",
+              "/parentThreadId": "$id(rel)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-004",
+      "title": "a session opened by an issuer that is not one of the named parties is refused witness/session:refused",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (Conformance, witness item 2)",
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (Authorization)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2"
+      ],
+      "mutants": [
+        "wsNoMembershipCheck"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$S",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "S"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "witness/session:refused",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "stored": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-005",
+      "title": "parties that are not exactly two DIDs (one, three, not DIDs, missing) are malformed",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (payload schema: parties minItems 2, maxItems 2, pattern ^did:)",
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (payload.invalid-examples.json)",
+        "SPEC.md (7.2 item 2)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2"
+      ],
+      "mutants": [
+        "wsNoPartiesCheck"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses3)",
+              "threadId": "$id(ses3)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X",
+                  "$R"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(sesn)",
+              "threadId": "$id(sesn)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "alice",
+                  "bob"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(sesm)",
+              "threadId": "$id(sesm)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-006",
+      "title": "a session payload with an unknown member is malformed",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (payload.invalid-examples.json: unknown member; additionalProperties false)",
+        "SPEC.md (4.5.1, 7.2 item 2)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2"
+      ],
+      "mutants": [
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ],
+                "location": "Cambridge, MA"
+              }
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-007",
+      "title": "the two sessions of one witnessed exchange get different challenges (a shared value would let either presentation satisfy the other's session)",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (\"One session per participating party\"; response schema, challenge)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsSharedChallenge"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(sesX)",
+              "threadId": "$id(sesX)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$X",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(sesX)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 2
+            },
+            "notEqual": {
+              "/payload/challenge": [
+                "$cap(challengeses)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-008",
+      "title": "a session request without an envelope proof is accepted (its proof is OPTIONAL)",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (front matter proofRequirement.request OPTIONAL)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A",
+            "sign": null
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-009",
+      "title": "a session request without issuedAt is refused (REQUIRED, framework 7.3 item 17)",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (front matter issuedAtRequirement REQUIRED)",
+        "SPEC.md (SPEC.md:1137, 7.3 item 17)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "SPEC.md 7.3 item 17 makes issuedAt a MUST of the task specification, but no consumer rule names the rejection or its code for a missing issuedAt; malformedRequest is the closest reading. The single-task template vector for the same case accepts any refusal (O-07, spec-silent, class C, recorded, nothing filed). Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-22",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2"
+      ],
+      "mutants": [
+        "noFreshnessWindow"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-010",
+      "title": "a session addressed to another recipient is refused wrongRecipient",
+      "tier": 1,
+      "spec": [
+        "SPEC.md (7.2 item 5)",
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (Conformance, witness item 1)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2"
+      ],
+      "mutants": [
+        "noRecipientCheck"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$R",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "wrongRecipient",
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-011",
+      "title": "a session whose issuer is not the transport-authenticated sender is refused identityMismatch",
+      "tier": 1,
+      "spec": [
+        "SPEC.md (7.2 item 6)",
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (Conformance, witness item 1)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "optional:transportIdentity"
+      ],
+      "mutants": [
+        "ignoreTransportIdentity"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "identityMismatch",
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-012",
+      "title": "a future-dated session (beyond the clock allowance) is refused",
+      "tier": 1,
+      "spec": [
+        "SPEC.md (7.3 item 17, the freshness floor)",
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (front matter issuedAtRequirement: a replayed session opens a second session)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2"
+      ],
+      "mutants": [
+        "noTimeChecks"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+3600s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-013",
+      "title": "a byte-identical resend of a session request is absorbed as a duplicate: it opens no second session and the first response is returned",
+      "tier": 1,
+      "spec": [
+        "SPEC.md (7.2 item 11, Disposition of a duplicate)",
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (front matter issuedAtRequirement rationale; sideEffects mutating)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "noReplayRecord"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "same": "previous"
+          },
+          "expect": {
+            "disposition": "duplicate",
+            "state": {
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-014",
+      "title": "the same session id with different content is idConflict, not a second session",
+      "tier": 1,
+      "spec": [
+        "SPEC.md (7.2 item 11, Keying and comparison)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "idOnlyDuplicateKey"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$X",
+                  "$A"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "idConflict",
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-015",
+      "title": "older version (non-focus): a session in 0.1 is answered like 0.2 (the payload is unchanged between the two)",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.1/spec.md (Conformance, witness item 3; response schema)",
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (What changed from 0.1: the payload is unchanged)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.1",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.1#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-016",
+      "title": "a submission in 0.1 on a 0.2 session, and in 0.2 on a 0.1 session, is refused challengeMismatch (the versions pair one to one)",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (\"What changed from 0.1, and how the versions pair\")"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.1",
+        "https://trusttasks.org/spec/witness/session/submit/0.1",
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsAcceptWrongVersion"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "witness/session/submit:challengeMismatch",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses2)",
+              "threadId": "$id(ses2)",
+              "type": "https://trusttasks.org/spec/witness/session/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses2": "/payload/challenge",
+            "domainses2": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.1#response",
+            "pointer": {
+              "/threadId": "$id(ses2)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 2
+            }
+          }
+        },
+        {
+          "at": "+3s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses2)",
+              "domain": "$cap(domainses2)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses2": "/vp"
+          }
+        },
+        {
+          "at": "+4s",
+          "send": {
+            "document": {
+              "id": "$id(sub2)",
+              "threadId": "$id(ses2)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses2)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "witness/session/submit:challengeMismatch",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-017",
+      "title": "a submit that carries a member presentation (a second presentation by a member DID that is neither party, bound to the same challenge and domain) is answered with the credential, and the member DID is not in the reply (the witness may ignore it, and the credential must not carry it)",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (\"The member presentation\": rules 1 to 4; \"The VWC does not carry it\"; Conformance, witness item 5)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsMemberInVwc"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$R",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "member"
+            }
+          },
+          "capture": {
+            "vpmp": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)",
+                "memberPresentation": "$capJson(vpmp)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/submit/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/vwcDigestMultibase": "^z",
+              "/proof/proofValue": "^z"
+            },
+            "state": {
+              "storedVwc": 1,
+              "handled": 2
+            },
+            "forbidInReply": [
+              "$R"
+            ],
+            "evidence": {
+              "session": 1,
+              "checks": [
+                "taskContext",
+                "taskDigest",
+                "vwcDigest",
+                "subjectIsOpener"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-018",
+      "title": "a memberPresentation that is not a presentation object (a bare DID), or a submit that carries only a memberPresentation, is malformed",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (payload.invalid-examples.json: memberPresentation is a presentation object, never a bare DID or a string; it does not replace vp)",
+        "SPEC.md (7.2 item 2)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsMemberUntyped"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {},
+                "memberPresentation": "did:webvh:QmAlice:alice.example.com"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub2)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "memberPresentation": {}
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-020",
+      "title": "a presentation bound to the session's challenge and domain is answered with a signed response carrying the credential and its digest, and one credential is issued",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (Conformance, witness item 5)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/submit/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/vwcDigestMultibase": "^z",
+              "/proof/proofValue": "^z"
+            },
+            "state": {
+              "storedVwc": 1,
+              "handled": 2
+            },
+            "evidence": {
+              "session": 1,
+              "checks": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-021",
+      "title": "the delivered credential's taskContext is the id of the session document, as a top-level member",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (\"This response is the outcome evidence\", item 1)",
+        "SPEC.md (4.9.1)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsWrongTaskContext"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/submit/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/vwcDigestMultibase": "^z",
+              "/proof/proofValue": "^z"
+            },
+            "state": {
+              "storedVwc": 1,
+              "handled": 2
+            },
+            "evidence": {
+              "session": 1,
+              "checks": [
+                "taskContext"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-022",
+      "title": "the delivered credential's taskDigestMultibase is the task digest of the session document, as a top-level member",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (\"This response is the outcome evidence\", item 1)",
+        "SPEC.md (4.9.3)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsNoTaskDigest",
+        "wsTaskDigestWithProof"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/submit/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/vwcDigestMultibase": "^z",
+              "/proof/proofValue": "^z"
+            },
+            "state": {
+              "storedVwc": 1,
+              "handled": 2
+            },
+            "evidence": {
+              "session": 1,
+              "checks": [
+                "taskDigest"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-023",
+      "title": "vwcDigestMultibase is the RFC 8785 digest of the delivered credential, proof included",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (response schema, vwcDigestMultibase)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsWrongVwcDigest"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/submit/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/vwcDigestMultibase": "^z",
+              "/proof/proofValue": "^z"
+            },
+            "state": {
+              "storedVwc": 1,
+              "handled": 2
+            },
+            "evidence": {
+              "session": 1,
+              "checks": [
+                "vwcDigest"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-024",
+      "title": "the credential's issuer is the witness that answered (the session's recipient and the response's issuer)",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (\"This response is the outcome evidence\", item 2: the VWC's issuer is the session document's recipient)",
+        "SPEC.md (4.9.4 item 4)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsVwcIssuerNotResponder"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/submit/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/vwcDigestMultibase": "^z",
+              "/proof/proofValue": "^z"
+            },
+            "state": {
+              "storedVwc": 1,
+              "handled": 2
+            },
+            "evidence": {
+              "session": 1,
+              "checks": [
+                "issuerIsResponder"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-025",
+      "title": "the credential subject is the party that opened the session",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (\"The credential delivered\": credentialSubject.id is the issuer of the credential, the submitting party)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsSubjectNotOpener"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/submit/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/vwcDigestMultibase": "^z",
+              "/proof/proofValue": "^z"
+            },
+            "state": {
+              "storedVwc": 1,
+              "handled": 2
+            },
+            "evidence": {
+              "session": 1,
+              "checks": [
+                "subjectIsOpener"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-026",
+      "title": "the credential is a StatementCredential under the witnessed predicate",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (\"The credential delivered\")"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/submit/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/vwcDigestMultibase": "^z",
+              "/proof/proofValue": "^z"
+            },
+            "state": {
+              "storedVwc": 1,
+              "handled": 2
+            },
+            "evidence": {
+              "session": 1,
+              "checks": [
+                "statementType"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-027",
+      "title": "a presentation bound to another challenge is refused challengeMismatch and no credential is issued",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (Conformance, witness item 2; errorCodes challengeMismatch)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsNoChallengeCheck"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "wrongChallenge"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "witness/session/submit:challengeMismatch",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-028",
+      "title": "a presentation bound to another domain is refused challengeMismatch",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (Conformance, witness item 2: bound to this session's challenge and domain)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsNoDomainCheck"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "wrongDomain"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "witness/session/submit:challengeMismatch",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-029",
+      "title": "a presentation whose relationship credential does not verify is refused presentationInvalid, distinct from challengeMismatch",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (errorCodes presentationInvalid; Conformance, witness item 2: a replay versus a defect)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "No rule of witness/session/submit says that the witness verifies the relationship credential inside the presentation; only the text at :262 implies it, and it names no consequence for one that does not verify. Whether a witness that issues anyway is non-conforming is spec-open (class C, O-14), recorded only, nothing filed. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-22",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsNoCredentialVerify",
+        "wsMismatchForAll"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "tamperedCredential"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "witness/session/submit:presentationInvalid",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-030",
+      "title": "a presentation with no proof is refused (it cannot be bound to the challenge)",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (Conformance, witness item 2; party item 2: bound to the challenge)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsAcceptUnsignedVp"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "unsigned"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "witness/session/submit:challengeMismatch",
+              "witness/session/submit:presentationInvalid"
+            ],
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-031",
+      "title": "a presentation held by someone who is not a party to the session is refused presentationInvalid (its party bindings fail)",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (errorCodes presentationInvalid: its party bindings against the session)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsNoHolderCheck",
+        "wsMismatchForAll"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "outsiderHolder"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "witness/session/submit:presentationInvalid",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-032",
+      "title": "a submission by the other party on a session it did not open is refused challengeMismatch",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (Conformance, witness item 3; Authorization)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsNoSubmitterCheck"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$X",
+              "partner": "$A",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$X",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "X",
+              "purpose": "assertionMethod"
+            },
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "witness/session/submit:challengeMismatch",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-033",
+      "title": "a submission by a party outside the exchange on someone else's session is refused (challengeMismatch, or proofInvalid where the witness attributes the envelope proof first)",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (Conformance, witness item 3; Authorization)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsNoSubmitterCheck"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$S",
+              "partner": "$A",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$S",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "S",
+              "purpose": "assertionMethod"
+            },
+            "from": "S"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "witness/session/submit:challengeMismatch",
+              "proofInvalid"
+            ],
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-034",
+      "title": "the challenge is single-use: a second submission on a completed session (new envelope id, same presentation) is refused and issues no second credential (challengeMismatch, or proofInvalid where the witness holds no session to attribute the envelope proof to)",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (response schema, challenge: single-use)",
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (\"Retention\" of the witness's session state: once submit has consumed the challenge it is spent)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsChallengeReusable"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/submit/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/vwcDigestMultibase": "^z",
+              "/proof/proofValue": "^z"
+            },
+            "state": {
+              "storedVwc": 1,
+              "handled": 2
+            },
+            "evidence": {
+              "session": 1,
+              "checks": []
+            }
+          }
+        },
+        {
+          "at": "+3s",
+          "send": {
+            "document": {
+              "id": "$id(sub2)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+3s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "witness/session/submit:challengeMismatch",
+              "proofInvalid"
+            ],
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-035",
+      "title": "a byte-identical resend of a completed submit (a redelivery) is absorbed as a duplicate and returns the first response, with one credential issued",
+      "tier": 1,
+      "spec": [
+        "SPEC.md (7.2 item 11, Disposition of a duplicate)",
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (sideEffects mutating, the response is retained evidence)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "noReplayRecord"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/submit/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/vwcDigestMultibase": "^z",
+              "/proof/proofValue": "^z"
+            },
+            "state": {
+              "storedVwc": 1,
+              "handled": 2
+            },
+            "evidence": {
+              "session": 1,
+              "checks": []
+            }
+          }
+        },
+        {
+          "at": "+3s",
+          "send": {
+            "same": "previous"
+          },
+          "expect": {
+            "disposition": "duplicate",
+            "state": {
+              "storedVwc": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-036",
+      "title": "a submission on a thread with no open session is refused challengeMismatch",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (Authorization: a submission that cannot produce the challenge is not entitled to be witnessed)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "The specification names no code for a thread on which no session was opened; challengeMismatch is the closest reading of its Authorization section (a submission that cannot produce the challenge).",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-19",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2"
+      ],
+      "mutants": [
+        "wsUnknownThreadAsInvalid"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {
+                  "type": [
+                    "VerifiablePresentation"
+                  ]
+                }
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "witness/session/submit:challengeMismatch",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-037",
+      "title": "a submit payload without vp, or with an unknown member, is malformed",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (payload.invalid-examples.json)",
+        "SPEC.md (7.2 item 2)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub2)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {},
+                "attestation": "secure-enclave"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-038",
+      "title": "a submit without an envelope proof is refused proofRequired (the proof is REQUIRED on it)",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (front matter proofRequirement; Authorization: the envelope proof is REQUIRED)",
+        "SPEC.md (7.2 item 7)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": null,
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-039",
+      "title": "a submit whose envelope proof was made by a key that is not the issuer's is refused",
+      "tier": 1,
+      "spec": [
+        "SPEC.md (7.2 item 7)",
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (Authorization: the envelope proof attributes the outer document to its sender)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "acceptUnverifiedProof"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "X",
+              "purpose": "assertionMethod",
+              "allowIssuerMismatch": true
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "proofInvalid",
+              "identityMismatch"
+            ],
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-040",
+      "title": "a submit whose envelope proof has proofPurpose authentication (the suite's default) is accepted",
+      "tier": 1,
+      "spec": [
+        "SPEC.md (4.7: the specifications do not fix the proofPurpose of the envelope proof)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "The submit specification requires a proof but not a particular proofPurpose; whether a verifier may insist on assertionMethod is not stated.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-19",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "authentication"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/submit/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/vwcDigestMultibase": "^z",
+              "/proof/proofValue": "^z"
+            },
+            "state": {
+              "storedVwc": 1,
+              "handled": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-041",
+      "title": "a submission after the witness's session window has passed is refused",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (Security & Privacy, Retention: the session ends when it terminates or expires; the expiry is the witness's own, published under its policy)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "The specifications leave the session expiry to the witness's own policy and state no number or error code; a witness that never expires a session is measured here and reported as a difference, not a failure.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-19",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "exactClock": true,
+      "mutants": [
+        "wsNoExpiry"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+11m",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+11m",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-050",
+      "title": "both parties of a witnessed exchange open their own sessions and submit: two challenges, two credentials, each bound to its own session and naming its own party",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (\"One session per participating party\")",
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.2/spec.md (\"This response is the outcome evidence\"; \"A witnessed relationship exchange produces two of these responses\")"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsSharedChallenge",
+        "wsWrongTaskContext",
+        "wsSubjectNotOpener"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/submit/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/vwcDigestMultibase": "^z",
+              "/proof/proofValue": "^z"
+            },
+            "state": {
+              "storedVwc": 1,
+              "handled": 2
+            },
+            "evidence": {
+              "session": 1,
+              "checks": [
+                "taskContext",
+                "taskDigest",
+                "vwcDigest",
+                "issuerIsResponder",
+                "subjectIsOpener",
+                "statementType",
+                "responseSigned"
+              ]
+            }
+          }
+        },
+        {
+          "at": "+3s",
+          "send": {
+            "document": {
+              "id": "$id(sesX)",
+              "threadId": "$id(sesX)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$X",
+              "recipient": "$iut",
+              "issuedAt": "$now+3s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "X"
+          },
+          "capture": {
+            "challengesesX": "/payload/challenge",
+            "domainsesX": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(sesX)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 3
+            },
+            "notEqual": {
+              "/payload/challenge": [
+                "$cap(challengeses)"
+              ]
+            }
+          }
+        },
+        {
+          "at": "+4s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$X",
+              "partner": "$A",
+              "challenge": "$cap(challengesesX)",
+              "domain": "$cap(domainsesX)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpsesX": "/vp"
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "document": {
+              "id": "$id(subX)",
+              "threadId": "$id(sesX)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$X",
+              "recipient": "$iut",
+              "issuedAt": "$now+5s",
+              "payload": {
+                "vp": "$capJson(vpsesX)"
+              }
+            },
+            "sign": {
+              "as": "X",
+              "purpose": "assertionMethod"
+            },
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/submit/0.2#response",
+            "pointer": {
+              "/threadId": "$id(sesX)"
+            },
+            "match": {
+              "/payload/vwcDigestMultibase": "^z",
+              "/proof/proofValue": "^z"
+            },
+            "state": {
+              "storedVwc": 2,
+              "handled": 4
+            },
+            "evidence": {
+              "session": 4,
+              "checks": [
+                "taskContext",
+                "taskDigest",
+                "vwcDigest",
+                "issuerIsResponder",
+                "subjectIsOpener",
+                "statementType",
+                "responseSigned"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-051",
+      "title": "a credential issued on one party's session cannot be obtained by replaying the other party's presentation into it",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/0.2/spec.md (\"Distinct challenges also mean neither party's presentation can be replayed into the other's session\")"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.2",
+        "https://trusttasks.org/spec/witness/session/submit/0.2",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "mutants": [
+        "wsNoChallengeCheck",
+        "wsSharedChallenge"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(sesX)",
+              "threadId": "$id(sesX)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$X",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "X"
+          },
+          "capture": {
+            "challengesesX": "/payload/challenge",
+            "domainsesX": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "pointer": {
+              "/threadId": "$id(sesX)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 2
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(subX)",
+              "threadId": "$id(sesX)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.2",
+              "issuer": "$X",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "X",
+              "purpose": "assertionMethod"
+            },
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "witness/session/submit:challengeMismatch",
+              "witness/session/submit:presentationInvalid"
+            ],
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WIT-052",
+      "title": "older version (non-focus): the 0.1 pair still works end to end: a presentation bound to the session's challenge on a 0.1 session, submitted in 0.1, is answered with the credential citing the session document",
+      "tier": 1,
+      "spec": [
+        "dtgwg-trust-tasks-tf specs/witness/session/submit/0.1/spec.md (Conformance, witness item 4; \"This response is the outcome evidence\")",
+        "dtgwg-trust-tasks-tf specs/witness/session/0.1/spec.md (Conformance, witness item 3)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/witness/session/0.1",
+        "https://trusttasks.org/spec/witness/session/submit/0.1",
+        "optional:witness.presentation",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(ses)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              }
+            },
+            "from": "A"
+          },
+          "capture": {
+            "challengeses": "/payload/challenge",
+            "domainses": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.1#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+1s",
+          "trigger": {
+            "action": "witnessPresentation",
+            "args": {
+              "holder": "$A",
+              "partner": "$X",
+              "challenge": "$cap(challengeses)",
+              "domain": "$cap(domainses)",
+              "variant": "valid"
+            }
+          },
+          "capture": {
+            "vpses": "/vp"
+          }
+        },
+        {
+          "at": "+2s",
+          "send": {
+            "document": {
+              "id": "$id(sub)",
+              "threadId": "$id(ses)",
+              "type": "https://trusttasks.org/spec/witness/session/submit/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "$capJson(vpses)"
+              }
+            },
+            "sign": {
+              "as": "A",
+              "purpose": "assertionMethod"
+            },
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/submit/0.1#response",
+            "pointer": {
+              "/threadId": "$id(ses)"
+            },
+            "match": {
+              "/payload/vwcDigestMultibase": "^z",
+              "/proof/proofValue": "^z"
+            },
+            "state": {
+              "storedVwc": 1,
+              "handled": 2
+            },
+            "evidence": {
+              "session": 1,
+              "checks": [
+                "taskContext",
+                "taskDigest",
+                "vwcDigest",
+                "issuerIsResponder",
+                "subjectIsOpener",
+                "statementType"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

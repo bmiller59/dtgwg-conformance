@@ -1,0 +1,164 @@
+{
+  "format": "tt-at-a-glance-config/0.1",
+  "about": "Hand-written, number-free inputs to scripts/at-a-glance.ts: which result sets belong to which platform, plain-language descriptions, and the rows of the grid. Every number on the page is computed from the run folders. Review the descriptions and the 'next' lists after each merge.",
+  "headlineTier": 1,
+  "milestones": [
+    { "prefix": "2026-11-19-final-", "label": "Final measurement on the final suite (conformance/final-runs, off conformance/full-coverage-final2): every platform row re-run on one suite revision, the current measurement for all of them (the live VTI service and the witness server over DIDComm were not re-run and stay as recorded earlier)" },
+    { "prefix": "2026-11-17-final-", "label": "Final measurement on the integrated suite (conformance/integrated): the reference adapter and the platforms measured the same way; superseded by the final measurement above. The witness server and the live VTI service were not re-run and stay as recorded earlier" },
+    { "prefix": "2026-11-16-fixed-", "label": "Re-run after the harness fixes: the same platforms on the suite before the vector review (comparison only, superseded)" },
+    { "prefix": "2026-11-16-before-", "label": "The same platforms on the suite before the harness fixes (comparison only, not current)" },
+    { "prefix": "2026-11-16-agreed-", "label": "Re-run after the agreed changes (conformance/agreed-impl); current for the witness server only" },
+    { "prefix": "2026-11-15-final2-", "label": "Final merged tree (conformance/final2)" },
+    { "prefix": "2026-11-15-final-", "label": "First final merge (superseded by final2)" },
+    { "prefix": "2026-11-15-integration-", "label": "Integration merge (superseded)" }
+  ],
+  "supportingRuns": [
+    "2026-11-15-governance-probe-keyring-wallet",
+    "2026-11-15-governance-probe-reference",
+    "2026-11-15-governance-probe-reference-mutants",
+    "2026-11-15-governance-probe-vti-inprocess",
+    "2026-11-15-observe-adopt-vta-probes",
+    "2026-11-15-truststackers-base",
+    "2026-11-15-vti-reach-governance-vta",
+    "2026-11-15-vti-reach-governance-vtc",
+    "2026-11-15-vti-reach-push-experiment",
+    "2026-11-16-crossed-keyring-wallet-to-reference",
+    "2026-11-16-crossed-reference-to-vti-inprocess",
+    "2026-11-16-crossed-vti-emit-to-reference"
+  ],
+  "supersededBy": {
+    "about": "Run folders whose implementation has more than one current surface: the surface that supersedes them. An empty list marks a record of a later purpose (wallet emit re-runs, promotion gating sets) that supersedes nothing and is listed under supporting records.",
+    "2026-11-21-ttd01-oracle": [],
+    "2026-11-21-ttd01-vti-community-rooms": [],
+    "2026-11-21-ttd01-vti-agent": [],
+    "2026-11-21-ttd01-vti-emit": [],
+    "2026-11-20-kw-reach-kw-up-969-shim": [],
+    "2026-11-20-promote-b1-gating-kw-upstream-shim": [],
+    "2026-11-20-promote-b1-gating-reference": [],
+    "2026-11-20-promote-b1-gating-vti-upstream-agent": [],
+    "2026-11-20-promote-b1-gating-vti-upstream-community": [],
+    "2026-11-20-promote-b2-gating-kw-upstream-shim": [],
+    "2026-11-20-promote-b2-gating-ported-vti-upstream-community": [],
+    "2026-11-20-promote-b2-gating-reference": [],
+    "2026-11-20-promote-b2-gating-vti-upstream-agent": [],
+    "2026-11-20-promote-b2-gating-vti-upstream-community": [],
+    "2026-11-14-vti-26d0da81": ["2026-11-14-vti-26d0da81-rcpt", "2026-11-20-vti-live-core"],
+    "2026-11-14-vti-26d0da81-rcpt": ["2026-11-20-vti-live-core"],
+    "2026-11-15-final2-vtc-inprocess": ["2026-11-19-final-upstream-vtc-inprocess"],
+    "2026-11-15-final-vtc-inprocess": ["2026-11-19-final-upstream-vtc-inprocess"],
+    "2026-11-15-observe-adopt-vtc-inprocess": ["2026-11-19-final-upstream-vtc-inprocess"],
+    "2026-11-15-vti-reach-vtc-inprocess-core": ["2026-11-19-final-upstream-vtc-inprocess"],
+    "2026-11-15-vti-reach-vtc-inprocess-plain": ["2026-11-19-final-upstream-vtc-inprocess"]
+  },
+  "rows": [
+    { "id": "core", "label": "Core framework", "plain": "The basic rules every Trust Task document must follow: envelope, proofs, errors, timing, duplicates, the HTTPS door and discovery.", "families": ["framework", "https-binding", "trust-task-discovery"], "channel": "registry" },
+    { "id": "dtg", "label": "Credential tasks", "plain": "Issuing, requesting, offering and presenting credentials, and asking a person for consent.", "families": ["dtg-credential-exchange", "dtg-task-consent"], "channel": "registry" },
+    { "id": "ceremony", "label": "Ceremony", "plain": "Relationship ceremonies: proposing and issuing a relationship credential, two-phase commit, ceremony documents and receipts.", "families": ["vrc-propose", "vrc-issue", "two-phase-commit", "ceremony-doc", "ceremony-receipt"], "channel": "registry" },
+    { "id": "single", "label": "Single tasks", "plain": "One check per task type and version, for the access, policy, vault, device and authentication tasks.", "families": ["plain"], "channel": "registry" },
+    { "id": "sending", "label": "What the platform sends", "plain": "Checks of the documents a platform itself produces (the sending side), as opposed to how it handles documents it receives.", "families": ["emit"], "excludeGroupPrefix": ["EX-ROM"], "channel": "registry" },
+    { "id": "rooms", "label": "Rooms", "plain": "The documents a platform sends for the rooms tasks.", "families": ["emit"], "groupPrefix": ["EX-ROM"], "channel": "registry" },
+    { "id": "twol", "label": "2L profiles (proposed, advisory)", "plain": "The second-layer profiles (notifications, audit, invitations, join requests, directory and others), receiving and sending. The profiles are the suite's own proposal (profile 2L): advisory, outside the gating counts.", "families": ["2l", "2l-emit"], "channel": "proposed" },
+    { "id": "witness-share", "label": "Witness sharing (candidate, advisory)", "plain": "Sharing a credential with a witness. No home in the Trust Tasks repository yet; implemented by one or a few platforms (see the recorded results), possibly adoptable later. Advisory, not an endorsement.", "families": ["vrc-witness-share"], "channel": "candidate" },
+    { "id": "witness-server", "label": "Witness server", "plain": "A witness server reached over real DIDComm messages.", "families": ["witness"], "channel": "registry" }
+  ],
+  "subjects": [
+    {
+      "id": "keyring-wallet",
+      "name": "keyring-wallet",
+      "role": "platform",
+      "whatItIs": "A wallet app that holds a person's credentials and relationships and exchanges Trust Tasks over DIDComm.",
+      "surfaces": [
+        { "id": "keyring-wallet-shim", "label": "Wallet logic behind a stand-in carrier", "impl": "keyring-wallet", "how": "shim", "headline": true, "runs": ["2026-11-19-final-upstream-keyring-wallet"] },
+        { "id": "keyring-wallet-didcomm", "label": "Wallet agent over real DIDComm (Credo agent, DIDComm v1)", "impl": "keyring-wallet-didcomm", "how": "didcomm", "runs": ["2026-11-19-final-upstream-kw-didcomm"] },
+        { "id": "keyring-wallet-didcomm-v2", "label": "Wallet agent over real DIDComm (Credo agent, DIDComm v2)", "impl": "keyring-wallet-didcomm-v2", "how": "didcomm", "runs": ["2026-11-19-final-upstream-kw-didcomm"] },
+        { "id": "keyring-wallet-witness", "label": "Witness server over real DIDComm", "impl": "witness-server", "how": "didcomm", "runs": ["2026-11-19-final-upstream-witness-server-didcomm"] },
+        { "id": "keyring-wallet-wit", "label": "Witness server, the witness session tasks (WIT group)", "impl": "keyring-wallet-witness-server", "how": "shim", "runs": ["2026-11-19-final-upstream-witness-server"] }
+      ],
+      "draftIssueRuns": ["2026-11-14-kw-shim", "2026-11-15-kw-shim-query"],
+      "next": [
+        "Run the core checks over DIDComm v2 for the cases the v2 row cannot yet carry (documents sent with no sender: DUP-101 to DUP-109 end in an adapter error there) and observe the wallet's retained store over its real repository.",
+        "Review the recorded differences, including the push-registration finding (no recipient or issue time), with the maintainers."
+      ]
+    },
+    {
+      "id": "truststackers-original",
+      "name": "truststackers (original)",
+      "role": "platform",
+      "whatItIs": "The original TrustStackers p2p-trust-stack repository, at its upstream main: a peer-to-peer trust stack with agents, communities and credentials.",
+      "surfaces": [],
+      "notReachable": { "run": "2026-11-19-final-truststackers-base", "text": "The original repository's upstream main (commit d7ebe8f) has no Trust Task boundary and no conformance adapter that the suite can drive, so nothing could be run against it. This says the suite cannot reach it yet; it is not a defect report." },
+      "draftIssueRuns": [],
+      "next": [
+        "Nothing can be measured until the original exposes a Trust Task boundary (and the adapter that drives it).",
+        "Re-run against the original as soon as such a boundary exists there."
+      ]
+    },
+    {
+      "id": "vti",
+      "name": "VTI",
+      "role": "platform",
+      "whatItIs": "A community trust service plus an agent service for verifiable credentials and relationships (verifiable-trust-infrastructure).",
+      "surfaces": [
+        { "id": "vti-inprocess", "label": "Agent service handlers, in process", "impl": "verifiable-trust-infrastructure-inprocess", "how": "in-process", "headline": true, "runs": ["2026-11-19-final-upstream-vti-inprocess"] },
+        { "id": "vti-vtc-inprocess", "label": "Community service, in process (the live-service adapter against the service's own test host)", "impl": "verifiable-trust-infrastructure-vtc-inprocess", "how": "in-process-vtc", "runs": ["2026-11-19-final-upstream-vtc-inprocess"] },
+        { "id": "vti-emit", "label": "Sending side: documents built by VTI's own client code", "impl": "vti-emit", "how": "emit", "runs": ["2026-11-19-final-upstream-vti-emit"] },
+        { "id": "vti-live", "label": "Community service, live over HTTPS", "impl": "verifiable-trust-infrastructure", "how": "live", "runs": ["2026-11-20-vti-live-core"] }
+      ],
+      "declared": {
+        "witness-server": { "class": "not-applicable", "reason": "VTI's witness tasks belong to a different task family and carrier, so the witness-server checks do not apply (read from VTI's source at the tested version, not from a run)." }
+      },
+      "draftIssueRuns": ["2026-11-14-vti-26d0da81-rcpt", "2026-11-15-vti-inprocess-26d0da81", "2026-11-15-vti-inprocess-query", "2026-11-15-vti-crosscheck"],
+      "next": [
+        "Exercise the community service's governance declaration: enrol a step-up approver and a second administrator, then grant defined roles (the declaration is refused today without them).",
+        "Build a host that can push (the agent service's push engine needs a messaging session) so the pushed-document checks (credential-exchange offer, request, present) and send-only checks can run.",
+        "Let the in-process community service restart, and run the second-layer checks that only it serves against it.",
+        "Re-run the live community service on the current set of checks; it was last run on an earlier, smaller set (the container runtime was not usable here)."
+      ]
+    },
+    {
+      "id": "reference",
+      "name": "Reference adapter",
+      "role": "self-check",
+      "whatItIs": "A small implementation inside the suite, built to behave exactly as the checks expect. It is the suite checking itself: it shows the checks are consistent with each other. It says nothing about any real platform.",
+      "surfaces": [
+        { "id": "reference", "label": "Reference adapter", "impl": "reference", "how": "reference", "headline": true, "runs": ["2026-11-22-rc-reference"] }
+      ],
+      "next": ["Keep it green as checks are added; it is the first thing to look at when a new check misbehaves."]
+    }
+  ],
+  "how": {
+    "shim": { "name": "Stand-in carrier", "plain": "The platform's own code runs, but the message carrier is replaced by an in-memory stand-in. The result says nothing about the real wire." },
+    "in-process": { "name": "In process", "plain": "The platform's own handlers run inside one test process, reached over a local loopback door. A library-level result, not a deployed service." },
+    "didcomm": { "name": "Real DIDComm", "plain": "A running service exchanges real DIDComm messages with the suite. Closest to real use among the ways here." },
+    "in-process-vtc": { "name": "Community service in process", "plain": "The community service's own handlers, router and stores run inside one test process on a loopback port, driven by the same adapter that measures the live service. A library-level result, not a deployed service." },
+    "emit": { "name": "Sending side", "plain": "The documents the platform itself builds are captured from its own client code and checked; nothing is sent to a running service." },
+    "live": { "name": "Live service", "plain": "A running deployed service reached over HTTPS." },
+    "reference": { "name": "Suite's own adapter", "plain": "The suite's built-in implementation, used to check the suite itself." }
+  },
+  "findingTitles": [
+    { "match": "silent rejection|silent refusal|retains and logs an unhandled|sends no trust-task-error", "title": "Rejects a document correctly but sends no error reply" },
+    { "match": "KW deviation from SPEC\\.md 4\\.7", "title": "Checks a delivery's proof under a different identifier than the issuer's" },
+    { "match": "KW deviation from SPEC\\.md 8\\.6", "title": "Held documents get no next-step reply" },
+    { "match": "KW deviation from SPEC\\.md 7\\.2 item 11|keeps no duplicate", "title": "Keeps no record of already-handled documents" },
+    { "match": "module default|acceptUnverified", "title": "Default policy accepts documents whose proof is not verified" },
+    { "match": "documentProof\\.verifyDocumentProof accepts", "title": "Proof verifier accepts proofs the shared fixtures mark invalid" },
+    { "match": "witness-share is reached", "title": "Witness-share proof is checked under the sender's relationship identifier" },
+    { "match": "no acceptance window", "title": "Applies no maximum age to incoming documents" },
+    { "match": "pinned runtime", "title": "Pinned runtime library lacks some envelope and timestamp checks" },
+    { "match": "acceptance echoes witnessed", "title": "Acceptance echoes the witnessed flag from the proposal" },
+    { "match": "^\\[shim carrier\\]", "title": "Limit of our stand-in carrier (no authenticated sender), not a wallet difference" },
+    { "match": "proofInvalid; proofInvalid is|proof that is present and fails verification", "title": "A proof that fails verification is answered permissionDenied, not proofInvalid" },
+    { "match": "identityMismatch", "title": "identityMismatch refusal is addressed to the document's own issuer" },
+    { "match": "Suite over-assertion", "title": "Our check expects more than the specification says" },
+    { "match": "^\\[Profile difference\\]|Tier 2 attested profile pin", "title": "Differs from the stricter attested profile (not a framework rule)" },
+    { "match": "Authorization header|reads no Authorization", "title": "The HTTPS door does not read the Authorization header" },
+    { "match": "Unconfirmed", "title": "Cause not yet confirmed (bearer shortcut, harness signer, or the platform)" },
+    { "match": "Known upstream gap", "title": "Known gap in a library the platform builds on" },
+    { "match": "Difference observed through VTI's proof verification", "title": "Proof verifier is more lenient than the shared fixtures on some edge cases" },
+    { "match": "credential-exchange/query", "title": "Credential query: deferral or no-match is not answered as the text describes" },
+    { "match": "Discovery 0\\.1 answers every pattern", "title": "Discovery answers every pattern with the full list" },
+    { "match": "locality policy", "title": "Discovery response carries a member its schema does not define" },
+    { "match": "not named in parties", "title": "Accepts a witness session opened by a party not named in it" },
+    { "match": "replay of the same session", "title": "Replayed session document is executed again" }
+  ]
+}

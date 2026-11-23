@@ -1,0 +1,489 @@
+{
+ "format": "tt-kw-role-rules/0.1",
+ "about": "Inputs to the keyring-wallet role derivation (src/coverage/matrix/roles.ts, decision D301). `serves`: slugs the wallet answers or receives through a handler that is not in the inbound registry; the symbol must appear in the file or the rule is ignored. `namesOnlyFiles`: files that only list tasks (approval rules, trusted approvers, and the room capability table, which names the versions an agent must serve and sends nothing). `unnamed`: prefix rules (longest match wins) for slugs the source names in no version; these are judgement, the reason is on each rule, and a slug that matches no rule is reported `unclassified` (the tests require none).",
+ "serves": [
+  {
+   "slug": "auth/step-up/approve-request",
+   "file": "bifold/packages/core/src/modules/trust-tasks/module/stepUp.ts",
+   "symbol": "NAMES_ACCEPTS"
+  },
+  {
+   "slug": "credential-exchange/issue",
+   "file": "bifold/packages/core/src/modules/trust-tasks/module/vtiInbox.ts",
+   "symbol": "credentialsOfIssue"
+  },
+  {
+   "slug": "credential-exchange/offer",
+   "file": "bifold/packages/core/src/modules/trust-tasks/module/vtiInvitationOffer.ts",
+   "symbol": "invitationOfferOfMessage"
+  },
+  {
+   "slug": "credential-exchange/query",
+   "file": "bifold/packages/core/src/modules/trust-tasks/ceremony.ts",
+   "symbol": "respondToCredentialExchangeQuery"
+  },
+  {
+   "slug": "task-consent/granted",
+   "file": "bifold/packages/core/src/modules/trust-tasks/module/vtaAgent.ts",
+   "symbol": "VTA_TASK.consentGranted"
+  },
+  {
+   "slug": "trust-task-next-step",
+   "file": "bifold/packages/core/src/modules/trust-tasks/module/vtaClaim.ts",
+   "symbol": "NEXT_STEP_TASK"
+  },
+  {
+   "slug": "vetting/attestation",
+   "file": "bifold/packages/core/src/modules/trust-tasks/module/vtiVetting.ts",
+   "symbol": "readHiddenAttestation"
+  },
+  {
+   "slug": "vetting/request",
+   "file": "bifold/packages/core/src/modules/trust-tasks/module/vtiVetting.ts",
+   "symbol": "isVettingRequest"
+  },
+  {
+   "slug": "vtc/join-requests/submit-receipt",
+   "file": "bifold/packages/core/src/modules/trust-tasks/module/vtiCommunityNotices.ts",
+   "symbol": "receiveCommunityNotice"
+  },
+  {
+   "slug": "vtc/members/removal-notice",
+   "file": "bifold/packages/core/src/modules/trust-tasks/module/vtiCommunityNotices.ts",
+   "symbol": "receiveCommunityNotice"
+  }
+ ],
+ "namesOnlyFiles": [
+  "approvalRules.ts",
+  "trustedApprovers.ts",
+  "approvalsPolicy.ts",
+  "capabilities.ts"
+ ],
+ "unnamed": [
+  {
+   "match": "acl/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "audit/",
+   "role": "not-involved",
+   "why": "service, operator or infrastructure surface; no wallet role by design"
+  },
+  {
+   "match": "auth/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "backup/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "chat/",
+   "role": "not-involved",
+   "why": "service, operator or infrastructure surface; no wallet role by design"
+  },
+  {
+   "match": "config/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "consent/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "credential-exchange/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "device/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "did-management/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "external/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "git-ns/",
+   "role": "not-involved",
+   "why": "git namespace service surface"
+  },
+  {
+   "match": "git-trust/",
+   "role": "not-involved",
+   "why": "service, operator or infrastructure surface; no wallet role by design"
+  },
+  {
+   "match": "governance/",
+   "role": "not-involved",
+   "why": "service, operator or infrastructure surface; no wallet role by design"
+  },
+  {
+   "match": "keys/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "messaging/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "notifications/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "peer-check/",
+   "role": "not-involved",
+   "why": "service, operator or infrastructure surface; no wallet role by design"
+  },
+  {
+   "match": "persona/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "policy/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "process-attestation",
+   "role": "not-involved",
+   "why": "service, operator or infrastructure surface; no wallet role by design"
+  },
+  {
+   "match": "provision/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "push/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "registry/",
+   "role": "not-involved",
+   "why": "registry service surface"
+  },
+  {
+   "match": "rooms/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "sync/",
+   "role": "not-involved",
+   "why": "service, operator or infrastructure surface; no wallet role by design"
+  },
+  {
+   "match": "trust-ceremony-receipt",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "trust-task-control",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "understanding/",
+   "role": "not-involved",
+   "why": "service, operator or infrastructure surface; no wallet role by design"
+  },
+  {
+   "match": "vault/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "voting/",
+   "role": "not-involved",
+   "why": "voting service surface (the voter tasks the wallet sends are under vta/pcs)"
+  },
+  {
+   "match": "vta/app-state/",
+   "role": "not-involved",
+   "why": "agent service, operator or infrastructure surface"
+  },
+  {
+   "match": "vta/attestation/",
+   "role": "not-involved",
+   "why": "agent service, operator or infrastructure surface"
+  },
+  {
+   "match": "vta/backup/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "vta/collection/",
+   "role": "not-involved",
+   "why": "agent service, operator or infrastructure surface"
+  },
+  {
+   "match": "vta/contexts/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "vta/credentials/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "vta/did-templates/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "vta/dids/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "vta/health/",
+   "role": "not-involved",
+   "why": "agent service, operator or infrastructure surface"
+  },
+  {
+   "match": "vta/management/",
+   "role": "not-involved",
+   "why": "agent service, operator or infrastructure surface"
+  },
+  {
+   "match": "vta/memory/",
+   "role": "not-involved",
+   "why": "agent service, operator or infrastructure surface"
+  },
+  {
+   "match": "vta/metrics/",
+   "role": "not-involved",
+   "why": "agent service, operator or infrastructure surface"
+  },
+  {
+   "match": "vta/notifications/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "vta/passkey-vms/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "vta/pcs/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "vta/restore/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "vta/services/",
+   "role": "not-involved",
+   "why": "agent service, operator or infrastructure surface"
+  },
+  {
+   "match": "vta/webs/",
+   "role": "not-involved",
+   "why": "agent service, operator or infrastructure surface"
+  },
+  {
+   "match": "vta/webvh/",
+   "role": "client-capable-not-built",
+   "why": "VTA-facing client family (persona, messaging, DID management, backup, agent admin); a wallet could call it, the source does not"
+  },
+  {
+   "match": "vta/witness/",
+   "role": "not-involved",
+   "why": "agent service, operator or infrastructure surface"
+  },
+  {
+   "match": "vtc/admin/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/auth/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/backup/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/badges/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/boards/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/ceremonies/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/community/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/config/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/credentials/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/directory/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/elections/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/endorsement-types/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/endorsements/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/groups/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/install/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/invitations/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "vtc/join-requests/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "vtc/members/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/networks/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/notifications/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/oid4vp/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/operator/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/policies/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/recognition/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/registry/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/relationships/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/roles/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/rooms/",
+   "role": "wallet-relevant-not-named",
+   "why": "client or member-facing family a wallet could send or answer; the source names no version of this task"
+  },
+  {
+   "match": "vtc/schemas/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/storage/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/vetting/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtc/website/",
+   "role": "not-involved",
+   "why": "community administration, community service or infrastructure surface (the member-facing tasks the wallet sends are named in its source)"
+  },
+  {
+   "match": "vtn/",
+   "role": "not-involved",
+   "why": "VTN network-service surface"
+  },
+  {
+   "match": "webvh/",
+   "role": "not-involved",
+   "why": "web verifiable history host surface"
+  }
+ ]
+}

@@ -1,0 +1,92 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "CC-AA",
+ "family": "coverage",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "CC-AA-001",
+   "title": "vta/audit/update-retention/1.0: a request whose payload breaks the request shape the platform's own source declares is refused (candidate; mechanics only)",
+   "tier": 1,
+   "spec": [
+    "docs/24-candidate-task-notes.md, section \"vta/audit/update-retention (1.0)\": vta-sdk/src/protocols/audit_management/retention.rs:27-34 (UpdateRetentionBody: retentionDays required), in verifiable-trust-infrastructure",
+    "docs/24-candidate-task-notes.md, section \"vta/audit/update-retention (1.0)\": vta-service/src/trust_tasks/audit.rs:107-117 (payload parsed before authority is checked), in verifiable-trust-infrastructure",
+    "docs/24-candidate-task-notes.md, section \"vta/audit/update-retention (1.0)\": vta-service/src/trust_tasks/mod.rs:288-290 (listed as unspecified), in verifiable-trust-infrastructure",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type): the general consumer rule; this type has no Trust Tasks schema, so the shape checked is the one the platform's source declares for it",
+    "Candidate: no Trust Tasks specification exists for vta/audit/update-retention/1.0 (census tf_status none); the vector rests on docs/24-candidate-task-notes.md only and asserts nothing about what the task does or who may ask for it",
+    "Evidence basis: the platform's own source (not independent of that platform; it can only say the platform refuses what its own request struct rejects)",
+    "A destructive or state-changing task: only payloads that break the declared shape are sent; no valid request is sent"
+   ],
+   "source": {
+    "slug": "vta/audit/update-retention",
+    "version": "1.0",
+    "channel": "candidate",
+    "ref": "suite:docs/24-candidate-task-notes.md",
+    "pinnedDigest": "sha256:91880aed6a8dae5b2cd387665480557c261bf6ff43ef4ad4630af57d6b4c4e32",
+    "candidate": {
+     "implementedBy": [
+      "verifiable-trust-infrastructure"
+     ],
+     "localText": "docs/24-candidate-task-notes.md",
+     "adoptionNote": "No Trust Tasks specification for this type is in the pinned registry package (census tf_status none), and the suite has filed no issue or pull request. The platform's own source lists the type as unspecified and names its intent (docs/24)."
+    },
+    "note": "the request body of the audit retention update; candidate coverage vector (decision CV-6): the shape is the platform's own, quoted in docs/24; advisory, never an endorsement. implementedBy is what the quoted source shows until a recorded run of these vectors says otherwise"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/audit/update-retention/1.0"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(c1)",
+       "type": "https://trusttasks.org/spec/vta/audit/update-retention/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c2)",
+       "type": "https://trusttasks.org/spec/vta/audit/update-retention/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "retentionDays": "x"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  }
+ ]
+}

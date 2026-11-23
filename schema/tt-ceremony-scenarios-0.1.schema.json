@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tt-ceremony-scenarios-0.1",
+  "title": "Trust Task ceremony scenario file, format tt-ceremony-scenarios/0.1 (proposed, draft proposal for discussion; docs/25)",
+  "description": "A scenario file for the separate ceremony runner. It is not a vector file: the default suite run never reads it, and what running it produces (evidence kind complete-ceremony) is never a conformance count. src/ceremony/scenario.ts validates the same shape and the cross references this schema cannot express (participants named in steps, step ids named by checks).",
+  "type": "object",
+  "required": ["format", "group", "family", "evidence", "ceremony", "scenarios"],
+  "additionalProperties": false,
+  "properties": {
+    "format": { "const": "tt-ceremony-scenarios/0.1" },
+    "group": { "type": "string", "pattern": "^FC-[A-Z]{3}$" },
+    "family": { "const": "ceremony-scenarios" },
+    "evidence": { "const": "complete-ceremony" },
+    "ceremony": {
+      "type": "object",
+      "required": ["name", "channel", "choreography"],
+      "properties": { "name": { "type": "string" }, "channel": { "enum": ["proposed", "candidate"] }, "choreography": { "type": "string" } }
+    },
+    "scenarios": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/scenario" } }
+  },
+  "$defs": {
+    "state": { "enum": ["open", "held", "completed", "declined", "refused", "expired", "aborted", "unknown"] },
+    "terminal": { "enum": ["completed", "declined", "refused", "expired", "aborted"] },
+    "scenario": {
+      "type": "object",
+      "required": ["id", "title", "spec", "source", "participants", "carrier", "deadlineMs", "steps", "allowedTerminals", "completion"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^FC-[A-Z]{3}-\\d{3}$", "description": "<group>-<NNN>; issued in the id ledger like a vector id, never reused." },
+        "title": { "type": "string" },
+        "spec": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "source": { "type": "object", "description": "The primary step's source (a VectorSource with tfRef and hashes, written by withSpecHashes)." },
+        "participants": { "type": "object", "minProperties": 2, "additionalProperties": { "type": "object", "required": ["role", "requires"], "properties": { "role": { "type": "string" }, "requires": { "type": "array", "items": { "type": "string" } } } } },
+        "carrier": { "type": "object", "required": ["modes"], "properties": { "modes": { "type": "array", "items": { "enum": ["runner-carried", "live"] } } } },
+        "deadlineMs": { "type": "integer", "minimum": 1, "maximum": 600000 },
+        "steps": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/step" } },
+        "allowedTerminals": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/terminal" } },
+        "completion": { "type": "object", "required": ["thread", "assert"], "properties": { "thread": { "type": "string" }, "assert": { "type": "array", "items": { "$ref": "#/$defs/check" } } } }
+      }
+    },
+    "step": {
+      "type": "object",
+      "required": ["id", "do"],
+      "properties": {
+        "id": { "type": "string" },
+        "source": { "type": "object", "description": "The Trust Tasks specification of the document the step sends, pinned and hashed. Required on an initiate step." },
+        "do": {
+          "type": "object",
+          "description": "Exactly one member.",
+          "properties": {
+            "connect": { "const": "all" },
+            "decide": { "type": "object", "required": ["by", "action", "args"], "description": "An operator decision through the participant's own trigger; the runner never builds the document that follows." },
+            "initiate": { "type": "object", "required": ["by", "to", "kind"], "description": "The participant builds and signs the document; the runner only relays it (runner-carried mode)." },
+            "replay": { "type": "object", "required": ["step", "by", "to", "mode"], "properties": { "index": { "type": "integer", "minimum": 0 } }, "description": "Re-send a document a participant already built: unchanged (same), without its proof (stripProof) or with a payload value altered after signing, under a fresh id (tamper) or the same id (conflict). The runner signs nothing." }
+          }
+        },
+        "expect": { "type": "array", "items": { "$ref": "#/$defs/check" } }
+      }
+    },
+    "check": {
+      "type": "object",
+      "description": "Exactly one of ceremony, received, stored, receiptMatches, reply, read from a participant's own state (reply: the recipient's answer to the newest replay).",
+      "properties": {
+        "at": { "type": "string" },
+        "thread": { "type": "string" },
+        "ceremony": { "$ref": "#/$defs/state" },
+        "received": { "type": "object", "properties": { "type": { "type": "string" }, "from": { "type": "string" }, "count": { "type": "integer" }, "code": { "type": "string" } } },
+        "stored": { "type": "object", "required": ["kind", "count"] },
+        "receiptMatches": { "type": "object", "required": ["step"] },
+        "reply": { "type": "object", "properties": { "code": { "type": "string" }, "type": { "type": "string" }, "status": { "type": "integer" } } }
+      }
+    },
+    "result-status": { "enum": ["completed", "ended-as-specified", "failed", "inconclusive", "incomplete", "skipped"] }
+  }
+}

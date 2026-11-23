@@ -1,0 +1,222 @@
+{
+  "format": "tt-conformance-findings/0.1",
+  "about": "Hand-written input (not generated). Explained-not-excused findings: a FAIL whose cause is written down but which is deliberately not a KNOWN-FAIL exception. The FAIL stays FAIL in every count and in the exit code; the generated pages show it as 'Recorded finding, not excused' instead of 'Unexplained difference'. class is A to D (results/vector-review.md#classes) or null when the review has not classed it. See CONTRIBUTING.md recipe 4.",
+  "findings": [
+    {
+      "impl": "keyring-wallet",
+      "vector": "EM-PSH-004",
+      "class": "A",
+      "explanation": "The wallet's push-gateway registration (push/register 0.2) is built without recipient and without issuedAt, both REQUIRED by that specification (class A, differs from the specification text: the pinned package declares both REQUIRED for this task version). Draft issue 01, not filed. Re-class as C if the task force says an unaddressed push registration is allowed.",
+      "ref": "results/runs/2026-11-15-2l-keyring-wallet/README.md",
+      "excused": false
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "TE-PSH-001",
+      "class": "A",
+      "explanation": "The wallet's push-gateway registration (push/register 0.2) is built without recipient and without issuedAt, both REQUIRED by that specification (the same finding as EM-PSH-004).",
+      "ref": "results/runs/2026-11-15-2l-keyring-wallet/README.md",
+      "excused": false
+    },
+    {
+      "impl": "keyring-wallet-didcomm",
+      "vector": "EM-PSH-004",
+      "class": "A",
+      "explanation": "The same wallet builder as the keyring-wallet row: push/register 0.2 is built without recipient and without issuedAt, both REQUIRED by that specification.",
+      "ref": "results/runs/2026-11-15-2l-keyring-wallet/README.md",
+      "excused": false
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CV-RM-110",
+      "class": "C",
+      "explanation": "spec-silent: lookup before validation. Unseeded, the request names a room the platform does not hold and VTI answers a not-found (taskFailed) where the vector expects malformedRequest or permissionDenied. The seeded probe CP-RM-002 creates the room first and re-asks the same payloads; with the object present VTI answers malformedRequest, so VTI looks the object up and then validates. SPEC.md 7.2 item 2 requires the payload to be validated and does not order that against a lookup, so the unseeded FAIL is the platform's order, not a payload left unchecked. Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "evidence": [
+        "CP-RM-002"
+      ]
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CV-RM-113",
+      "class": "C",
+      "explanation": "spec-silent: lookup before validation. Unseeded, the request names a room the platform does not hold and VTI answers a not-found (taskFailed) where the vector expects malformedRequest or permissionDenied. The seeded probe CP-RM-003 creates the room first and re-asks the same payloads; with the object present VTI answers malformedRequest, so VTI looks the object up and then validates. SPEC.md 7.2 item 2 requires the payload to be validated and does not order that against a lookup, so the unseeded FAIL is the platform's order, not a payload left unchecked. Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "evidence": [
+        "CP-RM-003"
+      ]
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CX-RM-004",
+      "class": "C",
+      "explanation": "spec-silent: lookup before validation. Unseeded, the request names a room the platform does not hold and VTI answers a not-found (taskFailed) where the vector expects malformedRequest or permissionDenied. The seeded probe CP-RM-004 creates the room first and re-asks the same payloads; with the object present VTI answers malformedRequest, so VTI looks the object up and then validates. SPEC.md 7.2 item 2 requires the payload to be validated and does not order that against a lookup, so the unseeded FAIL is the platform's order, not a payload left unchecked. Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "evidence": [
+        "CP-RM-004"
+      ]
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CX-RM-009",
+      "class": "C",
+      "explanation": "spec-silent: lookup before validation. Unseeded, the request names a room the platform does not hold and VTI answers a not-found (taskFailed) where the vector expects malformedRequest or permissionDenied. The seeded probe CP-RM-005 creates the room first and re-asks the same payloads; with the object present VTI answers malformedRequest, so VTI looks the object up and then validates. SPEC.md 7.2 item 2 requires the payload to be validated and does not order that against a lookup, so the unseeded FAIL is the platform's order, not a payload left unchecked. Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "evidence": [
+        "CP-RM-005"
+      ]
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CX-RM-010",
+      "class": "C",
+      "explanation": "spec-silent: lookup before validation. Unseeded, the request names a room the platform does not hold and VTI answers a not-found (taskFailed) where the vector expects malformedRequest or permissionDenied. The seeded probe CP-RM-006 creates the room first and re-asks the same payloads; with the object present VTI answers malformedRequest, so VTI looks the object up and then validates. SPEC.md 7.2 item 2 requires the payload to be validated and does not order that against a lookup, so the unseeded FAIL is the platform's order, not a payload left unchecked. Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "evidence": [
+        "CP-RM-006"
+      ]
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CX-RM-034",
+      "class": "C",
+      "explanation": "spec-silent: lookup before validation. Unseeded, the request names a room the platform does not hold and VTI answers a not-found (taskFailed) where the vector expects malformedRequest or permissionDenied. The seeded probe CP-RM-007 creates the room first and re-asks the same payloads; with the object present VTI answers malformedRequest, so VTI looks the object up and then validates. SPEC.md 7.2 item 2 requires the payload to be validated and does not order that against a lookup, so the unseeded FAIL is the platform's order, not a payload left unchecked. Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "evidence": [
+        "CP-RM-007"
+      ]
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CX-RM-035",
+      "class": "C",
+      "explanation": "spec-silent: lookup before validation. Unseeded, the request names a room the platform does not hold and VTI answers a not-found (taskFailed) where the vector expects malformedRequest or permissionDenied. The seeded probe CP-RM-008 creates the room first and re-asks the same payloads; with the object present VTI answers malformedRequest, so VTI looks the object up and then validates. SPEC.md 7.2 item 2 requires the payload to be validated and does not order that against a lookup, so the unseeded FAIL is the platform's order, not a payload left unchecked. Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "evidence": [
+        "CP-RM-008"
+      ]
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CX-RM-036",
+      "class": "C",
+      "explanation": "spec-silent: lookup before validation. Unseeded, the request names a room the platform does not hold and VTI answers a not-found (taskFailed) where the vector expects malformedRequest or permissionDenied. The seeded probe CP-RM-009 creates the room first and re-asks the same payloads; with the object present VTI answers malformedRequest, so VTI looks the object up and then validates. SPEC.md 7.2 item 2 requires the payload to be validated and does not order that against a lookup, so the unseeded FAIL is the platform's order, not a payload left unchecked. Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "evidence": [
+        "CP-RM-009"
+      ]
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CX-RM-038",
+      "class": "C",
+      "explanation": "spec-silent: lookup before validation. Unseeded, the request names a room the platform does not hold and VTI answers a not-found (taskFailed) where the vector expects malformedRequest or permissionDenied. The seeded probe CP-RM-011 creates the room first and re-asks the same payloads; with the object present VTI answers malformedRequest, so VTI looks the object up and then validates. SPEC.md 7.2 item 2 requires the payload to be validated and does not order that against a lookup, so the unseeded FAIL is the platform's order, not a payload left unchecked. Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "evidence": [
+        "CP-RM-011"
+      ]
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CX-RM-039",
+      "class": "C",
+      "explanation": "spec-silent: lookup before validation. Unseeded, the request names a room the platform does not hold and VTI answers a not-found (taskFailed) where the vector expects malformedRequest or permissionDenied. The seeded probe CP-RM-012 creates the room first and re-asks the same payloads; with the object present VTI answers malformedRequest, so VTI looks the object up and then validates. SPEC.md 7.2 item 2 requires the payload to be validated and does not order that against a lookup, so the unseeded FAIL is the platform's order, not a payload left unchecked. Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "evidence": [
+        "CP-RM-012"
+      ]
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CX-CA-022",
+      "class": "C",
+      "explanation": "spec-silent: lookup before validation. Unseeded, the request names a git namespace the platform does not hold and VTI answers a not-found (taskFailed) where the vector expects malformedRequest or permissionDenied. The seeded probe CP-CA-001 creates the git namespace first and re-asks the same payloads; with the object present VTI answers malformedRequest, so VTI looks the object up and then validates. SPEC.md 7.2 item 2 requires the payload to be validated and does not order that against a lookup, so the unseeded FAIL is the platform's order, not a payload left unchecked. Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "evidence": [
+        "CP-CA-001"
+      ]
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CV-RM-107",
+      "class": "C",
+      "explanation": "spec-silent: lookup before validation. Unseeded, the request names a room the platform does not hold and VTI answers a not-found (taskFailed) where the vector expects malformedRequest or permissionDenied. The seeded probe CP-RM-001 creates the room first and re-asks the same payloads; with the room present VTI answers permissionDenied only (an accepted-only-gate answer: an authorisation gate answered first), so the probe shows that the room is looked up before the request is judged, and does not show that a schema-invalid payload is then refused with malformedRequest. SPEC.md 7.2 item 2 requires the payload to be validated and does not order that against a lookup or the authorisation decision (7.2 item 10). Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "evidence": [
+        "CP-RM-001"
+      ]
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CX-RM-037",
+      "class": "C",
+      "explanation": "spec-silent: lookup before validation. Unseeded, the request names a room the platform does not hold and VTI answers a not-found (taskFailed) where the vector expects malformedRequest or permissionDenied. The seeded probe CP-RM-010 creates the room first and re-asks the same payloads; with the room present VTI answers permissionDenied only (an accepted-only-gate answer: an authorisation gate answered first), so the probe shows that the room is looked up before the request is judged, and does not show that a schema-invalid payload is then refused with malformedRequest. SPEC.md 7.2 item 2 requires the payload to be validated and does not order that against a lookup or the authorisation decision (7.2 item 10). Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "evidence": [
+        "CP-RM-010"
+      ]
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CX-RM-005",
+      "class": "C",
+      "explanation": "spec-silent: upload lookup before validation. The request names an upload the platform does not hold and VTI answers rooms/blobs/upload/chunk:notFound where the vector expects malformedRequest or permissionDenied. The task's own text requires that code for an unknown upload (specs/rooms/blobs/upload/chunk/0.2/spec.md:97 'unless `uploadId` names an open proxied upload') and does not order it against payload validation, so the answer is the platform's lookup-then-validate order. There is no seeded probe for it: an open proxied upload needs a room, an upload begun in proxied mode and a key the suite cannot create through one signed task, so it is not seedable here. Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it"
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CB-RM-034",
+      "class": "C",
+      "explanation": "spec-silent: refusal order of unknownStorageConfig and noKeyHolder. The request names a storageConfig that exists nowhere and VTI answers vtc/rooms/community/create:noKeyHolder where the vector expects unknownStorageConfig or permissionDenied. The task lists both refusals as separate Conformance items in the order permissionDenied, visibilityNotPermitted, unknownStorageConfig (specs/vtc/rooms/community/create/0.4/spec.md:130 'unknown or not `active`'), steps, noKeyHolder (specs/vtc/rooms/community/create/0.4/spec.md:132 'when it has no VTA to hold the room'), and item 4 (specs/vtc/rooms/community/create/0.4/spec.md:131 'in that order') orders the steps of making the room, not the refusals; the steps begin 'on a valid request' (specs/vtc/rooms/community/create/0.4/spec.md:92 'on a valid request'), which argues for the storageConfig check first but does not state an order between the two refusals, so no exception is recorded. VTI handle_create (vtc-service/src/trust_tasks/community_room_tasks.rs) checks the key holder first, then the rooms policy, then the storage config. The in-process host has no link to a VTA, so every create is answered noKeyHolder. Advisory coverage vector; stays FAIL.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it"
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CP-CA-002",
+      "class": "A",
+      "explanation": "Class A (the probe re-asks CX-CA-031, itself a recorded class A difference). git-ns/repo/adopt 0.3 types owners with minItems 1 and uniqueItems true; with the namespace present, duplicated owners are answered git-ns:membersOnly instead of being refused as schema-invalid. Seeded probe, advisory; a PROBE is never promoted (D353). The original result is the recorded 2026-11-18 run. Not filed.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the triage runs of 2026-11-20 (branch conformance/promote-b1: the original VTI community host over the eight vectors) and in the 2026-11-16 and 2026-11-18 advisory runs; not yet a recorded run folder of this surface; the next recorded run decides it"
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CP-CA-003",
+      "class": "A",
+      "explanation": "Class A (the probe re-asks CX-CA-033, itself a recorded class A difference). git-ns/repo/create 0.4 types owners with minItems 1 and uniqueItems true; an empty owners list is answered with a success response (the repository request is accepted) and duplicated owners with git-ns:membersOnly. Advisory seeded probe, never promoted (D353); recorded in the 2026-11-18 run of the original host. Not filed.",
+      "ref": "results/vector-review.md",
+      "excused": false,
+      "inherited": "measured in the triage runs of 2026-11-20 (branch conformance/promote-b1: the original VTI community host over the eight vectors) and in the 2026-11-16 and 2026-11-18 advisory runs; not yet a recorded run folder of this surface; the next recorded run decides it"
+    }
+  ]
+}

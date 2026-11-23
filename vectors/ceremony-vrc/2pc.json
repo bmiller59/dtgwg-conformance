@@ -1,0 +1,1123 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "2PC",
+  "family": "two-phase-commit",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "2PC-001",
+      "title": "an aborted transaction or a no vote is an error, never a receipt; nothing is stored and the document ends errored",
+      "tier": 2,
+      "spec": [
+        "docs/04-suite-design.md section 12 (a vote no, or the transaction aborted: errored, taskFailed)",
+        "docs/04-suite-design.md section 12 assertion 1 (a #response only after the observable outcome is committed)",
+        "SPEC.md:1310 (8.3 taskFailed; 1311 is unavailable)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/issue/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent",
+        "optional:trigger.twoPhase"
+      ],
+      "mutants": [
+        "respondOnPrepare",
+        "abortStillStores"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "twoPhase",
+            "args": {
+              "outcome": "abort",
+              "reason": "storeFailed"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "issue.request",
+            "vrc": {},
+            "params": {
+              "id": "$id(iss1)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "taskFailed",
+            "noSideEffect": true,
+            "httpStatus": 422,
+            "state": {
+              "stored": 0,
+              "documentState": {
+                "$id(iss1)": "errored"
+              }
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "twoPhase",
+            "args": {
+              "outcome": "voteNo"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "issue.request",
+            "vrc": {},
+            "params": {
+              "id": "$id(iss2)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "taskFailed",
+            "noSideEffect": true,
+            "state": {
+              "stored": 0,
+              "documentState": {
+                "$id(iss2)": "errored"
+              }
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "issue.request",
+            "vrc": {},
+            "params": {
+              "id": "$id(iss3)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/issue/0.1#response",
+            "pointer": {
+              "/payload/vrcDigestMultibase": "$digest(vrc)"
+            },
+            "state": {
+              "stored": 1,
+              "documentState": {
+                "$id(iss3)": "responded"
+              }
+            }
+          }
+        }
+      ],
+      "subgroup": "profile-ceremony"
+    },
+    {
+      "id": "2PC-002",
+      "title": "an abort reaches the wire as a short closed-vocabulary reason; an internal fact does not",
+      "tier": 1,
+      "spec": [
+        "docs/04-suite-design.md section 12 (details.reason from a closed vocabulary)",
+        "SPEC.md:1282 (8.2.1 a message must not disclose internal state)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "The closed vocabulary of details.reason and the use of taskFailed for an abort are the design of docs/04 section 12, not specification text (docs/01: assumed). Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/issue/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent",
+        "optional:trigger.twoPhase"
+      ],
+      "mutants": [
+        "abortLeaksInternalReason",
+        "abortReasonFreeText"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "twoPhase",
+            "args": {
+              "outcome": "abort",
+              "reason": "storeFailed"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "issue.request",
+            "vrc": {},
+            "params": {
+              "id": "$id(iss1)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "taskFailed",
+            "retryable": false,
+            "noSideEffect": true,
+            "match": {
+              "/payload/details/reason": "^[a-z][A-Za-z0-9]{1,63}$"
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "twoPhase",
+            "args": {
+              "outcome": "abort",
+              "internal": "constraint violation at row 42 secret-ref"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "issue.request",
+            "vrc": {},
+            "params": {
+              "id": "$id(iss2)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "taskFailed",
+              "internalError"
+            ],
+            "noSideEffect": true,
+            "forbidInReply": [
+              "secret-ref",
+              "row 42"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "2PC-006",
+      "title": "a transaction that committed but whose reply was lost is not executed again: the resend is absorbed or answered with the receipt, and the effect count stays 1",
+      "tier": 1,
+      "spec": [
+        "docs/04-suite-design.md section 12 assertion 4 (after commit a duplicate returns the same receipt or nothing and the effect count stays 1)",
+        "SPEC.md:1021 (7.2 item 11)",
+        "bindings/https/0.3/spec.md:143 (completed execution, no retained response: 204)"
+      ],
+      "source": {
+        "slug": "bindings/https",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "kit:bindings/https/0.3",
+        "pinnedDigest": "sha256:5b863795a0c95ba58489f9913c4d39d47cd26bd14d99b5b89e6ef354ad1c517c",
+        "tfRef": {
+          "repoPath": "bindings/https/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6dba67e525ce25b99cb57158fa13be6a5a9e4cc1462665ce944b7ecd7f545b24"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/issue/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent",
+        "optional:trigger.twoPhase"
+      ],
+      "mutants": [
+        "noReplayRecord",
+        "duplicateAsFailure"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "twoPhase",
+            "args": {
+              "outcome": "commit",
+              "deliver": false
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "issue.request",
+            "vrc": {},
+            "params": {
+              "id": "$id(iss1)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "silence",
+            "state": {
+              "stored": 1,
+              "documentState": {
+                "$id(iss1)": "responded"
+              }
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "same": "previous",
+            "http": {}
+          },
+          "expect": {
+            "disposition": "duplicate",
+            "priorReplyLost": true,
+            "state": {
+              "stored": 1
+            },
+            "httpStatusShould": [
+              200,
+              204
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "2PC-007",
+      "title": "while the outcome is not known the document stays accepted: no receipt, a resend is absorbed (202), other bytes under the id are idConflict, and the receipt follows the commit",
+      "tier": 1,
+      "spec": [
+        "docs/04-suite-design.md section 12 (duplicate while in flight; outcome unknown is never guessed as responded)",
+        "bindings/https/0.3/spec.md:142 (in-progress duplicate: 202, empty body)",
+        "SPEC.md:1021 (7.2 item 11; the idConflict rejection is a MUST)",
+        "bindings/https/0.3/spec.md:154 (idConflict 409 Conflict: status mapping is a SHOULD, spec.md:137; asserted as an advisory)"
+      ],
+      "source": {
+        "slug": "bindings/https",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "kit:bindings/https/0.3",
+        "pinnedDigest": "sha256:5b863795a0c95ba58489f9913c4d39d47cd26bd14d99b5b89e6ef354ad1c517c",
+        "tfRef": {
+          "repoPath": "bindings/https/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6dba67e525ce25b99cb57158fa13be6a5a9e4cc1462665ce944b7ecd7f545b24"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/issue/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent",
+        "optional:trigger.twoPhase"
+      ],
+      "mutants": [
+        "inflightAsResponded",
+        "duplicateAsFailure",
+        "idOnlyDuplicateKey"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "twoPhase",
+            "args": {
+              "outcome": "unknown"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "issue.request",
+            "vrc": {},
+            "params": {
+              "id": "$id(iss0)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "stored": 0,
+              "documentState": {
+                "$id(iss0)": "accepted"
+              }
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "settle",
+            "args": {
+              "outcome": "abort",
+              "reason": "storeFailed"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "taskFailed",
+            "state": {
+              "stored": 0,
+              "documentState": {
+                "$id(iss0)": "errored"
+              }
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "twoPhase",
+            "args": {
+              "outcome": "inflight"
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "issue.request",
+            "vrc": {},
+            "params": {
+              "id": "$id(iss1)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "silence",
+            "noSideEffect": true,
+            "state": {
+              "stored": 0,
+              "documentState": {
+                "$id(iss1)": "accepted"
+              }
+            }
+          }
+        },
+        {
+          "at": "+6s",
+          "send": {
+            "same": "previous",
+            "http": {}
+          },
+          "expect": {
+            "disposition": "duplicate",
+            "httpBody": "none",
+            "state": {
+              "stored": 0
+            },
+            "httpStatusShould": 202
+          }
+        },
+        {
+          "at": "+7s",
+          "send": {
+            "same": "previous",
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/ext",
+                "value": {
+                  "changed": true
+                }
+              }
+            ],
+            "sign": {
+              "as": "A"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "idConflict",
+            "retryable": false,
+            "noSideEffect": true,
+            "httpStatusShould": 409
+          }
+        },
+        {
+          "trigger": {
+            "action": "settle",
+            "args": {
+              "outcome": "commit"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/issue/0.1#response",
+            "state": {
+              "stored": 1,
+              "documentState": {
+                "$id(iss1)": "responded"
+              }
+            }
+          }
+        }
+      ],
+      "advisoryMutants": [
+        "httpStatusFlat",
+        "httpDuplicateStatusSwapped"
+      ]
+    },
+    {
+      "id": "2PC-008",
+      "title": "fail closed on the ceremony path: an unreadable duplicate record refuses the issue as unavailable (retryable), nothing is stored, and the resend executes once",
+      "tier": 1,
+      "spec": [
+        "docs/04-suite-design.md section 12 (duplicate-record store unreadable: unavailable, retryable)",
+        "bindings/https/0.3/spec.md:155 (unavailable: 503)",
+        "SPEC.md:1021 (7.2 item 11 cannot be honoured without the record)"
+      ],
+      "source": {
+        "slug": "bindings/https",
+        "version": "0.3",
+        "channel": "proposed",
+        "ref": "kit:bindings/https/0.3",
+        "pinnedDigest": "sha256:5b863795a0c95ba58489f9913c4d39d47cd26bd14d99b5b89e6ef354ad1c517c",
+        "tfRef": {
+          "repoPath": "bindings/https/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6dba67e525ce25b99cb57158fa13be6a5a9e4cc1462665ce944b7ecd7f545b24"
+      },
+      "clarify": "The framework does not say what an unreadable duplicate record yields; fail closed with unavailable is the design rule (docs/04 section 12), as for DUP-007. Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/issue/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent",
+        "optional:fault.claimStore"
+      ],
+      "mutants": [
+        "claimStoreFailOpen",
+        "claimStoreFailsAsTaskFailed",
+        "claimStoreFaultBurnsId",
+        "httpStatusFlat"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "fault",
+            "args": {
+              "claimStore": "unreadable"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "issue.request",
+            "vrc": {},
+            "params": {
+              "id": "$id(iss1)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "unavailable",
+            "retryable": true,
+            "noSideEffect": true,
+            "httpStatus": 503,
+            "state": {
+              "stored": 0
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "fault",
+            "args": {
+              "claimStore": "ok"
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "same": "previous",
+            "http": {}
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/issue/0.1#response",
+            "pointer": {
+              "/payload/vrcDigestMultibase": "$digest(vrc)"
+            },
+            "state": {
+              "stored": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "2PC-003",
+      "title": "a ceremony short of its quorum is visible to the producer only as a next-step: the begin document stays accepted (neither responded nor errored) and nothing is established",
+      "tier": 1,
+      "spec": [
+        "docs/04-suite-design.md section 12 (more approvals needed: accepted and blocked; trust-task-next-step)",
+        "SPEC.md:1414 (8.6: a held task is answered with a next step, never an error)",
+        "SPEC.md:1417 (an approval by someone else: expects names a task to learn the outcome or, where there is none, the originating Type URI with continuation resubmit)",
+        "docs/06-truststackers-conformance-plan.md section 3.9 (2PC-003: pending proposals visible only through next-step)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony"
+      ],
+      "mutants": [
+        "cerHoldPendingResponded",
+        "cerHoldAnswersError",
+        "cerRespondOnFirstApproval"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0,
+              "handled": 0,
+              "documentState": {
+                "$id(begin)": "accepted"
+              }
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+3s",
+          "when": {
+            "proposerApproves": false
+          },
+          "send": {
+            "template": "ceremony.approve",
+            "from": "A",
+            "params": {
+              "id": "$id(appA)",
+              "issuer": "$A"
+            }
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(approve)",
+            "state": {
+              "effects": 1,
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "2PC-004",
+      "title": "the deadline is enforced on the participant path: a late approval is refused deadlineLapsed, the begin document ends errored, and a second late approval gets the same refusal",
+      "tier": 2,
+      "spec": [
+        "docs/04-suite-design.md section 12 (deadline lapses while pending: errored, taskFailed, details.reason deadlineLapsed)",
+        "docs/decisions/README.md section Holds, ceremonies and relationship credentials (deadlineLapsed, not expired)",
+        "docs/06-truststackers-conformance-plan.md section 3.9 (2PC-004: expiry enforced on the participant path)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony",
+        "optional:trigger.ceremonyDeadline"
+      ],
+      "mutants": [
+        "cerNoDeadline",
+        "cerLateErrorUnstable",
+        "cerDeadlineExpiredCode"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "ceremonyDeadline",
+            "args": {
+              "seconds": 3600
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+3601s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "taskFailed",
+            "retryable": false,
+            "noSideEffect": true,
+            "pointer": {
+              "/payload/details/reason": "deadlineLapsed"
+            },
+            "state": {
+              "effects": 0,
+              "handled": 0,
+              "documentState": {
+                "$id(begin)": "errored"
+              }
+            }
+          }
+        },
+        {
+          "at": "+3700s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "A",
+            "params": {
+              "id": "$id(app2)",
+              "issuer": "$A"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "taskFailed",
+            "retryable": false,
+            "noSideEffect": true,
+            "pointer": {
+              "/payload/details/reason": "deadlineLapsed"
+            },
+            "state": {
+              "effects": 0
+            },
+            "sameErrorAs": 3
+          }
+        }
+      ],
+      "subgroup": "profile-ceremony"
+    },
+    {
+      "id": "2PC-005",
+      "title": "a reset is allowed from an expired ceremony and refused after a commit, which keeps its effect",
+      "tier": 2,
+      "spec": [
+        "docs/04-suite-design.md section 12 (reset after commit is refused or reported with its effects, never a clean cancel)",
+        "docs/06-truststackers-conformance-plan.md section 3.9 (2PC-005: reset guarded to failed or expired; reset after commit refused)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony",
+        "optional:trigger.ceremonyDeadline"
+      ],
+      "mutants": [
+        "cerResetExpiredRefused",
+        "cerResetAfterCommit"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "ceremonyDeadline",
+            "args": {
+              "seconds": 3600
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+3601s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "taskFailed",
+            "retryable": false,
+            "noSideEffect": true,
+            "pointer": {
+              "/payload/details/reason": "deadlineLapsed"
+            },
+            "state": {
+              "effects": 0
+            }
+          }
+        },
+        {
+          "at": "+3602s",
+          "send": {
+            "template": "ceremony.reset",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(reset)",
+            "state": {
+              "effects": 0
+            }
+          }
+        },
+        {
+          "at": "+4000s",
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A",
+            "params": {
+              "id": "$id(begin2)",
+              "threadId": "$id(begin2)"
+            }
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin2)"
+            }
+          }
+        },
+        {
+          "at": "+4005s",
+          "when": {
+            "proposerApproves": false
+          },
+          "send": {
+            "template": "ceremony.approve",
+            "from": "A",
+            "params": {
+              "id": "$id(appA2)",
+              "issuer": "$A",
+              "threadId": "$id(begin2)"
+            }
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin2)"
+            }
+          }
+        },
+        {
+          "at": "+4010s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X",
+            "params": {
+              "id": "$id(app2)",
+              "threadId": "$id(begin2)"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(approve)",
+            "state": {
+              "effects": 1
+            }
+          }
+        },
+        {
+          "at": "+4020s",
+          "send": {
+            "template": "ceremony.reset",
+            "from": "A",
+            "params": {
+              "id": "$id(rst2)",
+              "threadId": "$id(begin2)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "taskFailed",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "state": {
+              "effects": 1
+            }
+          }
+        }
+      ],
+      "subgroup": "profile-ceremony"
+    }
+  ]
+}

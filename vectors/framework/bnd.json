@@ -1,0 +1,734 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "BND",
+  "family": "https-binding",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "BND-001",
+      "title": "only POST /trust-tasks is accepted: another method is 405 and another path is 404, neither with a framework error document",
+      "tier": 1,
+      "spec": [
+        "bindings/https/0.3/spec.md:52 (reject every other method/path combination with 405 / 404; not framework error documents)"
+      ],
+      "source": {
+        "slug": "bindings/https",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "kit:bindings/https/0.3",
+        "pinnedDigest": "sha256:5b863795a0c95ba58489f9913c4d39d47cd26bd14d99b5b89e6ef354ad1c517c",
+        "tfRef": {
+          "repoPath": "bindings/https/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6dba67e525ce25b99cb57158fa13be6a5a9e4cc1462665ce944b7ecd7f545b24"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "binding:https"
+      ],
+      "mutants": [
+        "httpAnyMethod",
+        "httpAnyPath",
+        "httpMethodStatus400",
+        "httpRefusalAsErrorDoc"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "http": {
+              "method": "GET"
+            }
+          },
+          "expect": {
+            "disposition": "silence",
+            "noSideEffect": true,
+            "httpStatus": 405,
+            "httpBody": "none"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r2)"
+            },
+            "http": {
+              "method": "PUT"
+            }
+          },
+          "expect": {
+            "disposition": "silence",
+            "noSideEffect": true,
+            "httpStatus": 405,
+            "httpBody": "none"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r3)"
+            },
+            "http": {
+              "method": "DELETE"
+            }
+          },
+          "expect": {
+            "disposition": "silence",
+            "noSideEffect": true,
+            "httpStatus": 405,
+            "httpBody": "none"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r4)"
+            },
+            "http": {
+              "path": "/trust-task"
+            }
+          },
+          "expect": {
+            "disposition": "silence",
+            "noSideEffect": true,
+            "httpStatus": [
+              404,
+              405
+            ],
+            "httpBody": "none"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r5)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "response",
+            "httpStatus": 200,
+            "state": {
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "BND-002",
+      "title": "the bearer-authenticated sender is the transport identity: a different in-band issuer is identityMismatch (422), routed to the authenticated sender",
+      "tier": 1,
+      "spec": [
+        "bindings/https/0.3/spec.md:53 (map the bearer token to a VID)",
+        "bindings/https/0.3/spec.md:124 (the in-band issuer is cross-checked against it; mismatch is identityMismatch)",
+        "bindings/https/0.3/spec.md:131 (route the error to the sender actually authenticated, never to the contested issuer)",
+        "bindings/https/0.3/spec.md:129 (the token-to-VID mapping is deployment-defined, so the vector runs where the transport authenticates the sender)",
+        "bindings/https/0.3/spec.md:135 (the status mapping is a SHOULD)"
+      ],
+      "source": {
+        "slug": "bindings/https",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "kit:bindings/https/0.3",
+        "pinnedDigest": "sha256:5b863795a0c95ba58489f9913c4d39d47cd26bd14d99b5b89e6ef354ad1c517c",
+        "tfRef": {
+          "repoPath": "bindings/https/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6dba67e525ce25b99cb57158fa13be6a5a9e4cc1462665ce944b7ecd7f545b24"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "binding:https",
+        "optional:transportIdentity"
+      ],
+      "mutants": [
+        "ignoreTransportIdentity",
+        "mismatchRoutedToIssuer",
+        "leakIdentityInMessage"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "http": {},
+            "from": {
+              "spoof": "X"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "identityMismatch",
+            "noSideEffect": true,
+            "httpStatusShould": 422,
+            "httpBody": "json"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r2)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "response",
+            "httpStatusShould": 200,
+            "state": {
+              "handled": 1
+            }
+          }
+        }
+      ],
+      "advisoryMutants": [
+        "httpStatusFlat"
+      ]
+    },
+    {
+      "id": "BND-003",
+      "title": "a request with no Authorization header has no transport-authenticated sender and is judged on its proof",
+      "tier": 1,
+      "spec": [
+        "bindings/https/0.3/spec.md:53 (no Authorization: no transport-authenticated sender)",
+        "bindings/https/0.3/spec.md:124 (absent for requests with no Authorization header)"
+      ],
+      "source": {
+        "slug": "bindings/https",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "kit:bindings/https/0.3",
+        "pinnedDigest": "sha256:5b863795a0c95ba58489f9913c4d39d47cd26bd14d99b5b89e6ef354ad1c517c",
+        "tfRef": {
+          "repoPath": "bindings/https/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6dba67e525ce25b99cb57158fa13be6a5a9e4cc1462665ce944b7ecd7f545b24"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "binding:https"
+      ],
+      "skipIfOptional": [
+        "binding.requireBearer"
+      ],
+      "mutants": [
+        "httpNoAuthIs401"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "http": {},
+            "from": "none"
+          },
+          "expect": {
+            "disposition": "response",
+            "httpStatus": 200,
+            "httpBody": "json",
+            "state": {
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "BND-004",
+      "title": "the single-document answers: 200 with the response, and every answer, error documents included, carries Content-Type application/json",
+      "tier": 1,
+      "spec": [
+        "bindings/https/0.3/spec.md:161 (Content-Type application/json for every single-document answer)",
+        "bindings/https/0.3/spec.md:135 (the status mapping is a SHOULD; the codes themselves are BND-007)",
+        "bindings/https/0.3/spec.md:139 (200 for a response)"
+      ],
+      "source": {
+        "slug": "bindings/https",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "kit:bindings/https/0.3",
+        "pinnedDigest": "sha256:5b863795a0c95ba58489f9913c4d39d47cd26bd14d99b5b89e6ef354ad1c517c",
+        "tfRef": {
+          "repoPath": "bindings/https/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6dba67e525ce25b99cb57158fa13be6a5a9e4cc1462665ce944b7ecd7f545b24"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "binding:https"
+      ],
+      "mutants": [
+        "httpWrongContentType"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "http": {}
+          },
+          "expect": {
+            "disposition": "response",
+            "httpStatusShould": 200,
+            "httpBody": "json",
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r2)",
+              "payload": {
+                "$carrierInvalid": true
+              }
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "httpBody": "json"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r3)",
+              "type": "https://trusttasks.org/spec/conformance/gadget/0.1"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "unsupportedType",
+            "noSideEffect": true,
+            "httpBody": "json"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r4)",
+              "issuedAt": "$nowAt(-windowSkew,-20s)",
+              "expiresAt": "$nowAt(-windowSkew,-10s)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "expired",
+            "noSideEffect": true,
+            "httpBody": "json"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r5)"
+            },
+            "http": {},
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/threadId",
+                "value": "urn:uuid:tampered",
+                "afterSign": true
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofInvalid",
+            "noSideEffect": true,
+            "httpBody": "json"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r6)",
+              "recipient": "$X"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "wrongRecipient",
+            "noSideEffect": true,
+            "httpBody": "json"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r7)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "response",
+            "httpStatusShould": 200,
+            "state": {
+              "handled": 2
+            }
+          }
+        },
+        {
+          "send": {
+            "same": "previous",
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/threadId",
+                "value": "urn:uuid:other-content"
+              }
+            ],
+            "sign": {
+              "as": "A"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "idConflict",
+            "noSideEffect": true,
+            "httpBody": "json"
+          }
+        }
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "BND-005",
+      "title": "a duplicate of a completed execution is answered with the retained response under 200",
+      "tier": 1,
+      "spec": [
+        "bindings/https/0.3/spec.md:159 (a duplicate is answered with the response the first execution produced, under 200 OK)",
+        "SPEC.md:1021 (7.2 item 11)"
+      ],
+      "source": {
+        "slug": "bindings/https",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "kit:bindings/https/0.3",
+        "pinnedDigest": "sha256:5b863795a0c95ba58489f9913c4d39d47cd26bd14d99b5b89e6ef354ad1c517c",
+        "tfRef": {
+          "repoPath": "bindings/https/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6dba67e525ce25b99cb57158fa13be6a5a9e4cc1462665ce944b7ecd7f545b24"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "binding:https"
+      ],
+      "mutants": [
+        "duplicateAsFailure"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "http": {}
+          },
+          "expect": {
+            "disposition": "response",
+            "state": {
+              "handled": 1
+            },
+            "httpStatusShould": 200
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "same": "previous",
+            "http": {}
+          },
+          "expect": {
+            "disposition": "duplicate",
+            "httpBody": "json",
+            "state": {
+              "handled": 1
+            },
+            "httpStatusShould": 200
+          }
+        }
+      ],
+      "advisoryMutants": [
+        "httpDuplicateStatusSwapped"
+      ]
+    },
+    {
+      "id": "BND-006",
+      "title": "the proof is verified over the received JSON object: unknown members, key order and layout are preserved",
+      "tier": 1,
+      "spec": [
+        "bindings/https/0.3/spec.md:54 (keep the received JSON object; the proof is verified over it, not over a re-serialisation of the typed document)"
+      ],
+      "source": {
+        "slug": "bindings/https",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "kit:bindings/https/0.3",
+        "pinnedDigest": "sha256:5b863795a0c95ba58489f9913c4d39d47cd26bd14d99b5b89e6ef354ad1c517c",
+        "tfRef": {
+          "repoPath": "bindings/https/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6dba67e525ce25b99cb57158fa13be6a5a9e4cc1462665ce944b7ecd7f545b24"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "binding:https"
+      ],
+      "mutants": [
+        "httpVerifyOverTypedDoc"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "x-unrecognised": {
+                "anything": 1
+              }
+            },
+            "http": {},
+            "mutate": [
+              {
+                "op": "reorder"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "response",
+            "httpStatus": 200,
+            "state": {
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "BND-007",
+      "title": "the status table (attested profile): 200 with the response, 400 malformedRequest, 409 idConflict, and the flat 422 bucket, every body application/json",
+      "tier": 2,
+      "spec": [
+        "bindings/https/0.3/spec.md:139-156 (status mapping: SHOULD, spec.md:135)",
+        "profile:attested (the status table)"
+      ],
+      "source": {
+        "slug": "bindings/https",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "kit:bindings/https/0.3",
+        "pinnedDigest": "sha256:5b863795a0c95ba58489f9913c4d39d47cd26bd14d99b5b89e6ef354ad1c517c",
+        "tfRef": {
+          "repoPath": "bindings/https/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6dba67e525ce25b99cb57158fa13be6a5a9e4cc1462665ce944b7ecd7f545b24"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "binding:https"
+      ],
+      "subgroup": "attested",
+      "mutants": [
+        "httpStatusFlat",
+        "httpErrorAs200"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "http": {}
+          },
+          "expect": {
+            "disposition": "response",
+            "httpStatus": 200,
+            "httpBody": "json",
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r2)",
+              "payload": {
+                "$carrierInvalid": true
+              }
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "httpStatus": 400,
+            "httpBody": "json"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r3)",
+              "type": "https://trusttasks.org/spec/conformance/gadget/0.1"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "unsupportedType",
+            "noSideEffect": true,
+            "httpStatus": 422,
+            "httpBody": "json"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r4)",
+              "issuedAt": "$nowAt(-windowSkew,-20s)",
+              "expiresAt": "$nowAt(-windowSkew,-10s)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "expired",
+            "noSideEffect": true,
+            "httpStatus": 422,
+            "httpBody": "json"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r5)"
+            },
+            "http": {},
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/threadId",
+                "value": "urn:uuid:tampered",
+                "afterSign": true
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofInvalid",
+            "noSideEffect": true,
+            "httpStatus": 422,
+            "httpBody": "json"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r6)",
+              "recipient": "$X"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "wrongRecipient",
+            "noSideEffect": true,
+            "httpStatus": 422,
+            "httpBody": "json"
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(r7)"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "response",
+            "httpStatus": 200,
+            "state": {
+              "handled": 2
+            }
+          }
+        },
+        {
+          "send": {
+            "same": "previous",
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/threadId",
+                "value": "urn:uuid:other-content"
+              }
+            ],
+            "sign": {
+              "as": "A"
+            },
+            "http": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "idConflict",
+            "noSideEffect": true,
+            "httpStatus": 409,
+            "httpBody": "json"
+          }
+        }
+      ],
+      "synthetic": true
+    }
+  ]
+}

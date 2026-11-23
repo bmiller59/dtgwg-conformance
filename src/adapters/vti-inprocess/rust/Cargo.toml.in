@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: Apache-2.0
+# Template: the launcher copies this to a build directory outside the repository, replacing @VTI_ROOT@ with the path of
+# the VTI checkout (read only; never written). The lock file is copied from that checkout so every dependency is the
+# version VTI itself builds with.
+[package]
+name = "vti-inprocess-host"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[workspace]
+
+[dependencies]
+vta-service = { path = "@VTI_ROOT@/vta-service", features = ["test-support", "transport-harness"] }
+vta-sdk = { path = "@VTI_ROOT@/vta-sdk" }
+vti-common = { path = "@VTI_ROOT@/vti-common" }
+tokio = { version = "1.49", features = ["full"] }
+uuid = { version = "1", features = ["v4"] }
+serde_json = "1"
+axum = "0.8"
+tower = "0.5"
+affinidi-tdk = "0.45"
+affinidi-messaging-test-mediator = { version = "0.52", features = ["tsp"] }
+tokio-util = "0.7"
+http-body-util = "0.1"
+
+[profile.dev]
+debug = false
+incremental = true
+
+[profile.dev.package."*"]
+debug = false
+opt-level = 1

@@ -1,0 +1,668 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "EM-DEV",
+  "family": "emit",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "EM-DEV-001",
+      "title": "device/disable 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/device/disable/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "device/disable",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/disable/0.1",
+        "pinnedDigest": "sha256:e6b7af4ff88a01c4133ec7c932da6998c452a0449e4adf219d7c82230ce4611e",
+        "tfRef": {
+          "repoPath": "specs/device/disable/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3aa0f124caa3bc0a27669b0c866cd4b2674bb20676a5d63e4a7cb51d146f1a8d",
+        "schemaHash": "sha256:2e0072fea90f9ae13eeeb3ede62a7bd3f05fbf10b9c84dd55b10c77976b1596b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/device/disable/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/device/disable/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/device/disable/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "EM-DEV-002",
+      "title": "device/heartbeat 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/device/heartbeat/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "device/heartbeat",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/heartbeat/0.1",
+        "pinnedDigest": "sha256:1eddc0b69bc90a61b8aa6aec027a560ec4078446318cedf610a93f09b1c9436c",
+        "tfRef": {
+          "repoPath": "specs/device/heartbeat/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:63a717ae53f4e03a1fbf401dbc1b9bcb4925498a786eac721336afa11b91a0f2",
+        "schemaHash": "sha256:c3b2365b639fd1fe14ad54d6b47755aee9315c3136b3410a306f9dabddcfb212",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/device/heartbeat/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoRecipient"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/device/heartbeat/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/device/heartbeat/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "EM-DEV-003",
+      "title": "device/heartbeat 0.2: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/device/heartbeat/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "device/heartbeat",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/heartbeat/0.2",
+        "pinnedDigest": "sha256:c2b5a8942a36f6bfdebc99b0c2c2e88d882f177e32cf69e6fe318a032b842072",
+        "tfRef": {
+          "repoPath": "specs/device/heartbeat/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4acec9ef3d5e7206cf9133dc92f8279d3576a61e0491be9ca10db864c0b61697",
+        "schemaHash": "sha256:76b14f5519bbb89de5a9dee130c13e09becd9108782fe9d1e614d030355c395e",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/device/heartbeat/0.2"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoRecipient"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/device/heartbeat/0.2",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/device/heartbeat/0.2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "EM-DEV-004",
+      "title": "device/heartbeat 0.3: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/device/heartbeat/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "device/heartbeat",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/heartbeat/0.3",
+        "pinnedDigest": "sha256:588d567e4fed69ebf340556725a0bc2468265c65c4a0aeb306d23fe6205e51c5",
+        "tfRef": {
+          "repoPath": "specs/device/heartbeat/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:8c58433202da65f6581b92d60ebcf386c9def0b8b3b5171672ee906c8619051d",
+        "schemaHash": "sha256:42d15381a904d011b153884039a7a0f970c86746786070fafea69d01e5d02c6f"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/device/heartbeat/0.3"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoRecipient"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/device/heartbeat/0.3",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/device/heartbeat/0.3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "EM-DEV-005",
+      "title": "device/list 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/device/list/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "device/list",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/list/0.1",
+        "pinnedDigest": "sha256:ffd6210603ee76c093eefb89c2660c16ca4cb5826dc7b5fa2a50b98db4c05d26",
+        "tfRef": {
+          "repoPath": "specs/device/list/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5de2860f2841b90666970ce2137acbca4f1cc4a96a8842016b68b5b23a9a9ba3",
+        "schemaHash": "sha256:89ae5cb212e48ff5f905c44d5aecb2e34bfced0acfd0e3a26c93eb8a6af547c7",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/device/list/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoRecipient"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/device/list/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/device/list/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "EM-DEV-006",
+      "title": "device/list 0.2: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/device/list/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "device/list",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/list/0.2",
+        "pinnedDigest": "sha256:013dd627145b312a252df189bc78ba262eca82e711724db86099ecf6770a72bb",
+        "tfRef": {
+          "repoPath": "specs/device/list/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:9a5509f5e91ea7e1e11f1ad64342d6a552fb89c3f893550ccbd3fa4ac868a504",
+        "schemaHash": "sha256:c8b5c1421a94756cac1f14aa42edb8f7852298f818a731fa59e4f4ddc9fd7dd9",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/device/list/0.2"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoRecipient"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/device/list/0.2",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/device/list/0.2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "EM-DEV-007",
+      "title": "device/list 0.3: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/device/list/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "device/list",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/list/0.3",
+        "pinnedDigest": "sha256:a3fefe87598cd29320addd4a893ceaf0e1a02cada9a312b60da97cb339f1e23b",
+        "tfRef": {
+          "repoPath": "specs/device/list/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:039ba288354c1b079ba9fa4a9f192b501502f0867499c9a7c1c5505dc53e3d50",
+        "schemaHash": "sha256:2495fd53f472ca43429d15cf682ac9f60592095c13ec24b3f9d3ab8d8b8a7c7d"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/device/list/0.3"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoRecipient"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/device/list/0.3",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/device/list/0.3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "EM-DEV-008",
+      "title": "device/register 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/device/register/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "device/register",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/register/0.1",
+        "pinnedDigest": "sha256:954596f8ce20ab196d0aa81c5a16f125163eeb4c2510cccec69d53585ba9843f",
+        "tfRef": {
+          "repoPath": "specs/device/register/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:c6e6cfcc475cbbc824ffa70e4e4f2fc534c8daa66e39e62d758af511437a141b",
+        "schemaHash": "sha256:6e1b85adf32f243b1ed8fe1b3322c7b6978d5f1748d529756d3649f79872fcb1",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/device/register/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/device/register/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/device/register/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "EM-DEV-009",
+      "title": "device/register 0.2: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/device/register/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "device/register",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/register/0.2",
+        "pinnedDigest": "sha256:ad71b232da7f435eda1de06258807cbf1779c7c6140a951524c845826d2e3fca",
+        "tfRef": {
+          "repoPath": "specs/device/register/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:58c1bba3dc9c60387cce6fe4582feb1fee457fda78ea680e7e5964c500582060",
+        "schemaHash": "sha256:b713b3cba7ddc3523154ebc9240c8356773c7361fe88adaca484428877d3b905"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/device/register/0.2"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/device/register/0.2",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/device/register/0.2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "EM-DEV-010",
+      "title": "device/set-wake 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/device/set-wake/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "device/set-wake",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/set-wake/0.1",
+        "pinnedDigest": "sha256:6ad13f7140133c7e810d02083658ff3b2c41f9a03380b07111bcb34953543468",
+        "tfRef": {
+          "repoPath": "specs/device/set-wake/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:a1e294cf733ea23802b2edf5535e208d460df2cd882ea9a013e5fceb7f433f40",
+        "schemaHash": "sha256:d165eb19ca09bb45cf25bb2d7f73701fa5cc60b9ce46016b875dc628b92199e9",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/device/set-wake/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/device/set-wake/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/device/set-wake/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "EM-DEV-011",
+      "title": "device/set-wake 0.2: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/device/set-wake/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "device/set-wake",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/set-wake/0.2",
+        "pinnedDigest": "sha256:2c674a2feb174f5bd5da261951dd3fa40a93de18cfd2e61a33adbb625db865b3",
+        "tfRef": {
+          "repoPath": "specs/device/set-wake/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4b2bfe8e3973c687e951436f60229fcad8bd96a60c57bd18bf5ca4d53a4ab121",
+        "schemaHash": "sha256:da1edeb5c1a757815e8450d60b435d9963c938b0df1e90fd9ce790d6f81119dd"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/device/set-wake/0.2"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/device/set-wake/0.2",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/device/set-wake/0.2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "EM-DEV-012",
+      "title": "device/wipe 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/device/wipe/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "device/wipe",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/wipe/0.1",
+        "pinnedDigest": "sha256:b76029df51b2c9887abef50a3333ca484c881faf7ef58984892301f8091d4a04",
+        "tfRef": {
+          "repoPath": "specs/device/wipe/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7210fb1205c36f0b01131b8cc88b8274c93e7a2f7fb32d684131a07519704d7d",
+        "schemaHash": "sha256:d230d1d429d668e9b37cdbbfe55f35c6ef10dce5866f6cb517ecab15b08cd736",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/device/wipe/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/device/wipe/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/device/wipe/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "EM-DEV-013",
+      "title": "device/wipe 0.2: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/device/wipe/0.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "device/wipe",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/device/wipe/0.2",
+        "pinnedDigest": "sha256:de34f62900cf1b621d03532c8a0dc1c50725bf2c538552dc4b49506e55e8a65f",
+        "tfRef": {
+          "repoPath": "specs/device/wipe/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bbc18d69e2763b051b6f60ffe87d51df9e32ac28b1232ecc517917268bd5e63e",
+        "schemaHash": "sha256:a12ba0f8fe11bc5856d67c84d9b35fd4b6354aad679ecbe727900806af5404c3"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/device/wipe/0.2"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/device/wipe/0.2",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/device/wipe/0.2"
+          }
+        }
+      ]
+    }
+  ]
+}

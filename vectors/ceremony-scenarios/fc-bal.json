@@ -1,0 +1,2302 @@
+{
+  "format": "tt-ceremony-scenarios/0.1",
+  "group": "FC-BAL",
+  "family": "ceremony-scenarios",
+  "evidence": "complete-ceremony",
+  "ceremony": {
+    "name": "Ballot cast (voter's client and ballot box)",
+    "channel": "proposed",
+    "choreography": "docs/32-rooms-ballot-ceremonies.md section 2: the cast, its retry, a revote, the consumer's refusals in the specification's order, and the version skew. The voter's agent and the community's ticket issuance are stand-ins."
+  },
+  "scenarios": [
+    {
+      "id": "FC-BAL-001",
+      "title": "a voter's client sends the cast its agent built to the ballot box of an open election: the box counts it and answers with a signed receipt addressed to the cast's one-time key, which the client checks and keeps",
+      "spec": [
+        "TF specs/voting/ballot/cast/0.1/spec.md (consumer steps 1 to 12; Response: the signed receipt)",
+        "docs/32-rooms-ballot-ceremonies.md section 2"
+      ],
+      "source": {
+        "slug": "voting/ballot/cast",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/voting/ballot/cast/0.1",
+        "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+        "tfRef": {
+          "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+        "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "B": {
+          "role": "ballot-box",
+          "requires": [
+            "optional:trigger.openElection"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "open",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "openElection",
+              "args": {
+                "electionId": "e1",
+                "state": "voting",
+                "revote": "refuse"
+              }
+            }
+          }
+        },
+        {
+          "id": "cast",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "ok"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:outcome:counted",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:leaf:0",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "casts",
+              "count": 1
+            }
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "counted",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-BAL-002",
+      "title": "the same cast is delivered again unchanged and then the same ballot is cast again under a new one-time key: the box counts it once and appends it once (retry safety: alreadyCounted with the first receipt)",
+      "spec": [
+        "TF specs/voting/ballot/cast/0.1/spec.md (Retry safety; consumer steps 7 and 10)",
+        "docs/32-rooms-ballot-ceremonies.md section 2"
+      ],
+      "source": {
+        "slug": "voting/ballot/cast",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/voting/ballot/cast/0.1",
+        "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+        "tfRef": {
+          "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+        "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "B": {
+          "role": "ballot-box",
+          "requires": [
+            "optional:trigger.openElection"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "open",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "openElection",
+              "args": {
+                "electionId": "e1",
+                "state": "voting",
+                "revote": "refuse"
+              }
+            }
+          }
+        },
+        {
+          "id": "cast",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "ok"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:outcome:counted",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "resend",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "replay": {
+              "step": "cast",
+              "by": "K",
+              "to": "B",
+              "mode": "same",
+              "index": 0
+            }
+          },
+          "expect": [
+            {
+              "reply": {
+                "type": "https://trusttasks.org/spec/voting/ballot/cast/0.1#response"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cast-again",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "ok"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:outcome:alreadyCounted",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:leaf:0",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "casts",
+              "count": 1
+            }
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "counted",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-BAL-003",
+      "title": "a cast for an election whose voting has not opened is refused with voting/ballot/cast:notOpen and nothing is counted",
+      "spec": [
+        "TF specs/voting/ballot/cast/0.1/spec.md (consumer step 3; errorCodes: notOpen)",
+        "docs/32-rooms-ballot-ceremonies.md section 2"
+      ],
+      "source": {
+        "slug": "voting/ballot/cast",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/voting/ballot/cast/0.1",
+        "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+        "tfRef": {
+          "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+        "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "B": {
+          "role": "ballot-box",
+          "requires": [
+            "optional:trigger.openElection"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "open",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "openElection",
+              "args": {
+                "electionId": "e1",
+                "state": "registration",
+                "revote": "refuse"
+              }
+            }
+          }
+        },
+        {
+          "id": "cast",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "ok"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "voting/ballot/cast:notOpen",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:refused:notOpen",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "casts",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-BAL-004",
+      "title": "a cast for an election the box does not hold is refused with voting/ballot/cast:electionUnknown",
+      "spec": [
+        "TF specs/voting/ballot/cast/0.1/spec.md (consumer step 2; errorCodes: electionUnknown)",
+        "docs/32-rooms-ballot-ceremonies.md section 2"
+      ],
+      "source": {
+        "slug": "voting/ballot/cast",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/voting/ballot/cast/0.1",
+        "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+        "tfRef": {
+          "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+        "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "B": {
+          "role": "ballot-box",
+          "requires": [
+            "optional:trigger.openElection"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "open",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "openElection",
+              "args": {
+                "electionId": "e1",
+                "state": "voting",
+                "revote": "refuse"
+              }
+            }
+          }
+        },
+        {
+          "id": "cast",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "unknownElection"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "voting/ballot/cast:electionUnknown",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:refused:electionUnknown",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "casts",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-BAL-005",
+      "title": "a ballot that binds a manifest digest other than the registered one is refused with voting/ballot/cast:manifestMismatch",
+      "spec": [
+        "TF specs/voting/ballot/cast/0.1/spec.md (consumer step 4; errorCodes: manifestMismatch)",
+        "docs/32-rooms-ballot-ceremonies.md section 2"
+      ],
+      "source": {
+        "slug": "voting/ballot/cast",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/voting/ballot/cast/0.1",
+        "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+        "tfRef": {
+          "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+        "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "B": {
+          "role": "ballot-box",
+          "requires": [
+            "optional:trigger.openElection"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "open",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "openElection",
+              "args": {
+                "electionId": "e1",
+                "state": "voting",
+                "revote": "refuse"
+              }
+            }
+          }
+        },
+        {
+          "id": "cast",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "wrongDigest"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "voting/ballot/cast:manifestMismatch",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:refused:manifestMismatch",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "casts",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-BAL-006",
+      "title": "a ballot that answers a question the manifest does not ask is refused with voting/ballot/cast:ballotInvalid",
+      "spec": [
+        "TF specs/voting/ballot/cast/0.1/spec.md (consumer step 5; errorCodes: ballotInvalid)",
+        "docs/32-rooms-ballot-ceremonies.md section 2"
+      ],
+      "source": {
+        "slug": "voting/ballot/cast",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/voting/ballot/cast/0.1",
+        "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+        "tfRef": {
+          "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+        "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "B": {
+          "role": "ballot-box",
+          "requires": [
+            "optional:trigger.openElection"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "open",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "openElection",
+              "args": {
+                "electionId": "e1",
+                "state": "voting",
+                "revote": "refuse"
+              }
+            }
+          }
+        },
+        {
+          "id": "cast",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "badAnswers"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "voting/ballot/cast:ballotInvalid",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:refused:ballotInvalid",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "casts",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-BAL-007",
+      "title": "an attestation made under another election's ticket class is refused with voting/ballot/cast:classMismatch",
+      "spec": [
+        "TF specs/voting/ballot/cast/0.1/spec.md (consumer step 6; errorCodes: classMismatch)",
+        "docs/32-rooms-ballot-ceremonies.md section 2"
+      ],
+      "source": {
+        "slug": "voting/ballot/cast",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/voting/ballot/cast/0.1",
+        "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+        "tfRef": {
+          "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+        "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "B": {
+          "role": "ballot-box",
+          "requires": [
+            "optional:trigger.openElection"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "open",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "openElection",
+              "args": {
+                "electionId": "e1",
+                "state": "voting",
+                "revote": "refuse"
+              }
+            }
+          }
+        },
+        {
+          "id": "cast",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "wrongClass"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "voting/ballot/cast:classMismatch",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:refused:classMismatch",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "casts",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-BAL-008",
+      "title": "a ballot changed after the attestation was made, and an attestation not made with a ticket the community issued for this election, are each refused with voting/ballot/cast:castInvalid and nothing is counted",
+      "spec": [
+        "TF specs/voting/ballot/cast/0.1/spec.md (consumer step 9; errorCodes: castInvalid; Authorization: the attestation is the authority)",
+        "docs/32-rooms-ballot-ceremonies.md section 2"
+      ],
+      "source": {
+        "slug": "voting/ballot/cast",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/voting/ballot/cast/0.1",
+        "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+        "tfRef": {
+          "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+        "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "B": {
+          "role": "ballot-box",
+          "requires": [
+            "optional:trigger.openElection"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "open",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "openElection",
+              "args": {
+                "electionId": "e1",
+                "state": "voting",
+                "revote": "refuse"
+              }
+            }
+          }
+        },
+        {
+          "id": "tampered",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "tamperedBallot"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "voting/ballot/cast:castInvalid",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:refused:castInvalid",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "forged",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "forgedTicket"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "voting/ballot/cast:castInvalid",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:refused:castInvalid",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "casts",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-BAL-009",
+      "title": "a second, different ballot under the tag of a counted one, where the manifest refuses revotes, is refused with voting/ballot/cast:alreadyVoted and the first stays counted",
+      "spec": [
+        "TF specs/voting/ballot/cast/0.1/spec.md (consumer step 8; errorCodes: alreadyVoted)",
+        "docs/32-rooms-ballot-ceremonies.md section 2"
+      ],
+      "source": {
+        "slug": "voting/ballot/cast",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/voting/ballot/cast/0.1",
+        "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+        "tfRef": {
+          "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+        "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "B": {
+          "role": "ballot-box",
+          "requires": [
+            "optional:trigger.openElection"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "open",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "openElection",
+              "args": {
+                "electionId": "e1",
+                "state": "voting",
+                "revote": "refuse"
+              }
+            }
+          }
+        },
+        {
+          "id": "first",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "ok"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:outcome:counted",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "second",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "second"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "voting/ballot/cast:alreadyVoted",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:refused:alreadyVoted",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "casts",
+              "count": 1
+            }
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "counted",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-BAL-010",
+      "title": "a second, different ballot under the tag of a counted one, where the manifest replaces on revote, is recorded and answered with outcome replaced; the earlier cast stays on the board and one ballot is counted for the tag",
+      "spec": [
+        "TF specs/voting/ballot/cast/0.1/spec.md (consumer step 11: counted for the first ballot under a tag, replaced otherwise)",
+        "docs/32-rooms-ballot-ceremonies.md section 2"
+      ],
+      "source": {
+        "slug": "voting/ballot/cast",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/voting/ballot/cast/0.1",
+        "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+        "tfRef": {
+          "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+        "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "B": {
+          "role": "ballot-box",
+          "requires": [
+            "optional:trigger.openElection"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "open",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "openElection",
+              "args": {
+                "electionId": "e1",
+                "state": "voting",
+                "revote": "replace"
+              }
+            }
+          }
+        },
+        {
+          "id": "first",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "ok"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:outcome:counted",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "second",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "second"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:outcome:replaced",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:leaf:1",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "casts",
+              "count": 2
+            }
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "counted",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-BAL-011",
+      "title": "the accepted cast is delivered again with a value changed after signing and with its proof removed: the changed copy is refused (proofInvalid), the unsigned copy is refused (proofRequired), and the board holds the one cast",
+      "spec": [
+        "TF specs/voting/ballot/cast/0.1/spec.md (consumer step 1; proofRequirement request REQUIRED)",
+        "SPEC.md 7.2",
+        "docs/32-rooms-ballot-ceremonies.md section 2"
+      ],
+      "source": {
+        "slug": "voting/ballot/cast",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/voting/ballot/cast/0.1",
+        "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+        "tfRef": {
+          "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+        "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "B": {
+          "role": "ballot-box",
+          "requires": [
+            "optional:trigger.openElection"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "open",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "openElection",
+              "args": {
+                "electionId": "e1",
+                "state": "voting",
+                "revote": "refuse"
+              }
+            }
+          }
+        },
+        {
+          "id": "cast",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "ok"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "tampered",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "replay": {
+              "step": "cast",
+              "by": "K",
+              "to": "B",
+              "mode": "tamper",
+              "index": 0
+            }
+          },
+          "expect": [
+            {
+              "reply": {
+                "code": "proofInvalid"
+              }
+            }
+          ]
+        },
+        {
+          "id": "no-proof",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "replay": {
+              "step": "cast",
+              "by": "K",
+              "to": "B",
+              "mode": "stripProof",
+              "index": 0
+            }
+          },
+          "expect": [
+            {
+              "reply": {
+                "code": "proofRequired"
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "casts",
+              "count": 1
+            }
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "counted",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-BAL-012",
+      "title": "a cast addressed to a ballot box other than the one that holds the election is never sent by the client (it checks the recipient before sending, as the specification's recipient rule requires of the party that would receive it): nothing is counted",
+      "spec": [
+        "SPEC.md 8.3 (wrongRecipient)",
+        "TF specs/voting/ballot/cast/0.1/spec.md (parties: the ballot box is the recipient)",
+        "docs/32-rooms-ballot-ceremonies.md section 2"
+      ],
+      "source": {
+        "slug": "voting/ballot/cast",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/voting/ballot/cast/0.1",
+        "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+        "tfRef": {
+          "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+        "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "B": {
+          "role": "ballot-box",
+          "requires": [
+            "optional:trigger.openElection"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "open",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "openElection",
+              "args": {
+                "electionId": "e1",
+                "state": "voting",
+                "revote": "refuse"
+              }
+            }
+          }
+        },
+        {
+          "id": "cast",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "wrongRecipient"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:refused:wrongRecipient",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "casts",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-BAL-013",
+      "title": "the election's voting has closed: a cast is refused with voting/ballot/cast:notOpen (closed) and the count does not change",
+      "spec": [
+        "TF specs/voting/ballot/cast/0.1/spec.md (consumer step 3: not open: not yet opened, already closed, or cancelled)",
+        "docs/32-rooms-ballot-ceremonies.md section 2"
+      ],
+      "source": {
+        "slug": "voting/ballot/cast",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/voting/ballot/cast/0.1",
+        "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+        "tfRef": {
+          "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+        "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "B": {
+          "role": "ballot-box",
+          "requires": [
+            "optional:trigger.openElection"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "open",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "openElection",
+              "args": {
+                "electionId": "e1",
+                "state": "voting",
+                "revote": "refuse"
+              }
+            }
+          }
+        },
+        {
+          "id": "first",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "ok"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "close",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "closeElection",
+              "args": {
+                "electionId": "e1"
+              }
+            }
+          }
+        },
+        {
+          "id": "late",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "second"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "voting/ballot/cast:notOpen",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:refused:notOpen",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "casts",
+              "count": 1
+            }
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "counted",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-BAL-014",
+      "title": "the version skew: a cast sent at a version the ballot box does not serve (0.2) is refused unsupportedVersion, naming the version it serves; nothing is counted (the voter's client sends 0.1 only, so this runs for a client that can send another version)",
+      "spec": [
+        "SPEC.md 8.3 (unsupportedVersion)",
+        "TF specs/voting/ballot/cast/0.1/spec.md (the only version)",
+        "docs/32-rooms-ballot-ceremonies.md section 2"
+      ],
+      "source": {
+        "slug": "voting/ballot/cast",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/voting/ballot/cast/0.1",
+        "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+        "tfRef": {
+          "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+        "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received",
+            "optional:castFutureVersion"
+          ]
+        },
+        "B": {
+          "role": "ballot-box",
+          "requires": [
+            "optional:trigger.openElection"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "open",
+          "do": {
+            "decide": {
+              "by": "B",
+              "action": "openElection",
+              "args": {
+                "electionId": "e1",
+                "state": "voting",
+                "revote": "refuse"
+              }
+            }
+          }
+        },
+        {
+          "id": "cast",
+          "source": {
+            "slug": "voting/ballot/cast",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/voting/ballot/cast/0.1",
+            "pinnedDigest": "sha256:6b4c48c743108c915ae57e23fdfb3d9eb70b090d50f705925a026bdd938fb8c0",
+            "tfRef": {
+              "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+            "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "B",
+              "kind": "ballot-cast",
+              "capture": "thread",
+              "args": {
+                "electionId": "e1",
+                "variant": "ok",
+                "version": "0.2"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "unsupportedVersion",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "cast:refused:unsupportedVersion",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "B",
+            "stored": {
+              "kind": "casts",
+              "count": 0
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,311 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "NS",
+  "family": "vrc-propose",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "NS-001",
+      "title": "the next-step payload is a closed object: no member outside expects, continuation, inResponseTo, message, ext",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-next-step/0.1/payload.schema.json (additionalProperties false)",
+        "SPEC.md:1414 (8.6 a hold is a next step)"
+      ],
+      "source": {
+        "slug": "trust-task-next-step",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-next-step/0.1",
+        "pinnedDigest": "sha256:03a3b3f52d26a130a9bfc2ba9e4fd1c4c635c96cd889cc5489e4a6894c3c1cdd",
+        "tfRef": {
+          "repoPath": "specs/trust-task-next-step/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5ba10e5ee613705d3910f0cf64f96b36e8ca49c422db9e9982cc42cfcab0e482",
+        "schemaHash": "sha256:c8025d3e6ac372438efd3e7176a47df2d118e90f792033993efe320fd0621b46"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "holdNextStepOpenPayload"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "hold"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "noSideEffect": true,
+            "pointer": {
+              "/threadId": "$id(req)",
+              "/payload/expects/0/typeUri": "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+              "/payload/continuation": "resubmit",
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+              "/payload/inResponseTo/id": "$id(req)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "NS-002",
+      "title": "every expects entry names a Type URI",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-next-step/0.1/payload.schema.json (expects[].typeUri required)",
+        "SPEC.md:1416-1418 (expects names the originating Type URI where no status task exists)"
+      ],
+      "source": {
+        "slug": "trust-task-next-step",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-next-step/0.1",
+        "pinnedDigest": "sha256:03a3b3f52d26a130a9bfc2ba9e4fd1c4c635c96cd889cc5489e4a6894c3c1cdd",
+        "tfRef": {
+          "repoPath": "specs/trust-task-next-step/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5ba10e5ee613705d3910f0cf64f96b36e8ca49c422db9e9982cc42cfcab0e482",
+        "schemaHash": "sha256:c8025d3e6ac372438efd3e7176a47df2d118e90f792033993efe320fd0621b46"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "holdExpectsNoTypeUri",
+        "holdEmptyExpects"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "hold"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "noSideEffect": true,
+            "pointer": {
+              "/threadId": "$id(req)",
+              "/payload/expects/0/typeUri": "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+              "/payload/continuation": "resubmit",
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+              "/payload/inResponseTo/id": "$id(req)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "NS-003",
+      "title": "message is at most 1024 characters",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-next-step/0.1/payload.schema.json (message maxLength 1024)",
+        "SPEC.md:1414"
+      ],
+      "source": {
+        "slug": "trust-task-next-step",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-next-step/0.1",
+        "pinnedDigest": "sha256:03a3b3f52d26a130a9bfc2ba9e4fd1c4c635c96cd889cc5489e4a6894c3c1cdd",
+        "tfRef": {
+          "repoPath": "specs/trust-task-next-step/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5ba10e5ee613705d3910f0cf64f96b36e8ca49c422db9e9982cc42cfcab0e482",
+        "schemaHash": "sha256:c8025d3e6ac372438efd3e7176a47df2d118e90f792033993efe320fd0621b46"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "holdMessageTooLong"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "hold"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "noSideEffect": true,
+            "pointer": {
+              "/threadId": "$id(req)",
+              "/payload/expects/0/typeUri": "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+              "/payload/continuation": "resubmit",
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+              "/payload/inResponseTo/id": "$id(req)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "NS-004",
+      "title": "a hold is answered with trust-task-next-step, not the deprecated trust-task-ok and not silence",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1414 (8.6 a consumer holding a task MUST answer with a next step)",
+        "SPEC.md:1427 (trust-task-ok SHOULD NOT be emitted)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "holdAnswersOk",
+        "silentHold"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "hold"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "noSideEffect": true,
+            "pointer": {
+              "/threadId": "$id(req)",
+              "/payload/expects/0/typeUri": "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+              "/payload/continuation": "resubmit",
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+              "/payload/inResponseTo/id": "$id(req)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "NS-005",
+      "title": "the next-step is addressed to the producer on the request's thread with a fresh id and names the held document",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:450-462 (4.9 threadId, a response never reuses the request id)",
+        "specs/trust-task-next-step/0.1/spec.md (inResponseTo names the document answered)"
+      ],
+      "source": {
+        "slug": "trust-task-next-step",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-next-step/0.1",
+        "pinnedDigest": "sha256:03a3b3f52d26a130a9bfc2ba9e4fd1c4c635c96cd889cc5489e4a6894c3c1cdd",
+        "tfRef": {
+          "repoPath": "specs/trust-task-next-step/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5ba10e5ee613705d3910f0cf64f96b36e8ca49c422db9e9982cc42cfcab0e482",
+        "schemaHash": "sha256:c8025d3e6ac372438efd3e7176a47df2d118e90f792033993efe320fd0621b46"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "wrongReplyThread",
+        "reuseRequestIdInReply"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "hold"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "noSideEffect": true,
+            "pointer": {
+              "/threadId": "$id(req)",
+              "/payload/expects/0/typeUri": "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+              "/payload/continuation": "resubmit",
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+              "/payload/inResponseTo/id": "$id(req)"
+            }
+          }
+        }
+      ],
+      "advisoryMutants": [
+        "holdNoInResponseTo",
+        "swapRecipientInReply"
+      ]
+    }
+  ]
+}

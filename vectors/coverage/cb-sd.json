@@ -1,0 +1,1878 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "CB-SD",
+ "family": "coverage",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "CB-SD-001",
+   "title": "acl/update 0.1: an identifier (subject) that names nothing is refused with acl/update:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/acl/update/0.1/spec.md: \"This task amends; use acl/grant to create.\"",
+    "specs/acl/update/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "acl/update",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/update/0.1",
+    "pinnedDigest": "sha256:2077bddce9464176de481b04d0e28eb1860c7b5bd243b47f6449364d6c6b5e37",
+    "tfRef": {
+     "repoPath": "specs/acl/update/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:22304f077aa4b1cb18b1776a912b7037a2cb968c234045d662480e687ca3f218",
+    "schemaHash": "sha256:06e8704b659372120cf01963ee5b860c7c14c4c09b3e76ca95719b26ed4db980",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/acl/update/0.1"
+   ],
+   "mutants": [
+    "bx:acl/update/0.1:acl/update:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/acl/update/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:conformance-unknown.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "acl/update:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-002",
+   "title": "acl/update 0.2: an identifier (subject) that names nothing is refused with acl/update:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/acl/update/0.2/spec.md: \"This task amends; use acl/grant to create.\"",
+    "specs/acl/update/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "acl/update",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/update/0.2",
+    "pinnedDigest": "sha256:90b14b28a5f1811e1d86f729f2ddf04e51e486c063d756055fe752389e4d6333",
+    "tfRef": {
+     "repoPath": "specs/acl/update/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:260a13b6ed77c6f56b54b31c2c4ee8b3ae386d5ebcd2d172dbad1d10e33b0261",
+    "schemaHash": "sha256:92bb9929ef38b976ebaf77e95632b0321a6a49df5dcaa47469b7b667738159e0",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/acl/update/0.2"
+   ],
+   "mutants": [
+    "bx:acl/update/0.2:acl/update:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/acl/update/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:conformance-unknown.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "acl/update:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-003",
+   "title": "auth/authenticate 0.3: an identifier (sessionId) that names nothing is refused with auth/authenticate:challengeNotFound",
+   "tier": 1,
+   "spec": [
+    "specs/auth/authenticate/0.3/spec.md: \"does not refer to any challenge the auth service issued\"",
+    "specs/auth/authenticate/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "auth/authenticate",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/authenticate/0.3",
+    "pinnedDigest": "sha256:977faff8a3356ce0b6745a8da7a8b87ee969c609017d6dc35fb47831525b83f9",
+    "tfRef": {
+     "repoPath": "specs/auth/authenticate/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:baff1263b831d801fed30d86de46ba0d97a8781f56820d6f788e3474a93f472a",
+    "schemaHash": "sha256:88900bd6b468f286af667eff62da5ce6d21289a283f0a07a69e61a1f902d9e76"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/authenticate/0.3"
+   ],
+   "mutants": [
+    "bx:auth/authenticate/0.3:auth/authenticate:challengeNotFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/auth/authenticate/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "challenge": "examplexxxxxxxxx",
+        "sessionId": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "auth/authenticate:challengeNotFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-004",
+   "title": "auth/refresh 0.2: an identifier (refreshToken) that names nothing is refused with auth/refresh:tokenNotFound",
+   "tier": 1,
+   "spec": [
+    "specs/auth/refresh/0.2/spec.md: \"does not refer to any session the auth service issued\"",
+    "specs/auth/refresh/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "auth/refresh",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/refresh/0.2",
+    "pinnedDigest": "sha256:1fb8cc9de5fb9af0f6919ef6994c74b841e088ba81d3b6ac90e42457bf056bc2",
+    "tfRef": {
+     "repoPath": "specs/auth/refresh/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:aaaa4a1cffe360386e876216cf5e3dcca2500d721e0198812b84ba708217d014",
+    "schemaHash": "sha256:07023daa910e1650a09d9364a2aa8a136a33d42af3f88e7dc7f73f0dbc760c6f"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/refresh/0.2"
+   ],
+   "mutants": [
+    "bx:auth/refresh/0.2:auth/refresh:tokenNotFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/auth/refresh/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "refreshToken": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "auth/refresh:tokenNotFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-005",
+   "title": "auth/passkey/enroll/finish 0.2: an identifier (enrollmentId) that names nothing is refused with auth/passkey/enroll/finish:enrollmentNotFound",
+   "tier": 1,
+   "spec": [
+    "specs/auth/passkey/enroll/finish/0.2/spec.md: \"does not refer to any active enrollment ceremony\"",
+    "specs/auth/passkey/enroll/finish/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "auth/passkey/enroll/finish",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/passkey/enroll/finish/0.2",
+    "pinnedDigest": "sha256:5d79f5810c16f53d3d70cd5dbfc4389a1d55b104ea2839389c0a79d70a6952de",
+    "tfRef": {
+     "repoPath": "specs/auth/passkey/enroll/finish/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:2d3568f59ea775dc9862a0f1a2617ac0c5bee125974fd2ec7f0e6bedf32ca0f8",
+    "schemaHash": "sha256:01f3d0b16ae58d7ad343c09b8cf54e41eb30216b6aacc7444f7fadb7bc85e109"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/passkey/enroll/finish/0.2"
+   ],
+   "mutants": [
+    "bx:auth/passkey/enroll/finish/0.2:auth/passkey/enroll/finish:enrollmentNotFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/auth/passkey/enroll/finish/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enrollmentId": "conformance-unknown-identifier",
+        "credential": {
+         "id": "example",
+         "rawId": "example",
+         "type": "public-key",
+         "response": {
+          "clientDataJSON": "example",
+          "attestationObject": "example"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "auth/passkey/enroll/finish:enrollmentNotFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-006",
+   "title": "auth/passkey/enroll/redeem/finish 0.1: an identifier (enrollmentId) that names nothing is refused with auth/passkey/enroll/redeem/finish:enrollmentNotFound",
+   "tier": 1,
+   "spec": [
+    "specs/auth/passkey/enroll/redeem/finish/0.1/spec.md: \"refers to no active redemption ceremony\"",
+    "specs/auth/passkey/enroll/redeem/finish/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "auth/passkey/enroll/redeem/finish",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/passkey/enroll/redeem/finish/0.1",
+    "pinnedDigest": "sha256:883b488bbd418d6d5445bc11b17f0b6e89553dbe8adec2381c43c0ec9adafe05",
+    "tfRef": {
+     "repoPath": "specs/auth/passkey/enroll/redeem/finish/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:8925c1fe240c0ca99f417fb4d71db45ceadeee9f1302f0f5b98275eef247bcd3",
+    "schemaHash": "sha256:a7e33683384c8fe537cf02eeec52953472a44060391ccdc17f743f1134d3cf6e"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/passkey/enroll/redeem/finish/0.1"
+   ],
+   "mutants": [
+    "bx:auth/passkey/enroll/redeem/finish/0.1:auth/passkey/enroll/redeem/finish:enrollmentNotFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/auth/passkey/enroll/redeem/finish/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enrollmentId": "conformance-unknown-identifier",
+        "credential": {
+         "id": "example",
+         "rawId": "example",
+         "type": "public-key",
+         "response": {
+          "clientDataJSON": "example",
+          "attestationObject": "example"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "auth/passkey/enroll/redeem/finish:enrollmentNotFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-007",
+   "title": "auth/oob/cancel 0.1: requestId = \"fedcba9876543210fedcba9876543210\" is refused with auth/oob:requestNotFound",
+   "tier": 1,
+   "spec": [
+    "specs/auth/oob/cancel/0.1/spec.md: \"No request has this\"",
+    "specs/auth/oob/cancel/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/auth/oob/cancel/0.1/spec.md front matter errorCodes: auth/oob:notAuthorized (the caller's standing) is also accepted, as permissionDenied is: SPEC.md 7.2 items 2 and 10 do not order the authorisation check against the task's own checks",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "auth/oob/cancel",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/cancel/0.1",
+    "pinnedDigest": "sha256:b218aeba2f2e5b6e024d2a3a3157be99c3b346e99f39c75d9bf3fdaee4b553ba",
+    "tfRef": {
+     "repoPath": "specs/auth/oob/cancel/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:6ddeaf744ee3e9b18b22f4108c736118678f98d5ccd0cedc7f6cc5a32b681eeb",
+    "schemaHash": "sha256:ec5bdc45e2a837948a9402d05f8566b1bd7bd90d36571a7852f4f46a1f894c7a"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/oob/cancel/0.1"
+   ],
+   "mutants": [
+    "bx:auth/oob/cancel/0.1:auth/oob:requestNotFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/auth/oob/cancel/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "requestId": "fedcba9876543210fedcba9876543210"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "auth/oob:requestNotFound",
+       "auth/oob:notAuthorized",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-008",
+   "title": "auth/oob/claim 0.1: requestId = \"fedcba9876543210fedcba9876543210\" is refused with auth/oob:requestNotFound",
+   "tier": 1,
+   "spec": [
+    "specs/auth/oob/claim/0.1/spec.md: \"No request has this\"",
+    "specs/auth/oob/claim/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "auth/oob/claim",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.1",
+    "pinnedDigest": "sha256:ca339363b956a26e6a629aea4ea8bdd361f80aec1c3a42efa8850dde6688f02d",
+    "tfRef": {
+     "repoPath": "specs/auth/oob/claim/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:ce5859836a4dba910fad230d1433baa7c6be6c7c966703fd1e2dc0e58847b02e",
+    "schemaHash": "sha256:afee9bebea20b336d4f988b644e6ac961c8b39bd3814d0667d88dd2ec8251750",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/oob/claim/0.1"
+   ],
+   "mutants": [
+    "bx:auth/oob/claim/0.1:auth/oob:requestNotFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/auth/oob/claim/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "parentThreadId": "fedcba9876543210fedcba9876543210",
+       "payload": {
+        "requestId": "fedcba9876543210fedcba9876543210"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "auth/oob:requestNotFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-009",
+   "title": "auth/oob/claim 0.2: requestId = \"fedcba9876543210fedcba9876543210\" is refused with auth/oob:requestNotFound",
+   "tier": 1,
+   "spec": [
+    "specs/auth/oob/claim/0.2/spec.md: \"No request has this\"",
+    "specs/auth/oob/claim/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "auth/oob/claim",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/claim/0.2",
+    "pinnedDigest": "sha256:16d5d6bce540be01e927b0a56a061e77372d2e8c7de98fa7488546bf152df7b8",
+    "tfRef": {
+     "repoPath": "specs/auth/oob/claim/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:7000e51a78000118f2fa4c8fdcfb0b3782d71041a6931bf0b685a2007baea673",
+    "schemaHash": "sha256:4ea8213b3a4d34a2bc37629f8b6df1dbe8cf60300fc69be76c429dd3c5448dec"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/oob/claim/0.2"
+   ],
+   "mutants": [
+    "bx:auth/oob/claim/0.2:auth/oob:requestNotFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/auth/oob/claim/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "parentThreadId": "fedcba9876543210fedcba9876543210",
+       "payload": {
+        "requestId": "fedcba9876543210fedcba9876543210"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "auth/oob:requestNotFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-010",
+   "title": "auth/oob/redeem 0.2: requestId = \"fedcba9876543210fedcba9876543210\" is refused with auth/oob:requestNotFound",
+   "tier": 1,
+   "spec": [
+    "specs/auth/oob/redeem/0.2/spec.md: \"No request has this\"",
+    "specs/auth/oob/redeem/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "auth/oob/redeem",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/oob/redeem/0.2",
+    "pinnedDigest": "sha256:b5ee5037b1b24204d30382581841bcc362b35b7e68070e835407deedee5b5ea8",
+    "tfRef": {
+     "repoPath": "specs/auth/oob/redeem/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:90f277f714061c31bacb1d0dec28725e9fd9dd8b0864ce6dfba58c2be1f9423a",
+    "schemaHash": "sha256:f8401b55b037416c8b0f99fc71058a037585c68a7a6ee3a25f848760bc1ab350"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/oob/redeem/0.2"
+   ],
+   "mutants": [
+    "bx:auth/oob/redeem/0.2:auth/oob:requestNotFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/auth/oob/redeem/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "requestId": "fedcba9876543210fedcba9876543210"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "auth/oob:requestNotFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-011",
+   "title": "auth/authenticate 0.3: a principal with no delegationEvidence (a proxied authenticate without its evidence) is refused with auth/authenticate:delegationEvidenceRequired",
+   "tier": 1,
+   "spec": [
+    "specs/auth/authenticate/0.3/spec.md: \"A proxied authenticate MUST carry both.\"",
+    "specs/auth/authenticate/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "auth/authenticate",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/authenticate/0.3",
+    "pinnedDigest": "sha256:977faff8a3356ce0b6745a8da7a8b87ee969c609017d6dc35fb47831525b83f9",
+    "tfRef": {
+     "repoPath": "specs/auth/authenticate/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:baff1263b831d801fed30d86de46ba0d97a8781f56820d6f788e3474a93f472a",
+    "schemaHash": "sha256:88900bd6b468f286af667eff62da5ce6d21289a283f0a07a69e61a1f902d9e76"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/authenticate/0.3"
+   ],
+   "retired": {
+    "reason": "the consumer list looks up the challenge by sessionId (item 2, challengeNotFound), compares it (item 3), checks expiry (item 4) and the subject (item 5) and consumes it (item 6) before it reaches the proxied case (item 7), so delegationEvidenceRequired needs an open challenge: prior state",
+    "since": "0.1.0-draft"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/auth/authenticate/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "challenge": "examplexxxxxxxxx",
+        "sessionId": "example",
+        "principal": "did:web:conformance-principal.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "auth/authenticate:delegationEvidenceRequired",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-012",
+   "title": "auth/signing-key/enroll 0.2: signingKeyDid equal to identityDid is refused with auth/signing-key/enroll:selfDelegation",
+   "tier": 1,
+   "spec": [
+    "specs/auth/signing-key/enroll/0.2/spec.md: \"A delegation names a separate key; an identity already signs as itself.\"",
+    "specs/auth/signing-key/enroll/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/auth/signing-key/enroll/0.2/spec.md front matter errorCodes: auth/signing-key/enroll:replaceNotFound (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "auth/signing-key/enroll",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/signing-key/enroll/0.2",
+    "pinnedDigest": "sha256:3604eacf2efa79519b41e5c385dc2adcd31fc22f6303bf1b2561f8a49817a54e",
+    "tfRef": {
+     "repoPath": "specs/auth/signing-key/enroll/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:c5a0db03b486644554bb20f6d80db1fc1829652715f21d320dc8fafb88ae533b",
+    "schemaHash": "sha256:f7abff350f499611da9071c28c9afcbe72a8ed8c07e90cf6d6e1ba045aaabcf3"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/signing-key/enroll/0.2"
+   ],
+   "mutants": [
+    "bx:auth/signing-key/enroll/0.2:selfDelegation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/auth/signing-key/enroll/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "signingKeyDid": "$A",
+        "identityDid": "$A",
+        "scope": "console"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "auth/signing-key/enroll:selfDelegation",
+       "auth/signing-key/enroll:replaceNotFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-013",
+   "title": "auth/signing-key/enroll 0.2: an expiresAt that is not in the future is refused with auth/signing-key/enroll:expiryInPast",
+   "tier": 1,
+   "spec": [
+    "specs/auth/signing-key/enroll/0.2/spec.md: \"is not in the future, so the delegation would authorize nothing\"",
+    "specs/auth/signing-key/enroll/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/auth/signing-key/enroll/0.2/spec.md front matter errorCodes: auth/signing-key/enroll:replaceNotFound (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "auth/signing-key/enroll",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/signing-key/enroll/0.2",
+    "pinnedDigest": "sha256:3604eacf2efa79519b41e5c385dc2adcd31fc22f6303bf1b2561f8a49817a54e",
+    "tfRef": {
+     "repoPath": "specs/auth/signing-key/enroll/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:c5a0db03b486644554bb20f6d80db1fc1829652715f21d320dc8fafb88ae533b",
+    "schemaHash": "sha256:f7abff350f499611da9071c28c9afcbe72a8ed8c07e90cf6d6e1ba045aaabcf3"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/signing-key/enroll/0.2"
+   ],
+   "mutants": [
+    "bx:auth/signing-key/enroll/0.2:expiryInPast"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/auth/signing-key/enroll/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "signingKeyDid": "$A",
+        "identityDid": "did:web:alice.example",
+        "scope": "console",
+        "expiresAt": "2001-01-01T00:00:00Z"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "auth/signing-key/enroll:expiryInPast",
+       "auth/signing-key/enroll:replaceNotFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-014",
+   "title": "auth/signing-key/enroll 0.2: replaces = \"did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH\" is refused with auth/signing-key/enroll:replaceNotFound",
+   "tier": 1,
+   "spec": [
+    "specs/auth/signing-key/enroll/0.2/spec.md: \"names no active delegation of\"",
+    "specs/auth/signing-key/enroll/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "auth/signing-key/enroll",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/signing-key/enroll/0.2",
+    "pinnedDigest": "sha256:3604eacf2efa79519b41e5c385dc2adcd31fc22f6303bf1b2561f8a49817a54e",
+    "tfRef": {
+     "repoPath": "specs/auth/signing-key/enroll/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:c5a0db03b486644554bb20f6d80db1fc1829652715f21d320dc8fafb88ae533b",
+    "schemaHash": "sha256:f7abff350f499611da9071c28c9afcbe72a8ed8c07e90cf6d6e1ba045aaabcf3"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/signing-key/enroll/0.2"
+   ],
+   "retired": {
+    "reason": "item 14 says replaceNotFound is checked only after the authority evidence is accepted, so the code needs an enrolment whose evidence the consumer accepts: prior state",
+    "since": "0.1.0-draft"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/auth/signing-key/enroll/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "signingKeyDid": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+        "identityDid": "did:web:alice.example",
+        "scope": "console",
+        "replaces": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "auth/signing-key/enroll:replaceNotFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-015",
+   "title": "keys/export-secret 0.1: an identifier (keyId) that names nothing is refused with keys:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/keys/export-secret/0.1/spec.md: \"No key record on this custodian carries the named\"",
+    "specs/keys/export-secret/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "keys/export-secret",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/export-secret/0.1",
+    "pinnedDigest": "sha256:ee87abc6f361793822ad6078e4f323b8c52c91cf3873d19db0a4b3f29f43fc01",
+    "tfRef": {
+     "repoPath": "specs/keys/export-secret/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:ce7ab6d5db4be7caf3b4bf07cb0465a30d40a42924534236c02e6e6999f76e84",
+    "schemaHash": "sha256:628436e9db91b69ce1f29838640958c1e6d12bcb059330a4c9870b91c02b7ffb"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/export-secret/0.1"
+   ],
+   "mutants": [
+    "bx:keys/export-secret/0.1:keys:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/keys/export-secret/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-016",
+   "title": "keys/rename 0.1: an identifier (keyId) that names nothing is refused with keys:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/keys/rename/0.1/spec.md: \"No key record on this custodian carries the named\"",
+    "specs/keys/rename/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "keys/rename",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/rename/0.1",
+    "pinnedDigest": "sha256:fd0be4a43773499c28da5ce61efe5b3aec6aa0558bdd756d6ea7bd3566a86f57",
+    "tfRef": {
+     "repoPath": "specs/keys/rename/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e7cc2c73ec49a6e6c5c3f4bca6eed1a20c4db1a063bb71bc644f8204aa3d6cb2",
+    "schemaHash": "sha256:4767adb4afd44beace08b1c2aa2269bc99bcf841849dd4ae087cb954b2b22722"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/rename/0.1"
+   ],
+   "mutants": [
+    "bx:keys/rename/0.1:keys:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/keys/rename/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "conformance-unknown-identifier",
+        "newKeyId": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-017",
+   "title": "keys/set-exportability 0.1: an identifier (keyId) that names nothing is refused with keys:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/keys/set-exportability/0.1/spec.md: \"No key record on this custodian carries the named\"",
+    "specs/keys/set-exportability/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "keys/set-exportability",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/set-exportability/0.1",
+    "pinnedDigest": "sha256:ba08b37f0dd5587dab6d7e0e9682b01454ca4396fd20cc079f1726dc09406d33",
+    "tfRef": {
+     "repoPath": "specs/keys/set-exportability/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:20e431cf59ea4649b2469775966e23c1c3293d179b1fd02c2b4354d5122b6ff8",
+    "schemaHash": "sha256:6cda2ae38ec4f21f707b7175eba80fc4cbba845c56e1e55560143ef9cba94b76"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/set-exportability/0.1"
+   ],
+   "mutants": [
+    "bx:keys/set-exportability/0.1:keys:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/keys/set-exportability/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "conformance-unknown-identifier",
+        "exportable": false
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-018",
+   "title": "keys/sign-csr 0.1: an identifier (keyId) that names nothing is refused with keys:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/keys/sign-csr/0.1/spec.md: \"No key record on this custodian carries the named\"",
+    "specs/keys/sign-csr/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "keys/sign-csr",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-csr/0.1",
+    "pinnedDigest": "sha256:0e98c5e6d35c3e3080d17a72bdb538e1da5e812f43d23ac497e0886dca79f47f",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-csr/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:4f30e76ca2dc0c3047bd4f93a4a7b87bef6d7cb13272718cadd525fd38778e3c",
+    "schemaHash": "sha256:76acf49f99b16efec030982ef433bd36982788211f8e58235b41835de6806ec7"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-csr/0.1"
+   ],
+   "mutants": [
+    "bx:keys/sign-csr/0.1:keys:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "conformance-unknown-identifier",
+        "subject": [
+         {
+          "type": "CN",
+          "value": "example"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-019",
+   "title": "keys/sign-document 0.1: an identifier (keyId) that names nothing is refused with keys:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/keys/sign-document/0.1/spec.md: \"No key record on this custodian carries the named\"",
+    "specs/keys/sign-document/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "keys/sign-document",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-document/0.1",
+    "pinnedDigest": "sha256:1932225daf768a7a3ed77bff4f846895e42c6b7d404210c18ef26ffb96cc1a7e",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-document/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:359ca9208b4e13cc7c6bbf8e99e243590b5ee82a3ceeb671f4317877652935dc",
+    "schemaHash": "sha256:c6d94014abff1784cb677887e9f598e24913bd51e51a507441ac40ae2b40d14a"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-document/0.1"
+   ],
+   "mutants": [
+    "bx:keys/sign-document/0.1:keys:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/keys/sign-document/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "conformance-unknown-identifier",
+        "document": {}
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-020",
+   "title": "keys/sign-jws 0.1: an identifier (keyId) that names nothing is refused with keys:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/keys/sign-jws/0.1/spec.md: \"No key record on this custodian carries the named\"",
+    "specs/keys/sign-jws/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "keys/sign-jws",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-jws/0.1",
+    "pinnedDigest": "sha256:d6c28d3ec2d0ab8985445f527d1eec07defb361b3b478ec3fee53a652382ea08",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-jws/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:7ad9f642f3c2f55920a4880f3efbb08e0ad8dc84e218137df49036d59b6f4740",
+    "schemaHash": "sha256:343e52d865cd03639f78d911839957f1ee889b5ed1fa96631d93cb46cb9e6b97"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-jws/0.1"
+   ],
+   "mutants": [
+    "bx:keys/sign-jws/0.1:keys:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "conformance-unknown-identifier",
+        "payload": {}
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-021",
+   "title": "keys/sign-csr 0.1: a subject attribute value holding a control character is refused with keys/sign-csr:subjectInvalid",
+   "tier": 1,
+   "spec": [
+    "specs/keys/sign-csr/0.1/spec.md: \"or a control character\"",
+    "specs/keys/sign-csr/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "keys/sign-csr",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-csr/0.1",
+    "pinnedDigest": "sha256:0e98c5e6d35c3e3080d17a72bdb538e1da5e812f43d23ac497e0886dca79f47f",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-csr/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:4f30e76ca2dc0c3047bd4f93a4a7b87bef6d7cb13272718cadd525fd38778e3c",
+    "schemaHash": "sha256:76acf49f99b16efec030982ef433bd36982788211f8e58235b41835de6806ec7"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-csr/0.1"
+   ],
+   "retired": {
+    "reason": "the consumer list refuses an unknown key with keys:notFound (item 3) before it checks the request's own members, so the stated code needs a key the custodian holds: prior state",
+    "since": "0.1.0-draft"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "example",
+        "subject": [
+         {
+          "type": "CN",
+          "value": "example\u0001name"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys/sign-csr:subjectInvalid",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-022",
+   "title": "keys/sign-document 0.1: a document that already carries a proof member is refused with keys/sign-document:proofPresent",
+   "tier": 1,
+   "spec": [
+    "specs/keys/sign-document/0.1/spec.md: \"The document already carries a\"",
+    "specs/keys/sign-document/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/keys/sign-document/0.1/spec.md front matter errorCodes: keys:notFound (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "keys/sign-document",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-document/0.1",
+    "pinnedDigest": "sha256:1932225daf768a7a3ed77bff4f846895e42c6b7d404210c18ef26ffb96cc1a7e",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-document/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:359ca9208b4e13cc7c6bbf8e99e243590b5ee82a3ceeb671f4317877652935dc",
+    "schemaHash": "sha256:c6d94014abff1784cb677887e9f598e24913bd51e51a507441ac40ae2b40d14a"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-document/0.1"
+   ],
+   "mutants": [
+    "bx:keys/sign-document/0.1:proofPresent"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/keys/sign-document/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "example",
+        "document": {
+         "proof": {
+          "type": "DataIntegrityProof"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys/sign-document:proofPresent",
+       "keys:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-023",
+   "title": "keys/sign-jws 0.1: a header naming alg is refused with keys/sign-jws:headerMemberForbidden",
+   "tier": 1,
+   "spec": [
+    "specs/keys/sign-jws/0.1/spec.md: \"names a member the custodian sets or refuses itself\"",
+    "specs/keys/sign-jws/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "keys/sign-jws",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-jws/0.1",
+    "pinnedDigest": "sha256:d6c28d3ec2d0ab8985445f527d1eec07defb361b3b478ec3fee53a652382ea08",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-jws/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:7ad9f642f3c2f55920a4880f3efbb08e0ad8dc84e218137df49036d59b6f4740",
+    "schemaHash": "sha256:343e52d865cd03639f78d911839957f1ee889b5ed1fa96631d93cb46cb9e6b97"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-jws/0.1"
+   ],
+   "retired": {
+    "reason": "the consumer list refuses an unknown key with keys:notFound (item 3) before it checks the request's own members, so the stated code needs a key the custodian holds: prior state",
+    "since": "0.1.0-draft"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "example",
+        "payload": {},
+        "header": {
+         "alg": "none"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys/sign-jws:headerMemberForbidden",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-024",
+   "title": "keys/sign-jws 0.1: a payloadBase64Url that is not canonical unpadded base64url is refused with keys/sign-jws:payloadInvalid",
+   "tier": 1,
+   "spec": [
+    "specs/keys/sign-jws/0.1/spec.md: \"is not the canonical unpadded base64url encoding of any byte string\"",
+    "specs/keys/sign-jws/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "keys/sign-jws",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-jws/0.1",
+    "pinnedDigest": "sha256:d6c28d3ec2d0ab8985445f527d1eec07defb361b3b478ec3fee53a652382ea08",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-jws/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:7ad9f642f3c2f55920a4880f3efbb08e0ad8dc84e218137df49036d59b6f4740",
+    "schemaHash": "sha256:343e52d865cd03639f78d911839957f1ee889b5ed1fa96631d93cb46cb9e6b97"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-jws/0.1"
+   ],
+   "retired": {
+    "reason": "the consumer list refuses an unknown key with keys:notFound (item 3) before it checks the request's own members, so the stated code needs a key the custodian holds: prior state",
+    "since": "0.1.0-draft"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "example",
+        "payloadBase64Url": "AB"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys/sign-jws:payloadInvalid",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-025",
+   "title": "keys/sign-jws 0.1: a JOSE-registered header member (typ) that is not a string is refused with keys:invalidArgument",
+   "tier": 1,
+   "spec": [
+    "specs/keys/sign-jws/0.1/spec.md: \"a JOSE-registered member whose value is not of the type RFC 7515 defines for it\"",
+    "specs/keys/sign-jws/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "keys/sign-jws",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-jws/0.1",
+    "pinnedDigest": "sha256:d6c28d3ec2d0ab8985445f527d1eec07defb361b3b478ec3fee53a652382ea08",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-jws/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:7ad9f642f3c2f55920a4880f3efbb08e0ad8dc84e218137df49036d59b6f4740",
+    "schemaHash": "sha256:343e52d865cd03639f78d911839957f1ee889b5ed1fa96631d93cb46cb9e6b97"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-jws/0.1"
+   ],
+   "retired": {
+    "reason": "the consumer list refuses an unknown key with keys:notFound (item 3) before it checks the request's own members, so the stated code needs a key the custodian holds: prior state",
+    "since": "0.1.0-draft"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "example",
+        "payload": {},
+        "header": {
+         "typ": 7
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys:invalidArgument",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-026",
+   "title": "vault/credentials/get 0.2: an identifier (id) that names nothing is refused with vault/credentials/get:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vault/credentials/get/0.2/spec.md: \"holds no credential under this identifier that this consumer may read\"",
+    "specs/vault/credentials/get/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vault/credentials/get",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vault/credentials/get/0.2",
+    "pinnedDigest": "sha256:c5fa3c5d6df312805eb5a0b9664f61b4aa8123832d8a6bdb55c27301e04dd412",
+    "tfRef": {
+     "repoPath": "specs/vault/credentials/get/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:d62c70ca55ae4f90fa8eb607e75be9660bf07d8b415781b576a138e5e6c9c03e",
+    "schemaHash": "sha256:ecff8d36b6e5bb0b88b110ae60a201a84755d4225da9158be9bb9c7f99dcbf84"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vault/credentials/get/0.2"
+   ],
+   "mutants": [
+    "bx:vault/credentials/get/0.2:vault/credentials/get:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vault/credentials/get/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "id": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vault/credentials/get:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-027",
+   "title": "vault/credentials/present 0.1: an identifier (id) that names nothing is refused with vault/credentials/present:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vault/credentials/present/0.1/spec.md: \"holds no credential under this identifier that this consumer may present\"",
+    "specs/vault/credentials/present/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vault/credentials/present",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vault/credentials/present/0.1",
+    "pinnedDigest": "sha256:f96ce65f50e080ef13f9f28a89186c40641e894d04a03318a75e629554b12b75",
+    "tfRef": {
+     "repoPath": "specs/vault/credentials/present/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:44f6c96790ac8dc9a356b2e0acbbdfb4a474b039bf198821177ae72701291c62",
+    "schemaHash": "sha256:893bf3b3607afd5c510b31944069558d13c936fa478aeb6142793d14c0557e20"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vault/credentials/present/0.1"
+   ],
+   "mutants": [
+    "bx:vault/credentials/present/0.1:vault/credentials/present:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vault/credentials/present/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "id": "conformance-unknown-identifier",
+        "audience": "did:web:alice.example",
+        "nonce": "example",
+        "claims": [
+         "example"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vault/credentials/present:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-028",
+   "title": "vault/credentials/archive 0.1: an identifier (id) that names nothing is refused with vault/credentials/archive:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vault/credentials/archive/0.1/spec.md: \"holds no credential under this identifier that this consumer may act on\"",
+    "specs/vault/credentials/archive/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vault/credentials/archive",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vault/credentials/archive/0.1",
+    "pinnedDigest": "sha256:ca762a9133898290fa7f28e11b93d02eba2fb0969b6b190a4d49c731ea5d2442",
+    "tfRef": {
+     "repoPath": "specs/vault/credentials/archive/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:eeb418870b16da38e569ec7b6b084c02bb8536143c3863ebae2147d2776c80a5",
+    "schemaHash": "sha256:f202f014f650212884fa958a82b21a21fbe6ce21bb03edab353ef1a628939079"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vault/credentials/archive/0.1"
+   ],
+   "mutants": [
+    "bx:vault/credentials/archive/0.1:vault/credentials/archive:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vault/credentials/archive/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "id": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vault/credentials/archive:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-SD-029",
+   "title": "vault/credentials/unarchive 0.1: an identifier (id) that names nothing is refused with vault/credentials/unarchive:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vault/credentials/unarchive/0.1/spec.md: \"holds no credential under this identifier that this consumer may act on\"",
+    "specs/vault/credentials/unarchive/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vault/credentials/unarchive",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vault/credentials/unarchive/0.1",
+    "pinnedDigest": "sha256:8ce99da0287fd8a38a15f309877bd9597e7f61c23e74c4b414e0bd54dfe15a52",
+    "tfRef": {
+     "repoPath": "specs/vault/credentials/unarchive/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:48b67f4ff82d80bac1ad6f92d319aa4fd4c20315adf0616ec1493889424933f1",
+    "schemaHash": "sha256:1aba8a494e32836bccac057cf38e592ab903ea3e19b0fb368603a46c7744143d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vault/credentials/unarchive/0.1"
+   ],
+   "mutants": [
+    "bx:vault/credentials/unarchive/0.1:vault/credentials/unarchive:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vault/credentials/unarchive/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "id": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vault/credentials/unarchive:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  }
+ ]
+}

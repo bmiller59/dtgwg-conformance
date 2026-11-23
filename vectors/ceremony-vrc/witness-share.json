@@ -1,0 +1,2240 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "WSH",
+  "family": "vrc-witness-share",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "WSH-001",
+      "title": "a conforming bundle is stored and receipted with the digest of the stored credential",
+      "tier": 2,
+      "spec": [
+        "docs/10-witness-share-profile.md section 4, 5.1",
+        "docs/10-witness-share-profile.md section 11 WSH-001",
+        "SPEC.md:545-557 (4.9.3 task digest)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "wshDigestOverPresentation"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {}
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1#response",
+            "pointer": {
+              "/payload/vwcDigestMultibase": "$digest(vwc)"
+            },
+            "state": {
+              "storedVwc": 1,
+              "storedVwcDigest": {
+                "digest": "$digest(vwc)",
+                "count": 1
+              }
+            }
+          }
+        }
+      ],
+      "subgroup": "profile-witness-share"
+    },
+    {
+      "id": "WSH-002",
+      "title": "a presentation whose challenge is not this exchange (replay across exchanges) is refused",
+      "tier": 2,
+      "spec": [
+        "docs/10-witness-share-profile.md section 4 step 4.1",
+        "docs/10-witness-share-profile.md section 11 WSH-002"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "noChallengeCheck"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "challenge": "urn:uuid:another-exchange"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh)"
+            }
+          }
+        }
+      ],
+      "subgroup": "profile-witness-share"
+    },
+    {
+      "id": "WSH-003",
+      "title": "a presentation whose domain is not vrc:witness-share is refused",
+      "tier": 2,
+      "spec": [
+        "docs/10-witness-share-profile.md section 3.3 (domain constant)",
+        "docs/10-witness-share-profile.md section 11 WSH-003"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "noDomainCheck"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "domain": "vrc:something-else"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh)"
+            }
+          }
+        }
+      ],
+      "subgroup": "profile-witness-share"
+    },
+    {
+      "id": "WSH-004",
+      "title": "a witnessed credential about the receiver (its own VWC bounced back) is refused",
+      "tier": 2,
+      "spec": [
+        "docs/10-witness-share-profile.md section 4 step 6",
+        "docs/10-witness-share-profile.md section 11 WSH-004"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "noSubjectBinding"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "subject": "$cap(ibr)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh)"
+            }
+          }
+        }
+      ],
+      "subgroup": "profile-witness-share"
+    },
+    {
+      "id": "WSH-005",
+      "title": "parties that do not name both relationship DIDs are refused",
+      "tier": 2,
+      "spec": [
+        "docs/10-witness-share-profile.md section 4 step 7",
+        "docs/10-witness-share-profile.md section 11 WSH-005"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "noPartiesBinding"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "parties": [
+                "$R"
+              ]
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh)"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "parties": [
+                "$R",
+                "$Q"
+              ]
+            },
+            "params": {
+              "id": "$id(wsh2)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh2)"
+            }
+          }
+        }
+      ],
+      "subgroup": "profile-witness-share"
+    },
+    {
+      "id": "WSH-006",
+      "title": "a foreign terminal (other thread) or a terminal that is an error response is refused",
+      "tier": 1,
+      "spec": [
+        "docs/10-witness-share-profile.md section 4 step 4.7 and 4.8",
+        "docs/10-witness-share-profile.md section 11 WSH-006",
+        "SPEC.md:1020",
+        "SPEC.md:589-591 (4.9.4 items 2 to 4)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "noTerminalThread",
+        "terminalErrorAccepted"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "terminalThread": "urn:uuid:foreign-session"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh)"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "terminalType": "error"
+            },
+            "params": {
+              "id": "$id(wsh2)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh2)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WSH-007",
+      "title": "a task digest that does not reproduce over the initiating document (document altered, digest wrong, taskContext wrong) is refused",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:545-557 (4.9.3 recompute, compare)",
+        "docs/10-witness-share-profile.md section 4 step 4.5 and 4.6",
+        "docs/10-witness-share-profile.md section 11 WSH-007",
+        "SPEC.md:588 (4.9.4 item 1)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "noCitationDigest",
+        "noTaskContextCheck"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "alterInitiating": true
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh)"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "digest": "wrong"
+            },
+            "params": {
+              "id": "$id(wsh2)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh2)"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "taskContext": "urn:uuid:another-session"
+            },
+            "params": {
+              "id": "$id(wsh3)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh3)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WSH-008",
+      "title": "a terminal signed by someone other than the initiating document's recipient is refused",
+      "tier": 1,
+      "spec": [
+        "framework 4.9.4 item 4 (the outcome evidence is signed by the party the initiating document was addressed to)",
+        "docs/10-witness-share-profile.md section 11 WSH-008"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "terminalSignedByIssuerOnly"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "terminalSigner": "X"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WSH-009",
+      "title": "a terminal of a type other than the declared outcome-evidence type is refused",
+      "tier": 1,
+      "spec": [
+        "framework 4.9.4 item 3 (the declared outcome-evidence type)",
+        "docs/10-witness-share-profile.md section 11 WSH-009"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "anyResponseType"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "terminalType": "session"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WSH-010",
+      "title": "a terminal with its proof stripped is refused",
+      "tier": 1,
+      "spec": [
+        "docs/10-witness-share-profile.md section 4 step 4.9",
+        "docs/10-witness-share-profile.md section 11 WSH-010",
+        "SPEC.md:589-591 (4.9.4 items 2 to 4)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "noTerminalProof"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "terminalProof": "none"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WSH-011",
+      "title": "the citation in another multibase spelling of the same digest is accepted (decoded bytes are compared)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:557-558 (4.9.3 compare decoded multihash bytes, not strings)",
+        "docs/10-witness-share-profile.md section 11 WSH-011"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "compareDigestStrings"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "digest": "u"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1#response",
+            "pointer": {
+              "/payload/vwcDigestMultibase": "$digest(vwc)"
+            },
+            "state": {
+              "storedVwc": 1,
+              "storedVwcDigest": {
+                "digest": "$digest(vwc)",
+                "count": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WSH-012",
+      "title": "a citation naming a hash the verifier does not implement is not evidence of completion",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:552 (4.9.3 the algorithm is named by the multihash prefix)",
+        "SPEC.md:557 (4.9.3 a consumer that does not implement the algorithm MUST NOT recompute under another and MUST NOT fall back to id comparison; one that does implement it recomputes and compares)",
+        "docs/10-witness-share-profile.md section 5.1",
+        "docs/10-witness-share-profile.md section 11 WSH-012"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "noCitationDigest",
+        "unknownMultihashFallsBackToId"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "digest": "sha512",
+              "alterInitiating": true
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WSH-013",
+      "title": "an unsolicited share (no accepted exchange with this sender) is refused notAccepted, not proofInvalid",
+      "tier": 2,
+      "spec": [
+        "docs/10-witness-share-profile.md section 4 step 3 and 6.1",
+        "docs/10-witness-share-profile.md section 11 WSH-013",
+        "SPEC.md:1020 (7.2 item 10)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "acceptUnsolicited"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh)"
+            }
+          }
+        }
+      ],
+      "subgroup": "profile-witness-share"
+    },
+    {
+      "id": "WSH-014",
+      "title": "a share without an envelope proof is refused proofRequired",
+      "tier": 1,
+      "spec": [
+        "docs/10-witness-share-profile.md section 1 (proof required on the request)",
+        "docs/10-witness-share-profile.md section 11 WSH-014",
+        "SPEC.md:1017 (7.2 item 7)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "proofOptional",
+        "proofRequiredAsInvalid"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {},
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WSH-015",
+      "title": "an envelope proof made by a key that is not the issuer's is refused",
+      "tier": 1,
+      "spec": [
+        "docs/10-witness-share-profile.md section 6.2",
+        "docs/10-witness-share-profile.md section 11 WSH-015",
+        "SPEC.md:1017 (7.2 item 7)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "acceptUnverifiedProof"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {},
+            "sign": {
+              "as": "X",
+              "allowIssuerMismatch": true
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "proofInvalid",
+              "identityMismatch"
+            ],
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WSH-016",
+      "title": "an unknown payload member, or a missing presentation, initiating or terminal, is malformed",
+      "tier": 1,
+      "spec": [
+        "docs/10-witness-share-profile.md section 3.2 (closed payload, required members)",
+        "docs/10-witness-share-profile.md section 11 WSH-016",
+        "SPEC.md:1012 (7.2 item 2)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "openPayload",
+        "bundleShapeAsNotAccepted"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {},
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/note",
+                "value": "extra"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {},
+            "params": {
+              "id": "$id(wsh2)"
+            },
+            "mutate": [
+              {
+                "op": "remove",
+                "path": "/payload/presentation"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {},
+            "params": {
+              "id": "$id(wsh3)"
+            },
+            "mutate": [
+              {
+                "op": "remove",
+                "path": "/payload/outcomeEvidence/initiating"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {},
+            "params": {
+              "id": "$id(wsh4)"
+            },
+            "mutate": [
+              {
+                "op": "remove",
+                "path": "/payload/outcomeEvidence/terminal"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "WSH-017",
+      "title": "a redelivery of the same bundle under a new envelope id leaves one stored credential and a receipt with the same digest",
+      "tier": 2,
+      "spec": [
+        "docs/10-witness-share-profile.md section 8 (idempotent on the credential digest)",
+        "docs/10-witness-share-profile.md section 11 WSH-017"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": "The witness-share profile says a receiver SHOULD be idempotent on the credential digest (docs/10 section 8: one stored credential, a receipt each time). The framework does not decide the case: a redelivery under a new id is a different document, so SPEC.md 7.2 item 11 (SPEC.md:1021, 1033) does not apply. The vector asserts the SHOULD as a requirement (one stored credential after the second delivery). Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "2026-11-17",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "wshStoresDuplicates"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {}
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1#response",
+            "pointer": {
+              "/payload/vwcDigestMultibase": "$digest(vwc)"
+            },
+            "state": {
+              "storedVwc": 1,
+              "storedVwcDigest": {
+                "digest": "$digest(vwc)",
+                "count": 1
+              }
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "witness-share.request",
+            "witness": {},
+            "params": {
+              "id": "$id(wsh2)",
+              "issuedAt": "$now+5s"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1#response",
+            "pointer": {
+              "/payload/vwcDigestMultibase": "$digest(vwc)"
+            },
+            "state": {
+              "storedVwc": 1,
+              "storedVwcDigest": {
+                "digest": "$digest(vwc)",
+                "count": 1
+              }
+            }
+          }
+        }
+      ],
+      "subgroup": "profile-witness-share"
+    },
+    {
+      "id": "WSH-018",
+      "title": "the same id with changed content is idConflict and nothing new is stored",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1021 (7.2 item 11)",
+        "SPEC.md:1033",
+        "docs/10-witness-share-profile.md section 8",
+        "docs/10-witness-share-profile.md section 11 WSH-018"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "idOnlyDuplicateKey"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {}
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1#response",
+            "pointer": {
+              "/payload/vwcDigestMultibase": "$digest(vwc)"
+            },
+            "state": {
+              "storedVwc": 1,
+              "storedVwcDigest": {
+                "digest": "$digest(vwc)",
+                "count": 1
+              }
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "same": "previous",
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/ext",
+                "value": {
+                  "changed": true
+                }
+              }
+            ],
+            "sign": {
+              "as": "A"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "idConflict",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WSH-019",
+      "title": "a share arriving after the counterparty's issue is accepted too (no order is enforced)",
+      "tier": 1,
+      "spec": [
+        "docs/10-witness-share-profile.md section 7 (no order is determined by the reference implementation)",
+        "docs/10-witness-share-profile.md section 11 WSH-019"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": "Whether a share must follow the session and precede the issue, follow the issue, or be unordered is open (docs/07 O7); the vector asserts the unordered reading for the issue-then-share order. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/issue/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "issue.request",
+            "vrc": {}
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/issue/0.1#response",
+            "pointer": {
+              "/payload/vrcDigestMultibase": "$digest(vrc)"
+            },
+            "state": {
+              "stored": 1
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "witness-share.request",
+            "witness": {},
+            "params": {
+              "issuedAt": "$now+5s"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1#response",
+            "pointer": {
+              "/payload/vwcDigestMultibase": "$digest(vwc)"
+            },
+            "state": {
+              "storedVwc": 1,
+              "storedVwcDigest": {
+                "digest": "$digest(vwc)",
+                "count": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "WSH-020",
+      "title": "tier 2: the receipt is signed and verifies under the request's recipient",
+      "tier": 2,
+      "spec": [
+        "docs/10-witness-share-profile.md section 6.3",
+        "docs/10-witness-share-profile.md section 11 WSH-020",
+        "profile:attested (proof on every response)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "unsignedReplies",
+        "replySignedByOtherKey"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {}
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1#response",
+            "pointer": {
+              "/payload/vwcDigestMultibase": "$digest(vwc)"
+            },
+            "state": {
+              "storedVwc": 1,
+              "storedVwcDigest": {
+                "digest": "$digest(vwc)",
+                "count": 1
+              }
+            }
+          }
+        }
+      ],
+      "subgroup": "attested"
+    },
+    {
+      "id": "WSH-021",
+      "title": "tier 2: the envelope is issued, signed and sent as the connection DID; the relationship DID as issuer or as the signing key is refused",
+      "tier": 2,
+      "spec": [
+        "docs/10-witness-share-profile.md section 6.3",
+        "docs/10-witness-share-profile.md section 11 WSH-021",
+        "docs/04 section 10 (issuer, signer and sender are the connection DID)",
+        "SPEC.md:1016-1017 (7.2 items 6 and 7)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "ignoreTransportIdentity",
+        "acceptUnverifiedProof"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {},
+            "params": {
+              "issuer": "$R"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "identityMismatch",
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {},
+            "params": {
+              "id": "$id(wsh2)"
+            },
+            "sign": {
+              "as": "R",
+              "allowIssuerMismatch": true
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofInvalid",
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            }
+          }
+        }
+      ],
+      "subgroup": "attested"
+    },
+    {
+      "id": "WSH-025",
+      "title": "a witnessed credential whose own proof does not verify, or is made by a key its issuer does not control, is refused",
+      "tier": 2,
+      "spec": [
+        "docs/10-witness-share-profile.md section 4 step 4.3 (the credential's own proof verifies independently of the evidence)",
+        "SPEC.md:359-376 (4.7.3 a key controlled by the issuer)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "noCredentialProof"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "corruptVwc": true
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh)"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "vwcSigner": "Q"
+            },
+            "params": {
+              "id": "$id(wsh2)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh2)"
+            }
+          }
+        }
+      ],
+      "subgroup": "profile-witness-share"
+    },
+    {
+      "id": "WSH-024",
+      "title": "a second, different share on the same exchange is accepted and stored (the permissive reading)",
+      "tier": 1,
+      "spec": [
+        "docs/10-witness-share-profile.md section 12 (whether a second, different share on the same thread must be refused is not determined)",
+        "docs/10-witness-share-profile.md section 8 (the receiver processes a second share on its merits)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "suite-local profile (docs/10), no Trust Tasks home; channel candidate per decision 79 by the project owner (supersedes 78's proposed)"
+      },
+      "clarify": "Whether a receiver must refuse a second, different share on one exchange is not determined (docs/10 section 12); the vector asserts the permissive reading. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "digest": "u",
+              "name": "vwcU"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1#response",
+            "pointer": {
+              "/payload/vwcDigestMultibase": "$digest(vwcU)"
+            },
+            "state": {
+              "storedVwc": 1
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "name": "vwcZ"
+            },
+            "params": {
+              "id": "$id(wsh2)",
+              "issuedAt": "$now+5s"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1#response",
+            "pointer": {
+              "/payload/vwcDigestMultibase": "$digest(vwcZ)"
+            },
+            "state": {
+              "storedVwc": 2
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,736 @@
+{
+ "format": "tt-vti-role-rules/0.1",
+ "about": "Inputs to the VTI role derivation (src/coverage/matrix/vti-roles.ts, decision D420). `surfaces`: what each VTI surface is, the crates read for it, and for a service where its handler registrations are (agent: the dispatch_table! block; community: every on!(..) registration in its trust_tasks folder and the rooms table; witness and voting: their SERVED tables). A client surface is read for every non-test reference to a task (comments stripped, constants and module aliases resolved), classified by call role: a handler registration is `serves`; a reference compared with, matched against or tested on a received document is read as `serves`; a reference handed to a sender or builder is `emits`; a name in a list, a re-export or a table is `named-only`. `catalogueFiles`: files that only list tasks. `families`: prefix rules (longest match wins) for a slug a surface has no code for: `owners` are the service surfaces that would answer the family, `callers` the client surfaces that could send it; a service that is an owner reads `not-built` (or `named-only` when the spec crate pins the slug), any other service `not-involved`; a client that is a caller reads `not-built`, any other `not-involved`. The rules are judgement and say so; each carries its reason. A focus slug no rule matches is reported `unclassified` (the tests require none).",
+ "surfaces": [
+  {
+   "id": "vta",
+   "label": "agent service (VTA)",
+   "kind": "service",
+   "crates": [
+    "vta-service"
+   ],
+   "serve": [
+    {
+     "file": "vta-service/src/trust_tasks/mod.rs",
+     "kind": "dispatch_table",
+     "marker": "\\bdispatch_table!\\s*\\{"
+    }
+   ]
+  },
+  {
+   "id": "vtc",
+   "label": "community service (VTC)",
+   "kind": "service",
+   "crates": [
+    "vtc-service",
+    "vti-rooms"
+   ],
+   "serve": [
+    {
+     "pattern": "^vtc-service/src/trust_tasks/[a-z0-9_]+\\.rs$",
+     "kind": "on"
+    },
+    {
+     "file": "vti-rooms/src/wire.rs",
+     "kind": "served-const",
+     "marker": "const ROOMS_DISPATCHED_URIS: &\\[&str\\] = &\\["
+    }
+   ]
+  },
+  {
+   "id": "witness",
+   "label": "witness service",
+   "kind": "service",
+   "crates": [
+    "vti-witness"
+   ],
+   "serve": [
+    {
+     "file": "vti-witness/src/dispatch.rs",
+     "kind": "served-const",
+     "marker": "pub const SERVED: &\\[&str\\] = &\\["
+    }
+   ]
+  },
+  {
+   "id": "voting",
+   "label": "voting service",
+   "kind": "service",
+   "crates": [
+    "vti-voting-service"
+   ],
+   "serve": [
+    {
+     "file": "vti-voting-service/src/dispatch.rs",
+     "kind": "uri-macro-table",
+     "marker": "const SERVED: &\\[\\(&str, Task, Option<ElectionVersion>\\)\\] = &\\["
+    }
+   ]
+  },
+  {
+   "id": "client",
+   "label": "client builders (SDK, CLI, community client, network client)",
+   "kind": "client",
+   "crates": [
+    "vta-sdk",
+    "vta-cli-common",
+    "vtc-client",
+    "cnm-cli",
+    "pnm-cli",
+    "vti-vtn"
+   ]
+  },
+  {
+   "id": "mobile",
+   "label": "mobile core",
+   "kind": "client",
+   "crates": [
+    "vta-mobile-core"
+   ]
+  },
+  {
+   "id": "mcp",
+   "label": "mcp servers",
+   "kind": "client",
+   "crates": [
+    "vta-mcp",
+    "vtc-mcp",
+    "vti-mcp-common"
+   ]
+  }
+ ],
+ "catalogueFiles": [
+  "vta-sdk/src/trust_tasks.rs",
+  "vta-sdk/src/retry_safety.rs",
+  "vta-sdk/src/openapi.rs",
+  "vta-sdk/src/budget.rs"
+ ],
+ "families": [
+  {
+   "match": "trust-task-control",
+   "owners": [
+    "vta",
+    "vtc",
+    "witness",
+    "voting"
+   ],
+   "callers": [
+    "client",
+    "mobile",
+    "mcp"
+   ],
+   "why": "framework task: every task service answers it and every client may send it"
+  },
+  {
+   "match": "trust-task-discovery",
+   "owners": [
+    "vta",
+    "vtc",
+    "witness",
+    "voting"
+   ],
+   "callers": [
+    "client",
+    "mobile",
+    "mcp"
+   ],
+   "why": "framework task: every task service answers it and every client may send it"
+  },
+  {
+   "match": "trust-task-error",
+   "owners": [
+    "vta",
+    "vtc",
+    "witness",
+    "voting"
+   ],
+   "callers": [
+    "client",
+    "mobile",
+    "mcp"
+   ],
+   "why": "framework task: a reply every surface can build or read"
+  },
+  {
+   "match": "trust-task-next-step",
+   "owners": [
+    "vta",
+    "vtc",
+    "witness",
+    "voting"
+   ],
+   "callers": [
+    "client",
+    "mobile",
+    "mcp"
+   ],
+   "why": "framework task: a reply every surface can build or read"
+  },
+  {
+   "match": "trust-ceremony-receipt",
+   "owners": [
+    "vta",
+    "vtc",
+    "witness",
+    "voting"
+   ],
+   "callers": [
+    "client",
+    "mobile",
+    "mcp"
+   ],
+   "why": "framework task: a record every surface can build or read"
+  },
+  {
+   "match": "acl/",
+   "owners": [
+    "vta",
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mcp"
+   ],
+   "why": "access control on the agent and the community: operator tooling calls it"
+  },
+  {
+   "match": "audit/",
+   "owners": [
+    "vta",
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mcp"
+   ],
+   "why": "audit reads on the agent and the community: operator tooling calls it"
+  },
+  {
+   "match": "auth/oob/",
+   "owners": [
+    "vtc",
+    "vta"
+   ],
+   "callers": [
+    "client",
+    "mobile",
+    "mcp"
+   ],
+   "why": "out-of-band sign-in: services answer it, every client may start or claim one"
+  },
+  {
+   "match": "auth/passkey/",
+   "owners": [
+    "vtc",
+    "vta"
+   ],
+   "callers": [
+    "client",
+    "mobile",
+    "mcp"
+   ],
+   "why": "passkey sign-in: services answer it, every client may drive it"
+  },
+  {
+   "match": "auth/step-up/",
+   "owners": [
+    "vta",
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile",
+    "mcp"
+   ],
+   "why": "step-up approval: services answer it, every client may drive or approve it"
+  },
+  {
+   "match": "auth/",
+   "owners": [
+    "vta",
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile",
+    "mcp"
+   ],
+   "why": "session and signing-key tasks: services answer them, every client signs in"
+  },
+  {
+   "match": "backup/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client"
+   ],
+   "why": "community backup: operator tooling calls it"
+  },
+  {
+   "match": "chat/",
+   "owners": [],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "no VTI service answers a chat task; a member client could send it"
+  },
+  {
+   "match": "config/",
+   "owners": [
+    "vta",
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mcp"
+   ],
+   "why": "service configuration: operator tooling calls it"
+  },
+  {
+   "match": "consent/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "consent requests: the agent holds them, a member client decides them"
+  },
+  {
+   "match": "task-consent/",
+   "owners": [
+    "vta",
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "task consent: services ask, a member client decides"
+  },
+  {
+   "match": "credential-exchange/",
+   "owners": [
+    "vta",
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "credential exchange: services answer, a member client holds credentials"
+  },
+  {
+   "match": "device/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "device registration and wake: the agent answers, a member client registers"
+  },
+  {
+   "match": "did-management/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client"
+   ],
+   "why": "DID management: the agent hosts DIDs, operator tooling calls it"
+  },
+  {
+   "match": "webvh/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client"
+   ],
+   "why": "webvh DID tasks: the agent hosts them, operator tooling calls them"
+  },
+  {
+   "match": "external/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "external account bindings: the agent answers, a client binds"
+  },
+  {
+   "match": "git-ns/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client"
+   ],
+   "why": "git-namespace tasks: a community feature, called by the community client"
+  },
+  {
+   "match": "git-trust/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client"
+   ],
+   "why": "git trust tasks: a community feature, called by the community client"
+  },
+  {
+   "match": "governance/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mcp"
+   ],
+   "why": "community governance: operator tooling calls it"
+  },
+  {
+   "match": "keys/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client",
+    "mobile",
+    "mcp"
+   ],
+   "why": "key operations: the agent answers, every client may call them"
+  },
+  {
+   "match": "messaging/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "messaging: the agent relays, a client sends"
+  },
+  {
+   "match": "notifications/",
+   "owners": [
+    "vta",
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "notifications: services emit and answer, a member client reads"
+  },
+  {
+   "match": "peer-check/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client"
+   ],
+   "why": "peer check: the agent answers, a client may call"
+  },
+  {
+   "match": "persona/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "personas: the agent answers, a member client manages them"
+  },
+  {
+   "match": "policy/",
+   "owners": [
+    "vta",
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mcp"
+   ],
+   "why": "policy: services answer, operator tooling calls it"
+  },
+  {
+   "match": "process-attestation/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client"
+   ],
+   "why": "process attestation: the agent answers, a client may call"
+  },
+  {
+   "match": "provision/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client"
+   ],
+   "why": "provisioning: the agent answers, operator tooling calls it"
+  },
+  {
+   "match": "push/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "push wake: the agent sends, a member client receives and registers"
+  },
+  {
+   "match": "registry/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client"
+   ],
+   "why": "registry: the community answers, a client may call"
+  },
+  {
+   "match": "sync/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client"
+   ],
+   "why": "sync: the agent answers, a client may call"
+  },
+  {
+   "match": "understanding/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client"
+   ],
+   "why": "understanding: the agent answers, a client may call"
+  },
+  {
+   "match": "vrc/",
+   "owners": [],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "verifiable relationship credentials: no VTI service answers them; a member client could"
+  },
+  {
+   "match": "vault/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client",
+    "mobile",
+    "mcp"
+   ],
+   "why": "vault: the agent answers, every client may call it"
+  },
+  {
+   "match": "vetting/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "vetting: the community answers, a member client takes part"
+  },
+  {
+   "match": "voting/",
+   "owners": [
+    "voting"
+   ],
+   "callers": [
+    "client"
+   ],
+   "why": "voting: the voting service answers, the community client and CLI drive elections"
+  },
+  {
+   "match": "witness/",
+   "owners": [
+    "witness"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "witness: the witness service answers, a client may start a session"
+  },
+  {
+   "match": "rooms/",
+   "owners": [
+    "vta",
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "rooms: agent and community answer, a member client uses them"
+  },
+  {
+   "match": "vta/pcs/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client",
+    "mobile",
+    "mcp"
+   ],
+   "why": "personal credential store: the agent answers, every client may call it"
+  },
+  {
+   "match": "vta/",
+   "owners": [
+    "vta"
+   ],
+   "callers": [
+    "client",
+    "mcp"
+   ],
+   "why": "agent operations: the agent answers, operator tooling calls them"
+  },
+  {
+   "match": "vtc/join-requests/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "joining a community: the community answers, a member client submits"
+  },
+  {
+   "match": "vtc/members/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile",
+    "mcp"
+   ],
+   "why": "membership: the community answers, member and operator clients call it"
+  },
+  {
+   "match": "vtc/vetting/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "community vetting: the community answers, a member client takes part"
+  },
+  {
+   "match": "vtc/badges/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "badges: the community answers, a member client reads them"
+  },
+  {
+   "match": "vtc/directory/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "directory: the community answers, a member client reads it"
+  },
+  {
+   "match": "vtc/elections/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "elections: the community answers, a member client votes"
+  },
+  {
+   "match": "vtc/rooms/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "community rooms: the community answers, a member client uses them"
+  },
+  {
+   "match": "vtc/invitations/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mobile"
+   ],
+   "why": "invitations: the community answers, a member client accepts"
+  },
+  {
+   "match": "vtc/admin/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mcp"
+   ],
+   "why": "community administration: operator tooling calls it"
+  },
+  {
+   "match": "vtc/",
+   "owners": [
+    "vtc"
+   ],
+   "callers": [
+    "client",
+    "mcp"
+   ],
+   "why": "community operations: the community answers, operator tooling calls them"
+  },
+  {
+   "match": "vtn/",
+   "owners": [],
+   "callers": [
+    "client"
+   ],
+   "why": "network tasks: no VTI service answers them; the network client sends them"
+  }
+ ]
+}

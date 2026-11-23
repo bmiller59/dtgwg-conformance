@@ -1,0 +1,1499 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "TL-JRQ",
+  "family": "2l",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "TL-JRQ-001",
+      "title": "vtc/join-requests/submit 0.3: the payload is validated against the task's payload schema (missing required member vp; unknown member in a closed payload; wrong type for vp)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/vtc/join-requests/submit/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"vp\"], additionalProperties false",
+        "specs/vtc/join-requests/submit/0.3/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/submit/0.3"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {},
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p3)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "x"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/submit",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+        "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+        "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+      }
+    },
+    {
+      "id": "TL-JRQ-002",
+      "title": "vtc/join-requests/submit 0.3: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/vtc/join-requests/submit/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vtc/join-requests/submit/0.3/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/submit/0.3"
+      ],
+      "mutants": [
+        "recipientOptional",
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {}
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(e2)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {}
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/submit",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+        "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+        "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-JRQ-003",
+      "title": "vtc/join-requests/submit 0.3: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+        "declared policy: https://trusttasks.org/spec/vtc/join-requests/submit/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vtc/join-requests/submit/0.3/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/submit/0.3"
+      ],
+      "mutants": [
+        "noFreshnessWindow"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(i1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "payload": {
+                "vp": {}
+              }
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/submit",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+        "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+        "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+      }
+    },
+    {
+      "id": "TL-JRQ-004",
+      "title": "vtc/join-requests/submit 0.3: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/vtc/join-requests/submit/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/vtc/join-requests/submit/0.3#response",
+        "specs/vtc/join-requests/submit/0.3/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "Mechanics only: this vector does not assert that the request is authorised, admitted, retained or what it does (that is the deployment's governance)."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/submit/0.3"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {}
+              }
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/vtc/join-requests/submit/0.3"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/submit",
+        "version": "0.3",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+        "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+        "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-JRQ-005",
+      "title": "vtc/join-requests/status 0.1: the payload is validated against the task's payload schema (unknown member in a closed payload)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/vtc/join-requests/status/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [], additionalProperties false",
+        "specs/vtc/join-requests/status/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/status/0.1"
+      ],
+      "mutants": [
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/status",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+        "pinnedDigest": "sha256:d19f3762549df160fb86190f47f4294e2c719de3b91004863839f4f71e6046ab",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/status/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:de30796f11d6595b7b96b1886811b112a55f0e1ecd7df4759faa57d7e5172045",
+        "schemaHash": "sha256:52fa93ed92a592549ce4fb1644532024295994dd0c0dac772c7f43aba1d91e93"
+      }
+    },
+    {
+      "id": "TL-JRQ-006",
+      "title": "vtc/join-requests/status 0.1: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/vtc/join-requests/status/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vtc/join-requests/status/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/status/0.1"
+      ],
+      "mutants": [
+        "recipientOptional",
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(e2)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/status",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+        "pinnedDigest": "sha256:d19f3762549df160fb86190f47f4294e2c719de3b91004863839f4f71e6046ab",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/status/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:de30796f11d6595b7b96b1886811b112a55f0e1ecd7df4759faa57d7e5172045",
+        "schemaHash": "sha256:52fa93ed92a592549ce4fb1644532024295994dd0c0dac772c7f43aba1d91e93",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-JRQ-007",
+      "title": "vtc/join-requests/status 0.1: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+        "declared policy: https://trusttasks.org/spec/vtc/join-requests/status/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vtc/join-requests/status/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/status/0.1"
+      ],
+      "mutants": [
+        "noFreshnessWindow"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(i1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/status",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+        "pinnedDigest": "sha256:d19f3762549df160fb86190f47f4294e2c719de3b91004863839f4f71e6046ab",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/status/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:de30796f11d6595b7b96b1886811b112a55f0e1ecd7df4759faa57d7e5172045",
+        "schemaHash": "sha256:52fa93ed92a592549ce4fb1644532024295994dd0c0dac772c7f43aba1d91e93"
+      }
+    },
+    {
+      "id": "TL-JRQ-008",
+      "title": "vtc/join-requests/status 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/vtc/join-requests/status/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/vtc/join-requests/status/0.1#response",
+        "specs/vtc/join-requests/status/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "Mechanics only: this vector does not assert that the request is authorised, admitted, retained or what it does (that is the deployment's governance)."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/status/0.1"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/vtc/join-requests/status/0.1"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/status",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+        "pinnedDigest": "sha256:d19f3762549df160fb86190f47f4294e2c719de3b91004863839f4f71e6046ab",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/status/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:de30796f11d6595b7b96b1886811b112a55f0e1ecd7df4759faa57d7e5172045",
+        "schemaHash": "sha256:52fa93ed92a592549ce4fb1644532024295994dd0c0dac772c7f43aba1d91e93",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-JRQ-009",
+      "title": "vtc/join-requests/status 0.1: an identifier that names nothing is refused with the task's not-found code, never answered with a success",
+      "tier": 1,
+      "spec": [
+        "specs/vtc/join-requests/status/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft): errorCodes vtc/join-requests/status:notFound",
+        "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the not-found code, so no authorisation outcome is asserted",
+        "Mechanics only: this vector does not assert that the request is authorised, admitted, retained or what it does (that is the deployment's governance)."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/status/0.1"
+      ],
+      "mutants": [
+        "unknownIdAccepted"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(m1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "requestId": "conformance-unknown-identifier"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "vtc/join-requests/status:notFound",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/status",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+        "pinnedDigest": "sha256:d19f3762549df160fb86190f47f4294e2c719de3b91004863839f4f71e6046ab",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/status/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:de30796f11d6595b7b96b1886811b112a55f0e1ecd7df4759faa57d7e5172045",
+        "schemaHash": "sha256:52fa93ed92a592549ce4fb1644532024295994dd0c0dac772c7f43aba1d91e93"
+      }
+    },
+    {
+      "id": "TL-JRQ-010",
+      "title": "vtc/join-requests/manifest 0.4: the payload is validated against the task's payload schema (unknown member in a closed payload)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/vtc/join-requests/manifest/0.4 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [], additionalProperties false",
+        "specs/vtc/join-requests/manifest/0.4/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4"
+      ],
+      "mutants": [
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/manifest",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+        "pinnedDigest": "sha256:5f0253bd3f5b8e3ce094d7224423bed4e0c9f81f14c96bae42c797b3d6a3082d",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/manifest/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug. Promoted to the registry channel in batch B2b (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:667878a2693af716703bda1a87a07ea07669e01b1022df9975a4ff44708061fc",
+        "schemaHash": "sha256:d3ece361a6553407a6118e3e1317f0d0f9b50377f3135ce53559b000231bbc4e",
+        "promotion": {
+          "batch": "B2b",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-JRQ-011",
+      "title": "vtc/join-requests/manifest 0.4: the policy the specification declares is enforced (recipient REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/vtc/join-requests/manifest/0.4 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+        "specs/vtc/join-requests/manifest/0.4/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4"
+      ],
+      "mutants": [
+        "recipientOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/manifest",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+        "pinnedDigest": "sha256:5f0253bd3f5b8e3ce094d7224423bed4e0c9f81f14c96bae42c797b3d6a3082d",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/manifest/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:667878a2693af716703bda1a87a07ea07669e01b1022df9975a4ff44708061fc",
+        "schemaHash": "sha256:d3ece361a6553407a6118e3e1317f0d0f9b50377f3135ce53559b000231bbc4e",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-JRQ-012",
+      "title": "vtc/join-requests/manifest 0.4: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/vtc/join-requests/manifest/0.4 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/vtc/join-requests/manifest/0.4#response",
+        "specs/vtc/join-requests/manifest/0.4/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "Mechanics only: this vector does not assert that the request is authorised, admitted, retained or what it does (that is the deployment's governance)."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/manifest",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+        "pinnedDigest": "sha256:5f0253bd3f5b8e3ce094d7224423bed4e0c9f81f14c96bae42c797b3d6a3082d",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/manifest/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:667878a2693af716703bda1a87a07ea07669e01b1022df9975a4ff44708061fc",
+        "schemaHash": "sha256:d3ece361a6553407a6118e3e1317f0d0f9b50377f3135ce53559b000231bbc4e",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-JRQ-013",
+      "title": "vtc/join-requests/withdraw 0.1: the payload is validated against the task's payload schema (unknown member in a closed payload)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [], additionalProperties false",
+        "specs/vtc/join-requests/withdraw/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1"
+      ],
+      "mutants": [
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/withdraw",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+        "pinnedDigest": "sha256:188563e801f4d2ff1a485967000ae949b33a79ee2b896756beac71fa07e0e3ed",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/withdraw/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug. Promoted to the registry channel in batch B2b (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0579534eb696793fefeb4d3ac31dc70283176976d4671a0ecb166b4fed2c71ec",
+        "schemaHash": "sha256:fc920b3a9c870b1f4288b0cc05943f6b50491374db563d1aaa7fb79a79048788",
+        "promotion": {
+          "batch": "B2b",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-JRQ-014",
+      "title": "vtc/join-requests/withdraw 0.1: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vtc/join-requests/withdraw/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1"
+      ],
+      "mutants": [
+        "recipientOptional",
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(e2)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/withdraw",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+        "pinnedDigest": "sha256:188563e801f4d2ff1a485967000ae949b33a79ee2b896756beac71fa07e0e3ed",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/withdraw/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0579534eb696793fefeb4d3ac31dc70283176976d4671a0ecb166b4fed2c71ec",
+        "schemaHash": "sha256:fc920b3a9c870b1f4288b0cc05943f6b50491374db563d1aaa7fb79a79048788",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-JRQ-015",
+      "title": "vtc/join-requests/withdraw 0.1: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+        "declared policy: https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vtc/join-requests/withdraw/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1"
+      ],
+      "mutants": [
+        "noFreshnessWindow"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(i1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/withdraw",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+        "pinnedDigest": "sha256:188563e801f4d2ff1a485967000ae949b33a79ee2b896756beac71fa07e0e3ed",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/withdraw/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0579534eb696793fefeb4d3ac31dc70283176976d4671a0ecb166b4fed2c71ec",
+        "schemaHash": "sha256:fc920b3a9c870b1f4288b0cc05943f6b50491374db563d1aaa7fb79a79048788"
+      }
+    },
+    {
+      "id": "TL-JRQ-016",
+      "title": "vtc/join-requests/withdraw 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1#response",
+        "specs/vtc/join-requests/withdraw/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "Mechanics only: this vector does not assert that the request is authorised, admitted, retained or what it does (that is the deployment's governance)."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/withdraw",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+        "pinnedDigest": "sha256:188563e801f4d2ff1a485967000ae949b33a79ee2b896756beac71fa07e0e3ed",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/withdraw/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0579534eb696793fefeb4d3ac31dc70283176976d4671a0ecb166b4fed2c71ec",
+        "schemaHash": "sha256:fc920b3a9c870b1f4288b0cc05943f6b50491374db563d1aaa7fb79a79048788",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-JRQ-017",
+      "title": "vtc/join-requests/withdraw 0.1: an identifier that names nothing is refused with the task's not-found code, never answered with a success",
+      "tier": 1,
+      "spec": [
+        "specs/vtc/join-requests/withdraw/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft): errorCodes vtc/join-requests/withdraw:notFound",
+        "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the not-found code, so no authorisation outcome is asserted",
+        "Mechanics only: this vector does not assert that the request is authorised, admitted, retained or what it does (that is the deployment's governance)."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1"
+      ],
+      "mutants": [
+        "unknownIdAccepted"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(m1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "requestId": "conformance-unknown-identifier"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "vtc/join-requests/withdraw:notFound",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/withdraw",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+        "pinnedDigest": "sha256:188563e801f4d2ff1a485967000ae949b33a79ee2b896756beac71fa07e0e3ed",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/withdraw/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0579534eb696793fefeb4d3ac31dc70283176976d4671a0ecb166b4fed2c71ec",
+        "schemaHash": "sha256:fc920b3a9c870b1f4288b0cc05943f6b50491374db563d1aaa7fb79a79048788"
+      }
+    },
+    {
+      "id": "TL-JRQ-018",
+      "title": "vtc/join-requests/supplement 0.1: the payload is validated against the task's payload schema (missing required member vp; unknown member in a closed payload; wrong type for vp)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/vtc/join-requests/supplement/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"vp\"], additionalProperties false",
+        "specs/vtc/join-requests/supplement/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/supplement/0.1"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {},
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p3)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": "x"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/supplement",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+        "pinnedDigest": "sha256:d957600a2ea02907c7ea9b2d6f655a22eae2b25c4f2be93fd97b85499c73e491",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/supplement/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug. Promoted to the registry channel in batch B2b (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7376d24678152db1b8ba02b5f24238a5c7ce87382f72d8a122a66cce2cad5ab5",
+        "schemaHash": "sha256:c735e6ab8dbaf424a1c074f9569c6506028aa1983526888f66a16d5dc7c1499d",
+        "promotion": {
+          "batch": "B2b",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-JRQ-019",
+      "title": "vtc/join-requests/supplement 0.1: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/vtc/join-requests/supplement/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vtc/join-requests/supplement/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/supplement/0.1"
+      ],
+      "mutants": [
+        "recipientOptional",
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {}
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(e2)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {}
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/supplement",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+        "pinnedDigest": "sha256:d957600a2ea02907c7ea9b2d6f655a22eae2b25c4f2be93fd97b85499c73e491",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/supplement/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7376d24678152db1b8ba02b5f24238a5c7ce87382f72d8a122a66cce2cad5ab5",
+        "schemaHash": "sha256:c735e6ab8dbaf424a1c074f9569c6506028aa1983526888f66a16d5dc7c1499d",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-JRQ-020",
+      "title": "vtc/join-requests/supplement 0.1: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+        "declared policy: https://trusttasks.org/spec/vtc/join-requests/supplement/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vtc/join-requests/supplement/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/supplement/0.1"
+      ],
+      "mutants": [
+        "noFreshnessWindow"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(i1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "payload": {
+                "vp": {}
+              }
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/supplement",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+        "pinnedDigest": "sha256:d957600a2ea02907c7ea9b2d6f655a22eae2b25c4f2be93fd97b85499c73e491",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/supplement/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7376d24678152db1b8ba02b5f24238a5c7ce87382f72d8a122a66cce2cad5ab5",
+        "schemaHash": "sha256:c735e6ab8dbaf424a1c074f9569c6506028aa1983526888f66a16d5dc7c1499d"
+      }
+    },
+    {
+      "id": "TL-JRQ-021",
+      "title": "vtc/join-requests/supplement 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/vtc/join-requests/supplement/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/vtc/join-requests/supplement/0.1#response",
+        "specs/vtc/join-requests/supplement/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "Mechanics only: this vector does not assert that the request is authorised, admitted, retained or what it does (that is the deployment's governance)."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/vtc/join-requests/supplement/0.1"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "vp": {}
+              }
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/vtc/join-requests/supplement/0.1"
+          }
+        }
+      ],
+      "source": {
+        "slug": "vtc/join-requests/supplement",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+        "pinnedDigest": "sha256:d957600a2ea02907c7ea9b2d6f655a22eae2b25c4f2be93fd97b85499c73e491",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/supplement/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). VTI-named slug (vta/ or vtc/), not a generic registry slug. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7376d24678152db1b8ba02b5f24238a5c7ce87382f72d8a122a66cce2cad5ab5",
+        "schemaHash": "sha256:c735e6ab8dbaf424a1c074f9569c6506028aa1983526888f66a16d5dc7c1499d",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    }
+  ]
+}

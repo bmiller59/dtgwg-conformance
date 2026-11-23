@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: Apache-2.0
+# Template: the launcher copies this to a build directory outside both repositories, replacing @VTI_ROOT@ with the path of the VTI
+# checkout (read only; never written). The lock file is copied from that checkout so every dependency is the version VTI builds with.
+[package]
+name = "vti-emit-host"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[workspace]
+
+[dependencies]
+vta-sdk = { path = "@VTI_ROOT@/vta-sdk", features = ["client"] }
+vtc-client = { path = "@VTI_ROOT@/vtc-client" }
+tokio = { version = "1.49", features = ["full"] }
+serde_json = "1"
+serde = "1"
+axum = "0.8"
+ed25519-dalek = "3"
+multibase = "0.9"
+
+[profile.dev]
+debug = false
+incremental = true
+
+[profile.dev.package."*"]
+debug = false
+opt-level = 1

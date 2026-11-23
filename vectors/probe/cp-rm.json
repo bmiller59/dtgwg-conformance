@@ -1,0 +1,3356 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "CP-RM",
+ "family": "coverage",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "CP-RM-001",
+   "title": "rooms/records/retention/set 0.1: the room the request names exists, and a schema-invalid payload is still refused (seeded probe of CV-RM-107)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CV-RM-107: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/rooms/records/retention/set/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"roomId\",\"presentation\",\"recordRetention\",\"reason\"], additionalProperties false",
+    "specs/rooms/records/retention/set/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Built from the registry schema the platforms also build against: not independent evidence of that schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/records/retention/set/0.1",
+    "https://trusttasks.org/spec/rooms/create/0.2",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "rooms/records/retention/set",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/records/retention/set/0.1",
+    "pinnedDigest": "sha256:62bfbedacc63e080b59a087ff8bcd9cad79c89f8d9bdd27b7e055a9e22eadfd3",
+    "tfRef": {
+     "repoPath": "specs/rooms/records/retention/set/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Seeded-state probe of CV-RM-107: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:cfd04fe9972604a1cce0804fbca51dd17f5a4f0f7cf9edd37d90189fa7fc214c",
+    "schemaHash": "sha256:00e8b90e729c6eb644ea1f6c0b1a637bb7350e40028c11b8cd417d47817c400a"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example$mint(r1)",
+        "visibility": "attributed",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(pp2)",
+       "type": "https://trusttasks.org/spec/rooms/records/retention/set/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example$mint(r1)",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        },
+        "recordRetention": {},
+        "reason": "example",
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-RM-002",
+   "title": "rooms/revocations/get 0.1: the room the request names exists, and a schema-invalid payload is still refused (seeded probe of CV-RM-110)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CV-RM-110: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/rooms/revocations/get/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"roomId\",\"presentation\"], additionalProperties false",
+    "specs/rooms/revocations/get/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Built from the registry schema the platforms also build against: not independent evidence of that schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/revocations/get/0.1",
+    "https://trusttasks.org/spec/rooms/create/0.2",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "rooms/revocations/get",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/revocations/get/0.1",
+    "pinnedDigest": "sha256:63b7f79a9f2650ecf9db734777e915750c3351a43a5ac4660a1137df47b89937",
+    "tfRef": {
+     "repoPath": "specs/rooms/revocations/get/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Seeded-state probe of CV-RM-110: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:db2cd69e20d9dff74d9465803c18d7a514a723985f1d0024c4143317558e8ec6",
+    "schemaHash": "sha256:3d305da9f4337e9f5cf08f8b18ced56c6866c7fd0dbaa284971680792b4e6caa"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example$mint(r2)",
+        "visibility": "attributed",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(pp2)",
+       "type": "https://trusttasks.org/spec/rooms/revocations/get/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example$mint(r2)",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        },
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-RM-003",
+   "title": "rooms/revocations/put 0.1: the room the request names exists, and a schema-invalid payload is still refused (seeded probe of CV-RM-113)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CV-RM-113: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/rooms/revocations/put/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"roomId\",\"presentation\",\"list\"], additionalProperties false",
+    "specs/rooms/revocations/put/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "Built from the registry schema the platforms also build against: not independent evidence of that schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/revocations/put/0.1",
+    "https://trusttasks.org/spec/rooms/create/0.2",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "rooms/revocations/put",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/revocations/put/0.1",
+    "pinnedDigest": "sha256:7ea45e889ebbd9438fdce2095512d3c12a992fb0180bfd284521a56dc085c28f",
+    "tfRef": {
+     "repoPath": "specs/rooms/revocations/put/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the registry schema (not independent of the platforms' own build). Seeded-state probe of CV-RM-113: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:9790c7a098177afa6c4b75d4784fe78b294109614a0e7997a473ec31a956d5b3",
+    "schemaHash": "sha256:f60c272836174699a0e1a1303ab38e7e52d41e4b30d963505f576f0f3ee9d2d9"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example$mint(r3)",
+        "visibility": "attributed",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(pp2)",
+       "type": "https://trusttasks.org/spec/rooms/revocations/put/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example$mint(r3)",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        },
+        "list": {
+         "roomId": "example",
+         "sequence": 1,
+         "issuedAt": "$now+0s",
+         "entries": [],
+         "proof": {}
+        },
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-RM-004",
+   "title": "rooms/blobs/upload/begin 0.2: the room the request names exists, and a schema-invalid payload is still refused (seeded probe of CX-RM-004)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CX-RM-004: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "payload.invalid-examples.json of rooms/blobs/upload/begin 0.2 (task-force repository origin/main bd0c05013, specification status draft): 10 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/rooms/blobs/upload/begin/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 7, 8, 9, 10."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+    "https://trusttasks.org/spec/rooms/create/0.2",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "rooms/blobs/upload/begin",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+    "pinnedDigest": "sha256:054b7dfab64e2c57359c7b94187c47a98f90537bd36c413c06f26854f772cb59",
+    "tfRef": {
+     "repoPath": "specs/rooms/blobs/upload/begin/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Seeded-state probe of CX-RM-004: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:27e5fc6ab008321e7271b61760d3f5083bc455cc060733fa2f1b1afb86c85a65",
+    "schemaHash": "sha256:64bede96e0da9406c2f2f02647020110a099473d67ac6dbaac2a9c7aea2327d7"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:example:room$mint(r4)",
+        "visibility": "attributed",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px1)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:example:room$mint(r4)",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.signature",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.authority-room.signature"
+         ]
+        },
+        "uploadKey": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px2)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:example:room$mint(r4)",
+        "manifest": {
+         "size": 300000,
+         "chunks": {
+          "chunkSize": 262144,
+          "chunkCount": 2,
+          "chunkDigests": [
+           "zQmRq2ZwqJ3vWJrK1v8R8oPqWXhD4nVb1JmT9pV6uYh3aBc",
+           "zQmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX"
+          ]
+         },
+         "digest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+        },
+        "uploadKey": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px3)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:example:room$mint(r4)",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.signature",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.authority-room.signature"
+         ]
+        },
+        "manifest": {
+         "size": 300000,
+         "chunks": {
+          "chunkSize": 300000,
+          "chunkCount": 1,
+          "chunkDigests": [
+           "zQmRq2ZwqJ3vWJrK1v8R8oPqWXhD4nVb1JmT9pV6uYh3aBc"
+          ]
+         },
+         "digest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+        },
+        "uploadKey": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px4)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:example:room$mint(r4)",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.signature",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.authority-room.signature"
+         ]
+        },
+        "manifest": {
+         "size": 300000,
+         "name": "term-sheet.pdf",
+         "chunks": {
+          "chunkSize": 262144,
+          "chunkCount": 2,
+          "chunkDigests": [
+           "zQmRq2ZwqJ3vWJrK1v8R8oPqWXhD4nVb1JmT9pV6uYh3aBc",
+           "zQmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX"
+          ]
+         },
+         "digest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+        },
+        "uploadKey": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px5)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:example:room$mint(r4)",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.signature",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.authority-room.signature"
+         ]
+        },
+        "manifest": {
+         "size": 300000,
+         "chunks": {
+          "chunkSize": 262144,
+          "chunkCount": 2,
+          "chunkDigests": [
+           "zQmRq2ZwqJ3vWJrK1v8R8oPqWXhD4nVb1JmT9pV6uYh3aBc",
+           "zQmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX"
+          ]
+         },
+         "digest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+        },
+        "uploadKey": "did:webvh:example.com:people:alice"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px6)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:example:room$mint(r4)",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.signature",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.authority-room.signature"
+         ]
+        },
+        "manifest": {
+         "size": 300000,
+         "chunks": {
+          "chunkSize": 262144,
+          "chunkCount": 2,
+          "chunkDigests": [
+           "zQmRq2ZwqJ3vWJrK1v8R8oPqWXhD4nVb1JmT9pV6uYh3aBc",
+           "zQmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX"
+          ]
+         },
+         "digest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+        },
+        "directParts": {
+         "partSize": 300000,
+         "partCount": 1
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-RM-005",
+   "title": "rooms/epoch/mint 0.1: the room the request names exists, and a schema-invalid payload is still refused (seeded probe of CX-RM-009)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CX-RM-009: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "payload.invalid-examples.json of rooms/epoch/mint 0.1 (task-force repository origin/main bd0c05013, specification status draft): 5 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/rooms/epoch/mint/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/epoch/mint/0.1",
+    "https://trusttasks.org/spec/rooms/create/0.2",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "rooms/epoch/mint",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/epoch/mint/0.1",
+    "pinnedDigest": "sha256:6cda5d5362d674ddf123edda9029a019d6181870cf1bb6931952c0c1fbcb4841",
+    "tfRef": {
+     "repoPath": "specs/rooms/epoch/mint/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Seeded-state probe of CX-RM-009: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:82c713da19b08a107a75a3de9a38c22efc6895fdd42b371811596b7f29e9717c",
+    "schemaHash": "sha256:2e3a7e9d8cad680fc62137d2347fce890684e97d7c74500a7141a0d4f8dd5637"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind$mint(r6)",
+        "visibility": "attributed",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px1)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/mint/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind$mint(r6)",
+        "epoch": 2,
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.owner-vmc",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.admin-vac"
+         ]
+        },
+        "link": {
+         "epoch": 1,
+         "wrapped": "9jK2_QhV1sVvR0m5xAqZ7A",
+         "nonce": "b0Zt8Qm2Yq1sVvR0"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px2)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/mint/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind$mint(r6)",
+        "epoch": 3,
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.owner-vmc",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.admin-vac"
+         ]
+        },
+        "link": {
+         "epoch": 3,
+         "wrapped": "9jK2_QhV1sVvR0m5xAqZ7A"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px3)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/mint/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind$mint(r6)",
+        "epoch": 3,
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.owner-vmc",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.admin-vac"
+         ]
+        },
+        "link": {
+         "epoch": 3,
+         "wrapped": "9jK2_QhV1sVvR0m5xAqZ7A",
+         "nonce": "b0Zt8Qm2Yq1sVvR0",
+         "removedMember": "did:example:bob"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px4)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/mint/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind$mint(r6)",
+        "epoch": 1,
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.owner-vmc",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.admin-vac"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px5)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/mint/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind$mint(r6)",
+        "epoch": 2,
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.owner-vmc",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.admin-vac"
+         ]
+        },
+        "ext": {
+         "bare-key": {
+          "anything": "here"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-RM-006",
+   "title": "rooms/epoch/prune 0.2: the room the request names exists, and a schema-invalid payload is still refused (seeded probe of CX-RM-010)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CX-RM-010: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "payload.invalid-examples.json of rooms/epoch/prune 0.2 (task-force repository origin/main bd0c05013, specification status draft): 4 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/rooms/epoch/prune/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/epoch/prune/0.2",
+    "https://trusttasks.org/spec/rooms/create/0.2",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "rooms/epoch/prune",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/epoch/prune/0.2",
+    "pinnedDigest": "sha256:d52db03df501def75c9c9edfa2f90299d2074e6f827651f782cd6c449251adee",
+    "tfRef": {
+     "repoPath": "specs/rooms/epoch/prune/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Seeded-state probe of CX-RM-010: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:a00ceeba36f37b47ac78a2cb87d0e377617157f40a71f529af020a37f24bed4a",
+    "schemaHash": "sha256:579871677594be6efcb0a5bce3cd5b1d1bba0b7656b80d9db608efa9263c95ae"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind$mint(r7)",
+        "visibility": "attributed",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px1)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/prune/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind$mint(r7)",
+        "beforeEpoch": 1,
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px2)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/prune/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind$mint(r7)",
+        "beforeEpoch": 5
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px3)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/prune/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind$mint(r7)",
+        "pruned": 3,
+        "earliestRung": 5
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px4)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/prune/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind$mint(r7)",
+        "pruned": 0,
+        "earliestRung": 2,
+        "epochFloor": 0
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-RM-007",
+   "title": "rooms/records/prune 0.2: the room the request names exists, and a schema-invalid payload is still refused (seeded probe of CX-RM-034)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CX-RM-034: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "payload.invalid-examples.json of rooms/records/prune 0.2 (task-force repository origin/main bd0c05013, specification status draft): 8 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/rooms/records/prune/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: step 8."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/records/prune/0.2",
+    "https://trusttasks.org/spec/rooms/create/0.3",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "rooms/records/prune",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/records/prune/0.2",
+    "pinnedDigest": "sha256:aaaee9288571ba65b93f99a59ef73c05007ad5969a2d50ded5afb91c39e86abe",
+    "tfRef": {
+     "repoPath": "specs/rooms/records/prune/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Seeded-state probe of CX-RM-034: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:683a73f56b7b2ef268d8a73f114492f1215938237c0ae9d756098757e0aeeea4",
+    "schemaHash": "sha256:68dd6f23ae196662404075e070b748f6cdde35eb155983a1e522562d5024a55e"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r8)",
+        "visibility": "attributed",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.3#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px1)",
+       "type": "https://trusttasks.org/spec/rooms/records/prune/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r8)",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "kinds": [
+         "retracted"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px2)",
+       "type": "https://trusttasks.org/spec/rooms/records/prune/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r8)",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "kinds": [],
+        "reason": "quarterly retention run"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px3)",
+       "type": "https://trusttasks.org/spec/rooms/records/prune/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r8)",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "kinds": [
+         "expired"
+        ],
+        "reason": "quarterly retention run"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px4)",
+       "type": "https://trusttasks.org/spec/rooms/records/prune/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r8)",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "kinds": [
+         "aged"
+        ],
+        "reason": "quarterly retention run",
+        "keys": [
+         "giXFLTGBdnnQJRoIsktuIg"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px5)",
+       "type": "https://trusttasks.org/spec/rooms/records/prune/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r8)",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "kinds": [
+         "aged"
+        ],
+        "reason": "quarterly retention run",
+        "recordRetention": {
+         "recordDays": 1
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px6)",
+       "type": "https://trusttasks.org/spec/rooms/records/prune/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r8)",
+        "dryRun": false,
+        "removed": 0,
+        "recordRetention": {
+         "tombstoneDays": 30
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px7)",
+       "type": "https://trusttasks.org/spec/rooms/records/prune/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r8)",
+        "removed": 3
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px8)",
+       "type": "https://trusttasks.org/spec/rooms/records/prune/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r8)",
+        "removed": 14,
+        "recordRetention": {
+         "tombstoneDays": 30,
+         "recordDays": 730
+        },
+        "prune": {
+         "version": 413,
+         "at": "$now+1h",
+         "removed": 14
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-RM-008",
+   "title": "rooms/records/put 0.3: the room the request names exists, and a schema-invalid payload is still refused (seeded probe of CX-RM-035)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CX-RM-035: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "payload.invalid-examples.json of rooms/records/put 0.3 (task-force repository origin/main bd0c05013, specification status draft): 14 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/rooms/records/put/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: step 14."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/records/put/0.3",
+    "https://trusttasks.org/spec/rooms/create/0.2",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "rooms/records/put",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/records/put/0.3",
+    "pinnedDigest": "sha256:8a1c8735cae25857bdabb2e76e18bc0187eb2321d09365ce94cba3b80b89d6ae",
+    "tfRef": {
+     "repoPath": "specs/rooms/records/put/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Seeded-state probe of CX-RM-035: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:a1f0e556781666faa9871e6150a047b125013c47de12033c0fad8bc999f4e10c",
+    "schemaHash": "sha256:11e0f03f07c08ded666f906137f40e2d6a30b3215c75f72cce28cb51e88885aa",
+    "versionRole": "older"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r9)",
+        "visibility": "attributed",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed2)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r9)",
+        "visibility": "open",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px1)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r9)",
+        "key": "giXFLTGBdnnQJRoIsktuIg",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "sealed": {
+         "ciphertext": "Yw",
+         "nonce": "bg",
+         "epoch": 7
+        },
+        "blobs": [
+         "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "zQmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px2)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r9)",
+        "key": "giXFLTGBdnnQJRoIsktuIg",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "sealed": {
+         "ciphertext": "Yw",
+         "nonce": "bg",
+         "epoch": 7
+        },
+        "blobs": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px3)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r9)",
+        "key": "giXFLTGBdnnQJRoIsktuIg",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "sealed": {
+         "ciphertext": "Yw",
+         "nonce": "bg",
+         "epoch": 7
+        },
+        "blobs": [
+         "3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b8a55"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px4)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r9)",
+        "key": "giXFLTGBdnnQJRoIsktuIg",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "sealed": {
+         "ciphertext": "Yw",
+         "nonce": "bg",
+         "epoch": 7
+        },
+        "blobs": [
+         "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+        ],
+        "file": {
+         "name": "term sheet.pdf"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px5)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r9)",
+        "key": "giXFLTGBdnnQJRoIsktuIg",
+        "sealed": {
+         "ciphertext": "Yw",
+         "nonce": "bg",
+         "epoch": 7
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px6)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r9)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "basis": "hearsay"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px7)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r9)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "confidence": 60
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px8)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r9)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "evidence": []
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px9)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r9)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "evidence": [
+          {
+           "kind": "record",
+           "version": 3
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px10)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r9)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "evidence": [
+          {
+           "kind": "credential",
+           "credentialId": "urn:uuid:5a1e",
+           "credential": {
+            "type": [
+             "VerifiableCredential"
+            ]
+           }
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px11)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r9)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "evidence": [
+          {
+           "kind": "url",
+           "url": "https://example.com/proof"
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px12)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r9)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "validFor": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px13)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r9)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "validFor": {
+          "purposes": [
+           "personalisation"
+          ]
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px14)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r9)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "sealed": {
+         "ciphertext": "Yw",
+         "nonce": "bg",
+         "epoch": 7
+        },
+        "validUntil": "$now+1h"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-RM-009",
+   "title": "rooms/records/put 0.4: the room the request names exists, and a schema-invalid payload is still refused (seeded probe of CX-RM-036)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CX-RM-036: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "payload.invalid-examples.json of rooms/records/put 0.4 (task-force repository origin/main bd0c05013, specification status draft): 16 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/rooms/records/put/0.4/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: step 14."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/records/put/0.4",
+    "https://trusttasks.org/spec/rooms/create/0.2",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "rooms/records/put",
+    "version": "0.4",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/records/put/0.4",
+    "pinnedDigest": "sha256:16580785cb18a8de07764496e263ca33b96ba04c2ede1a718def2ea09dabe831",
+    "tfRef": {
+     "repoPath": "specs/rooms/records/put/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Seeded-state probe of CX-RM-036: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:68e400a66a4dd774a719acee2dfe3bfb631998b47817eb405289a267c28543c5",
+    "schemaHash": "sha256:47059821d4094db9b24a1f2c0cfb639e7f990b0d9d1b0acfde1feee167c82018",
+    "versionRole": "older"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r10)",
+        "visibility": "attributed",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed2)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r10)",
+        "visibility": "open",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed3)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.example:public$mint(r10)",
+        "visibility": "open",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px1)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r10)",
+        "key": "giXFLTGBdnnQJRoIsktuIg",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "sealed": {
+         "ciphertext": "Yw",
+         "nonce": "bg",
+         "epoch": 7
+        },
+        "blobs": [
+         "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "zQmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px2)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r10)",
+        "key": "giXFLTGBdnnQJRoIsktuIg",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "sealed": {
+         "ciphertext": "Yw",
+         "nonce": "bg",
+         "epoch": 7
+        },
+        "blobs": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px3)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r10)",
+        "key": "giXFLTGBdnnQJRoIsktuIg",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "sealed": {
+         "ciphertext": "Yw",
+         "nonce": "bg",
+         "epoch": 7
+        },
+        "blobs": [
+         "3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b8a55"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px4)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r10)",
+        "key": "giXFLTGBdnnQJRoIsktuIg",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "sealed": {
+         "ciphertext": "Yw",
+         "nonce": "bg",
+         "epoch": 7
+        },
+        "blobs": [
+         "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+        ],
+        "file": {
+         "name": "term sheet.pdf"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px5)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r10)",
+        "key": "giXFLTGBdnnQJRoIsktuIg",
+        "sealed": {
+         "ciphertext": "Yw",
+         "nonce": "bg",
+         "epoch": 7
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px6)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r10)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "basis": "hearsay"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px7)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r10)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "confidence": 60
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px8)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r10)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "evidence": []
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px9)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r10)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "evidence": [
+          {
+           "kind": "record",
+           "version": 3
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px10)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r10)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "evidence": [
+          {
+           "kind": "credential",
+           "credentialId": "urn:uuid:5a1e",
+           "credential": {
+            "type": [
+             "VerifiableCredential"
+            ]
+           }
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px11)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r10)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "evidence": [
+          {
+           "kind": "url",
+           "url": "https://example.com/proof"
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px12)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r10)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "validFor": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px13)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r10)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "cleartext": {
+         "body": "Pushed back twice on list price.",
+         "validFor": {
+          "purposes": [
+           "personalisation"
+          ]
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px14)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.northwind.example:notes$mint(r10)",
+        "key": "customer/price-sensitivity",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "sealed": {
+         "ciphertext": "Yw",
+         "nonce": "bg",
+         "epoch": 7
+        },
+        "validUntil": "$now+1h"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px15)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.example:public$mint(r10)",
+        "key": "k",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.m.s",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.a.s"
+         ]
+        },
+        "cleartext": {
+         "body": "",
+         "file": {
+          "fileId": "q0Kf7m3xV2s9Yh1cT8bN4wL6pR5dE2uJ7aZ0iO3gH1k",
+          "name": "a.pdf",
+          "size": 1,
+          "digest": "zQmeX7fPr6A8m5jF9XKfXgGv3cP4qTn2Cb6XnPLtE9hVjqD",
+          "epoch": 1,
+          "segmentSize": 65520,
+          "blobRef": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+          "fileKey": "tooShort"
+         }
+        },
+        "blobs": [
+         "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px16)",
+       "type": "https://trusttasks.org/spec/rooms/records/put/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmOpen:rooms.example:public$mint(r10)",
+        "key": "k",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.m.s",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.a.s"
+         ]
+        },
+        "cleartext": {
+         "body": "",
+         "file": {
+          "fileId": "q0Kf7m3xV2s9Yh1cT8bN4wL6pR5dE2uJ7aZ0iO3gH1k",
+          "name": "a.pdf",
+          "size": 1,
+          "digest": "zQmeX7fPr6A8m5jF9XKfXgGv3cP4qTn2Cb6XnPLtE9hVjqD",
+          "epoch": 1,
+          "segmentSize": 65520,
+          "blobRef": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+          "key": "Xv4Qn8pL2mW7rT1yU9sK3dF6gH0jB5cZ8aE2iO4uY7w"
+         }
+        },
+        "blobs": [
+         "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-RM-010",
+   "title": "rooms/records/retention/set 0.1: the room the request names exists, and a schema-invalid payload is still refused (seeded probe of CX-RM-037)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CX-RM-037: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "payload.invalid-examples.json of rooms/records/retention/set 0.1 (task-force repository origin/main bd0c05013, specification status draft): 4 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/rooms/records/retention/set/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/records/retention/set/0.1",
+    "https://trusttasks.org/spec/rooms/create/0.2",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "rooms/records/retention/set",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/records/retention/set/0.1",
+    "pinnedDigest": "sha256:62bfbedacc63e080b59a087ff8bcd9cad79c89f8d9bdd27b7e055a9e22eadfd3",
+    "tfRef": {
+     "repoPath": "specs/rooms/records/retention/set/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Seeded-state probe of CX-RM-037: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:cfd04fe9972604a1cce0804fbca51dd17f5a4f0f7cf9edd37d90189fa7fc214c",
+    "schemaHash": "sha256:00e8b90e729c6eb644ea1f6c0b1a637bb7350e40028c11b8cd417d47817c400a"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r11)",
+        "visibility": "attributed",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px1)",
+       "type": "https://trusttasks.org/spec/rooms/records/retention/set/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r11)",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "recordRetention": {
+         "recordDays": 365
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px2)",
+       "type": "https://trusttasks.org/spec/rooms/records/retention/set/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r11)",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "reason": "clear the retention"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px3)",
+       "type": "https://trusttasks.org/spec/rooms/records/retention/set/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r11)",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "recordRetention": {
+         "recordDays": 365
+        },
+        "retentionPolicy": "fromJoin",
+        "reason": "switch to a stream"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px4)",
+       "type": "https://trusttasks.org/spec/rooms/records/retention/set/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r11)",
+        "presentation": {
+         "membership": "m",
+         "authority": [
+          "a"
+         ]
+        },
+        "recordRetention": {
+         "tombstoneDays": "30"
+        },
+        "reason": "keep tombstones a month"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-RM-011",
+   "title": "rooms/revocations/get 0.1: the room the request names exists, and a schema-invalid payload is still refused (seeded probe of CX-RM-038)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CX-RM-038: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "payload.invalid-examples.json of rooms/revocations/get 0.1 (task-force repository origin/main bd0c05013, specification status draft): 2 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/rooms/revocations/get/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/revocations/get/0.1",
+    "https://trusttasks.org/spec/rooms/create/0.2",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "rooms/revocations/get",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/revocations/get/0.1",
+    "pinnedDigest": "sha256:63b7f79a9f2650ecf9db734777e915750c3351a43a5ac4660a1137df47b89937",
+    "tfRef": {
+     "repoPath": "specs/rooms/revocations/get/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Seeded-state probe of CX-RM-038: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:db2cd69e20d9dff74d9465803c18d7a514a723985f1d0024c4143317558e8ec6",
+    "schemaHash": "sha256:3d305da9f4337e9f5cf08f8b18ced56c6866c7fd0dbaa284971680792b4e6caa"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind$mint(r12)",
+        "visibility": "attributed",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px1)",
+       "type": "https://trusttasks.org/spec/rooms/revocations/get/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind$mint(r12)"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px2)",
+       "type": "https://trusttasks.org/spec/rooms/revocations/get/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind$mint(r12)",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.sig",
+         "authority": []
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-RM-012",
+   "title": "rooms/revocations/put 0.1: the room the request names exists, and a schema-invalid payload is still refused (seeded probe of CX-RM-039)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CX-RM-039: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "payload.invalid-examples.json of rooms/revocations/put 0.1 (task-force repository origin/main bd0c05013, specification status draft): 6 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/rooms/revocations/put/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 2, 3, 4, 5, 6."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/revocations/put/0.1",
+    "https://trusttasks.org/spec/rooms/create/0.2",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "rooms/revocations/put",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/revocations/put/0.1",
+    "pinnedDigest": "sha256:7ea45e889ebbd9438fdce2095512d3c12a992fb0180bfd284521a56dc085c28f",
+    "tfRef": {
+     "repoPath": "specs/rooms/revocations/put/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Seeded-state probe of CX-RM-039: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:9790c7a098177afa6c4b75d4784fe78b294109614a0e7997a473ec31a956d5b3",
+    "schemaHash": "sha256:f60c272836174699a0e1a1303ab38e7e52d41e4b30d963505f576f0f3ee9d2d9"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r13)",
+        "visibility": "attributed",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px1)",
+       "type": "https://trusttasks.org/spec/rooms/revocations/put/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r13)",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.sig",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.authority-admin.sig"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px2)",
+       "type": "https://trusttasks.org/spec/rooms/revocations/put/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r13)",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.sig",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.authority-admin.sig"
+         ]
+        },
+        "list": {
+         "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal",
+         "sequence": 1,
+         "issuedAt": "$now+0s",
+         "entries": []
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px3)",
+       "type": "https://trusttasks.org/spec/rooms/revocations/put/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r13)",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.sig",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.authority-admin.sig"
+         ]
+        },
+        "list": {
+         "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal",
+         "sequence": 0,
+         "issuedAt": "$now+0s",
+         "entries": [],
+         "proof": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px4)",
+       "type": "https://trusttasks.org/spec/rooms/revocations/put/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r13)",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.sig",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.authority-admin.sig"
+         ]
+        },
+        "list": {
+         "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal",
+         "sequence": 2,
+         "issuedAt": "$now+0s",
+         "entries": [
+          {
+           "kind": "subject",
+           "revokedAt": "$now+1h"
+          }
+         ],
+         "proof": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px5)",
+       "type": "https://trusttasks.org/spec/rooms/revocations/put/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r13)",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.sig",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.authority-admin.sig"
+         ]
+        },
+        "list": {
+         "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal",
+         "sequence": 2,
+         "issuedAt": "$now+0s",
+         "entries": [
+          {
+           "kind": "room"
+          }
+         ],
+         "proof": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px6)",
+       "type": "https://trusttasks.org/spec/rooms/revocations/put/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r13)",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.sig",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.authority-admin.sig"
+         ]
+        },
+        "list": {
+         "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal",
+         "sequence": 2,
+         "issuedAt": "$now+0s",
+         "entries": [
+          {
+           "kind": "device",
+           "revokedAt": "$now+1h"
+          }
+         ],
+         "proof": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-RM-013",
+   "title": "vtc/rooms/storage/assign 0.2: an identifier (configId) that names nothing is refused with vtc/rooms/storage/assign:configNotFound (re-issued from the retired CB-RM-028 with the room created first)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The retired vector could not be reached from one document because the stated code needs this object (its tombstone says why); the object now exists, so the stated refusal is reachable.",
+    "specs/vtc/rooms/storage/assign/0.2/spec.md: \"The community has no storage config with this identifier\"",
+    "specs/vtc/rooms/storage/assign/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/storage/assign/0.2",
+    "https://trusttasks.org/spec/rooms/create/0.2",
+    "optional:authorised",
+    "optional:seed.defaults"
+   ],
+   "mutants": [
+    "bs:vtc/rooms/storage/assign/0.2:vtc/rooms/storage/assign:configNotFound"
+   ],
+   "source": {
+    "slug": "vtc/rooms/storage/assign",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/storage/assign/0.2",
+    "pinnedDigest": "sha256:c4cb9b720fcb2e6e387656c4209fb14404d97b86a42f1342b670d7eb7277eb71",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/storage/assign/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text. Re-issue of the retired CB-RM-028 (the tombstone is kept; this id is new): the object the retired vector needed is created by its first step. Advisory.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:9c1c10c5e27cd81b5278e3acc574e4aab668a7fce7a6162246650f9c78654208",
+    "schemaHash": "sha256:db98767efcba6477f82e330f8e0679be114aab18274b8f9f885fa2564035c23d"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/rooms/create/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "cpreissue$mint(room028)",
+        "visibility": "open",
+        "ownerDid": "$A"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/rooms/create/0.2#response",
+      "orRefusal": [
+       "rooms/create:visibilityNotPermitted"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/storage/assign/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "cpreissue$mint(room028)",
+        "configId": "conformance-unknown-identifier",
+        "reason": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/storage/assign:configNotFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  }
+ ]
+}

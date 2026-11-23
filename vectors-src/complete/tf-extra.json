@@ -1,0 +1,3378 @@
+{
+ "format": "tt-gap-snapshot/0.1",
+ "about": "Task-force facts for scope tasks the main gap snapshot does not hold (other vector sets cover them), read by scripts/generate-complete.ts only; loadTask never reads this file (scripts/gap-snapshot.ts, rev named in tfCommit).",
+ "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+ "tfDate": "2026-11-19",
+ "families": [
+  "backup",
+  "config",
+  "credential-exchange",
+  "external",
+  "persona",
+  "provision"
+ ],
+ "tasks": [
+  {
+   "typeUri": "https://trusttasks.org/spec/backup/abort/0.1",
+   "slug": "backup/abort",
+   "version": "0.1",
+   "family": "backup",
+   "title": "Backup \u2014 Abort",
+   "status": "draft",
+   "tfPath": "specs/backup/abort/0.1/spec.md",
+   "dirDigest": "sha256:0272306ea61f13421838979e39fe41c1d47d550f4f9fd0a6ebf616670e5ee8b9",
+   "specHash": "sha256:d2f79f35ce2232d198e8e7c09c4241b0a8dd4ddf7e4e24ada2ea55e86ed0f42b",
+   "schemaHash": "sha256:fdc1370be7dfb500335f2fcebecd307c1cf4d71635d5a5358d417c85c9e274c7",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "backup/abort:notFound"
+   ],
+   "invalidExamples": [
+    {
+     "note": "Missing `bundleId`. There is no default bundle, and an absent handle must never read as 'all of my open bundles' \u2014 abort is destructive, and a fan-out is the last thing an omitted member should mean.",
+     "payload": {}
+    },
+    {
+     "note": "`bundleId` that is not a UUID. The pattern is what keeps a crafted handle from reaching the recipient's store as a lookup key.",
+     "payload": {
+      "bundleId": "*"
+     }
+    },
+    {
+     "note": "Bare/unnamespaced ext key \u2014 SPEC \u00a74.5.1 requires every immediate child of ext to be reverse-DNS namespaced.",
+     "payload": {
+      "bundleId": "3f2504e0-4f89-41d3-9a0c-0305e82c3301",
+      "ext": {
+       "bare-key": {
+        "anything": "here"
+       }
+      }
+     }
+    },
+    {
+     "note": "Unknown top-level member \u2014 additionalProperties: false catches `force`. Abort has no forced variant: it already discards the bytes, and a member suggesting a harder version would be read as one by an implementer who has not checked.",
+     "payload": {
+      "bundleId": "3f2504e0-4f89-41d3-9a0c-0305e82c3301",
+      "force": true
+     }
+    }
+   ],
+   "examples": [
+    {
+     "payload": {
+      "bundleId": "3f2504e0-4f89-41d3-9a0c-0305e82c3301"
+     }
+    }
+   ]
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/backup/complete-export/0.1",
+   "slug": "backup/complete-export",
+   "version": "0.1",
+   "family": "backup",
+   "title": "Backup \u2014 Complete Export",
+   "status": "draft",
+   "tfPath": "specs/backup/complete-export/0.1/spec.md",
+   "dirDigest": "sha256:62ad1336f9b507d7a363dad1e14a0fad21418a9523a4e90c8297e6bceb20cea8",
+   "specHash": "sha256:26e64c24aa07febbaa8d16970e4037afa276d2f8e12d2ec4620c1e23d76a9269",
+   "schemaHash": "sha256:71f2c5c0cb1909c01ef2bdae8c0153d4c63c56c6048948c8ac3a14694fd4a14a",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "backup/complete-export:notFound",
+    "backup/complete-export:terminalState"
+   ],
+   "invalidExamples": [
+    {
+     "note": "Missing `bundleId`. There is no current bundle and no most-recent default \u2014 an absent handle must never resolve to one.",
+     "payload": {}
+    },
+    {
+     "note": "`bundleId` that is not a UUID. The pattern is what keeps a guessed or crafted handle from reaching the recipient's store as a lookup key.",
+     "payload": {
+      "bundleId": "latest"
+     }
+    },
+    {
+     "note": "Bare/unnamespaced ext key \u2014 SPEC \u00a74.5.1 requires every immediate child of ext to be reverse-DNS namespaced.",
+     "payload": {
+      "bundleId": "3f2504e0-4f89-41d3-9a0c-0305e82c3301",
+      "ext": {
+       "bare-key": {
+        "anything": "here"
+       }
+      }
+     }
+    },
+    {
+     "note": "Unknown top-level member \u2014 additionalProperties: false catches `downloaded`. Whether the bytes were fetched is the recipient's observation; a producer asserting it would be asserting a fact only the recipient holds.",
+     "payload": {
+      "bundleId": "3f2504e0-4f89-41d3-9a0c-0305e82c3301",
+      "downloaded": true
+     }
+    }
+   ],
+   "examples": [
+    {
+     "payload": {
+      "bundleId": "3f2504e0-4f89-41d3-9a0c-0305e82c3301"
+     }
+    }
+   ]
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/backup/finalize-import/0.1",
+   "slug": "backup/finalize-import",
+   "version": "0.1",
+   "family": "backup",
+   "title": "Backup \u2014 Finalize Import",
+   "status": "draft",
+   "tfPath": "specs/backup/finalize-import/0.1/spec.md",
+   "dirDigest": "sha256:0522cf48070ec8cd1b41961ef57a493a9950420113836954983e81cde928cbcb",
+   "specHash": "sha256:b257b7711ea0234e34ea52f71be4228d62d3b592310596cd4e2ecee13dc55fdc",
+   "schemaHash": "sha256:66050a28cd04c8cb64d01f2ea461beef934d044a803727dc0003478bef098e4d",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "backup/finalize-import:notFound",
+    "backup/finalize-import:noBytesUploaded",
+    "backup/finalize-import:incompleteUpload",
+    "backup/finalize-import:bundleDigestMismatch",
+    "backup/finalize-import:terminalState",
+    "backup/finalize-import:malformedBundle",
+    "backup/finalize-import:decryptionFailed"
+   ],
+   "invalidExamples": [
+    {
+     "note": "Missing both `bundleId` and `password`. There is no current bundle and no recipient-held password \u2014 an absent handle must never resolve to one, on the task that replaces the node.",
+     "payload": {}
+    },
+    {
+     "note": "Missing `password`. A bundle is encrypted; there is no unpassworded path, and an absent member must not be read as one.",
+     "payload": {
+      "bundleId": "9c858901-8a57-4791-81fe-4c455b099bc9"
+     }
+    },
+    {
+     "note": "`bundleId` that is not a UUID. The pattern is what keeps a crafted handle from reaching the recipient's store as a lookup key.",
+     "payload": {
+      "bundleId": "most-recent",
+      "password": "a sufficiently long secret"
+     }
+    },
+    {
+     "note": "`confirm` as the string \"false\". A producer intending a rehearsal would otherwise be read as truthy by a lenient consumer and get an irreversible commit \u2014 the exact substitution this member exists to prevent.",
+     "payload": {
+      "bundleId": "9c858901-8a57-4791-81fe-4c455b099bc9",
+      "password": "a sufficiently long secret",
+      "confirm": "false"
+     }
+    },
+    {
+     "note": "Bare/unnamespaced ext key \u2014 SPEC \u00a74.5.1 requires every immediate child of ext to be reverse-DNS namespaced.",
+     "payload": {
+      "bundleId": "9c858901-8a57-4791-81fe-4c455b099bc9",
+      "password": "a sufficiently long secret",
+      "ext": {
+       "bare-key": {
+        "anything": "here"
+       }
+      }
+     }
+    },
+    {
+     "note": "Unknown top-level member \u2014 additionalProperties: false catches `sourceDid`. What the bundle came from is what the recipient reads out of it and reports; a producer asserting it would be asserting the one fact the preview exists to establish.",
+     "payload": {
+      "bundleId": "9c858901-8a57-4791-81fe-4c455b099bc9",
+      "password": "a sufficiently long secret",
+      "sourceDid": "did:example:node"
+     }
+    }
+   ],
+   "examples": [
+    {
+     "payload": {
+      "bundleId": "9c858901-8a57-4791-81fe-4c455b099bc9",
+      "password": "correct horse battery staple",
+      "confirm": false
+     }
+    }
+   ]
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/backup/get-chunk/0.1",
+   "slug": "backup/get-chunk",
+   "version": "0.1",
+   "family": "backup",
+   "title": "Backup \u2014 Get Chunk",
+   "status": "draft",
+   "tfPath": "specs/backup/get-chunk/0.1/spec.md",
+   "dirDigest": "sha256:05bbbb8984e4cd0791f013a0aab79dd21fd134cfa2839784fa46c18f7827da90",
+   "specHash": "sha256:7454f56b08d812b3d75a6d9b9aa734cea8cbacc4fc7ee7b0387adcb6d99e3410",
+   "schemaHash": "sha256:634a647ce3b2d34f62b6ffa4a138a4f55cf51f42ebf821162f2341df00f6abbe",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "backup/get-chunk:notFound",
+    "backup/get-chunk:chunkOutOfRange",
+    "backup/get-chunk:terminalState"
+   ],
+   "invalidExamples": [
+    {
+     "note": "Missing `index`. There is no 'next chunk' \u2014 the producer names what it wants, which is what makes a retry or a resume a plain repeat rather than a cursor the recipient must track.",
+     "payload": {
+      "bundleId": "5b1f4a2e-7c3d-4e8f-9a6b-2d0c1e3f4a5b"
+     }
+    },
+    {
+     "note": "Negative `index`. Caught by the schema rather than left to be read as 'from the end' by a lenient consumer.",
+     "payload": {
+      "bundleId": "5b1f4a2e-7c3d-4e8f-9a6b-2d0c1e3f4a5b",
+      "index": -1
+     }
+    },
+    {
+     "note": "`index` beyond the 4096-chunk bound. No manifest can describe it, so it never reaches a lookup.",
+     "payload": {
+      "bundleId": "5b1f4a2e-7c3d-4e8f-9a6b-2d0c1e3f4a5b",
+      "index": 4096
+     }
+    },
+    {
+     "note": "`bundleId` that is not a UUID. The pattern keeps a crafted handle from reaching the recipient's store as a lookup key.",
+     "payload": {
+      "bundleId": "latest",
+      "index": 0
+     }
+    },
+    {
+     "note": "Unknown top-level member \u2014 additionalProperties: false catches `transportToken`. A chunked retrieval is authorized by the authenticated sender, never by a bearer token; accepting one here would invite implementations to treat it as sufficient.",
+     "payload": {
+      "bundleId": "5b1f4a2e-7c3d-4e8f-9a6b-2d0c1e3f4a5b",
+      "index": 0,
+      "transportToken": "dGhpcy1pcy1hLW9uZS1zaG90LWJlYXJlci10b2tlbg"
+     }
+    }
+   ],
+   "examples": [
+    {
+     "payload": {
+      "bundleId": "5b1f4a2e-7c3d-4e8f-9a6b-2d0c1e3f4a5b",
+      "index": 2
+     }
+    }
+   ]
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/backup/initiate-import/0.1",
+   "slug": "backup/initiate-import",
+   "version": "0.1",
+   "family": "backup",
+   "title": "Backup \u2014 Initiate Import",
+   "status": "draft",
+   "tfPath": "specs/backup/initiate-import/0.1/spec.md",
+   "dirDigest": "sha256:82ea973b860d644c1d876e19a8c03554aa35c840eed2889f6a0455db93d43c43",
+   "specHash": "sha256:27afa0c1484fc1828098831904230ecee4f8660f40b21e2cfe0fe57439bc7842",
+   "schemaHash": "sha256:3e7f3f1b70daa581de56d33ade5501b7903dda4a86745b48493a0f4b711e6d37",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "backup/initiate-import:unsupportedAlgorithm",
+    "backup/initiate-import:invalidDigest",
+    "backup/initiate-import:invalidManifest",
+    "backup/initiate-import:chunkSizeUnacceptable",
+    "backup/initiate-import:transportUnavailable",
+    "backup/initiate-import:tooManyOpenBundles"
+   ],
+   "invalidExamples": [
+    {
+     "note": "Missing both pre-commitments. A slot opened without a digest accepts whatever arrives, which is exactly the property that makes a leaked write token harmless when they are present.",
+     "payload": {}
+    },
+    {
+     "note": "Uppercase hex digest. The pattern fixes one spelling so that a recipient's comparison is a string equality rather than a normalisation it might get wrong.",
+     "payload": {
+      "expectedSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "expectedSizeBytes": 1048576
+     }
+    },
+    {
+     "note": "Digest of the wrong length \u2014 a SHA-1 in a SHA-256 member. Caught by the pattern before a slot is opened.",
+     "payload": {
+      "expectedSha256": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+      "expectedSizeBytes": 1048576
+     }
+    },
+    {
+     "note": "Zero `expectedSizeBytes`. There is nothing to import, and a slot sized for no bytes would accept an empty upload as a successful transfer.",
+     "payload": {
+      "expectedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expectedSizeBytes": 0
+     }
+    },
+    {
+     "note": "Bare/unnamespaced ext key \u2014 SPEC \u00a74.5.1 requires every immediate child of ext to be reverse-DNS namespaced.",
+     "payload": {
+      "expectedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expectedSizeBytes": 1048576,
+      "ext": {
+       "bare-key": {
+        "anything": "here"
+       }
+      }
+     }
+    },
+    {
+     "note": "Unknown top-level member \u2014 additionalProperties: false catches `password`. The password belongs to finalize-import; accepting it here would put the decryption secret alongside the slot that holds the ciphertext, which is the one place this family keeps them apart.",
+     "payload": {
+      "expectedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expectedSizeBytes": 1048576,
+      "password": "a sufficiently long secret"
+     }
+    },
+    {
+     "note": "Chunk manifest with `chunkSize` above the 262144-byte ceiling. Every put-chunk that followed would exceed a 1 MiB mediator message and be dropped in transit, so the slot is refused before it opens.",
+     "payload": {
+      "expectedSha256": "20111c1d10631a5d6b2e9e06f558cd5c84e841d2bc5758bfda0d3b76bb4927f0",
+      "expectedSizeBytes": 524300,
+      "algorithm": "chunkedTrustTask",
+      "chunks": {
+       "chunkSize": 524288,
+       "chunkCount": 2,
+       "chunkDigests": [
+        "zQmehatQCtXyeV6kFkRVXjhDifqT3qARJ24248K2GJp7iWx",
+        "zQmaFd25Uf6hJJ8xHX349DLzp4sryKmTGuyaSZWVtwsK5rM"
+       ]
+      }
+     }
+    },
+    {
+     "note": "Per-chunk digests as bare hex. Chunk digests are DigestMultibase, so the hash algorithm travels with the value; a bare hex string hard-codes one algorithm into the wire contract.",
+     "payload": {
+      "expectedSha256": "20111c1d10631a5d6b2e9e06f558cd5c84e841d2bc5758bfda0d3b76bb4927f0",
+      "expectedSizeBytes": 524300,
+      "algorithm": "chunkedTrustTask",
+      "chunks": {
+       "chunkSize": 262144,
+       "chunkCount": 3,
+       "chunkDigests": [
+        "20111c1d10631a5d6b2e9e06f558cd5c84e841d2bc5758bfda0d3b76bb4927f0",
+        "20111c1d10631a5d6b2e9e06f558cd5c84e841d2bc5758bfda0d3b76bb4927f0",
+        "20111c1d10631a5d6b2e9e06f558cd5c84e841d2bc5758bfda0d3b76bb4927f0"
+       ]
+      }
+     }
+    },
+    {
+     "note": "Chunk manifest with no digests. A manifest that commits to nothing lets any bytes be written at any index, which is the substitution the pre-commitment exists to prevent.",
+     "payload": {
+      "expectedSha256": "20111c1d10631a5d6b2e9e06f558cd5c84e841d2bc5758bfda0d3b76bb4927f0",
+      "expectedSizeBytes": 524300,
+      "algorithm": "chunkedTrustTask",
+      "chunks": {
+       "chunkSize": 262144,
+       "chunkCount": 3,
+       "chunkDigests": []
+      }
+     }
+    }
+   ],
+   "examples": [
+    {
+     "payload": {
+      "expectedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expectedSizeBytes": 1048576
+     }
+    },
+    {
+     "payload": {
+      "expectedSha256": "20111c1d10631a5d6b2e9e06f558cd5c84e841d2bc5758bfda0d3b76bb4927f0",
+      "expectedSizeBytes": 524300,
+      "algorithm": "chunkedTrustTask",
+      "chunks": {
+       "chunkSize": 262144,
+       "chunkCount": 3,
+       "chunkDigests": [
+        "zQmehatQCtXyeV6kFkRVXjhDifqT3qARJ24248K2GJp7iWx",
+        "zQmaFd25Uf6hJJ8xHX349DLzp4sryKmTGuyaSZWVtwsK5rM",
+        "zQmTcWLvAPe4Txz32vVqZe5jgX4nBPiaBsTTCp4bLXDMzTT"
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/backup/put-chunk/0.1",
+   "slug": "backup/put-chunk",
+   "version": "0.1",
+   "family": "backup",
+   "title": "Backup \u2014 Put Chunk",
+   "status": "draft",
+   "tfPath": "specs/backup/put-chunk/0.1/spec.md",
+   "dirDigest": "sha256:ce960a6a4978c6b642df9a0d5d118f7bafe701efb07edc13edf7e0f047b04413",
+   "specHash": "sha256:a212d8b44493fb213e70048e95727283ab06af952b08f608b0154fe7a75b3d1a",
+   "schemaHash": "sha256:db00ba67815bb563d3775b40b012cb689ec323556e2e3a408720f2a9762955ad",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": false,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "backup/put-chunk:notFound",
+    "backup/put-chunk:chunkOutOfRange",
+    "backup/put-chunk:digestMismatch",
+    "backup/put-chunk:chunkSizeMismatch",
+    "backup/put-chunk:terminalState"
+   ],
+   "invalidExamples": [
+    {
+     "note": "Missing `digestMultibase`. The producer restates the digest it pre-committed so that a chunk written to the wrong index is caught as a mismatch at the index, not only after reassembly.",
+     "payload": {
+      "bundleId": "5b1f4a2e-7c3d-4e8f-9a6b-2d0c1e3f4a5b",
+      "index": 2,
+      "data": "YmFja3VwLXRhaWwh"
+     }
+    },
+    {
+     "note": "Missing `data`. There is no empty chunk: a chunk holds at least one byte.",
+     "payload": {
+      "bundleId": "5b1f4a2e-7c3d-4e8f-9a6b-2d0c1e3f4a5b",
+      "index": 2,
+      "digestMultibase": "zQmTcWLvAPe4Txz32vVqZe5jgX4nBPiaBsTTCp4bLXDMzTT"
+     }
+    },
+    {
+     "note": "`data` in standard base64 with padding. The member is base64url without padding; accepting both alphabets makes the same chunk two different strings, and `+`, `/` and `=` are exactly what a lenient decoder silently drops.",
+     "payload": {
+      "bundleId": "5b1f4a2e-7c3d-4e8f-9a6b-2d0c1e3f4a5b",
+      "index": 2,
+      "digestMultibase": "zQmTcWLvAPe4Txz32vVqZe5jgX4nBPiaBsTTCp4bLXDMzTT",
+      "data": "YmFja3VwLXRhaWwh+/=="
+     }
+    },
+    {
+     "note": "Digest as bare hex. Chunk digests are DigestMultibase, so the hash algorithm travels with the value.",
+     "payload": {
+      "bundleId": "5b1f4a2e-7c3d-4e8f-9a6b-2d0c1e3f4a5b",
+      "index": 2,
+      "digestMultibase": "20111c1d10631a5d6b2e9e06f558cd5c84e841d2bc5758bfda0d3b76bb4927f0",
+      "data": "YmFja3VwLXRhaWwh"
+     }
+    }
+   ],
+   "examples": [
+    {
+     "payload": {
+      "bundleId": "7e6d5c4b-3a29-4817-a6f5-e4d3c2b1a098",
+      "index": 2,
+      "digestMultibase": "zQmTcWLvAPe4Txz32vVqZe5jgX4nBPiaBsTTCp4bLXDMzTT",
+      "data": "YmFja3VwLXRhaWwh"
+     }
+    }
+   ]
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/config/patch/0.1",
+   "slug": "config/patch",
+   "version": "0.1",
+   "family": "config",
+   "title": "Config \u2014 Patch",
+   "status": "draft",
+   "tfPath": "specs/config/patch/0.1/spec.md",
+   "dirDigest": "sha256:b701c650d20930465cee326c5643d73beab57cc058b1d9ee1cf85ec55a04d38c",
+   "specHash": "sha256:55840ac281841925a449118c45bee09d44b6040daef81528abe27a84e9da3cb1",
+   "schemaHash": "sha256:1281cfdde9609907cca0c304b5c98e9957bfbb1d20dd8201d375f1288b4ae66e",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [],
+   "invalidExamples": [
+    {
+     "note": "Unknown top-level member is rejected (additionalProperties: false).",
+     "payload": {
+      "overrides": {
+       "log.level": "debug"
+      },
+      "__notARealMember__": true
+     }
+    },
+    {
+     "note": "`overrides` is required.",
+     "payload": {}
+    },
+    {
+     "note": "`overrides` must have at least one entry.",
+     "payload": {
+      "overrides": {}
+     }
+    }
+   ],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/credential-exchange/issue/0.1",
+   "slug": "credential-exchange/issue",
+   "version": "0.1",
+   "family": "credential-exchange",
+   "title": "Credential Exchange \u2014 Issue",
+   "status": "draft",
+   "tfPath": "specs/credential-exchange/issue/0.1/spec.md",
+   "dirDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+   "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+   "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": false,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": null,
+   "errorCodes": [
+    "credential-exchange/issue:unopenableBundle",
+    "credential-exchange/issue:unsupportedFormat"
+   ],
+   "invalidExamples": [
+    {
+     "note": "One of `credential_response` or `sealed` is required.",
+     "payload": {}
+    },
+    {
+     "note": "Both delivery paths at once is rejected \u2014 exactly one, or a consumer must guess which is authoritative.",
+     "payload": {
+      "credential_response": {},
+      "sealed": "-----BEGIN VTA SEALED-----"
+     }
+    },
+    {
+     "note": "`sealed` must be a non-empty armored string.",
+     "payload": {
+      "sealed": ""
+     }
+    },
+    {
+     "note": "`credential_response` must be an object, not a string.",
+     "payload": {
+      "credential_response": "eyJhbGciOiJF"
+     }
+    },
+    {
+     "note": "Unknown top-level member is rejected (additionalProperties: false).",
+     "payload": {
+      "sealed": "-----BEGIN VTA SEALED-----",
+      "__notARealMember__": true
+     }
+    }
+   ],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/external/accounts/secret/set/0.1",
+   "slug": "external/accounts/secret/set",
+   "version": "0.1",
+   "family": "external",
+   "title": "External Accounts \u2014 Secret \u2014 Set",
+   "status": "draft",
+   "tfPath": "specs/external/accounts/secret/set/0.1/spec.md",
+   "dirDigest": "sha256:50a892679f98401c9d31786e13e412210ef628e4f39ea02ffcb75d17d1f110e3",
+   "specHash": "sha256:b0d3b74a62969ae1fac0b2289de09d84673e880d72948d357b6b8e3133010763",
+   "schemaHash": "sha256:6cb69eb35be2847803909b37cb0bfbde3e95cd57c97f7f88655fe4ccd0406c82",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "external:notFound",
+    "external:archived",
+    "external/accounts/secret/set:notStaticModel",
+    "external/accounts/secret/set:unsealFailed"
+   ],
+   "invalidExamples": [
+    {
+     "note": "The secret in the clear. Only a sealed bundle is accepted, so that no relay, proxy or log ever holds it.",
+     "payload": {
+      "context": "community",
+      "id": "r2-rooms",
+      "secret": "wJalrXUtnFEMI/K7MDENG"
+     }
+    },
+    {
+     "note": "A bundle that is not ASCII armor.",
+     "payload": {
+      "context": "community",
+      "id": "r2-rooms",
+      "sealedSecret": "d0phbHJYVXRuRkVNSS9LN01ERU5HL2JQeFJmaUNZRVhBTVBMRUtFWQ"
+     }
+    },
+    {
+     "note": "A bare digest as the fingerprint. An unkeyed hash of a secret lets anyone who reads it test guesses offline; only a SecretFingerprint, keyed at the custodian, is accepted.",
+     "payload": {
+      "fingerprint": "zQmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
+      "setAt": "2026-10-10T10:00:01Z"
+     }
+    }
+   ],
+   "examples": [
+    {
+     "payload": {
+      "context": "community",
+      "id": "r2-rooms",
+      "wrappingKeyId": "wk-7c1e9a",
+      "sealedSecret": "-----BEGIN VTA SEALED BUNDLE-----\nBundle-Id: 9f3c\u2026\nDigest-Algo: sha-256\nChunk: 0/1\n\nU2VhbGVkU2VjcmV0Q2lwaGVydGV4dFNlYWxlZFNlY3JldENpcGhlcnRleHQ\n=Q1JD\n-----END VTA SEALED BUNDLE-----"
+     }
+    }
+   ]
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/external/credentials/issue/0.3",
+   "slug": "external/credentials/issue",
+   "version": "0.3",
+   "family": "external",
+   "title": "External Credentials \u2014 Issue",
+   "status": "draft",
+   "tfPath": "specs/external/credentials/issue/0.3/spec.md",
+   "dirDigest": "sha256:a5c6b1895d94d4c157fc8edb6d49c25e52106b2214f6e2cf4ce5d4bd6591ba5e",
+   "specHash": "sha256:195f61fa10f8dfd3bb1f3d51466bff876ba4d1e1c008854d59618c4814b486ab",
+   "schemaHash": "sha256:0e2f78ddfe5254fbb8497848a58e6ee227525208490e7a613c09bf707fac7101",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "external:notFound",
+    "external:notActive",
+    "external:notBound",
+    "external/credentials/issue:requestShapeMismatch",
+    "external/credentials/issue:invalidBatch",
+    "external/credentials/issue:scopeOutsideCeiling",
+    "external/credentials/issue:ttlTooLong",
+    "external/credentials/issue:responseTooLarge",
+    "external:rateLimited",
+    "external:providerSetupRequired",
+    "external:providerRefused",
+    "external:providerUnavailable",
+    "external/credentials/issue:notBrokered",
+    "external/credentials/issue:noKeyAgreement"
+   ],
+   "invalidExamples": [
+    {
+     "note": "Both `scope` and `presign`. One issuance is either a session or token credential, or a batch of presigned requests, never both.",
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "scope": {
+       "prefix": "rooms/a/",
+       "actions": [
+        "get"
+       ]
+      },
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
+       "requests": [
+        {
+         "operation": "get"
+        }
+       ]
+      },
+      "ttlSeconds": 300
+     }
+    },
+    {
+     "note": "A `put` with no checksum. A write is always bound to its exact length and SHA-256, so storage refuses other bytes.",
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
+       "requests": [
+        {
+         "operation": "put",
+         "contentLength": 300000
+        }
+       ]
+      },
+      "ttlSeconds": 300
+     }
+    },
+    {
+     "note": "A checksum in hex. S3 takes `x-amz-checksum-sha256` in base64; a value storage cannot compare would bind nothing.",
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
+       "requests": [
+        {
+         "operation": "put",
+         "contentLength": 300000,
+         "checksumSha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        }
+       ]
+      },
+      "ttlSeconds": 300
+     }
+    },
+    {
+     "note": "Part number 0. S3 numbers parts from 1.",
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
+       "requests": [
+        {
+         "operation": "upload-part",
+         "partNumber": 0,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        }
+       ],
+       "uploadId": "VXBsb2FkSWQtZXhhbXBsZQ"
+      },
+      "ttlSeconds": 300
+     }
+    },
+    {
+     "note": "An `upload-part` with no length. A part is always bound to its exact length.",
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
+       "requests": [
+        {
+         "operation": "upload-part",
+         "partNumber": 1,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        }
+       ],
+       "uploadId": "VXBsb2FkSWQtZXhhbXBsZQ"
+      },
+      "ttlSeconds": 300
+     }
+    },
+    {
+     "note": "65 operations, above the batch ceiling of 64. Presigned requests are bearer authority for their lifetime, so a batch is held to what a consumer can use before they expire; a larger upload asks again or uses larger parts.",
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
+       "requests": [
+        {
+         "operation": "upload-part",
+         "partNumber": 1,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 2,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 3,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 4,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 5,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 6,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 7,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 8,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 9,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 10,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 11,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 12,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 13,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 14,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 15,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 16,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 17,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 18,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 19,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 20,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 21,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 22,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 23,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 24,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 25,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 26,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 27,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 28,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 29,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 30,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 31,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 32,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 33,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 34,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 35,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 36,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 37,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 38,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 39,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 40,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 41,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 42,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 43,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 44,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 45,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 46,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 47,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 48,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 49,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 50,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 51,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 52,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 53,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 54,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 55,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 56,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 57,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 58,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 59,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 60,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 61,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 62,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 63,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 64,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 65,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        }
+       ],
+       "uploadId": "VXBsb2FkSWQtZXhhbXBsZQ"
+      },
+      "ttlSeconds": 300
+     }
+    },
+    {
+     "note": "An object key carrying a `/`, which would name an object outside the one the batch is bound to.",
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "../other",
+       "requests": [
+        {
+         "operation": "get"
+        }
+       ]
+      },
+      "ttlSeconds": 300
+     }
+    },
+    {
+     "note": "An operation outside the vocabulary. CopyObject, a bucket listing or an ACL change cannot be presigned by this task.",
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
+       "requests": [
+        {
+         "operation": "copy"
+        }
+       ]
+      },
+      "ttlSeconds": 300
+     }
+    },
+    {
+     "note": "An upload id carrying a quote and a space, which could break out of a query parameter if interpolated rather than encoded.",
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
+       "requests": [
+        {
+         "operation": "abort-multipart"
+        }
+       ],
+       "uploadId": "x\" &delete"
+      },
+      "ttlSeconds": 300
+     }
+    },
+    {
+     "note": "A member a `get` does not take. Each operation carries exactly what its request signs.",
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
+       "requests": [
+        {
+         "operation": "get",
+         "contentLength": 10
+        }
+       ]
+      },
+      "ttlSeconds": 300
+     }
+    },
+    {
+     "note": "A consumer DID in the payload. Who is asking is proven by the document, never claimed in it.",
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
+       "requests": [
+        {
+         "operation": "get"
+        }
+       ]
+      },
+      "ttlSeconds": 300,
+      "consumer": "did:example:community"
+     }
+    },
+    {
+     "note": "A lifetime above one hour, the family ceiling.",
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
+       "requests": [
+        {
+         "operation": "get"
+        }
+       ]
+      },
+      "ttlSeconds": 43200
+     }
+    },
+    {
+     "note": "Presigned URLs in the clear in the response. Only the sealed bundle may carry them.",
+     "payload": {
+      "sealedCredential": "-----BEGIN VTA SEALED BUNDLE-----\nBundle-Id: 2b7e\u2026\nDigest-Algo: sha-256\nChunk: 0/1\n\nRXh0ZXJuYWxDcmVkZW50aWFsQ2lwaGVydGV4dEV4dGVybmFsQ3JlZGVudGlhbA\n=Q1JD\n-----END VTA SEALED BUNDLE-----",
+      "expiresAt": "2026-10-10T10:05:00Z",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
+       "requests": [
+        {
+         "operation": "get"
+        }
+       ]
+      },
+      "urls": [
+       "https://storage.example/rooms/x?X-Amz-Signature=abc"
+      ]
+     }
+    },
+    {
+     "note": "A response that echoes no grant. It says which of `scope` or `presign` it answered.",
+     "payload": {
+      "sealedCredential": "-----BEGIN VTA SEALED BUNDLE-----\nBundle-Id: 2b7e\u2026\nDigest-Algo: sha-256\nChunk: 0/1\n\nRXh0ZXJuYWxDcmVkZW50aWFsQ2lwaGVydGV4dEV4dGVybmFsQ3JlZGVudGlhbA\n=Q1JD\n-----END VTA SEALED BUNDLE-----",
+      "expiresAt": "2026-10-10T10:05:00Z"
+     }
+    },
+    {
+     "note": "A response echoing 65 operations. The echo is the batch actually presigned, and no batch above 64 is presigned; a custodian whose sealed set would not fit refuses with responseTooLarge rather than answer with more.",
+     "payload": {
+      "sealedCredential": "-----BEGIN VTA SEALED BUNDLE-----\nBundle-Id: 6c1d0000000000000000000000000000\nDigest-Algo: sha-256\nChunk: 0/1\n\nUHJlc2lnbmVkUmVxdWVzdFNldENpcGhlcnRleHRQcmVzaWduZWRSZXF1ZXN0U2V0\n=Q1JD\n-----END VTA SEALED BUNDLE-----",
+      "expiresAt": "2026-10-10T10:05:00Z",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
+       "requests": [
+        {
+         "operation": "upload-part",
+         "partNumber": 1,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 2,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 3,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 4,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 5,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 6,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 7,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 8,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 9,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 10,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 11,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 12,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 13,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 14,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 15,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 16,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 17,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 18,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 19,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 20,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 21,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 22,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 23,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 24,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 25,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 26,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 27,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 28,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 29,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 30,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 31,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 32,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 33,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 34,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 35,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 36,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 37,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 38,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 39,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 40,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 41,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 42,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 43,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 44,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 45,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 46,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 47,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 48,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 49,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 50,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 51,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 52,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 53,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 54,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 55,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 56,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 57,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 58,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 59,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 60,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 61,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 62,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 63,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 64,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 65,
+         "contentLength": 5242880,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        }
+       ],
+       "uploadId": "VXBsb2FkSWQtZXhhbXBsZQ"
+      }
+     }
+    }
+   ],
+   "examples": [
+    {
+     "payload": {
+      "context": "community",
+      "account": "eu-s3-primary",
+      "scope": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "actions": [
+        "put",
+        "get",
+        "delete"
+       ]
+      },
+      "ttlSeconds": 900
+     }
+    },
+    {
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
+       "requests": [
+        {
+         "operation": "put",
+         "contentLength": 300000,
+         "checksumSha256": "4f3rT8yq1n0pYxXg2j3QmR0b8gq2sR5uJ6vXl0yH7aE="
+        },
+        {
+         "operation": "head"
+        }
+       ]
+      },
+      "ttlSeconds": 300
+     }
+    },
+    {
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "7a1c2e3d-4b5f-4a6e-8d7c-9b0a1f2e3d4c",
+       "uploadId": "VXBsb2FkSWQtZXhhbXBsZS1tdWx0aXBhcnQ",
+       "requests": [
+        {
+         "operation": "upload-part",
+         "partNumber": 1,
+         "contentLength": 8388608,
+         "checksumSha256": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+        },
+        {
+         "operation": "upload-part",
+         "partNumber": 2,
+         "contentLength": 1611392,
+         "checksumSha256": "LCa0a2j/xo/5m0U8HTBBNBNCLXBkg7+g+YpeiGJm564="
+        }
+       ]
+      },
+      "ttlSeconds": 300
+     }
+    },
+    {
+     "payload": {
+      "context": "community",
+      "account": "r2-rooms",
+      "presign": {
+       "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
+       "objectKey": "7a1c2e3d-4b5f-4a6e-8d7c-9b0a1f2e3d4c",
+       "uploadId": "VXBsb2FkSWQtZXhhbXBsZS1tdWx0aXBhcnQ",
+       "requests": [
+        {
+         "operation": "list-parts"
+        },
+        {
+         "operation": "complete-multipart",
+         "contentLength": 10000000
+        },
+        {
+         "operation": "head"
+        },
+        {
+         "operation": "abort-multipart"
+        }
+       ]
+      },
+      "ttlSeconds": 300
+     }
+    }
+   ]
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/attribute/delete/1.0",
+   "slug": "persona/attribute/delete",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona Attribute \u2014 Delete",
+   "status": "draft",
+   "tfPath": "specs/persona/attribute/delete/1.0/spec.md",
+   "dirDigest": "sha256:704b1b9d93481598db32546f70a3c75927418e13c743620455e18a3036dd87bb",
+   "specHash": "sha256:8a8a5b673846bab7ba9a8af7159e96b4fd90d9fcbf0c5a2cc8f845c48c9a8708",
+   "schemaHash": "sha256:51dc35302faeea6932a5645fe72db2f08909c0faaf0a000d89ed6195732271e6",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "persona/attribute/delete:referenced",
+    "persona/attribute/delete:versionConflict"
+   ],
+   "invalidExamples": [],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/attribute/get/1.0",
+   "slug": "persona/attribute/get",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona Attribute \u2014 Get",
+   "status": "draft",
+   "tfPath": "specs/persona/attribute/get/1.0/spec.md",
+   "dirDigest": "sha256:c96d4d4f4ca532247b62c57a8d7691a3213d9e86cb4524d309eb1cd1ea574538",
+   "specHash": "sha256:31bcffa27eeada9360fb221a5b5c19e7bc5702e541016233021117e909bdf16a",
+   "schemaHash": "sha256:193b43d0c8564454d05a41fa462a8c97b2f2e61dd2d746f9a117a34be8089c82",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": false
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": false
+   },
+   "errorCodes": [
+    "persona/attribute/get:notFound",
+    "persona/attribute/get:versionPurged"
+   ],
+   "invalidExamples": [
+    {
+     "note": "No attributeId \u2014 the one required member. A get without a subject is a listing, and this task deliberately cannot be one.",
+     "payload": {
+      "includeValue": true
+     }
+    },
+    {
+     "note": "Several identifiers. Refused by the schema rather than by a maintainer's discipline: accepting a list here would recreate the enumeration the task exists to avoid.",
+     "payload": {
+      "attributeId": [
+       "01JB0X7K9ZQW2M4N6P8R1T3V5Y",
+       "01JB0X7K9ZQW2M4N6P8R1T3V5Z"
+      ]
+     }
+    },
+    {
+     "note": "attributeId is not a ULID.",
+     "payload": {
+      "attributeId": "not-an-id"
+     }
+    },
+    {
+     "note": "version 0 \u2014 versions count from 1, and 0 is the expectedVersion convention from the write tasks leaking into a read.",
+     "payload": {
+      "attributeId": "01JB0X7K9ZQW2M4N6P8R1T3V5Y",
+      "version": 0
+     }
+    },
+    {
+     "note": "Unknown top-level member \u2014 additionalProperties: false catches `includeValues`, the plural from persona/attribute/list, which is the typo a builder moving between the two will actually make.",
+     "payload": {
+      "attributeId": "01JB0X7K9ZQW2M4N6P8R1T3V5Y",
+      "includeValues": true
+     }
+    },
+    {
+     "note": "Bare, unnamespaced ext key \u2014 SPEC \u00a74.5.1 requires every immediate child of ext to be reverse-DNS namespaced.",
+     "payload": {
+      "attributeId": "01JB0X7K9ZQW2M4N6P8R1T3V5Y",
+      "ext": {
+       "bare-key": {
+        "anything": "here"
+       }
+      }
+     }
+    }
+   ],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/attribute/promote/1.1",
+   "slug": "persona/attribute/promote",
+   "version": "1.1",
+   "family": "persona",
+   "title": "Persona Attribute \u2014 Promote",
+   "status": "draft",
+   "tfPath": "specs/persona/attribute/promote/1.1/spec.md",
+   "dirDigest": "sha256:d0481a4bd897abeb346ed8e356d0866025d71c0be35b233c200e03f274bafdfc",
+   "specHash": "sha256:fdf81caaa989839044743e11552efccb2a6bb7889a4ef908c3c8feea3feb0b7f",
+   "schemaHash": "sha256:d2ae9ddbef233347600d9aad79e2c593bb0a8e1406f619c216ed8ad67812cde0",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "persona/attribute/promote:entryOutOfRange",
+    "persona/attribute/promote:versionConflict"
+   ],
+   "invalidExamples": [],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/attribute/purge-version/1.0",
+   "slug": "persona/attribute/purge-version",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona Attribute \u2014 Purge Version",
+   "status": "draft",
+   "tfPath": "specs/persona/attribute/purge-version/1.0/spec.md",
+   "dirDigest": "sha256:c658b9a44e5a775a2b1bb2a08102ae59e65254b337dfd85daaa5575a912fa81b",
+   "specHash": "sha256:8eceecbba57025dfd378e1784ddf89943fcf24d3c211cfe35dfafbe16f3a7453",
+   "schemaHash": "sha256:6506c6d62edb0613c26719f11a8c5815434f19dcecee580027fbecb1beb9df42",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "persona/attribute/purge-version:currentVersion"
+   ],
+   "invalidExamples": [],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/contact/delete/1.0",
+   "slug": "persona/contact/delete",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona Contact \u2014 Delete",
+   "status": "draft",
+   "tfPath": "specs/persona/contact/delete/1.0/spec.md",
+   "dirDigest": "sha256:576a0b6ede3e2a74631410652c620ebbb9bec496e8c05e1c6537f992ef3e691e",
+   "specHash": "sha256:25237e4bb30e73d45931c6f77d4c782e657e3936527038a68705c629de50f125",
+   "schemaHash": "sha256:24ff873769ccb1d7514b423d96a41ce7dbeae7edfa0857eb43fd562b2d0450a0",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [],
+   "invalidExamples": [],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/contact/get/1.1",
+   "slug": "persona/contact/get",
+   "version": "1.1",
+   "family": "persona",
+   "title": "Persona Contact \u2014 Get",
+   "status": "draft",
+   "tfPath": "specs/persona/contact/get/1.1/spec.md",
+   "dirDigest": "sha256:918d1672a09bdf158dd887adfcca6ce8d5e886849174d3bcb16e0400fd27f158",
+   "specHash": "sha256:a0297bd998cf3c837a871dd284a499c28c4d1ac45cc6bd9cb1d0e1bdddb6f9e5",
+   "schemaHash": "sha256:cb6621e2ed3c108d9554c0baee08e5364ed0c6ccf2d8a5a3691a5c9e29665cd9",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": false
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": false
+   },
+   "errorCodes": [
+    "persona/contact/get:notFound",
+    "persona/contact/get:revisionReaped"
+   ],
+   "invalidExamples": [
+    {
+     "note": "`contactId` is required \u2014 a get reads one contact; enumeration is persona/contact/list.",
+     "payload": {
+      "contextId": "ctx-personal"
+     }
+    },
+    {
+     "note": "Unknown request member \u2014 additionalProperties: false catches `includeAnnotations`. Annotations are the holder's and always come back to the holder's own client; there is no switch to ask for them, and none to ask a maintainer to send them anywhere else.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "includeAnnotations": true
+     }
+    },
+    {
+     "note": "Response without `starred` \u2014 an unstarred contact says `false`; absence would leave a consumer guessing.",
+     "payload": {
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "subjectDid": "did:peer:2.Ez6LSexample",
+      "knownByPersona": "did:peer:2.Ez6LSholder",
+      "rev": 1,
+      "document": {
+       "claims": []
+      }
+     }
+    },
+    {
+     "note": "Response with an empty `lists` \u2014 a contact on no list has no `lists` member.",
+     "payload": {
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "subjectDid": "did:peer:2.Ez6LSexample",
+      "knownByPersona": "did:peer:2.Ez6LSholder",
+      "rev": 1,
+      "document": {
+       "claims": []
+      },
+      "starred": false,
+      "lists": []
+     }
+    },
+    {
+     "note": "Response with a list name in `lists` \u2014 it carries ListIds; a name is resolved through persona/contact/lists/show, so renaming a list touches no contact.",
+     "payload": {
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "subjectDid": "did:peer:2.Ez6LSexample",
+      "knownByPersona": "did:peer:2.Ez6LSholder",
+      "rev": 1,
+      "document": {
+       "claims": []
+      },
+      "starred": true,
+      "lists": [
+       "Mentors"
+      ]
+     }
+    }
+   ],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/contact/lists/delete/1.0",
+   "slug": "persona/contact/lists/delete",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona Contact Lists \u2014 Delete",
+   "status": "draft",
+   "tfPath": "specs/persona/contact/lists/delete/1.0/spec.md",
+   "dirDigest": "sha256:0b735c5fbcafb9d46a8183f0c1887a2bd61e9641cc435c0c9cd1895a5875e874",
+   "specHash": "sha256:2cecec45ce7af1eb27c81e4a7e734c37e409bbc133f996438096c23736a7c4e7",
+   "schemaHash": "sha256:322ba2d5b42f741c5a187cc2c27fb1738e97f66cd60c42fceacb7090d64e42bf",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [],
+   "invalidExamples": [
+    {
+     "note": "`listId` is required \u2014 a delete names one list; there is no delete-all.",
+     "payload": {
+      "contextId": "ctx-personal"
+     }
+    },
+    {
+     "note": "Unknown member \u2014 additionalProperties: false catches `deleteContacts`. Deleting a list never deletes a contact; that is persona/contact/delete, one contact at a time.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "listId": "01JA8Z5M2N3P4Q5R6S7T8V9W0X",
+      "deleteContacts": true
+     }
+    },
+    {
+     "note": "Response without `existed` \u2014 a repeated delete must be distinguishable from the first.",
+     "payload": {
+      "listId": "01JA8Z5M2N3P4Q5R6S7T8V9W0X",
+      "contactsUpdated": 0
+     }
+    },
+    {
+     "note": "Response echoing the list's name \u2014 additionalProperties: false; nothing deleted is echoed into logs that outlive it.",
+     "payload": {
+      "listId": "01JA8Z5M2N3P4Q5R6S7T8V9W0X",
+      "existed": true,
+      "contactsUpdated": 3,
+      "name": "People I don't trust"
+     }
+    }
+   ],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/contact/lists/put/1.1",
+   "slug": "persona/contact/lists/put",
+   "version": "1.1",
+   "family": "persona",
+   "title": "Persona Contact Lists \u2014 Put",
+   "status": "draft",
+   "tfPath": "specs/persona/contact/lists/put/1.1/spec.md",
+   "dirDigest": "sha256:4a620efe974658e320d236f8aaad1f29552fcdc80664fc429cb352719c0bafd6",
+   "specHash": "sha256:adea4df45e7359d963d6c81167f589f8a828a97515d4b8d9954995668584536c",
+   "schemaHash": "sha256:87d7e653356990cb237d7b476c1aa08145820e43ae330608b6a9a9d733d505f0",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "persona/contact/lists/put:notFound",
+    "persona/contact/lists/put:nameTaken",
+    "persona/contact/lists/put:tooManyLists"
+   ],
+   "invalidExamples": [
+    {
+     "note": "A create without `name` \u2014 a list nobody can tell apart from another is not worth creating.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "colour": "#1f8a70"
+     }
+    },
+    {
+     "note": "An update that changes nothing \u2014 `listId` alone names a list and no change.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "listId": "01JA8Z5M2N3P4Q5R6S7T8V9W0X"
+     }
+    },
+    {
+     "note": "Colour given and removed together \u2014 dependentSchemas makes `removeColour` exclude `colour`.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "listId": "01JA8Z5M2N3P4Q5R6S7T8V9W0X",
+      "colour": "#1f8a70",
+      "removeColour": true
+     }
+    },
+    {
+     "note": "`removeColour` on a create \u2014 there is no colour to remove; a create without `colour` has none.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "name": "Mentors",
+      "removeColour": true
+     }
+    },
+    {
+     "note": "Uppercase hex colour \u2014 one way to write each colour, lowercase.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "name": "Mentors",
+      "colour": "#1F8A70"
+     }
+    },
+    {
+     "note": "A name with a line break \u2014 one line, so a list name cannot render as a forged second line in a picker.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "name": "Mentors\nShared with: everyone"
+     }
+    },
+    {
+     "note": "Negative `order`.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "name": "Mentors",
+      "order": -1
+     }
+    },
+    {
+     "note": "Setting membership here \u2014 additionalProperties: false catches `contactIds`. A contact's lists are set on the contact with persona/contact/put 1.1, so membership has one writer.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "name": "Mentors",
+      "contactIds": [
+       "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A"
+      ]
+     }
+    },
+    {
+     "note": "Response without `changed` \u2014 a client could not tell an applied rename from a no-op.",
+     "payload": {
+      "list": {
+       "listId": "01JA8Z5M2N3P4Q5R6S7T8V9W0X",
+       "name": "Mentors",
+       "order": 10,
+       "contactCount": 0,
+       "createdAt": "2026-10-18T08:00:00Z",
+       "updatedAt": "2026-10-18T08:00:00Z"
+      },
+      "wasCreated": true
+     }
+    },
+    {
+     "note": "Response carrying the pre-1.1 `created` flag \u2014 renamed `wasCreated`, since `created` is reserved for a timestamp; additionalProperties: false rejects the old name and `wasCreated` is required.",
+     "payload": {
+      "list": {
+       "listId": "01JA8Z5M2N3P4Q5R6S7T8V9W0X",
+       "name": "Mentors",
+       "order": 10,
+       "contactCount": 0,
+       "createdAt": "2026-10-18T08:00:00Z",
+       "updatedAt": "2026-10-18T08:00:00Z"
+      },
+      "created": true,
+      "changed": true
+     }
+    }
+   ],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/contact/lists/show/1.0",
+   "slug": "persona/contact/lists/show",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona Contact Lists \u2014 Show",
+   "status": "draft",
+   "tfPath": "specs/persona/contact/lists/show/1.0/spec.md",
+   "dirDigest": "sha256:5296af642372980580584ceb0fada53e2af5bf2f61e05f4ad171d26722feec8c",
+   "specHash": "sha256:9dfad39983269a9adcc42edb541652d83a796a74ac5d2fc96261b61f7cfa0714",
+   "schemaHash": "sha256:8de36d3fea9f1e692968beb0348897bea43b3cf02cd022d5740401ca4ff411a5",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": false
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": false
+   },
+   "errorCodes": [
+    "persona/contact/lists/show:notFound"
+   ],
+   "invalidExamples": [
+    {
+     "note": "`listId` is required \u2014 show reads one list; enumeration is persona/contact/lists/list.",
+     "payload": {
+      "contextId": "ctx-personal"
+     }
+    },
+    {
+     "note": "Addressing a list by name \u2014 `listId` is a ULID, so renaming a list never changes how it is addressed.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "listId": "Mentors"
+     }
+    },
+    {
+     "note": "Response with a list name over 64 characters.",
+     "payload": {
+      "list": {
+       "listId": "01JA8Z5M2N3P4Q5R6S7T8V9W0X",
+       "name": "People I met at the spring meetup who said they would review my pull request",
+       "order": 10,
+       "contactCount": 3,
+       "createdAt": "2026-10-18T08:00:00Z",
+       "updatedAt": "2026-10-18T08:00:00Z"
+      }
+     }
+    },
+    {
+     "note": "Response inlining the list's contacts \u2014 additionalProperties: false catches `contacts`; members are read with persona/contact/list and `listId`.",
+     "payload": {
+      "list": {
+       "listId": "01JA8Z5M2N3P4Q5R6S7T8V9W0X",
+       "name": "Mentors",
+       "order": 10,
+       "contactCount": 1,
+       "createdAt": "2026-10-18T08:00:00Z",
+       "updatedAt": "2026-10-18T08:00:00Z",
+       "contacts": [
+        "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A"
+       ]
+      }
+     }
+    }
+   ],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/contact/put/1.2",
+   "slug": "persona/contact/put",
+   "version": "1.2",
+   "family": "persona",
+   "title": "Persona Contact \u2014 Put",
+   "status": "draft",
+   "tfPath": "specs/persona/contact/put/1.2/spec.md",
+   "dirDigest": "sha256:cf4e4e8f820329d441557ee818412bf5b055fc5a2598d062d2e7e557e7cb963b",
+   "specHash": "sha256:32b5ec461d81dc8e07e7b00b2a0191bef214bebb80caa7b28bd5e2088156e2f6",
+   "schemaHash": "sha256:722cac3d7885fcbcbfae36cf85795f932533c442fb55d518fe531842af9bfbcb",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "persona/contact/put:documentTooLarge",
+    "persona/contact/put:notFound",
+    "persona/contact/put:listUnknown"
+   ],
+   "invalidExamples": [
+    {
+     "note": "Both forms at once \u2014 a filing names no `contactId`; the agent keys a filing on (contextId, subjectDid, knownByPersona), and a request that also named a contact would let a caller graft one peer's disclosure onto another's record.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "subjectDid": "did:peer:2.Ez6LSexample",
+      "knownByPersona": "did:peer:2.Ez6LSholder",
+      "document": {
+       "claims": []
+      }
+     }
+    },
+    {
+     "note": "Annotating form carrying a document \u2014 an annotation never appends a revision, so a `document` beside `contactId` has no defined meaning.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "document": {
+       "claims": []
+      },
+      "starred": true
+     }
+    },
+    {
+     "note": "Annotating form that changes nothing \u2014 `contactId` alone names a contact and no annotation, which the anyOf over the annotation members refuses.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A"
+     }
+    },
+    {
+     "note": "Neither form \u2014 a filing without `document`.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "subjectDid": "did:peer:2.Ez6LSexample",
+      "knownByPersona": "did:peer:2.Ez6LSholder"
+     }
+    },
+    {
+     "note": "A petname given and removed in the same request \u2014 dependentSchemas makes `removePetname` exclude `petname`.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "petname": "Sam from the climbing gym",
+      "removePetname": true
+     }
+    },
+    {
+     "note": "`removeLists: false` \u2014 only `true` is meaningful, so only `true` is accepted; a false remove flag would be a second way to say \"unchanged\".",
+     "payload": {
+      "contextId": "ctx-personal",
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "removeLists": false
+     }
+    },
+    {
+     "note": "Petname over 64 characters.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "petname": "Sam, who I met at the climbing gym on a Thursday and who knows Dana's brother"
+     }
+    },
+    {
+     "note": "Petname with a line break \u2014 one line, so a surface that shows it beside a display name cannot be made to render a second, forged line.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "petname": "Sam\nVerified by your bank"
+     }
+    },
+    {
+     "note": "Empty `lists` \u2014 a contact on no list has no `lists`; take it off every list with `removeLists`, so there is one way to say \"none\".",
+     "payload": {
+      "contextId": "ctx-personal",
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "lists": []
+     }
+    },
+    {
+     "note": "Repeated list identifier \u2014 `lists` is a set.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "lists": [
+       "01JA8Z5M2N3P4Q5R6S7T8V9W0X",
+       "01JA8Z5M2N3P4Q5R6S7T8V9W0X"
+      ]
+     }
+    },
+    {
+     "note": "`directoryRef` without `entryId` \u2014 a link to a community and no entry would mark the contact as known through that community while naming nothing the client can join on.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "directoryRef": {
+       "vtcDid": "did:web:community.example"
+      }
+     }
+    },
+    {
+     "note": "`entryId` outside its pattern \u2014 it is opaque, carried exactly as the directory returned it, and never contains a separator a client might split on.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "directoryRef": {
+       "vtcDid": "did:web:community.example",
+       "entryId": "did:web:alice.example"
+      }
+     }
+    },
+    {
+     "note": "`directoryRef` with an unknown member \u2014 additionalProperties: false catches `memberDid`; the link names an entry, never the member's DID.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "directoryRef": {
+       "vtcDid": "did:web:community.example",
+       "entryId": "e_7Hq2mZp9Lx4v",
+       "memberDid": "did:web:alice.example"
+      }
+     }
+    },
+    {
+     "note": "Response without `annotationsChanged` \u2014 a client could not tell an applied change from a no-op.",
+     "payload": {
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "rev": 3,
+      "wasCreated": false
+     }
+    },
+    {
+     "note": "Response echoing the petname \u2014 additionalProperties: false; a response carries identifiers and flags, never annotation text that a log would then keep.",
+     "payload": {
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "rev": 3,
+      "wasCreated": false,
+      "annotationsChanged": true,
+      "petname": "Sam from the climbing gym"
+     }
+    },
+    {
+     "note": "Linking with a DID as well \u2014 a request naming `subjectDid` and a document is a filing, and one naming neither is a link; one that named a DID beside a bare directory link would leave the agent to guess which contact it means.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "subjectDid": "did:peer:2.Ez6LSexample",
+      "knownByPersona": "did:peer:2.Ez6LSpersona",
+      "directoryRef": {
+       "vtcDid": "did:web:climbing.example",
+       "entryId": "e_Q2wE9rT4yU1i"
+      },
+      "starred": true
+     }
+    },
+    {
+     "note": "Linking without the persona \u2014 a contact belongs to a relationship, so the agent cannot find or make the contact for an entry without the persona that knows it.",
+     "payload": {
+      "contextId": "ctx-personal",
+      "directoryRef": {
+       "vtcDid": "did:web:climbing.example",
+       "entryId": "e_Q2wE9rT4yU1i"
+      },
+      "starred": true
+     }
+    },
+    {
+     "note": "Response carrying the pre-1.2 `created` flag \u2014 renamed `wasCreated`, since `created` is reserved for a timestamp; additionalProperties: false rejects the old name and `wasCreated` is required.",
+     "payload": {
+      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
+      "rev": 1,
+      "created": true,
+      "annotationsChanged": false
+     }
+    }
+   ],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/disclosure/present/1.0",
+   "slug": "persona/disclosure/present",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona Disclosure \u2014 Present",
+   "status": "draft",
+   "tfPath": "specs/persona/disclosure/present/1.0/spec.md",
+   "dirDigest": "sha256:6dce1b47aa736c9b0fb19ad5d9212be82d0ba75a212f9e20312dd4a50132d31e",
+   "specHash": "sha256:1a0ab40929db52ac3fc6d48e7c443c7748f052ec5763c16277ae1c224ce4a72c",
+   "schemaHash": "sha256:bbcb9dd8510d3f577b99b40bdda21d5c090020f147c59c3fdae8d55adb79ae43",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "persona/disclosure/present:previewNotFound",
+    "persona/disclosure/present:staleClaim",
+    "persona/disclosure/present:stepUpRequired"
+   ],
+   "invalidExamples": [],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/local/profile/delete/1.0",
+   "slug": "persona/local/profile/delete",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona Local Profile \u2014 Delete",
+   "status": "draft",
+   "tfPath": "specs/persona/local/profile/delete/1.0/spec.md",
+   "dirDigest": "sha256:e6b993adc8f3c2cf265e7f99a3430c8584b8b6eea1380fdc56af4aac6c990e95",
+   "specHash": "sha256:6b94024106ebd44c3e05252afff655295ff4a41a6648aed84dfff4dbe3bd31bc",
+   "schemaHash": "sha256:9577a36bcd2416d4fa3394a34e4173178fdd9581e7ccca0153e0ea20b5d38b97",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "persona/local/profile/delete:bound"
+   ],
+   "invalidExamples": [],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/local/profile/get/1.0",
+   "slug": "persona/local/profile/get",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona Local Profile \u2014 Get",
+   "status": "draft",
+   "tfPath": "specs/persona/local/profile/get/1.0/spec.md",
+   "dirDigest": "sha256:515bccae98c975a5abadd07073bde52853afe63cf41b1f277373aa9e91891253",
+   "specHash": "sha256:97a122b104ca25e0bad34fc9ccbe0902f2f4af2f6d088815aef59f7fdbc20ca5",
+   "schemaHash": "sha256:8ae03cd322feceec6356210e695778a9187af04ff7cfc3d547d1e22598107268",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": false
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": false
+   },
+   "errorCodes": [],
+   "invalidExamples": [],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/profile/delete/1.0",
+   "slug": "persona/profile/delete",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona Profile \u2014 Delete",
+   "status": "draft",
+   "tfPath": "specs/persona/profile/delete/1.0/spec.md",
+   "dirDigest": "sha256:9c3759ac975f52e51d620429379f18703ea879854a93fb2921579228fc742a4b",
+   "specHash": "sha256:fc260248727908e2f6cb6ee4410fa162578e8773b915794ea833b7b38b391389",
+   "schemaHash": "sha256:ba59bd74f9808caaaa7e5d1f5da5b14691534318f61b6bbf0776549ef5df7d4b",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "persona/profile/delete:bound",
+    "persona/profile/delete:versionConflict"
+   ],
+   "invalidExamples": [],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/profile/get/1.0",
+   "slug": "persona/profile/get",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona Profile \u2014 Get",
+   "status": "draft",
+   "tfPath": "specs/persona/profile/get/1.0/spec.md",
+   "dirDigest": "sha256:429746ee14322cde59baecd0aae8232572a8ee85ded71598f147bb68f943b8dc",
+   "specHash": "sha256:4bac4a29abeece9110762533a8bbe79d3c50a69569e39c8671165cb8800c9778",
+   "schemaHash": "sha256:a213dad5b1631176721d4ce4949b64f262175e36e3c5cd33281920495ebe50a2",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": false
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": false
+   },
+   "errorCodes": [
+    "persona/profile/get:notFound"
+   ],
+   "invalidExamples": [],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/profile/reinstate/1.0",
+   "slug": "persona/profile/reinstate",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona Profile \u2014 Reinstate",
+   "status": "draft",
+   "tfPath": "specs/persona/profile/reinstate/1.0/spec.md",
+   "dirDigest": "sha256:e3947e6b6a182e747f1742472da50fa5b3fa9acc6987dc56eb4580561713984d",
+   "specHash": "sha256:ccbd2df5e2795444516f5b31b430f2db29464f64512242be16a4ed8b13e2c9b9",
+   "schemaHash": "sha256:be21d217b3db48587c1d8dc2f4723da23827f973aa9e8cba5fb775f8633859b3",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "persona/profile/reinstate:versionConflict"
+   ],
+   "invalidExamples": [],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/profile/retire/1.0",
+   "slug": "persona/profile/retire",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona Profile \u2014 Retire",
+   "status": "draft",
+   "tfPath": "specs/persona/profile/retire/1.0/spec.md",
+   "dirDigest": "sha256:42611c5955525414d6a5602704b634d4ec3c4b4e28b392517b1ba30e3145f92e",
+   "specHash": "sha256:79ce4b9addd34ba772ab1e0065b07484aca5079dfe49c7cf4a460e5e77a21e73",
+   "schemaHash": "sha256:3a6444e1d5db08eb166fa3ad832f553b9a2caeafb5162cf8b8b12857bafbbe11",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "persona/profile/retire:versionConflict"
+   ],
+   "invalidExamples": [],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/profile/timeline/1.1",
+   "slug": "persona/profile/timeline",
+   "version": "1.1",
+   "family": "persona",
+   "title": "Persona Profile \u2014 Timeline",
+   "status": "draft",
+   "tfPath": "specs/persona/profile/timeline/1.1/spec.md",
+   "dirDigest": "sha256:953c3c3c2421717a4d60bf8d910f1367268855c7e358b40a63cdceffbe4ad1de",
+   "specHash": "sha256:d8750c926a3148d7fda97150b20ee55a0bd5dbf5e56a37f827302022e956e498",
+   "schemaHash": "sha256:e460f916c5d901d80ef9222433858d27abbfe7708bc9cca12f9906c696d12f2c",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": false,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": false
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": false,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": false
+   },
+   "errorCodes": [],
+   "invalidExamples": [],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/profile/usage/1.0",
+   "slug": "persona/profile/usage",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona Profile \u2014 Usage",
+   "status": "draft",
+   "tfPath": "specs/persona/profile/usage/1.0/spec.md",
+   "dirDigest": "sha256:da1df6c5a487cbd49af90a8acceebf2033fd66e33d97070ddd96376673b16c46",
+   "specHash": "sha256:0b290f13bbdae4d0826cd678732ead371d55bec36dde56f6ff56153698f87a69",
+   "schemaHash": "sha256:c4ca234cf56b76ccdeec155e28fd56782c0d615c75797880b49a56f4c5232af3",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": false,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": false
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": false,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": false
+   },
+   "errorCodes": [],
+   "invalidExamples": [],
+   "examples": []
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/persona/world/delete/1.0",
+   "slug": "persona/world/delete",
+   "version": "1.0",
+   "family": "persona",
+   "title": "Persona \u2014 World Delete",
+   "status": "draft",
+   "tfPath": "specs/persona/world/delete/1.0/spec.md",
+   "dirDigest": "sha256:b43a28e95965e4671b6b38bcacde8692257f38c4ad748c8bf8f1b69a32b92062",
+   "specHash": "sha256:85438714d74adafe22cb19da82865163e5979f13a02eb42e778ba0f387dcacf2",
+   "schemaHash": "sha256:0951a6fbdd5a1ce5a38d1ffd6d6f45681901d2902e6592b491f27419e511a84e",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "persona/world/delete:versionConflict"
+   ],
+   "invalidExamples": [],
+   "examples": [
+    {
+     "payload": {
+      "worldId": "01J8XR3QK9V0000000000000C4",
+      "expectedVersion": 4
+     }
+    }
+   ]
+  },
+  {
+   "typeUri": "https://trusttasks.org/spec/provision/integration/0.3",
+   "slug": "provision/integration",
+   "version": "0.3",
+   "family": "provision",
+   "title": "Provision \u2014 Integration",
+   "status": "draft",
+   "tfPath": "specs/provision/integration/0.3/spec.md",
+   "dirDigest": "sha256:ec13b30a810f7d40c8f31488934308ba1b7c5d03d55051f1b3a6f84a5f5c118e",
+   "specHash": "sha256:1dd3dcc0715533697d2aa24e7569e476b854be8d4db20fb06323c3b6870289e4",
+   "schemaHash": "sha256:9b6eca27a00018cfa9e89667f3b923609b1c739ef57b9b352af529aaae35e9a9",
+   "inPackage": true,
+   "hasPayloadSchema": true,
+   "hasResponse": true,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": false,
+    "isIssuedAtRequired": true
+   },
+   "errorCodes": [
+    "provision/integration:invalidBootstrapRequest",
+    "provision/integration:templateNotFound",
+    "provision/integration:templateVarsInvalid",
+    "provision/integration:contextNotFound",
+    "provision/integration:contextRequired",
+    "provision/integration:forbidden",
+    "provision/integration:envelopeUnsupported",
+    "provision/integration:assertionUnsupported"
+   ],
+   "invalidExamples": [
+    {
+     "note": "Missing required request VP.",
+     "payload": {
+      "context": "default"
+     }
+    },
+    {
+     "note": "Missing required context.",
+     "payload": {
+      "request": {
+       "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://openvtc.org/contexts/bootstrap-v1"
+       ],
+       "type": [
+        "VerifiablePresentation",
+        "BootstrapRequest"
+       ],
+       "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+       "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+       "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+       "validUntil": "2026-05-26T13:15:00Z",
+       "ask": {
+        "type": "adminRotation",
+        "adminTemplate": {
+         "name": "vta-admin"
+        }
+       },
+       "proof": {
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+        "proofPurpose": "authentication",
+        "proofValue": "z3kg"
+       }
+      }
+     }
+    },
+    {
+     "note": "Unknown top-level payload member (additionalProperties: false catches `extras`).",
+     "payload": {
+      "request": {
+       "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://openvtc.org/contexts/bootstrap-v1"
+       ],
+       "type": [
+        "VerifiablePresentation",
+        "BootstrapRequest"
+       ],
+       "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+       "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+       "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+       "validUntil": "2026-05-26T13:15:00Z",
+       "ask": {
+        "type": "adminRotation",
+        "adminTemplate": {
+         "name": "vta-admin"
+        }
+       },
+       "proof": {
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+        "proofPurpose": "authentication",
+        "proofValue": "z3kg"
+       }
+      },
+      "context": "default",
+      "extras": {
+       "anything": "here"
+      }
+     }
+    },
+    {
+     "note": "assertion outside the enum.",
+     "payload": {
+      "request": {
+       "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://openvtc.org/contexts/bootstrap-v1"
+       ],
+       "type": [
+        "VerifiablePresentation",
+        "BootstrapRequest"
+       ],
+       "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+       "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+       "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+       "validUntil": "2026-05-26T13:15:00Z",
+       "ask": {
+        "type": "adminRotation",
+        "adminTemplate": {
+         "name": "vta-admin"
+        }
+       },
+       "proof": {
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+        "proofPurpose": "authentication",
+        "proofValue": "z3kg"
+       }
+      },
+      "context": "default",
+      "assertion": "attested"
+     }
+    },
+    {
+     "note": "BootstrapRequest.holder is not a did:key.",
+     "payload": {
+      "request": {
+       "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://openvtc.org/contexts/bootstrap-v1"
+       ],
+       "type": [
+        "VerifiablePresentation",
+        "BootstrapRequest"
+       ],
+       "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+       "holder": "did:web:alice.example",
+       "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+       "validUntil": "2026-05-26T13:15:00Z",
+       "ask": {
+        "type": "adminRotation",
+        "adminTemplate": {
+         "name": "vta-admin"
+        }
+       },
+       "proof": {
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "verificationMethod": "did:web:alice.example#key-1",
+        "proofPurpose": "authentication",
+        "proofValue": "z3kg"
+       }
+      },
+      "context": "default"
+     }
+    },
+    {
+     "note": "BootstrapRequest.nonce wrong length (base64url-no-pad of 16 bytes is exactly 22 chars).",
+     "payload": {
+      "request": {
+       "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://openvtc.org/contexts/bootstrap-v1"
+       ],
+       "type": [
+        "VerifiablePresentation",
+        "BootstrapRequest"
+       ],
+       "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+       "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+       "nonce": "short",
+       "validUntil": "2026-05-26T13:15:00Z",
+       "ask": {
+        "type": "adminRotation",
+        "adminTemplate": {
+         "name": "vta-admin"
+        }
+       },
+       "proof": {
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+        "proofPurpose": "authentication",
+        "proofValue": "z3kg"
+       }
+      },
+      "context": "default"
+     }
+    },
+    {
+     "note": "ask.type unknown \u2014 discriminated union rejects.",
+     "payload": {
+      "request": {
+       "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://openvtc.org/contexts/bootstrap-v1"
+       ],
+       "type": [
+        "VerifiablePresentation",
+        "BootstrapRequest"
+       ],
+       "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+       "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+       "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+       "validUntil": "2026-05-26T13:15:00Z",
+       "ask": {
+        "type": "WildGuess",
+        "adminTemplate": {
+         "name": "vta-admin"
+        }
+       },
+       "proof": {
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+        "proofPurpose": "authentication",
+        "proofValue": "z3kg"
+       }
+      },
+      "context": "default"
+     }
+    },
+    {
+     "note": "TemplateBootstrap ask missing required `template`.",
+     "payload": {
+      "request": {
+       "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://openvtc.org/contexts/bootstrap-v1"
+       ],
+       "type": [
+        "VerifiablePresentation",
+        "BootstrapRequest"
+       ],
+       "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+       "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+       "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+       "validUntil": "2026-05-26T13:15:00Z",
+       "ask": {
+        "type": "templateBootstrap",
+        "adminTemplate": {
+         "name": "vta-admin"
+        }
+       },
+       "proof": {
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+        "proofPurpose": "authentication",
+        "proofValue": "z3kg"
+       }
+      },
+      "context": "default"
+     }
+    },
+    {
+     "note": "AdminRotation ask missing required `adminTemplate`.",
+     "payload": {
+      "request": {
+       "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://openvtc.org/contexts/bootstrap-v1"
+       ],
+       "type": [
+        "VerifiablePresentation",
+        "BootstrapRequest"
+       ],
+       "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+       "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+       "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+       "validUntil": "2026-05-26T13:15:00Z",
+       "ask": {
+        "type": "adminRotation"
+       },
+       "proof": {
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+        "proofPurpose": "authentication",
+        "proofValue": "z3kg"
+       }
+      },
+      "context": "default"
+     }
+    },
+    {
+     "note": "DataIntegrityProof.proofPurpose must be `authentication`.",
+     "payload": {
+      "request": {
+       "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://openvtc.org/contexts/bootstrap-v1"
+       ],
+       "type": [
+        "VerifiablePresentation",
+        "BootstrapRequest"
+       ],
+       "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+       "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+       "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+       "validUntil": "2026-05-26T13:15:00Z",
+       "ask": {
+        "type": "adminRotation",
+        "adminTemplate": {
+         "name": "vta-admin"
+        }
+       },
+       "proof": {
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+        "proofPurpose": "assertionMethod",
+        "proofValue": "z3kg"
+       }
+      },
+      "context": "default"
+     }
+    },
+    {
+     "note": "adminScope outside the enum. `superAdmin` is the word an operator says; the wire names the shape of the ACL entry (`unrestricted` \u2014 no context list) rather than the informal name of the role that shape produces.",
+     "payload": {
+      "request": {
+       "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://openvtc.org/contexts/bootstrap-v1"
+       ],
+       "type": [
+        "VerifiablePresentation",
+        "BootstrapRequest"
+       ],
+       "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+       "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+       "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+       "validUntil": "2026-05-26T13:15:00Z",
+       "ask": {
+        "type": "adminRotation",
+        "adminTemplate": {
+         "name": "vta-admin"
+        }
+       },
+       "proof": {
+        "type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022",
+        "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+        "proofPurpose": "authentication",
+        "proofValue": "z3kg"
+       }
+      },
+      "context": "default",
+      "adminScope": "superAdmin"
+     }
+    }
+   ],
+   "examples": []
+  }
+ ]
+}

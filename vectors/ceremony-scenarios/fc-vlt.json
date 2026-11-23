@@ -1,0 +1,320 @@
+{
+  "format": "tt-ceremony-scenarios/0.1",
+  "group": "FC-VLT",
+  "family": "ceremony-scenarios",
+  "evidence": "complete-ceremony",
+  "ceremony": {
+    "name": "Credential vault: backup and restore (wallet and agent)",
+    "channel": "proposed",
+    "choreography": "docs/26-paired-ceremonies.md section 6: the wallet files a card in its agent's vault, then restores by query and get; an empty restore"
+  },
+  "scenarios": [
+    {
+      "id": "FC-VLT-001",
+      "title": "card backup and restore: the wallet puts a community card into its agent's vault, then asks the vault for its cards by purpose and fetches each: the agent holds one credential and the wallet gets that card back (the card is a class D stand-in for a community's)",
+      "spec": [
+        "TF specs/vault/credentials/receive/0.1/spec.md (the vault stores a credential and files it under a context)",
+        "TF specs/vault/credentials/query/0.1/spec.md (a filtered query; the vault answers only a filtered one)",
+        "TF specs/vault/credentials/get/0.2/spec.md (the card is returned by id)",
+        "docs/26-paired-ceremonies.md section 6"
+      ],
+      "source": {
+        "slug": "vault/credentials/receive",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vault/credentials/receive/0.1",
+        "pinnedDigest": "sha256:e7c88c26bf9ddd9e1317cd80d60e9f6dbf873fa394167dac421553431606cece",
+        "tfRef": {
+          "repoPath": "specs/vault/credentials/receive/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:28fe19c05e26dc11cc6eac230a9051e20fcc5318ab31270e69696a379ceb88c2",
+        "schemaHash": "sha256:2751b5e9f1b5fb182a6ce681e00548a3bd1528a5203050b5578d716a8ad5b9f4"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/vault/credentials/receive/0.1",
+            "https://trusttasks.org/spec/vault/credentials/query/0.1",
+            "https://trusttasks.org/spec/vault/credentials/get/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "keep-card",
+          "source": {
+            "slug": "vault/credentials/receive",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vault/credentials/receive/0.1",
+            "pinnedDigest": "sha256:e7c88c26bf9ddd9e1317cd80d60e9f6dbf873fa394167dac421553431606cece",
+            "tfRef": {
+              "repoPath": "specs/vault/credentials/receive/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:28fe19c05e26dc11cc6eac230a9051e20fcc5318ab31270e69696a379ceb88c2",
+            "schemaHash": "sha256:2751b5e9f1b5fb182a6ce681e00548a3bd1528a5203050b5578d716a8ad5b9f4"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vault-keep-card",
+              "capture": "thread",
+              "args": {
+                "card": {
+                  "@context": [
+                    "https://www.w3.org/ns/credentials/v2"
+                  ],
+                  "id": "urn:uuid:7c0e2f3a-0000-4000-8000-0000000000c1",
+                  "type": [
+                    "VerifiableCredential",
+                    "MembershipCredential"
+                  ],
+                  "issuer": "did:key:z6MkkoF3Uinyok8qbKA4z1aUCtzWY3K4w25sPVo7BPo9u7hL",
+                  "validFrom": "2026-01-01T00:00:00Z",
+                  "credentialSubject": {
+                    "id": "did:key:z6MknyZhxYKizGbyKw4ZhfNgock231itYRvj3xcyCT6Pqj6A",
+                    "community": "did:example:community"
+                  },
+                  "proof": {
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-jcs-2022",
+                    "created": "2026-01-01T00:00:00Z",
+                    "verificationMethod": "did:key:z6MkkoF3Uinyok8qbKA4z1aUCtzWY3K4w25sPVo7BPo9u7hL#z6MkkoF3Uinyok8qbKA4z1aUCtzWY3K4w25sPVo7BPo9u7hL",
+                    "proofPurpose": "assertionMethod",
+                    "@context": [
+                      "https://www.w3.org/ns/credentials/v2"
+                    ],
+                    "proofValue": "z4GPQusoBTasUg2C2PjdcqzQHC62DGH5yBzwgm3eHKKkvL25KL7CXXbzjTHN9JAU48KFeeX3bAKbeErKRQtmZSBTU"
+                  }
+                }
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "credential",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "restore",
+          "source": {
+            "slug": "vault/credentials/get",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vault/credentials/get/0.2",
+            "pinnedDigest": "sha256:c5fa3c5d6df312805eb5a0b9664f61b4aa8123832d8a6bdb55c27301e04dd412",
+            "tfRef": {
+              "repoPath": "specs/vault/credentials/get/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:d62c70ca55ae4f90fa8eb607e75be9660bf07d8b415781b576a138e5e6c9c03e",
+            "schemaHash": "sha256:ecff8d36b6e5bb0b88b110ae60a201a84755d4225da9158be9bb9c7f99dcbf84"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vault-restore",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "restored-cards",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "credential",
+              "count": 1
+            }
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "restored-cards",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-VLT-002",
+      "title": "restore from an empty vault: the query matches nothing and that is an empty answer, not an error; the wallet gets no card back",
+      "spec": [
+        "TF specs/vault/credentials/query/0.1/spec.md (a query with no match is an empty list)",
+        "docs/26-paired-ceremonies.md section 6"
+      ],
+      "source": {
+        "slug": "vault/credentials/query",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vault/credentials/query/0.1",
+        "pinnedDigest": "sha256:0a370ccfcf6ee13db538842b22190f4eaf1748c0a7c1d49f8bdd10fa261f00ba",
+        "tfRef": {
+          "repoPath": "specs/vault/credentials/query/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bab82e2ca77dbce76db6e4a49bfe01d1920cf3d0e593867e65f92050070f8524",
+        "schemaHash": "sha256:64391b690335ae15e0a2d07e0fe626dd7767c88458476e24ad7a3a59b009c3be"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/vault/credentials/receive/0.1",
+            "https://trusttasks.org/spec/vault/credentials/query/0.1",
+            "https://trusttasks.org/spec/vault/credentials/get/0.2"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "restore",
+          "source": {
+            "slug": "vault/credentials/get",
+            "version": "0.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vault/credentials/get/0.2",
+            "pinnedDigest": "sha256:c5fa3c5d6df312805eb5a0b9664f61b4aa8123832d8a6bdb55c27301e04dd412",
+            "tfRef": {
+              "repoPath": "specs/vault/credentials/get/0.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:d62c70ca55ae4f90fa8eb607e75be9660bf07d8b415781b576a138e5e6c9c03e",
+            "schemaHash": "sha256:ecff8d36b6e5bb0b88b110ae60a201a84755d4225da9158be9bb9c7f99dcbf84"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vault-restore",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "restored-cards",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "credential",
+              "count": 0
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,2562 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "GP-PRV",
+ "family": "gap",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "GP-PRV-001",
+   "title": "provision/integration 0.1: the payload is validated against the task's payload schema (missing required member request; unknown member in a closed payload; wrong type for request)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/provision/integration/0.1 (Trust Tasks specification provision/integration 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package): required [\"request\"], additionalProperties false",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.1",
+    "ref": "kit:specs/provision/integration/0.1",
+    "pinnedDigest": "sha256:209bec76be7333540d4d4158e197dc6f620f79f493da408c58b12b62042cac15",
+    "specHash": "sha256:9a47581b5f6c7c7c03ef5e357f3e1bee1f2d39587cc2806516da5e7bb0c02fdc",
+    "schemaHash": "sha256:72801b4a501622a791884f5f2cb20b966fe9e60aef44ea087a5d6ac427f52ef2",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation",
+    "openPayload"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "TemplateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        },
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p3)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": "x"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PRV-002",
+   "title": "provision/integration 0.1: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+    "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+    "declared policy: https://trusttasks.org/spec/provision/integration/0.1 (Trust Tasks specification provision/integration 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true"
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.1",
+    "ref": "kit:specs/provision/integration/0.1",
+    "pinnedDigest": "sha256:209bec76be7333540d4d4158e197dc6f620f79f493da408c58b12b62042cac15",
+    "specHash": "sha256:9a47581b5f6c7c7c03ef5e357f3e1bee1f2d39587cc2806516da5e7bb0c02fdc",
+    "schemaHash": "sha256:72801b4a501622a791884f5f2cb20b966fe9e60aef44ea087a5d6ac427f52ef2",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.1"
+   ],
+   "mutants": [
+    "recipientOptional",
+    "proofOptional"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(e1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "TemplateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "malformedRequest",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(e2)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "TemplateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        }
+       }
+      },
+      "sign": null
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "proofRequired",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PRV-003",
+   "title": "provision/integration 0.1: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+    "declared policy: https://trusttasks.org/spec/provision/integration/0.1 (Trust Tasks specification provision/integration 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true"
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.1",
+    "ref": "kit:specs/provision/integration/0.1",
+    "pinnedDigest": "sha256:209bec76be7333540d4d4158e197dc6f620f79f493da408c58b12b62042cac15",
+    "specHash": "sha256:9a47581b5f6c7c7c03ef5e357f3e1bee1f2d39587cc2806516da5e7bb0c02fdc",
+    "schemaHash": "sha256:72801b4a501622a791884f5f2cb20b966fe9e60aef44ea087a5d6ac427f52ef2",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+   "clarifyClass": "spec-silent",
+   "clarifySince": "2026-11-19",
+   "clarifyQuestions": [],
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.1"
+   ],
+   "mutants": [
+    "noFreshnessWindow"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "TemplateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "any-refusal",
+      "noSideEffect": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PRV-004",
+   "title": "provision/integration 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "payload and response schemas of https://trusttasks.org/spec/provision/integration/0.1 (Trust Tasks specification provision/integration 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/provision/integration/0.1#response",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.1",
+    "ref": "kit:specs/provision/integration/0.1",
+    "pinnedDigest": "sha256:209bec76be7333540d4d4158e197dc6f620f79f493da408c58b12b62042cac15",
+    "specHash": "sha256:9a47581b5f6c7c7c03ef5e357f3e1bee1f2d39587cc2806516da5e7bb0c02fdc",
+    "schemaHash": "sha256:72801b4a501622a791884f5f2cb20b966fe9e60aef44ea087a5d6ac427f52ef2",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "TemplateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/provision/integration/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PRV-005",
+   "title": "provision/integration 0.1: a request missing any one required payload member is refused (request)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema of https://trusttasks.org/spec/provision/integration/0.1: required [\"request\"] (Trust Tasks specification provision/integration 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)"
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.1",
+    "ref": "kit:specs/provision/integration/0.1",
+    "pinnedDigest": "sha256:209bec76be7333540d4d4158e197dc6f620f79f493da408c58b12b62042cac15",
+    "specHash": "sha256:9a47581b5f6c7c7c03ef5e357f3e1bee1f2d39587cc2806516da5e7bb0c02fdc",
+    "schemaHash": "sha256:72801b4a501622a791884f5f2cb20b966fe9e60aef44ea087a5d6ac427f52ef2",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(r1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PRV-006",
+   "title": "provision/integration 0.1: a payload that breaks a constraint of its schema is refused (request: wrong type (not object); context: shorter than minLength 1; assertion: a value outside its enum; vcValiditySeconds: below minimum 1; vcValiditySeconds: above maximum 31536000)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema constraints of https://trusttasks.org/spec/provision/integration/0.1 (Trust Tasks specification provision/integration 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)"
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.1",
+    "ref": "kit:specs/provision/integration/0.1",
+    "pinnedDigest": "sha256:209bec76be7333540d4d4158e197dc6f620f79f493da408c58b12b62042cac15",
+    "specHash": "sha256:9a47581b5f6c7c7c03ef5e357f3e1bee1f2d39587cc2806516da5e7bb0c02fdc",
+    "schemaHash": "sha256:72801b4a501622a791884f5f2cb20b966fe9e60aef44ea087a5d6ac427f52ef2",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(c1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": "x"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c2)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "TemplateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        },
+        "context": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c3)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "TemplateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        },
+        "assertion": "conformance-not-in-enum"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c4)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "TemplateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        },
+        "vcValiditySeconds": 0
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c5)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "TemplateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        },
+        "vcValiditySeconds": 31536001
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PRV-007",
+   "title": "provision/integration 0.1: the payload examples the specification lists as invalid are refused (10)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/provision/integration/0.1: (1) Missing required request VP. (2) Missing required context. (3) Unknown top-level payload member (additionalProperties: false catches `extras`). (4) assertion outside the enum. (5) BootstrapRequest.holder is not a did:key. (6) BootstrapRequest.nonce wrong length (base64url-no-pad of 16 bytes is exactly 22 chars). (7) ask.type unknown — discriminated union rejects. (8) TemplateBootstrap ask missing required `template`. (9) AdminRotation ask missing required `adminTemplate`. (10) DataIntegrityProof.proofPurpose must be `authentication`.",
+    "Trust Tasks specification provision/integration 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.1",
+    "ref": "kit:specs/provision/integration/0.1",
+    "pinnedDigest": "sha256:209bec76be7333540d4d4158e197dc6f620f79f493da408c58b12b62042cac15",
+    "specHash": "sha256:9a47581b5f6c7c7c03ef5e357f3e1bee1f2d39587cc2806516da5e7bb0c02fdc",
+    "schemaHash": "sha256:72801b4a501622a791884f5f2cb20b966fe9e60aef44ea087a5d6ac427f52ef2",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "context": "default"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i2)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "AdminRotation",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i3)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "AdminRotation",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default",
+        "extras": {
+         "anything": "here"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i4)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "AdminRotation",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default",
+        "assertion": "attested"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i5)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:web:alice.example",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "AdminRotation",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:web:alice.example#key-1",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i6)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "short",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "AdminRotation",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i7)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "WildGuess",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i8)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "TemplateBootstrap",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i9)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "AdminRotation"
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i10)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "AdminRotation",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "assertionMethod",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PRV-008",
+   "title": "provision/integration 0.2: the payload is validated against the task's payload schema (missing required member request; unknown member in a closed payload; wrong type for request)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/provision/integration/0.2 (Trust Tasks specification provision/integration 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package): required [\"request\"], additionalProperties false",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.2",
+    "ref": "kit:specs/provision/integration/0.2",
+    "pinnedDigest": "sha256:b05709f2cbf8a070eeebeac364a42d23603cf67cccca0be26aacac940fb99b27",
+    "specHash": "sha256:b6b9ad921ea5490005c759cbdb22666c8f71f366fad51fd5e5e6c9f6928d25b6",
+    "schemaHash": "sha256:03a8ee93a42924c54101b12659535edddeb32a7f21ce42614b38e2aa8aaad67e",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.2"
+   ],
+   "mutants": [
+    "noPayloadValidation",
+    "openPayload"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "templateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        },
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p3)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": "x"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PRV-009",
+   "title": "provision/integration 0.2: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+    "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+    "declared policy: https://trusttasks.org/spec/provision/integration/0.2 (Trust Tasks specification provision/integration 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true"
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.2",
+    "ref": "kit:specs/provision/integration/0.2",
+    "pinnedDigest": "sha256:b05709f2cbf8a070eeebeac364a42d23603cf67cccca0be26aacac940fb99b27",
+    "specHash": "sha256:b6b9ad921ea5490005c759cbdb22666c8f71f366fad51fd5e5e6c9f6928d25b6",
+    "schemaHash": "sha256:03a8ee93a42924c54101b12659535edddeb32a7f21ce42614b38e2aa8aaad67e",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.2"
+   ],
+   "mutants": [
+    "recipientOptional",
+    "proofOptional"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(e1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "templateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "malformedRequest",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(e2)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "templateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        }
+       }
+      },
+      "sign": null
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "proofRequired",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PRV-010",
+   "title": "provision/integration 0.2: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+    "declared policy: https://trusttasks.org/spec/provision/integration/0.2 (Trust Tasks specification provision/integration 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true"
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.2",
+    "ref": "kit:specs/provision/integration/0.2",
+    "pinnedDigest": "sha256:b05709f2cbf8a070eeebeac364a42d23603cf67cccca0be26aacac940fb99b27",
+    "specHash": "sha256:b6b9ad921ea5490005c759cbdb22666c8f71f366fad51fd5e5e6c9f6928d25b6",
+    "schemaHash": "sha256:03a8ee93a42924c54101b12659535edddeb32a7f21ce42614b38e2aa8aaad67e",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+   "clarifyClass": "spec-silent",
+   "clarifySince": "2026-11-19",
+   "clarifyQuestions": [],
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.2"
+   ],
+   "mutants": [
+    "noFreshnessWindow"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "templateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "any-refusal",
+      "noSideEffect": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PRV-011",
+   "title": "provision/integration 0.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "payload and response schemas of https://trusttasks.org/spec/provision/integration/0.2 (Trust Tasks specification provision/integration 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/provision/integration/0.2#response",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.2",
+    "ref": "kit:specs/provision/integration/0.2",
+    "pinnedDigest": "sha256:b05709f2cbf8a070eeebeac364a42d23603cf67cccca0be26aacac940fb99b27",
+    "specHash": "sha256:b6b9ad921ea5490005c759cbdb22666c8f71f366fad51fd5e5e6c9f6928d25b6",
+    "schemaHash": "sha256:03a8ee93a42924c54101b12659535edddeb32a7f21ce42614b38e2aa8aaad67e",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.2"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "templateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/provision/integration/0.2"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PRV-012",
+   "title": "provision/integration 0.2: a request missing any one required payload member is refused (request)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema of https://trusttasks.org/spec/provision/integration/0.2: required [\"request\"] (Trust Tasks specification provision/integration 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)"
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.2",
+    "ref": "kit:specs/provision/integration/0.2",
+    "pinnedDigest": "sha256:b05709f2cbf8a070eeebeac364a42d23603cf67cccca0be26aacac940fb99b27",
+    "specHash": "sha256:b6b9ad921ea5490005c759cbdb22666c8f71f366fad51fd5e5e6c9f6928d25b6",
+    "schemaHash": "sha256:03a8ee93a42924c54101b12659535edddeb32a7f21ce42614b38e2aa8aaad67e",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.2"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(r1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PRV-013",
+   "title": "provision/integration 0.2: a payload that breaks a constraint of its schema is refused (request: wrong type (not object); context: shorter than minLength 1; assertion: a value outside its enum; vcValiditySeconds: below minimum 1; vcValiditySeconds: above maximum 31536000)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema constraints of https://trusttasks.org/spec/provision/integration/0.2 (Trust Tasks specification provision/integration 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)"
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.2",
+    "ref": "kit:specs/provision/integration/0.2",
+    "pinnedDigest": "sha256:b05709f2cbf8a070eeebeac364a42d23603cf67cccca0be26aacac940fb99b27",
+    "specHash": "sha256:b6b9ad921ea5490005c759cbdb22666c8f71f366fad51fd5e5e6c9f6928d25b6",
+    "schemaHash": "sha256:03a8ee93a42924c54101b12659535edddeb32a7f21ce42614b38e2aa8aaad67e",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.2"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(c1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": "x"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c2)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "templateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        },
+        "context": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c3)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "templateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        },
+        "assertion": "conformance-not-in-enum"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c4)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "templateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        },
+        "vcValiditySeconds": 0
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c5)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "templateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        },
+        "vcValiditySeconds": 31536001
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PRV-014",
+   "title": "provision/integration 0.2: the payload examples the specification lists as invalid are refused (10)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/provision/integration/0.2: (1) Missing required request VP. (2) Missing required context. (3) Unknown top-level payload member (additionalProperties: false catches `extras`). (4) assertion outside the enum. (5) BootstrapRequest.holder is not a did:key. (6) BootstrapRequest.nonce wrong length (base64url-no-pad of 16 bytes is exactly 22 chars). (7) ask.type unknown — discriminated union rejects. (8) TemplateBootstrap ask missing required `template`. (9) AdminRotation ask missing required `adminTemplate`. (10) DataIntegrityProof.proofPurpose must be `authentication`.",
+    "Trust Tasks specification provision/integration 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.2",
+    "ref": "kit:specs/provision/integration/0.2",
+    "pinnedDigest": "sha256:b05709f2cbf8a070eeebeac364a42d23603cf67cccca0be26aacac940fb99b27",
+    "specHash": "sha256:b6b9ad921ea5490005c759cbdb22666c8f71f366fad51fd5e5e6c9f6928d25b6",
+    "schemaHash": "sha256:03a8ee93a42924c54101b12659535edddeb32a7f21ce42614b38e2aa8aaad67e",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.2"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "context": "default"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i2)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "adminRotation",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i3)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "adminRotation",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default",
+        "extras": {
+         "anything": "here"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i4)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "adminRotation",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default",
+        "assertion": "attested"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i5)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:web:alice.example",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "adminRotation",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:web:alice.example#key-1",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i6)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "short",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "adminRotation",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i7)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "WildGuess",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i8)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "templateBootstrap",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i9)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "adminRotation"
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "authentication",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i10)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://openvtc.org/contexts/bootstrap-v1"
+         ],
+         "type": [
+          "VerifiablePresentation",
+          "BootstrapRequest"
+         ],
+         "id": "urn:uuid:0e1f2a-1111-2222-3333-444455556666",
+         "holder": "did:key:z6MkpTH1234567890123456789012345678901234567890",
+         "nonce": "RmFrZU5vbmNlVmFsdWVYWFg",
+         "validUntil": "2026-05-26T13:15:00Z",
+         "ask": {
+          "type": "adminRotation",
+          "adminTemplate": {
+           "name": "vta-admin"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:key:z6MkpTH1234567890123456789012345678901234567890#z6MkpTH1234567890123456789012345678901234567890",
+          "proofPurpose": "assertionMethod",
+          "proofValue": "z3kg"
+         }
+        },
+        "context": "default"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "provision/integration:forbidden"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  }
+ ]
+}

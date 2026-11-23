@@ -1,0 +1,52 @@
+name: Problem with a vector
+description: A vector seems to read the specification wrongly, or fails for a reason that is not the platform's.
+title: "[vector] <vector id>: <short summary>"
+labels: ["vector"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This suite is a draft proposal for discussion and review by the DTGWG. Every task specification involved is draft.
+        Thank you for checking a vector. A report that a vector is wrong is a contribution. The specification text wins over any implementation.
+  - type: input
+    id: vector
+    attributes:
+      label: "Vector id and suite version"
+      description: "For example `ERR-001`, with the suite version or commit."
+    validations:
+      required: true
+  - type: textarea
+    id: text
+    attributes:
+      label: "The specification text"
+      description: "Quote the sentence the vector relies on, with the document, clause and the commit or version you read. If you cannot quote a sentence that decides the behaviour, say so."
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: "What the vector expects, and what you see"
+      description: "The step or expectation concerned, and the result (PASS, FAIL, CLARIFY, SKIP) with its reason. Name the platform and its commit or release, or say the reference adapter."
+    validations:
+      required: true
+  - type: dropdown
+    id: ground
+    attributes:
+      label: "Which ground fits best"
+      description: "Pick the closest. The maintainers will classify it (A to D, see docs/community/contributing.md)."
+      options:
+        - The text is silent, so more than one answer is acceptable
+        - Two pieces of text disagree
+        - The text is clear and the vector expects more than it says
+        - The problem is in the adapter, stand-in or runner, not the platform
+        - Not sure
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Before you send"
+      options:
+        - label: I re-read the cited text and the result is reproducible.
+        - label: I am not asking the suite to assert a reading of a point the specification leaves open.
+        - label: This contains no credentials, private addresses or local paths.

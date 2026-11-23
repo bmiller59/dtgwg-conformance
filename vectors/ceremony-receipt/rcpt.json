@@ -1,0 +1,3448 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "RCPT",
+  "family": "ceremony-receipt",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "RCPT-001",
+      "title": "a conforming enactment with every step document held verifies complete",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:119-124 (recorder rules)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:128-138 (verifier rules 1 to 11)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:98-109 (the step digest)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {},
+            "expect": {
+              "outcome": "complete"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-002",
+      "title": "an enactment of perRole steps that meets a threshold verifies complete",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:131 (perRole: one instance per bound issuer)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:132 (the verifier evaluates the completion rule)",
+        "ceremonies/ceremony.meta.schema.json:190 (perRole)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "ceremony": "approve"
+            },
+            "expect": {
+              "outcome": "complete"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-003",
+      "title": "an optional step that did not happen is not required for completion",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:132 (completion evaluated by the verifier)",
+        "ceremonies/ceremony.meta.schema.json:182 (an optional step may be absent from a complete enactment)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "instances": [
+                "apply",
+                "decide"
+              ]
+            },
+            "expect": {
+              "outcome": "complete"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-004",
+      "title": "a verifier holding only the terminal step document verifies complete; a predecessor it does not hold is not a failure",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:137 (a prev entry naming a document the verifier does not hold is not a failure)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:134 (the terminal marker is confirmed in a held document)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "hold": [
+                "decide"
+              ]
+            },
+            "expect": {
+              "outcome": "complete"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-005",
+      "title": "a receipt issued by the second recorder the definition names verifies",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:130 (the recorder is one the definition names)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:80 (a definition SHOULD name more than one recorder)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptFirstRecorderOnly"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "issuer": "Q"
+              }
+            },
+            "expect": {
+              "outcome": "complete"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-006",
+      "title": "an unrecognised top-level member on the receipt is preserved and not acted on",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1067 (a consumer MUST NOT act on members it does not recognise)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:128 (the SPEC.md 7.2 pipeline applies)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptStrictEnvelope"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "mutate": [
+                  {
+                    "op": "set",
+                    "path": "/x-unrecognised",
+                    "value": {
+                      "anything": 1
+                    }
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "complete"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-007",
+      "title": "an unrecognised ext namespace in the receipt payload is ignored",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1069 (a consumer MUST ignore an ext namespace it does not recognise)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:97-99 (ext)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "mutate": [
+                  {
+                    "op": "set",
+                    "path": "/payload/ext",
+                    "value": {
+                      "org.example.audit": {
+                        "note": "x"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "complete"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-008",
+      "title": "invalid payload: Empty payload omits required members: enactment, definition, definitionDigest, complete, steps.",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.invalid-examples.json:3 (registry invalid example 1)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:8-14 (required members)",
+        "SPEC.md:1012 (7.2 item 2: the payload is validated against its schema)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoSchema"
+      ],
+      "origin": {
+        "source": "dtgwg-trust-tasks-tf specs/trust-ceremony-receipt/0.1 (see vectors/imported/PROVENANCE.json)",
+        "fixture": "receipt/payload.invalid-examples.json",
+        "row": "1"
+      },
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "payloadFrom": {
+                  "file": "receipt/payload.invalid-examples.json",
+                  "index": 0
+                }
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-009",
+      "title": "invalid payload: steps must have at least one entry.",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.invalid-examples.json:7 (registry invalid example 2)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:45-48 (steps: at least one)",
+        "SPEC.md:1012 (7.2 item 2: the payload is validated against its schema)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoSchema"
+      ],
+      "origin": {
+        "source": "dtgwg-trust-tasks-tf specs/trust-ceremony-receipt/0.1 (see vectors/imported/PROVENANCE.json)",
+        "fixture": "receipt/payload.invalid-examples.json",
+        "row": "2"
+      },
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "payloadFrom": {
+                  "file": "receipt/payload.invalid-examples.json",
+                  "index": 1
+                }
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-010",
+      "title": "invalid payload: definition is omitted.",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.invalid-examples.json:17 (registry invalid example 3)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:26-31 (definition)",
+        "SPEC.md:1012 (7.2 item 2: the payload is validated against its schema)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoSchema"
+      ],
+      "origin": {
+        "source": "dtgwg-trust-tasks-tf specs/trust-ceremony-receipt/0.1 (see vectors/imported/PROVENANCE.json)",
+        "fixture": "receipt/payload.invalid-examples.json",
+        "row": "3"
+      },
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "payloadFrom": {
+                  "file": "receipt/payload.invalid-examples.json",
+                  "index": 2
+                }
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-011",
+      "title": "invalid payload: definitionDigest is raw hex rather than a multibase-encoded multihash.",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.invalid-examples.json:34 (registry invalid example 4)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:32-35 (definitionDigest)",
+        "SPEC.md:1012 (7.2 item 2: the payload is validated against its schema)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoSchema"
+      ],
+      "origin": {
+        "source": "dtgwg-trust-tasks-tf specs/trust-ceremony-receipt/0.1 (see vectors/imported/PROVENANCE.json)",
+        "fixture": "receipt/payload.invalid-examples.json",
+        "row": "4"
+      },
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "payloadFrom": {
+                  "file": "receipt/payload.invalid-examples.json",
+                  "index": 3
+                }
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-012",
+      "title": "invalid payload: A step omits digestMultibase.",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.invalid-examples.json:52 (registry invalid example 5)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:52-58 (step required members)",
+        "SPEC.md:1012 (7.2 item 2: the payload is validated against its schema)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoSchema"
+      ],
+      "origin": {
+        "source": "dtgwg-trust-tasks-tf specs/trust-ceremony-receipt/0.1 (see vectors/imported/PROVENANCE.json)",
+        "fixture": "receipt/payload.invalid-examples.json",
+        "row": "5"
+      },
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "payloadFrom": {
+                  "file": "receipt/payload.invalid-examples.json",
+                  "index": 4
+                }
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-013",
+      "title": "invalid payload: A step omits id, so a verifier cannot locate the document the digest is over.",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.invalid-examples.json:69 (registry invalid example 6)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:52-58 (step required members)",
+        "SPEC.md:1012 (7.2 item 2: the payload is validated against its schema)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoSchema"
+      ],
+      "origin": {
+        "source": "dtgwg-trust-tasks-tf specs/trust-ceremony-receipt/0.1 (see vectors/imported/PROVENANCE.json)",
+        "fixture": "receipt/payload.invalid-examples.json",
+        "row": "6"
+      },
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "payloadFrom": {
+                  "file": "receipt/payload.invalid-examples.json",
+                  "index": 5
+                }
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-014",
+      "title": "invalid payload: round must be at least 1; round 0 is not a repetition.",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.invalid-examples.json:86 (registry invalid example 7)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:65-69 (round minimum 1)",
+        "SPEC.md:1012 (7.2 item 2: the payload is validated against its schema)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoSchema"
+      ],
+      "origin": {
+        "source": "dtgwg-trust-tasks-tf specs/trust-ceremony-receipt/0.1 (see vectors/imported/PROVENANCE.json)",
+        "fixture": "receipt/payload.invalid-examples.json",
+        "row": "7"
+      },
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "payloadFrom": {
+                  "file": "receipt/payload.invalid-examples.json",
+                  "index": 6
+                }
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-015",
+      "title": "invalid payload: A step carries an unknown member (additionalProperties: false).",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.invalid-examples.json:105 (registry invalid example 8)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:51 (step additionalProperties false)",
+        "SPEC.md:1012 (7.2 item 2: the payload is validated against its schema)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoSchema"
+      ],
+      "origin": {
+        "source": "dtgwg-trust-tasks-tf specs/trust-ceremony-receipt/0.1 (see vectors/imported/PROVENANCE.json)",
+        "fixture": "receipt/payload.invalid-examples.json",
+        "row": "8"
+      },
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "payloadFrom": {
+                  "file": "receipt/payload.invalid-examples.json",
+                  "index": 7
+                }
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-016",
+      "title": "invalid payload: salt is too short to carry 128 bits of entropy in any multibase encoding.",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.invalid-examples.json:124 (registry invalid example 9)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:40-44 (salt minLength 22)",
+        "SPEC.md:1012 (7.2 item 2: the payload is validated against its schema)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoSchema"
+      ],
+      "origin": {
+        "source": "dtgwg-trust-tasks-tf specs/trust-ceremony-receipt/0.1 (see vectors/imported/PROVENANCE.json)",
+        "fixture": "receipt/payload.invalid-examples.json",
+        "row": "9"
+      },
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "payloadFrom": {
+                  "file": "receipt/payload.invalid-examples.json",
+                  "index": 8
+                }
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-017",
+      "title": "invalid payload: complete must be a boolean, not a string.",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.invalid-examples.json:143 (registry invalid example 10)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:36-39 (complete is a boolean)",
+        "SPEC.md:1012 (7.2 item 2: the payload is validated against its schema)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoSchema"
+      ],
+      "origin": {
+        "source": "dtgwg-trust-tasks-tf specs/trust-ceremony-receipt/0.1 (see vectors/imported/PROVENANCE.json)",
+        "fixture": "receipt/payload.invalid-examples.json",
+        "row": "10"
+      },
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "payloadFrom": {
+                  "file": "receipt/payload.invalid-examples.json",
+                  "index": 9
+                }
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-018",
+      "title": "invalid payload: Unknown top-level member is rejected (additionalProperties: false).",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.invalid-examples.json:161 (registry invalid example 11)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:7 (additionalProperties false)",
+        "SPEC.md:1012 (7.2 item 2: the payload is validated against its schema)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoSchema"
+      ],
+      "origin": {
+        "source": "dtgwg-trust-tasks-tf specs/trust-ceremony-receipt/0.1 (see vectors/imported/PROVENANCE.json)",
+        "fixture": "receipt/payload.invalid-examples.json",
+        "row": "11"
+      },
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "payloadFrom": {
+                  "file": "receipt/payload.invalid-examples.json",
+                  "index": 10
+                }
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-019",
+      "title": "invalid payload: ext immediate keys must be reverse-DNS namespaced per SPEC §4.5.1.",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.invalid-examples.json:180 (registry invalid example 12)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:97-99 (ext keys)",
+        "SPEC.md:1012 (7.2 item 2: the payload is validated against its schema)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoSchema"
+      ],
+      "origin": {
+        "source": "dtgwg-trust-tasks-tf specs/trust-ceremony-receipt/0.1 (see vectors/imported/PROVENANCE.json)",
+        "fixture": "receipt/payload.invalid-examples.json",
+        "row": "12"
+      },
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "payloadFrom": {
+                  "file": "receipt/payload.invalid-examples.json",
+                  "index": 11
+                }
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-020",
+      "title": "a receipt of another MAJOR version of the type is rejected",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:756 (a MAJOR mismatch is never forward-compatible)",
+        "SPEC.md:1013 (7.2 item 3)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoTypeCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "type": "https://trusttasks.org/spec/trust-ceremony-receipt/1.0"
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "RCPT-021",
+      "title": "a document whose type is rooted at /ceremony/ is not a receipt",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:980 (a document whose type is rooted at /ceremony/ is malformed and MUST be rejected)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoTypeCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "type": "https://trusttasks.org/ceremony/conformance/receipt-linear/0.1"
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-022",
+      "title": "a receipt without a proof is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:24-31 (proof REQUIRED)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:119 (a recorder MUST carry a proof)",
+        "SPEC.md:1017 (7.2 item 7: proofRequired)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptProofOptional"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "sign": null
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-023",
+      "title": "a receipt whose signature does not verify is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:128 (the receipt's own proof is verified against its issuer)",
+        "SPEC.md:1017 (7.2 item 7: proofInvalid)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoProofCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "corrupt": true
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-024",
+      "title": "a receipt signed by a key that is not its issuer's is rejected",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:305 (the verificationMethod MUST resolve to material controlled by the issuer)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:128"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoProofCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "signer": "X"
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-025",
+      "title": "a receipt whose step digest was changed after signing is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:128",
+        "SPEC.md:309 (the proof is verified over the document as received)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoProofCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "hold": "none",
+              "receipt": {
+                "mutate": [
+                  {
+                    "op": "set",
+                    "path": "/payload/steps/0/digestMultibase",
+                    "value": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                    "afterSign": true
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-026",
+      "title": "a receipt from which an enumerated step was removed after signing is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:128",
+        "SPEC.md:309 (the proof is verified over the document as received)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoProofCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "hold": "none",
+              "receipt": {
+                "mutate": [
+                  {
+                    "op": "remove",
+                    "path": "/payload/steps/1",
+                    "afterSign": true
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-027",
+      "title": "a receipt issued by a party the definition does not name as recorder is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:119-120 (a recorder MUST be named by the definition)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:130 (verifier rule 3)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptAnyIssuerRecorder"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "issuer": "X"
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-028",
+      "title": "without the enactment's role bindings the verifier reports it could not verify",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:135 (where the bindings are not available the verifier MUST report that it could not verify)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:130 (rule 3: the same)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptBindingsAssumed"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "bindings": "none"
+            },
+            "expect": {
+              "outcome": "unverifiable"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-029",
+      "title": "a step issued by a party not bound to the step's issuer role is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:135 (each step's issuer is a VID the enactment bound to the issuer role)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoIssuerRoleCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "bindings": {
+                "initiator": [
+                  "Q"
+                ]
+              },
+              "hold": "none"
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-030",
+      "title": "a held step addressed to a party not bound to its recipient role is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:135 (for a held document its recipient is bound to the recipient role)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoRecipientRoleCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "docMutate": {
+                "apply": [
+                  {
+                    "op": "set",
+                    "path": "/recipient",
+                    "value": "$S"
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-031",
+      "title": "an unresolvable definition: the verifier could not verify, the receipt is not invalid",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:129 (an unresolvable definition means the receipt cannot be verified, not that it is invalid)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:162"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptUnresolvableAsInvalid"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "definition": "unresolvable"
+            },
+            "expect": {
+              "outcome": "unverifiable"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-032",
+      "title": "a resolved definition that is not the pinned one cannot verify the receipt, however complete it would make it look",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:129 (a digest mismatch means the receipt cannot be verified, not that it is invalid)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:91 (definitionDigest pins the completion rule)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoDefinitionDigestCheck",
+        "rcptDigestMismatchAsInvalid"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "ceremony": "approve",
+              "instances": [
+                "propose",
+                "approve@X"
+              ],
+              "definition": "altered"
+            },
+            "expect": {
+              "outcome": "unverifiable"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-033",
+      "title": "a step that pins another definition is a step of another ceremony",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:136 (a document that disagrees on definitionDigest is a step of a different ceremony)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:121 (steps pinning different digests are steps of different ceremonies)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoStepDefinitionCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "docMutate": {
+                "decide": [
+                  {
+                    "op": "set",
+                    "path": "/ceremony/definitionDigest",
+                    "value": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-034",
+      "title": "the same step document enumerated twice is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:131 (two steps sharing a document id are one document listed twice)",
+        "SPEC.md:174 (an id is globally unique)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoDedupe"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "enumerate": [
+                "apply",
+                "review",
+                "decide",
+                "decide"
+              ]
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-035",
+      "title": "two documents for one step at one round are rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:131 (reject two entries for one step at one round)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoDedupe"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "instances": [
+                "apply",
+                "review",
+                "decide",
+                "decide#1"
+              ]
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-036",
+      "title": "one approver's approvals listed twice do not reach a threshold",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:131 (two entries at one round from one issuer MUST be rejected; otherwise a threshold is met by listing one party n times)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoDedupe"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "ceremony": "approve",
+              "instances": [
+                "propose",
+                "approve@X",
+                "approve@X#1"
+              ]
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-037",
+      "title": "a threshold the enumerated steps do not meet is not complete, whatever complete says",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:132 (the verifier MUST NOT rely on payload.complete)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:36-38 (a receipt whose steps do not satisfy the rule is incomplete however complete is set)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptTrustCompleteFlag"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "ceremony": "approve",
+              "instances": [
+                "propose",
+                "approve@X"
+              ]
+            },
+            "expect": {
+              "outcome": [
+                "incomplete",
+                "invalid"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-038",
+      "title": "a recorder that says incomplete over steps that satisfy the rule",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:132 (the verifier evaluates the rule itself)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:38 (a mistaken recorder and a lying one are both visible)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": "The verifier MUST evaluate the completion rule itself and MUST NOT rely on payload.complete (spec.md:132), which says the enactment is complete; the schema description says both a mistaken and a lying recorder are visible, so a verifier may also report the disagreement as invalid. Which verdict is meant is not stated.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-14",
+      "clarifyQuestions": [],
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "complete": false
+              }
+            },
+            "expect": {
+              "outcome": "complete"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-039",
+      "title": "a receipt enumerating no terminal step is a prefix, not complete",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:88 (at least one enumerated step MUST have carried ceremony.terminal)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:133 (verifier rule 6: a receipt enumerating none is a prefix)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoTerminalCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "ceremony": "prefix",
+              "instances": [
+                "open",
+                "middle"
+              ]
+            },
+            "expect": {
+              "outcome": [
+                "incomplete",
+                "invalid"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-040",
+      "title": "a recorder that leaves the terminal step out of the receipt gives a prefix even where the verifier holds the terminal document",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:88-91 (truncation: the terminal marker is what makes a prefix visible)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:133"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoTerminalCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "ceremony": "prefix",
+              "enumerate": [
+                "open",
+                "middle"
+              ]
+            },
+            "expect": {
+              "outcome": [
+                "incomplete",
+                "invalid"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-041",
+      "title": "terminal echoed on a step the definition does not declare terminal is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:133 (steps[].terminal on a step the definition does not so declare MUST be rejected)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoTerminalDeclaredCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "mutate": [
+                  {
+                    "op": "set",
+                    "path": "/payload/steps/0/terminal",
+                    "value": true
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-042",
+      "title": "with the terminal step document not held the verifier reports it could not verify completion",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:134 (where the verifier holds no document for a terminal step it MUST report that it could not verify completion)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:140"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptTrustTerminalEcho"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "hold": [
+                "apply",
+                "review"
+              ]
+            },
+            "expect": {
+              "outcome": "unverifiable"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-043",
+      "title": "holding no step document the verifier reports it could not verify completion, not that the enactment completed",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:140 (a verifier holding none of the step documents MUST report that completion could not be verified)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoDocsAsComplete",
+        "rcptTrustTerminalEcho"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "hold": "none"
+            },
+            "expect": {
+              "outcome": "unverifiable"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-044",
+      "title": "a terminal echo the held document contradicts is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:134 (a steps[].terminal the held document contradicts MUST be rejected)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:88-91 (the echo is the recorder's, the signed marker is the issuer's)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptTrustTerminalEcho"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "docMutate": {
+                "decide": [
+                  {
+                    "op": "remove",
+                    "path": "/ceremony/terminal"
+                  }
+                ]
+              },
+              "receipt": {
+                "echo": "declared"
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-045",
+      "title": "a held terminal document without the marker is not complete even where the receipt does not echo it",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:134 (the held document's ceremony.terminal MUST be true for the enactment to be reported complete)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptTrustTerminalEcho"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "docMutate": {
+                "decide": [
+                  {
+                    "op": "remove",
+                    "path": "/ceremony/terminal"
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": [
+                "incomplete",
+                "invalid"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-046",
+      "title": "a digest computed with the salt as a prefix is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:109 (the salt is a suffix, not a prefix)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:98 (the formula)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptSaltPrefix"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "digest": {
+                "saltAt": "prefix"
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-047",
+      "title": "a digest computed without the document's proof (the task digest) is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:103-105 (the step digest includes the proof and is not the task digest)",
+        "SPEC.md:559 (the task digest excludes the top-level proof)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptDigestExcludesProof"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "digest": {
+                "withoutProof": true
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-048",
+      "title": "a held step document altered after the receipt enumerated it is rejected even when its issuer signed the alteration",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:136 (for every held step document the verifier recomputes the digest and rejects on mismatch)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoDigestRecompute"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "heldMutate": {
+                "apply": [
+                  {
+                    "op": "set",
+                    "path": "/payload/note",
+                    "value": "changed"
+                  }
+                ]
+              },
+              "heldResign": [
+                "apply"
+              ]
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-049",
+      "title": "a held step document signed again with the same content is another document",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:103-105 (two documents differing only in signature are two different steps)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:136"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoDigestRecompute"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "heldResign": [
+                "apply"
+              ]
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-050",
+      "title": "a receipt that carries a salt other than the one the digests used is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:107 (the salt of the digest is the enactment salt)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:136"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoDigestRecompute"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "salt": "wrong"
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-051",
+      "title": "a receipt whose digests use another multihash function",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:108 (H is any hash function expressible in multihash; the prefix declares which)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": "The hash function is not fixed by the specification (spec.md:108), so a verifier may implement the one the multihash names (complete) or report that it does not (unverifiable); the text does not require a minimum set. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-14",
+      "clarifyQuestions": [],
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "digest": {
+                "hash": "sha2-512"
+              }
+            },
+            "expect": {
+              "outcome": [
+                "complete",
+                "unverifiable"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-052",
+      "title": "a receipt without a salt where the steps carry prev",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:123 (a recorder MUST populate salt wherever any step carried ceremony.prev)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:40-44 (salt is required whenever any step carried prev)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": "The recorder's duty to populate the salt is stated (spec.md:123) but the payload schema does not require it, and the verifier rules do not say what a verifier holding documents does when the salt is absent (the digests cannot be recomputed). Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-14",
+      "clarifyQuestions": [],
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "salt": "omit"
+              }
+            },
+            "expect": {
+              "outcome": [
+                "unverifiable",
+                "invalid",
+                "incomplete"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-053",
+      "title": "a step document of another enactment is rejected: replay of a step into this receipt",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:136 (a document that disagrees on enactment is a step of a different ceremony)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoEnactmentCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "docMutate": {
+                "decide": [
+                  {
+                    "op": "set",
+                    "path": "/ceremony/enactment",
+                    "value": "urn:uuid:8f21b0c4-7d3e-4a91-b5c2-1e6f0a9d4b83"
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-054",
+      "title": "a receipt that reports another enactment than the steps it enumerates is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:136 (the document's ceremony.enactment agrees with what the receipt enumerates for it)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:121"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoEnactmentCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "mutate": [
+                  {
+                    "op": "set",
+                    "path": "/payload/enactment",
+                    "value": "urn:uuid:8f21b0c4-7d3e-4a91-b5c2-1e6f0a9d4b83"
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-055",
+      "title": "an earlier enactment's receipt presented with the documents of a later one is not complete",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:136 (a document of another enactment is a step of a different ceremony)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:140 (with no step document of this enactment held the verifier cannot report complete)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptTrustTerminalEcho"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "heldEnactment": "other"
+            },
+            "expect": {
+              "outcome": [
+                "unverifiable",
+                "invalid"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-056",
+      "title": "a held step document that names another step than the receipt enumerates is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:136 (the document's ceremony.step agrees with what the receipt enumerates for it)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoStepFieldCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "docMutate": {
+                "decide": [
+                  {
+                    "op": "set",
+                    "path": "/ceremony/step",
+                    "value": "review"
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-057",
+      "title": "a held step document at another round than the receipt enumerates is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:136 (the document's ceremony.round agrees with what the receipt enumerates for it)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoStepFieldCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "docMutate": {
+                "decide": [
+                  {
+                    "op": "set",
+                    "path": "/ceremony/round",
+                    "value": 2
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-058",
+      "title": "a held step that follows a document the receipt does not enumerate shows an omitted step",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:137 (a predecessor a held document commits to but the receipt does not enumerate is an omitted intermediate step: reject)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:74 (omitting an intermediate step is detected by its successor)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoChainWalk"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "enumerate": [
+                "apply",
+                "decide"
+              ]
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-059",
+      "title": "a predecessor whose digest differs from the one the successor committed to is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:137 (the receipt MUST enumerate the named id with the same digestMultibase)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptChainDigestIgnored",
+        "rcptNoChainWalk"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "docMutate": {
+                "decide": [
+                  {
+                    "op": "set",
+                    "path": "/ceremony/prev/0/digestMultibase",
+                    "value": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-060",
+      "title": "a predecessor that is not an ancestor of the step in the definition is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:137 (the predecessor's step MUST be an ancestor in the definition's prev graph, or the same step at an earlier round)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoAncestorCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "ceremony": "approve",
+              "docMutate": {
+                "approve@S": [
+                  {
+                    "op": "set",
+                    "path": "/ceremony/prev",
+                    "value": [
+                      {
+                        "id": "$stepId(approve@X)",
+                        "digestMultibase": "$stepDigest(approve@X)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-061",
+      "title": "a held step document whose own proof does not verify is rejected",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:138 (verify each held step document's own proof against its issuer)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "mutants": [
+        "rcptNoStepProofCheck"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "docProof": {
+                "apply": "corrupt"
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-062",
+      "title": "a held step document without a proof",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:103 (this specification requires each step to carry its own proof)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:138 (rule 11 verifies a held document's proof)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": "The text says each step carries its own proof (spec.md:103) but rule 11 states only that a held document's proof is verified; what a verifier reports for a held document that has none is not stated.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-14",
+      "clarifyQuestions": [],
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "docProof": {
+                "apply": "none"
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-063",
+      "title": "a receipt addressed to another party",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:150-154 (bearer: no member depends on the receiving party's identity)",
+        "SPEC.md:1015 (7.2 item 5: reject a document whose recipient is not the consumer)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": "The specification is a bearer specification, so any verifier may rely on a receipt (spec.md:150-154), but it also says a receipt addressed to one verifier is one that SPEC.md 7.2 item 5 requires every other verifier to reject (spec.md:152); whether a receipt that carries a recipient naming someone else is rejected is not settled.",
+      "clarifyClass": "spec-inconsistent",
+      "clarifySince": "2026-11-14",
+      "clarifyQuestions": [],
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "mutate": [
+                  {
+                    "op": "set",
+                    "path": "/recipient",
+                    "value": "$S"
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "complete"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-064",
+      "title": "a receipt that carries a threadId no step has",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:649 (enactment does not replace threadId; threadId scopes one step's exchange)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:17-23 (the receipt's parties: recorder issuer, optional verifier recipient)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": "The receipt is not a step of the enactment it reports on and the specification says nothing about its threadId; a verifier should neither need nor require one. Not stated, so not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-14",
+      "clarifyQuestions": [],
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "mutate": [
+                  {
+                    "op": "set",
+                    "path": "/threadId",
+                    "value": "$id(receipt-thread)"
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "complete"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-065",
+      "title": "steps of one enactment that share a single threadId",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:649 (threadId scopes one step's request/response exchange; the steps of an enactment are typically siblings)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "SPEC.md 4.11.2 describes the steps as typically separate exchanges but states no rule on their threadIds, and the verifier rules (spec.md:128-138) do not mention them; a verifier that rejected shared or distinct threads would invent a rule. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-14",
+      "clarifyQuestions": [],
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "docMutate": {
+                "apply": [
+                  {
+                    "op": "set",
+                    "path": "/threadId",
+                    "value": "$id(shared-thread)"
+                  }
+                ],
+                "review": [
+                  {
+                    "op": "set",
+                    "path": "/threadId",
+                    "value": "$id(shared-thread)"
+                  }
+                ],
+                "decide": [
+                  {
+                    "op": "set",
+                    "path": "/threadId",
+                    "value": "$id(shared-thread)"
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "complete"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-066",
+      "title": "a receipt whose parentEnactment is its own enactment",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:658 (a producer MUST NOT set parentEnactment equal to the document's own enactment)",
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:21-25 (the receipt's parentEnactment is one level, as on the envelope member)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": "The producer rule is stated for the envelope member (SPEC.md:658) and the receipt's parentEnactment is described as the same member's counterpart; what a verifier does with a receipt that breaks it is not stated.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-14",
+      "clarifyQuestions": [],
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "mutate": [
+                  {
+                    "op": "set",
+                    "path": "/payload/parentEnactment",
+                    "value": "$id(enactment)"
+                  }
+                ]
+              }
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-067",
+      "title": "the same receipt presented twice verifies the same way both times",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/spec.md:34 (side effects none: a receipt creates no state at the recipient)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:152 (bearer: evidence only its first recipient may act on is not evidence)",
+        "SPEC.md:1021 (7.2 item 11 binds the execution of a consequential task)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": "SPEC.md 7.2 item 11 keeps a consequential task from executing twice; verifying a receipt executes nothing, and the receipt's side-effect class is none, but the text does not say a verifier must treat a re-presented receipt as a retry rather than a duplicate. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-14",
+      "clarifyQuestions": [],
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {},
+            "expect": {
+              "outcome": "complete"
+            }
+          }
+        },
+        {
+          "verifyReceipt": {
+            "scenario": {},
+            "expect": {
+              "outcome": "complete"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-068",
+      "title": "a step name the definition does not declare",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:60-64 (step is the name from the definition)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:131-133 (the rules name no check for an undeclared step)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": "The receipt text states no rule that an enumerated step name must be one the definition declares (the Rust verifier crate rejects it); the schema only says the name is the definition's. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-14",
+      "clarifyQuestions": [],
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "mutate": [
+                  {
+                    "op": "set",
+                    "path": "/payload/steps/0/step",
+                    "value": "ghost"
+                  }
+                ]
+              },
+              "hold": "none"
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "RCPT-069",
+      "title": "a step whose typeUri differs from the one the definition declares",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:70-74 (typeUri is checked against the definition's declared type for that step)",
+        "specs/trust-ceremony-receipt/0.1/spec.md:131-133 (the verifier rules name no such check)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": "The schema description says the typeUri is checked against the definition, but no verifier rule states it. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-14",
+      "clarifyQuestions": [],
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "receipt": {
+                "mutate": [
+                  {
+                    "op": "set",
+                    "path": "/payload/steps/0/typeUri",
+                    "value": "https://trusttasks.org/spec/conformance/receipt/other/0.1"
+                  }
+                ]
+              },
+              "hold": "none"
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "RCPT-070",
+      "title": "a step at a round beyond the definition's maxRounds",
+      "tier": 1,
+      "spec": [
+        "specs/trust-ceremony-receipt/0.1/payload.schema.json:65-69 (enumerating rounds separately lets a verifier check the repetition bound)",
+        "ceremonies/ceremony.meta.schema.json:190 (maxRounds bounds repetition)"
+      ],
+      "source": {
+        "slug": "trust-ceremony-receipt",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-ceremony-receipt/0.1",
+        "pinnedDigest": "sha256:2ed0a321067d0c815ae145c6b7079a32a932652a562b63f05724d95e88ce177d",
+        "tfRef": {
+          "repoPath": "specs/trust-ceremony-receipt/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0ae45c9c2fa05842ec66dfd5469ed0cf3610b2620218fdf02841ed994651cb7d",
+        "schemaHash": "sha256:020f903abb64b2a1b39297db384aac65c744b1dd627d93091edcfdd6e997f96b"
+      },
+      "clarify": "The schema says enumerating rounds lets a verifier check the bound, but no verifier rule states that a round beyond maxRounds is rejected. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-14",
+      "clarifyQuestions": [],
+      "requires": [
+        "optional:receiptVerify"
+      ],
+      "steps": [
+        {
+          "verifyReceipt": {
+            "scenario": {
+              "ceremony": "approve",
+              "instances": [
+                "propose",
+                "approve@X#3",
+                "approve@S"
+              ]
+            },
+            "expect": {
+              "outcome": "invalid"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

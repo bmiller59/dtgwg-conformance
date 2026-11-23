@@ -1,0 +1,4008 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "CB-VP",
+ "family": "coverage",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "CB-VP-001",
+   "title": "vetting/decline 0.1: an identifier (requestId) that names nothing is refused with vetting/decline:unknownRequest",
+   "tier": 1,
+   "spec": [
+    "specs/vetting/decline/0.1/spec.md: \"The applicant has no open request with this vetter under the named requestId.\"",
+    "specs/vetting/decline/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vetting/decline",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vetting/decline/0.1",
+    "pinnedDigest": "sha256:a32141d5a3ce70059fff60906dbcf0bcfdeb7f78a7818a226ccb9a683bd9f99e",
+    "tfRef": {
+     "repoPath": "specs/vetting/decline/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:5ea846a760ac48b7e0eab714505525eca9dac0202cf0f3bc8fd563513a0c7bf5",
+    "schemaHash": "sha256:b7c89b6bcaf52a635bcfd714a61dc10fadc97a5b48eb6196ee579c224b7331d2"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vetting/decline/0.1"
+   ],
+   "mutants": [
+    "bx:vetting/decline/0.1:vetting/decline:unknownRequest"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vetting/decline/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "requestId": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vetting/decline:unknownRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-002",
+   "title": "vetting/session 0.1: an identifier (requestId) that names nothing is refused with vetting/session:unknownRequest",
+   "tier": 1,
+   "spec": [
+    "specs/vetting/session/0.1/spec.md: \"This vetter holds no accepted vetting request from this applicant with the named requestId.\"",
+    "specs/vetting/session/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vetting/session",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vetting/session/0.1",
+    "pinnedDigest": "sha256:d082ee0a030f31d7203f6e751909edf5df3d0184f8ba710372c1595c9bf5995c",
+    "tfRef": {
+     "repoPath": "specs/vetting/session/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:ab64d929d3977f336937bc2e8f64eba4f21bd662d7e7af8dce124938fca01787",
+    "schemaHash": "sha256:d1034088a1aba1918767269cc4e12a2dce4d1bab222a47e8a0bc16ec50a81093"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vetting/session/0.1"
+   ],
+   "mutants": [
+    "bx:vetting/session/0.1:vetting/session:unknownRequest"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vetting/session/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "requestId": "conformance-unknown-identifier",
+        "challenge": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "domain": "did:web:alice.example",
+        "method": "inPerson",
+        "requiredClaims": [],
+        "expiresAt": "2026-11-12T10:00:00Z"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vetting/session:unknownRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-003",
+   "title": "voting/ballot/cast 0.1: an identifier (electionId) that names nothing is refused with voting/ballot/cast:electionUnknown",
+   "tier": 1,
+   "spec": [
+    "specs/voting/ballot/cast/0.1/spec.md: \"No election with this identifier exists for this community.\"",
+    "specs/voting/ballot/cast/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "voting/ballot/cast",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/voting/ballot/cast/0.1",
+    "pinnedDigest": "sha256:05f39a89395f4b7d8e2fc6410fad949cc46cc3c4176b3e23b3f8d83d242ad1c6",
+    "tfRef": {
+     "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+    "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/voting/ballot/cast/0.1"
+   ],
+   "mutants": [
+    "bx:voting/ballot/cast/0.1:voting/ballot/cast:electionUnknown"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/voting/ballot/cast/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "community": "did:web:alice.example",
+        "electionId": "conformance-unknown-identifier",
+        "cast": {
+         "ballot": {
+          "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+          "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+          "answers": [
+           {
+            "question": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+            "choice": []
+           }
+          ]
+         },
+         "tag": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "attestation": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "voting/ballot/cast:electionUnknown",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-004",
+   "title": "voting/ballot/cast 0.1: a ballot that names another election than electionId is refused with manifestMismatch",
+   "tier": 1,
+   "spec": [
+    "specs/voting/ballot/cast/0.1/spec.md: \"Refuse with `voting/ballot/cast:manifestMismatch` unless `cast.ballot.electionId` is `electionId`\"",
+    "specs/voting/ballot/cast/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/voting/ballot/cast/0.1/spec.md front matter errorCodes: voting/ballot/cast:electionUnknown (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "voting/ballot/cast",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/voting/ballot/cast/0.1",
+    "pinnedDigest": "sha256:05f39a89395f4b7d8e2fc6410fad949cc46cc3c4176b3e23b3f8d83d242ad1c6",
+    "tfRef": {
+     "repoPath": "specs/voting/ballot/cast/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:001cffb0eb02ce3e852bd76b7dad347f14c484a83a1e37f06e25adfa8223e927",
+    "schemaHash": "sha256:128b992abe83ee0265f7342d069ac601e92167dea256ae0286149c3475e431ae"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/voting/ballot/cast/0.1"
+   ],
+   "mutants": [
+    "bx:voting/ballot/cast/0.1:manifestMismatch"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/voting/ballot/cast/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "community": "did:web:alice.example",
+        "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+        "cast": {
+         "ballot": {
+          "electionId": "conformance-other-election",
+          "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+          "answers": [
+           {
+            "question": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+            "choice": []
+           }
+          ]
+         },
+         "tag": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "attestation": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "voting/ballot/cast:manifestMismatch",
+       "voting/ballot/cast:electionUnknown",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-005",
+   "title": "vta/pcs/vetter/show 0.1: an identifier (contextId) that names nothing is refused with vta/pcs/vetter/show:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vetter/show/0.1/spec.md: \"No vetter engine exists for this context and community.\"",
+    "specs/vta/pcs/vetter/show/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vetter/show",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vetter/show/0.1",
+    "pinnedDigest": "sha256:742488b4dcdc55989946ccf03b6bd717b0b79bbdca320725e6f6abb20224b312",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vetter/show/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:7e5e97887a41414f381ec08be57f36449751a590f28a2c988277ceac5f1c056a",
+    "schemaHash": "sha256:e3d8acdbc477707de43d65c87e8a8642061d320eaf635166d0660c6b078fde5c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vetter/show/0.1"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vetter/show/0.1:vta/pcs/vetter/show:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vetter/show/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "conformance-unknown-identifier",
+        "community": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vetter/show:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-006",
+   "title": "vta/pcs/attest 0.1: an identifier (contextId) that names nothing is refused with vta/pcs/attest:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/attest/0.1/spec.md: \"No vetter engine exists for this context and community.\"",
+    "specs/vta/pcs/attest/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/attest",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/attest/0.1",
+    "pinnedDigest": "sha256:ce4a7bf9ab8e9ec0df7a123ca46024833188affb8efe6b0019a522a3d033c180",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/attest/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:391594f711cb77f16a585295b1781d58b2e42fe9ba276250154aa1b62fc7f620",
+    "schemaHash": "sha256:766117b6a0abf64dc7245b8c49dc6e6b4531f54e0dd460ea3817df79db846373"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/attest/0.1"
+   ],
+   "mutants": [
+    "bx:vta/pcs/attest/0.1:vta/pcs/attest:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/attest/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "conformance-unknown-identifier",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "example",
+         "helperKey": "example",
+         "tokenKey": "example",
+         "vetterLabels": [],
+         "tokenLabels": [],
+         "dripPerTick": 1,
+         "tickLength": "P0D",
+         "events": []
+        },
+        "applicantId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+        "meta": {
+         "community": "example",
+         "requirementsDigest": "example",
+         "method": "inPerson",
+         "claimsVerified": [
+          "example"
+         ],
+         "livenessConfirmed": false,
+         "declaredRelationship": "none",
+         "identityCommitment": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "cardDigestMultibase": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "validFrom": "2026-11-12",
+         "validUntil": "2026-11-12"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/attest:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-007",
+   "title": "vta/pcs/root-accept 0.1: an identifier (contextId) that names nothing is refused with vta/pcs/root-accept:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/root-accept/0.1/spec.md: \"No vetter engine exists for this context and community.\"",
+    "specs/vta/pcs/root-accept/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/root-accept",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/root-accept/0.1",
+    "pinnedDigest": "sha256:25fcf34cf587b1243df6085b87d92cadfc3b0efa2caebb702063d832843bca50",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/root-accept/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:7c54e5c90392c23a98c8527f65c7c251991dd64a3a5551277849b4ff43ed5a44",
+    "schemaHash": "sha256:200ec9020cdd619d41edad425d1ac7bb0b5f4a53dba8e9832c4962c04c58cbe9"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/root-accept/0.1"
+   ],
+   "mutants": [
+    "bx:vta/pcs/root-accept/0.1:vta/pcs/root-accept:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/root-accept/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "conformance-unknown-identifier",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "example",
+         "helperKey": "example",
+         "tokenKey": "example",
+         "vetterLabels": [],
+         "tokenLabels": [],
+         "dripPerTick": 1,
+         "tickLength": "P0D",
+         "events": []
+        },
+        "response": {
+         "label": "vetter/0000-00",
+         "preCredential": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/root-accept:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-008",
+   "title": "vta/pcs/tokens/abandon 0.1: an identifier (contextId) that names nothing is refused with vta/pcs/tokens/abandon:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/tokens/abandon/0.1/spec.md: \"No vetter engine exists for this context and community.\"",
+    "specs/vta/pcs/tokens/abandon/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/tokens/abandon",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/tokens/abandon/0.1",
+    "pinnedDigest": "sha256:0f60a6cf7ae41beb86ca6d25e9722db15492a63ba61d1ba7cf3fb42da0902ce0",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/tokens/abandon/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:c20da033f7999e7dc51a742a998efb0a15aa3bdd3bcc0bf53707b5d36a977524",
+    "schemaHash": "sha256:b2ea7484a13f503a71369885e8d32dccc49a6cb55d1bc4bf00a9b3713e1c4112"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/tokens/abandon/0.1"
+   ],
+   "mutants": [
+    "bx:vta/pcs/tokens/abandon/0.1:vta/pcs/tokens/abandon:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/tokens/abandon/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "conformance-unknown-identifier",
+        "community": "did:web:alice.example",
+        "draw": {
+         "label": "example",
+         "tick": 0
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/tokens/abandon:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-009",
+   "title": "vta/pcs/tokens/accept 0.1: an identifier (contextId) that names nothing is refused with vta/pcs/tokens/accept:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/tokens/accept/0.1/spec.md: \"No vetter engine exists for this context and community.\"",
+    "specs/vta/pcs/tokens/accept/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/tokens/accept",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/tokens/accept/0.1",
+    "pinnedDigest": "sha256:763da65366148203d21a37113caa7c13ff8741b2c82d63fc818cbbc13b7c5ae2",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/tokens/accept/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e2c8897c37e99b4c1dcfd6033a392f6f488c0bcab360337866b2f54037a372f8",
+    "schemaHash": "sha256:0cfb2a00a0a156bdd10fe55ced56b1160efdf4e92971fc90335f66af01773e65"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/tokens/accept/0.1"
+   ],
+   "mutants": [
+    "bx:vta/pcs/tokens/accept/0.1:vta/pcs/tokens/accept:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/tokens/accept/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "conformance-unknown-identifier",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "example",
+         "helperKey": "example",
+         "tokenKey": "example",
+         "vetterLabels": [],
+         "tokenLabels": [],
+         "dripPerTick": 1,
+         "tickLength": "P0D",
+         "events": []
+        },
+        "response": {
+         "label": "example",
+         "tick": 0,
+         "preCredentials": [
+          "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/tokens/accept:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-010",
+   "title": "vta/pcs/tokens/request 0.1: an identifier (contextId) that names nothing is refused with vta/pcs/tokens/request:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/tokens/request/0.1/spec.md: \"No vetter engine exists for this context and community.\"",
+    "specs/vta/pcs/tokens/request/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/tokens/request",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/tokens/request/0.1",
+    "pinnedDigest": "sha256:b2291065db5f14a3c8f8f68313d801deb415babd058f12f4fd720459c7ea99f2",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/tokens/request/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:41e8be39714dbf0333593c406e5a79ec398ea49b05b30942ccaca21de33cbd9a",
+    "schemaHash": "sha256:ada1a5e743bb4e8cc1c347cdbb8638efca9b6ceada128d8295a61a098e59389d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/tokens/request/0.1"
+   ],
+   "mutants": [
+    "bx:vta/pcs/tokens/request/0.1:vta/pcs/tokens/request:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/tokens/request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "conformance-unknown-identifier",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "example",
+         "helperKey": "example",
+         "tokenKey": "example",
+         "vetterLabels": [],
+         "tokenLabels": [],
+         "dripPerTick": 1,
+         "tickLength": "P0D",
+         "events": []
+        },
+        "label": "example",
+        "tick": 0,
+        "count": 1
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/tokens/request:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-011",
+   "title": "vta/pcs/vetter/recover 0.1: a boundId no key the VTA can derive has is refused with notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vetter/recover/0.1/spec.md: \"No key this VTA can derive for the context has the PCS identifier\"",
+    "specs/vta/pcs/vetter/recover/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vetter/recover",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vetter/recover/0.1",
+    "pinnedDigest": "sha256:47e13f845b79e655e9de9494d7f8a5f75f8df2571da0eae8ff4fb96c8ab491fa",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vetter/recover/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:36a55d7a5404589d9aebe9edf19f8abd793840be6b066763bb9af939df3cefc5",
+    "schemaHash": "sha256:16c59193a1c4429dc19d6ec0be9d104d4bad88f05b72ceee3be6a091df1fe42a"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vetter/recover/0.1"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vetter/recover/0.1:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vetter/recover/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "memberDid": "did:web:alice.example",
+        "boundId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE72"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vetter/recover:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-012",
+   "title": "vta/pcs/tokens/request 0.1: a count above the parameters' dripPerTick is refused with countExceedsDrip",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/tokens/request/0.1/spec.md: \"`count` is more than the parameters' `dripPerTick`.\"",
+    "specs/vta/pcs/tokens/request/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/tokens/request",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/tokens/request/0.1",
+    "pinnedDigest": "sha256:b2291065db5f14a3c8f8f68313d801deb415babd058f12f4fd720459c7ea99f2",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/tokens/request/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:41e8be39714dbf0333593c406e5a79ec398ea49b05b30942ccaca21de33cbd9a",
+    "schemaHash": "sha256:ada1a5e743bb4e8cc1c347cdbb8638efca9b6ceada128d8295a61a098e59389d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/tokens/request/0.1"
+   ],
+   "mutants": [
+    "bx:vta/pcs/tokens/request/0.1:countExceedsDrip"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/tokens/request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "example",
+         "helperKey": "example",
+         "tokenKey": "example",
+         "vetterLabels": [],
+         "tokenLabels": [
+          "example"
+         ],
+         "dripPerTick": 1,
+         "tickLength": "P0D",
+         "events": []
+        },
+        "label": "example",
+        "tick": 0,
+        "count": 2
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/tokens/request:countExceedsDrip",
+       "vta/pcs/tokens/request:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-013",
+   "title": "vta/pcs/applications/show 0.1: an identifier (applicationId) that names nothing is refused with vta/pcs/applications/show:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/applications/show/0.1/spec.md: \"No application has this handle in a context the caller may act in.\"",
+    "specs/vta/pcs/applications/show/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/applications/show",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/applications/show/0.1",
+    "pinnedDigest": "sha256:528f38e90c9e904e5feebb0231c6c6822ae01951b6a7275af9a8fd899cc3be4d",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/applications/show/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:ef465fbe770c9aae74f0ee1c027136588d5944e9692ee730becd822456d4d419",
+    "schemaHash": "sha256:ca521481da74d6058f270d8fe9a94cfc8bef9abe925110461cba1ef8a8a476bc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/applications/show/0.1"
+   ],
+   "mutants": [
+    "bx:vta/pcs/applications/show/0.1:vta/pcs/applications/show:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/applications/show/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "applicationId": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/applications/show:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-014",
+   "title": "vta/pcs/prove 0.1: an identifier (applicationId) that names nothing is refused with vta/pcs/prove:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/prove/0.1/spec.md: \"No application has this handle in a context the caller may act in.\"",
+    "specs/vta/pcs/prove/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/prove",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/prove/0.1",
+    "pinnedDigest": "sha256:e6c518d5657ea02029f6bcea667703493da7a0717a6dad6240a6b0fc54b98b2a",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/prove/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:aa130fabd10941c8fcdef969858be38932439f81117cf485abc42352f357067e",
+    "schemaHash": "sha256:30749d31f6ad45a51d3746ddc72e8fb15961b0c6f2ddc88f3bb71d2d52c92aa9"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/prove/0.1"
+   ],
+   "mutants": [
+    "bx:vta/pcs/prove/0.1:vta/pcs/prove:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/prove/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "applicationId": "conformance-unknown-identifier",
+        "parameters": {
+         "suite": "example",
+         "helperKey": "example",
+         "tokenKey": "example",
+         "vetterLabels": [],
+         "tokenLabels": [],
+         "dripPerTick": 1,
+         "tickLength": "P0D",
+         "events": []
+        },
+        "requirementsDigest": "example",
+        "challenge": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/prove:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-015",
+   "title": "vta/pcs/verify-attestation 0.1: an identifier (applicationId) that names nothing is refused with vta/pcs/verify-attestation:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/verify-attestation/0.1/spec.md: \"No application has this handle in a context the caller may act in.\"",
+    "specs/vta/pcs/verify-attestation/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/verify-attestation",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/verify-attestation/0.1",
+    "pinnedDigest": "sha256:a695834e6c978a4a7af673611874aef4b7e3a1c1f9498ddf3e9763c25d5e5362",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/verify-attestation/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:56c676a14611ee064a7104a7e883c5483b07435b4b1c62222e8f247e78f494f0",
+    "schemaHash": "sha256:71a133cacec3dad6d28282b252038b7233936c4424eb4c7613e4cc1dde117c3e"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/verify-attestation/0.1"
+   ],
+   "mutants": [
+    "bx:vta/pcs/verify-attestation/0.1:vta/pcs/verify-attestation:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/verify-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "applicationId": "conformance-unknown-identifier",
+        "parameters": {
+         "suite": "example",
+         "helperKey": "example",
+         "tokenKey": "example",
+         "vetterLabels": [],
+         "tokenLabels": [],
+         "dripPerTick": 1,
+         "tickLength": "P0D",
+         "events": []
+        },
+        "attestation": {
+         "suite": "example",
+         "attestation": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "meta": {
+          "community": "example",
+          "requirementsDigest": "example",
+          "method": "inPerson",
+          "claimsVerified": [
+           "example"
+          ],
+          "livenessConfirmed": false,
+          "declaredRelationship": "none",
+          "identityCommitment": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+          "cardDigestMultibase": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+          "validFrom": "2026-11-12",
+          "validUntil": "2026-11-12",
+          "tokenLabel": "example",
+          "tokenSerial": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+         },
+         "token": {
+          "label": "example",
+          "serial": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+          "shown": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/verify-attestation:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-016",
+   "title": "vta/pcs/vote 0.2: an identifier (contextId) that names nothing is refused with vta/pcs/vote:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vote/0.2/spec.md: \"The engine holds no ticket for this election in this context and community.\"",
+    "specs/vta/pcs/vote/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.2",
+    "pinnedDigest": "sha256:6f161de2c0ff41ade05f6c5c56af5a4973f89e06ae7e7f0012fdc2a6f6a025be",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e4e5b51c43a0c3ec8e11dfe471b474d1d131cec352b7af895bc26066aba92442",
+    "schemaHash": "sha256:4af377d3e2e59c04ea9d63f48279897bb53f88e24d467d01894a37f7b817c1bf",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.2"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vote/0.2:vta/pcs/vote:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "conformance-unknown-identifier",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 10
+        },
+        "ballot": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "choice": []
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vote:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-017",
+   "title": "vta/pcs/vote 0.2: a manifest that names another community than community is refused with manifestMismatch",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vote/0.2/spec.md: \"the manifest names another community\"",
+    "specs/vta/pcs/vote/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vta/pcs/vote:notFound, a code the text lists for this task and may be answered first where it fixes no order (\"refuse with `vta/pcs/vote:notFound` if it holds no ticket for\"); such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.2",
+    "pinnedDigest": "sha256:6f161de2c0ff41ade05f6c5c56af5a4973f89e06ae7e7f0012fdc2a6f6a025be",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e4e5b51c43a0c3ec8e11dfe471b474d1d131cec352b7af895bc26066aba92442",
+    "schemaHash": "sha256:4af377d3e2e59c04ea9d63f48279897bb53f88e24d467d01894a37f7b817c1bf",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.2"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vote/0.2:manifestMismatchCommunity"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:conformance-other.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 10
+        },
+        "ballot": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "choice": []
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vote:manifestMismatch",
+       "vta/pcs/vote:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-018",
+   "title": "vta/pcs/vote 0.2: a ballot whose electionId is not the manifest's is refused with manifestMismatch",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vote/0.2/spec.md: \"the ballot's `electionId` or `manifestDigest` is not the manifest's\"",
+    "specs/vta/pcs/vote/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vta/pcs/vote:notFound, a code the text lists for this task and may be answered first where it fixes no order (\"refuse with `vta/pcs/vote:notFound` if it holds no ticket for\"); such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.2",
+    "pinnedDigest": "sha256:6f161de2c0ff41ade05f6c5c56af5a4973f89e06ae7e7f0012fdc2a6f6a025be",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e4e5b51c43a0c3ec8e11dfe471b474d1d131cec352b7af895bc26066aba92442",
+    "schemaHash": "sha256:4af377d3e2e59c04ea9d63f48279897bb53f88e24d467d01894a37f7b817c1bf",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.2"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vote/0.2:manifestMismatchBallotElection"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 10
+        },
+        "ballot": {
+         "electionId": "conformance-other-election",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "choice": []
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vote:manifestMismatch",
+       "vta/pcs/vote:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-019",
+   "title": "vta/pcs/vote 0.2: a ballot with an answer for a key the manifest does not name is refused with ballotInvalid",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vote/0.2/spec.md: \"none for a key the manifest does not name\"",
+    "specs/vta/pcs/vote/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vta/pcs/vote:notFound, a code the text lists for this task and may be answered first where it fixes no order (\"refuse with `vta/pcs/vote:notFound` if it holds no ticket for\"); such a pass shows only that the request was refused",
+    "Also accepted: vta/pcs/vote:parametersInvalid, a code the text lists for this task and may be answered first where it fixes no order (\"Refuse with `vta/pcs/vote:parametersInvalid` a `votingKey` it cannot decode\"); such a pass shows only that the request was refused",
+    "Also accepted: vta/pcs/vote:notOpen, a code the text lists for this task and may be answered first where it fixes no order (\"Refuse with `vta/pcs/vote:notOpen` when its clock is before the manifest's `votingOpensAt`\"); such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.2",
+    "pinnedDigest": "sha256:6f161de2c0ff41ade05f6c5c56af5a4973f89e06ae7e7f0012fdc2a6f6a025be",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e4e5b51c43a0c3ec8e11dfe471b474d1d131cec352b7af895bc26066aba92442",
+    "schemaHash": "sha256:4af377d3e2e59c04ea9d63f48279897bb53f88e24d467d01894a37f7b817c1bf",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.2"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vote/0.2:ballotInvalid"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 10
+        },
+        "ballot": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "conformance-unnamed-question",
+           "choice": []
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vote:ballotInvalid",
+       "vta/pcs/vote:notFound",
+       "vta/pcs/vote:parametersInvalid",
+       "vta/pcs/vote:notOpen",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-020",
+   "title": "vta/pcs/vote 0.3: an identifier (contextId) that names nothing is refused with vta/pcs/vote:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vote/0.3/spec.md: \"The engine holds no ticket for this election in this context and community.\"",
+    "specs/vta/pcs/vote/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.3",
+    "pinnedDigest": "sha256:edfa032ed30c5baf6d50cc2ceada7dbd706fd59ba9dca0c9433960e5b8f699bb",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:aa879f81934bb91c11e8bad12784bc984b0bafa6f9a6cb14c914c4fe7595d54d",
+    "schemaHash": "sha256:c02208c9e311d4f19d8cdc194bc8f0cb5b2078e24dbcdde138f32cad33fccff7",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.3"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vote/0.3:vta/pcs/vote:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "conformance-unknown-identifier",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        },
+        "ballot": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "choice": []
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vote:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-021",
+   "title": "vta/pcs/vote 0.3: a manifest that names another community than community is refused with manifestMismatch",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vote/0.3/spec.md: \"the manifest names another community\"",
+    "specs/vta/pcs/vote/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vta/pcs/vote:notFound, a code the text lists for this task and may be answered first where it fixes no order (\"refuse with `vta/pcs/vote:notFound` if it holds no ticket for\"); such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.3",
+    "pinnedDigest": "sha256:edfa032ed30c5baf6d50cc2ceada7dbd706fd59ba9dca0c9433960e5b8f699bb",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:aa879f81934bb91c11e8bad12784bc984b0bafa6f9a6cb14c914c4fe7595d54d",
+    "schemaHash": "sha256:c02208c9e311d4f19d8cdc194bc8f0cb5b2078e24dbcdde138f32cad33fccff7",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.3"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vote/0.3:manifestMismatchCommunity"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:conformance-other.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        },
+        "ballot": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "choice": []
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vote:manifestMismatch",
+       "vta/pcs/vote:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-022",
+   "title": "vta/pcs/vote 0.3: a ballot whose electionId is not the manifest's is refused with manifestMismatch",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vote/0.3/spec.md: \"the ballot's `electionId` or `manifestDigest` is not the manifest's\"",
+    "specs/vta/pcs/vote/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vta/pcs/vote:notFound, a code the text lists for this task and may be answered first where it fixes no order (\"refuse with `vta/pcs/vote:notFound` if it holds no ticket for\"); such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.3",
+    "pinnedDigest": "sha256:edfa032ed30c5baf6d50cc2ceada7dbd706fd59ba9dca0c9433960e5b8f699bb",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:aa879f81934bb91c11e8bad12784bc984b0bafa6f9a6cb14c914c4fe7595d54d",
+    "schemaHash": "sha256:c02208c9e311d4f19d8cdc194bc8f0cb5b2078e24dbcdde138f32cad33fccff7",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.3"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vote/0.3:manifestMismatchBallotElection"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        },
+        "ballot": {
+         "electionId": "conformance-other-election",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "choice": []
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vote:manifestMismatch",
+       "vta/pcs/vote:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-023",
+   "title": "vta/pcs/vote 0.3: a ballot with an answer for a key the manifest does not name is refused with ballotInvalid",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vote/0.3/spec.md: \"none for a key the manifest does not name\"",
+    "specs/vta/pcs/vote/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vta/pcs/vote:notFound, a code the text lists for this task and may be answered first where it fixes no order (\"refuse with `vta/pcs/vote:notFound` if it holds no ticket for\"); such a pass shows only that the request was refused",
+    "Also accepted: vta/pcs/vote:parametersInvalid, a code the text lists for this task and may be answered first where it fixes no order (\"Refuse with `vta/pcs/vote:parametersInvalid` a `votingKey` it cannot decode\"); such a pass shows only that the request was refused",
+    "Also accepted: vta/pcs/vote:notOpen, a code the text lists for this task and may be answered first where it fixes no order (\"Refuse with `vta/pcs/vote:notOpen` when its clock is before the manifest's `votingOpensAt`\"); such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.3",
+    "pinnedDigest": "sha256:edfa032ed30c5baf6d50cc2ceada7dbd706fd59ba9dca0c9433960e5b8f699bb",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:aa879f81934bb91c11e8bad12784bc984b0bafa6f9a6cb14c914c4fe7595d54d",
+    "schemaHash": "sha256:c02208c9e311d4f19d8cdc194bc8f0cb5b2078e24dbcdde138f32cad33fccff7",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.3"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vote/0.3:ballotInvalid"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        },
+        "ballot": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "conformance-unnamed-question",
+           "choice": []
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vote:ballotInvalid",
+       "vta/pcs/vote:notFound",
+       "vta/pcs/vote:parametersInvalid",
+       "vta/pcs/vote:notOpen",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-024",
+   "title": "vta/pcs/vote 0.4: an identifier (contextId) that names nothing is refused with vta/pcs/vote:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vote/0.4/spec.md: \"The engine holds no ticket for this election in this context and community.\"",
+    "specs/vta/pcs/vote/0.4/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.4",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.4",
+    "pinnedDigest": "sha256:437517cc50cd30c7a91b4fb777723a8e41ccab3db0fb6e01cd0b308eb2505d0b",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:1cfeb9ad0bddd00e9fbd63b0730123023f726c39e02566560e311d6b0f1d61e6",
+    "schemaHash": "sha256:c76c6a0604d52d2d4d0d1214fda5434de2455f36cd476312efc90ab7f37b936d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.4"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vote/0.4:vta/pcs/vote:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "conformance-unknown-identifier",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        },
+        "ballot": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "choice": []
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vote:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-025",
+   "title": "vta/pcs/vote 0.4: a manifest that names another community than community is refused with manifestMismatch",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vote/0.4/spec.md: \"the manifest names another community\"",
+    "specs/vta/pcs/vote/0.4/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vta/pcs/vote:notFound, a code the text lists for this task and may be answered first where it fixes no order (\"refuse with `vta/pcs/vote:notFound` if it holds no ticket for\"); such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.4",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.4",
+    "pinnedDigest": "sha256:437517cc50cd30c7a91b4fb777723a8e41ccab3db0fb6e01cd0b308eb2505d0b",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:1cfeb9ad0bddd00e9fbd63b0730123023f726c39e02566560e311d6b0f1d61e6",
+    "schemaHash": "sha256:c76c6a0604d52d2d4d0d1214fda5434de2455f36cd476312efc90ab7f37b936d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.4"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vote/0.4:manifestMismatchCommunity"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:conformance-other.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        },
+        "ballot": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "choice": []
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vote:manifestMismatch",
+       "vta/pcs/vote:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-026",
+   "title": "vta/pcs/vote 0.4: a ballot whose electionId is not the manifest's is refused with manifestMismatch",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vote/0.4/spec.md: \"the ballot's `electionId` or `manifestDigest` is not the manifest's\"",
+    "specs/vta/pcs/vote/0.4/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vta/pcs/vote:notFound, a code the text lists for this task and may be answered first where it fixes no order (\"refuse with `vta/pcs/vote:notFound` if it holds no ticket for\"); such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.4",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.4",
+    "pinnedDigest": "sha256:437517cc50cd30c7a91b4fb777723a8e41ccab3db0fb6e01cd0b308eb2505d0b",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:1cfeb9ad0bddd00e9fbd63b0730123023f726c39e02566560e311d6b0f1d61e6",
+    "schemaHash": "sha256:c76c6a0604d52d2d4d0d1214fda5434de2455f36cd476312efc90ab7f37b936d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.4"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vote/0.4:manifestMismatchBallotElection"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        },
+        "ballot": {
+         "electionId": "conformance-other-election",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "choice": []
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vote:manifestMismatch",
+       "vta/pcs/vote:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-027",
+   "title": "vta/pcs/vote 0.4: a ballot with an answer for a key the manifest does not name is refused with ballotInvalid",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vote/0.4/spec.md: \"none for a key the manifest does not name\"",
+    "specs/vta/pcs/vote/0.4/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vta/pcs/vote:notFound, a code the text lists for this task and may be answered first where it fixes no order (\"refuse with `vta/pcs/vote:notFound` if it holds no ticket for\"); such a pass shows only that the request was refused",
+    "Also accepted: vta/pcs/vote:parametersInvalid, a code the text lists for this task and may be answered first where it fixes no order (\"Refuse with `vta/pcs/vote:parametersInvalid` a `votingKey` it cannot decode\"); such a pass shows only that the request was refused",
+    "Also accepted: vta/pcs/vote:notOpen, a code the text lists for this task and may be answered first where it fixes no order (\"Refuse with `vta/pcs/vote:notOpen` when its clock is before the manifest's `votingOpensAt`\"); such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.4",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.4",
+    "pinnedDigest": "sha256:437517cc50cd30c7a91b4fb777723a8e41ccab3db0fb6e01cd0b308eb2505d0b",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:1cfeb9ad0bddd00e9fbd63b0730123023f726c39e02566560e311d6b0f1d61e6",
+    "schemaHash": "sha256:c76c6a0604d52d2d4d0d1214fda5434de2455f36cd476312efc90ab7f37b936d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.4"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vote/0.4:ballotInvalid"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        },
+        "ballot": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "conformance-unnamed-question",
+           "choice": []
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vote:ballotInvalid",
+       "vta/pcs/vote:notFound",
+       "vta/pcs/vote:parametersInvalid",
+       "vta/pcs/vote:notOpen",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-028",
+   "title": "vta/pcs/vote-encrypted 0.5: an identifier (contextId) that names nothing is refused with vta/pcs/vote-encrypted:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/vote-encrypted/0.5/spec.md: \"The engine holds no ticket for this election.\"",
+    "specs/vta/pcs/vote-encrypted/0.5/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote-encrypted",
+    "version": "0.5",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote-encrypted/0.5",
+    "pinnedDigest": "sha256:e582445f3e872e3e0049cf25d392282125289d056fadb94e43ec5aab50ba61ff",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote-encrypted/0.5/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:b1a9a73eef3d5bcbf1750cf2bec8a83c2f76fef53b29ab3d69d78cc57b92ca43",
+    "schemaHash": "sha256:2ff878569f6244d1585eb83a44d0c49d0c060f0108d077258eb2f4d9ceca4d5f"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote-encrypted/0.5"
+   ],
+   "mutants": [
+    "bx:vta/pcs/vote-encrypted/0.5:vta/pcs/vote-encrypted:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote-encrypted/0.5",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "conformance-unknown-identifier",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        },
+        "ballot": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "choice": []
+          }
+         ]
+        },
+        "ceremony": [
+         {
+          "member1": "x"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/vote-encrypted:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-029",
+   "title": "vta/pcs/voter/accept 0.1: an identifier (electionId) that names nothing is refused with vta/pcs/voter/accept:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/voter/accept/0.1/spec.md: \"The engine records no ticket request for this election in this context and community\"",
+    "specs/vta/pcs/voter/accept/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/voter/accept",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/voter/accept/0.1",
+    "pinnedDigest": "sha256:d6c895be8423c0df69d8fdbae1001cb9e692cabe664f64e1d20e055d780a81d5",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/voter/accept/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:9b58e327901c249e6fc9ac93c2d03e20cc243cf587538955b3db43f92c3bafb1",
+    "schemaHash": "sha256:c2a9ef6d918c01ba0eec50e1054866ab7361892c95e89f944fa9c3fa9095ab09"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/voter/accept/0.1"
+   ],
+   "mutants": [
+    "bx:vta/pcs/voter/accept/0.1:vta/pcs/voter/accept:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/voter/accept/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "electionId": "conformance-unknown-identifier",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "response": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "label": "voter/A",
+         "preCredential": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/voter/accept:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-030",
+   "title": "vta/pcs/voter/receipt 0.1: an identifier (electionId) that names nothing is refused with vta/pcs/voter/receipt:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/voter/receipt/0.1/spec.md: \"The engine records no election in this context and community for which it accepted a ticket.\"",
+    "specs/vta/pcs/voter/receipt/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/voter/receipt",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/voter/receipt/0.1",
+    "pinnedDigest": "sha256:68c09ed89c69112ad8625d1c6c74df220471d4e5283abed744e1cc5f926d6d9d",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/voter/receipt/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:3a386b32710dc0b96e6352541fd758a709a4c6643f3a2f54192ac7ed9e934eb7",
+    "schemaHash": "sha256:655bbba4a53f26b6214a06e4226457e955bc7dc00677dbc35016e962c6750067"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/voter/receipt/0.1"
+   ],
+   "mutants": [
+    "bx:vta/pcs/voter/receipt/0.1:vta/pcs/voter/receipt:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/voter/receipt/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "electionId": "conformance-unknown-identifier",
+        "receipt": {}
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/voter/receipt:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-031",
+   "title": "vta/pcs/voter/register 0.2: an identifier (member) that names nothing is refused with vta/pcs/voter/register:memberNotHeld",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/voter/register/0.2/spec.md: \"`member` names a DID the engine holds no `authentication` key of, or one the caller may not act as.\"",
+    "specs/vta/pcs/voter/register/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vta/pcs/voter/register:unsupportedSuite, a code the text lists for this task and may be answered first where it fixes no order (\"Refuse a suite it does not implement with `vta/pcs/voter/register:unsupportedSuite`\"); such a pass shows only that the request was refused",
+    "Also accepted: vta/pcs/voter/register:parametersInvalid, a code the text lists for this task and may be answered first where it fixes no order (\"a `votingKey` it cannot decode with `vta/pcs/voter/register:parametersInvalid`\"); such a pass shows only that the request was refused",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/voter/register",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/voter/register/0.2",
+    "pinnedDigest": "sha256:07ebe50e1fdb5febf27bfa1e41e71cc62321edf50548f78a63e44aca6b760950",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/voter/register/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:142c3f69da9091d8655bfd7d9ca11d99caa684d277967d12e43ecb284aaacfa3",
+    "schemaHash": "sha256:0ef1523e9f60f64e5d4196e74c85601655244888636ed32522566d7713e92ae7",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/voter/register/0.2"
+   ],
+   "mutants": [
+    "bx:vta/pcs/voter/register/0.2:vta/pcs/voter/register:memberNotHeld"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/voter/register/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 10
+        },
+        "member": "did:web:conformance-unknown.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/voter/register:memberNotHeld",
+       "vta/pcs/voter/register:unsupportedSuite",
+       "vta/pcs/voter/register:parametersInvalid",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-032",
+   "title": "vta/pcs/voter/register 0.3: an identifier (member) that names nothing is refused with vta/pcs/voter/register:memberNotHeld",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/voter/register/0.3/spec.md: \"`member` names a DID the engine holds no `authentication` key of, or one the caller may not act as.\"",
+    "specs/vta/pcs/voter/register/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vta/pcs/voter/register:unsupportedSuite, a code the text lists for this task and may be answered first where it fixes no order (\"Refuse a suite it does not implement with `vta/pcs/voter/register:unsupportedSuite`\"); such a pass shows only that the request was refused",
+    "Also accepted: vta/pcs/voter/register:parametersInvalid, a code the text lists for this task and may be answered first where it fixes no order (\"a `votingKey` it cannot decode with `vta/pcs/voter/register:parametersInvalid`\"); such a pass shows only that the request was refused",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/voter/register",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/voter/register/0.3",
+    "pinnedDigest": "sha256:7080c151d0658a062b08db938b240c3fdba139b13f91a8e5f386e8f5a94080f7",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/voter/register/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:6deb51e164d4824bbe2213966d21d4031b0e76b139cc2b7d7e3bd317cb106f34",
+    "schemaHash": "sha256:94250fed2a182722f5dbf40b91327a7ac93de73800edf891013424642c37e449",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/voter/register/0.3"
+   ],
+   "mutants": [
+    "bx:vta/pcs/voter/register/0.3:vta/pcs/voter/register:memberNotHeld"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/voter/register/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        },
+        "member": "did:web:conformance-unknown.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/voter/register:memberNotHeld",
+       "vta/pcs/voter/register:unsupportedSuite",
+       "vta/pcs/voter/register:parametersInvalid",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-033",
+   "title": "vta/pcs/voter/register 0.5: an identifier (member) that names nothing is refused with vta/pcs/voter/register:memberNotHeld",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/voter/register/0.5/spec.md: \"`member` names a DID the engine holds no `authentication` key of, or one the caller may not act as.\"",
+    "specs/vta/pcs/voter/register/0.5/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vta/pcs/voter/register:unsupportedSuite, a code the text lists for this task and may be answered first where it fixes no order (\"Refuse a suite it does not implement with `vta/pcs/voter/register:unsupportedSuite`\"); such a pass shows only that the request was refused",
+    "Also accepted: vta/pcs/voter/register:parametersInvalid, a code the text lists for this task and may be answered first where it fixes no order (\"a `votingKey` it cannot decode with `vta/pcs/voter/register:parametersInvalid`\"); such a pass shows only that the request was refused",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/voter/register",
+    "version": "0.5",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/voter/register/0.5",
+    "pinnedDigest": "sha256:4f1db0ff4ef2f2ee53054bcb87a47de2c44bd57ca7fb5683e9b1712e8a3c9853",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/voter/register/0.5/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:c860e7f45402e88b6f7df860743efce9b0900b90946794ab25ade0f2d75e8ad6",
+    "schemaHash": "sha256:70633a1ab7effdb13232469adce128ebefe5a278d3a2f3058d97f5a7c471f9b8"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/voter/register/0.5"
+   ],
+   "mutants": [
+    "bx:vta/pcs/voter/register/0.5:vta/pcs/voter/register:memberNotHeld"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/voter/register/0.5",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+        },
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        },
+        "member": "did:web:conformance-unknown.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/voter/register:memberNotHeld",
+       "vta/pcs/voter/register:unsupportedSuite",
+       "vta/pcs/voter/register:parametersInvalid",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-034",
+   "title": "vta/pcs/voter/read 0.6: an identifier (member) that names nothing is refused with vta/pcs/voter/read:memberNotHeld",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/voter/read/0.6/spec.md: \"`member` names a DID the engine holds no `authentication` key of, or one the caller may not act as.\"",
+    "specs/vta/pcs/voter/read/0.6/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/voter/read",
+    "version": "0.6",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/voter/read/0.6",
+    "pinnedDigest": "sha256:249a9bdd6111c40ccc259251dbb0e04bc657b32d7e1b833cc37147a411e39fc3",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/voter/read/0.6/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:b8f58839ed03b42c96f9c07c61c0e4a7d82663420806397a4a913753b46af05a",
+    "schemaHash": "sha256:155e78e5def1c22bf9f8e67612cfa5e62cfb57b5e461661e91df3955288a4d2e",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/voter/read/0.6"
+   ],
+   "mutants": [
+    "bx:vta/pcs/voter/read/0.6:vta/pcs/voter/read:memberNotHeld"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/voter/read/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "member": "did:web:conformance-unknown.example",
+        "read": "list",
+        "payload": {}
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/voter/read:memberNotHeld",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-035",
+   "title": "vta/pcs/trustee/read 0.4: an identifier (trustee) that names nothing is refused with vta/pcs/trustee/read:trusteeNotHeld",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/trustee/read/0.4/spec.md: \"`trustee` names a DID the engine holds no `authentication` key of, or one the caller may not act as.\"",
+    "specs/vta/pcs/trustee/read/0.4/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/trustee/read",
+    "version": "0.4",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/trustee/read/0.4",
+    "pinnedDigest": "sha256:0a5fe8a9f2a8f00d4a0a82eeff96650c80acfa5021521b69f9f62f7fca9d7ff8",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/trustee/read/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:cfc995e1a476d8be34e02566f245559f3e1a0eb17b7dd4d907df4eb71aca0b05",
+    "schemaHash": "sha256:39675fcaf0b81d954b5acee29c19070c2958fdbc77bbf1c48c7f718dfe19a5c3"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/trustee/read/0.4"
+   ],
+   "mutants": [
+    "bx:vta/pcs/trustee/read/0.4:vta/pcs/trustee/read:trusteeNotHeld"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/trustee/read/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+        "trustee": "did:web:conformance-unknown.example",
+        "ballotBox": "did:web:alice.example",
+        "read": "status"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/trustee/read:trusteeNotHeld",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-036",
+   "title": "vta/pcs/trustee/deal 0.5: an identifier (trustee) that names nothing is refused with vta/pcs/trustee/deal:trusteeNotHeld",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/trustee/deal/0.5/spec.md: \"The VTA holds no `authentication` key of `trustee` that the caller may act as\"",
+    "specs/vta/pcs/trustee/deal/0.5/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/trustee/deal",
+    "version": "0.5",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/trustee/deal/0.5",
+    "pinnedDigest": "sha256:93be55bbd22834733fe91db92caa8f28f7d3703bb90f42e3ccbb56f83aac9f41",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/trustee/deal/0.5/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:649c374e3a74620f0738a141567bb406e636bb1a6dcce9e73489e03daf25e874",
+    "schemaHash": "sha256:638c2f2a5f96612f709abdaf76dfdd197a38b955b445913f23ebb72bb1a3b473"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/trustee/deal/0.5"
+   ],
+   "mutants": [
+    "bx:vta/pcs/trustee/deal/0.5:vta/pcs/trustee/deal:trusteeNotHeld"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/trustee/deal/0.5",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+        "trustee": "did:web:conformance-unknown.example",
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        },
+        "ceremony": [
+         {
+          "member1": "x"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/trustee/deal:trusteeNotHeld",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-037",
+   "title": "vta/pcs/trustee/decrypt 0.2: an identifier (trustee) that names nothing is refused with vta/pcs/trustee/decrypt:trusteeNotHeld",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/trustee/decrypt/0.2/spec.md: \"The VTA holds no `authentication` key of `trustee` that the caller may act as\"",
+    "specs/vta/pcs/trustee/decrypt/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/trustee/decrypt",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/trustee/decrypt/0.2",
+    "pinnedDigest": "sha256:d3badfeda4d3fd15e4df8a5ef1d333b24f6b7a7a009baecaee699e83d5e90a58",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/trustee/decrypt/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:173f0ae1c9662fd7b5c1a34109078d0e547b7195b42eb0c3c7bfff0b313d5893",
+    "schemaHash": "sha256:10a6abf67b6442fef28f454858f234286c4ff9ece99c956ff71ccfbe2dbce5a8"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/trustee/decrypt/0.2"
+   ],
+   "mutants": [
+    "bx:vta/pcs/trustee/decrypt/0.2:vta/pcs/trustee/decrypt:trusteeNotHeld"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/trustee/decrypt/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+        "trustee": "did:web:conformance-unknown.example",
+        "targets": [
+         {
+          "ciphertext": {
+           "a": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "b": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+          },
+          "leafIndex": 0
+         }
+        ],
+        "authorization": {
+         "member1": "x"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/trustee/decrypt:trusteeNotHeld",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-038",
+   "title": "vta/pcs/trustee/enrol 0.4: an identifier (trustee) that names nothing is refused with vta/pcs/trustee/enrol:trusteeNotHeld",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/trustee/enrol/0.4/spec.md: \"The VTA holds no `authentication` key of `trustee` that the caller may act as\"",
+    "specs/vta/pcs/trustee/enrol/0.4/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/trustee/enrol",
+    "version": "0.4",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/trustee/enrol/0.4",
+    "pinnedDigest": "sha256:8d07ae2d210d80b319066fad2ca57d4d428abdc83a3dbeebed3df3fb985936b7",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/trustee/enrol/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e4531d08de63ca99bab823ad534e98a2722a9d5e3e56cea73a26ce3f42adfe46",
+    "schemaHash": "sha256:02e0793aa4fd4d5caf5725822290c997a477ecdd59b2c647334943dcf3f0c41b"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/trustee/enrol/0.4"
+   ],
+   "mutants": [
+    "bx:vta/pcs/trustee/enrol/0.4:vta/pcs/trustee/enrol:trusteeNotHeld"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/trustee/enrol/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+        "trustee": "did:web:conformance-unknown.example",
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/trustee/enrol:trusteeNotHeld",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-039",
+   "title": "vta/pcs/trustee/justify 0.5: an identifier (trustee) that names nothing is refused with vta/pcs/trustee/justify:trusteeNotHeld",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/trustee/justify/0.5/spec.md: \"The VTA holds no `authentication` key of `trustee` that the caller may act as\"",
+    "specs/vta/pcs/trustee/justify/0.5/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/trustee/justify",
+    "version": "0.5",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/trustee/justify/0.5",
+    "pinnedDigest": "sha256:3c59f22d99a09dbb6cc81e8751fa4f28e885c83c68f46d2d884337b672c8b375",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/trustee/justify/0.5/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:c02da8758b55ad3876393cdef1609c90a0429ca1892a61591b51d5318267ac28",
+    "schemaHash": "sha256:f35557233db71db579c8c8e829b900a4360962ad45305d1183979a8df8135527"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/trustee/justify/0.5"
+   ],
+   "mutants": [
+    "bx:vta/pcs/trustee/justify/0.5:vta/pcs/trustee/justify:trusteeNotHeld"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/trustee/justify/0.5",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+        "trustee": "did:web:conformance-unknown.example",
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        },
+        "ceremony": [
+         {
+          "member1": "x"
+         }
+        ],
+        "recipient": 1
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/trustee/justify:trusteeNotHeld",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-040",
+   "title": "vta/pcs/trustee/keys 0.5: an identifier (trustee) that names nothing is refused with vta/pcs/trustee/keys:trusteeNotHeld",
+   "tier": 1,
+   "spec": [
+    "specs/vta/pcs/trustee/keys/0.5/spec.md: \"The VTA holds no `authentication` key of `trustee` that the caller may act as\"",
+    "specs/vta/pcs/trustee/keys/0.5/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vta/pcs/trustee/keys",
+    "version": "0.5",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/trustee/keys/0.5",
+    "pinnedDigest": "sha256:c8040fd250034f97f4af75ec8f1a186080802d324c5ee6bc59fb4cb6b688876f",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/trustee/keys/0.5/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:ca16a9897d7b8c8bf3a01ddbdf3bec5f202cc11d4d45ed0fcabb4c7064dba479",
+    "schemaHash": "sha256:8c2daab2ea9be14967aabb1c91c55e8c817cad141e83b20a27bfab1fba4653b8"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/trustee/keys/0.5"
+   ],
+   "mutants": [
+    "bx:vta/pcs/trustee/keys/0.5:vta/pcs/trustee/keys:trusteeNotHeld"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/trustee/keys/0.5",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "community": "did:web:alice.example",
+        "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+        "trustee": "did:web:conformance-unknown.example",
+        "manifest": {
+         "electionId": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "community": "did:web:alice.example",
+         "questions": [
+          {
+           "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+           "type": "choice",
+           "options": [
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            },
+            {
+             "key": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+            }
+           ],
+           "minSelections": 0,
+           "maxSelections": 1,
+           "optional": false
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "2026-11-12T10:00:00Z",
+         "votingOpensAt": "2026-11-12T10:00:00Z",
+         "votingClosesAt": "2026-11-12T10:00:00Z",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:web:alice.example",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 1
+        },
+        "ceremony": [
+         {
+          "member1": "x"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vta/pcs/trustee/keys:trusteeNotHeld",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-041",
+   "title": "vtc/elections/show 0.2: an identifier (electionId) that names nothing is refused with vtc/elections/show:electionUnknown",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/elections/show/0.2/spec.md: \"No election with this identifier exists for this community\"",
+    "specs/vtc/elections/show/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/elections/show",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/elections/show/0.2",
+    "pinnedDigest": "sha256:99fd036d5b5128d669781799f621eb314269ed44cfd32ffb3e502fea4771f6ad",
+    "tfRef": {
+     "repoPath": "specs/vtc/elections/show/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:2018eaf5e2d63d478bcd5720360c399eff862ac73153214d3057522c39f39f20",
+    "schemaHash": "sha256:d9242eb4a5f1cb06e8b496ae6051d6ffc6fed6d78415acdb83041c6ce4935589",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/elections/show/0.2"
+   ],
+   "mutants": [
+    "bx:vtc/elections/show/0.2:vtc/elections/show:electionUnknown"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/elections/show/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "electionId": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/elections/show:electionUnknown",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-042",
+   "title": "vtc/elections/show 0.3: an identifier (electionId) that names nothing is refused with vtc/elections/show:electionUnknown",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/elections/show/0.3/spec.md: \"No election with this identifier exists for this community\"",
+    "specs/vtc/elections/show/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/elections/show",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/elections/show/0.3",
+    "pinnedDigest": "sha256:8cfe64a7d845e326cf34e60cd97dd2a1b62834d7b1a673ec2e6d1c9afd71434e",
+    "tfRef": {
+     "repoPath": "specs/vtc/elections/show/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:688e2f1cd7bb501721bc4451cc6b05da298749b12003b80e0b6822ce63710415",
+    "schemaHash": "sha256:fad8f5466cb4f5578dc3554cacd363a125f93550c42672098f48d7400a6f8e70",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/elections/show/0.3"
+   ],
+   "mutants": [
+    "bx:vtc/elections/show/0.3:vtc/elections/show:electionUnknown"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/elections/show/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "electionId": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/elections/show:electionUnknown",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-043",
+   "title": "vtc/elections/show 0.6: an identifier (electionId) that names nothing is refused with vtc/elections/show:electionUnknown",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/elections/show/0.6/spec.md: \"No election with this identifier exists for this community\"",
+    "specs/vtc/elections/show/0.6/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/elections/show",
+    "version": "0.6",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/elections/show/0.6",
+    "pinnedDigest": "sha256:584200ee842d29dbc190720be06db0a4e93a413a39631062161b86b532f8acb0",
+    "tfRef": {
+     "repoPath": "specs/vtc/elections/show/0.6/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:25d40c448e7db0d74bfdd0fc6f3cd6af4912b5c4c91617d14845e91eff4b17b3",
+    "schemaHash": "sha256:d340b00cddcf5dca395f275d5e25a40d9b734f7f9fe000c5ae559265520f00da"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/elections/show/0.6"
+   ],
+   "mutants": [
+    "bx:vtc/elections/show/0.6:vtc/elections/show:electionUnknown"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/elections/show/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "electionId": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/elections/show:electionUnknown",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-VP-044",
+   "title": "vtc/vetting/vetters/grant 0.1: an identifier (memberDid) that names nothing is refused with vtc/vetting/vetters/grant:notMember",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/vetting/vetters/grant/0.1/spec.md: \"Refuses a `memberDid` that is not an active member with `vtc/vetting/vetters/grant:notMember`\"",
+    "specs/vtc/vetting/vetters/grant/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/vetting/vetters/grant",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/grant/0.1",
+    "pinnedDigest": "sha256:e4926135aa3ec50db8ce96412f4f8afc3cd6e9182067c891dbb0ee59ca4f29b4",
+    "tfRef": {
+     "repoPath": "specs/vtc/vetting/vetters/grant/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:4683acebeb0739d71c49de7102e2d9452a1c5ca6e85864b1155d82cbfba154d5",
+    "schemaHash": "sha256:dd32a58ac119da6f3daaf4273891d1d510747b5487b364672e8996d4d065124a"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/vetting/vetters/grant/0.1"
+   ],
+   "mutants": [
+    "bx:vtc/vetting/vetters/grant/0.1:vtc/vetting/vetters/grant:notMember"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/grant/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "memberDid": "did:web:conformance-unknown.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/vetting/vetters/grant:notMember",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  }
+ ]
+}

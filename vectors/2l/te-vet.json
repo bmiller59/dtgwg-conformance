@@ -1,0 +1,172 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "TE-VET",
+  "family": "2l-emit",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "TE-VET-001",
+      "title": "vetting/request 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vetting/request/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vetting/request/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vetting/request/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vetting/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vetting/request/0.1",
+        "pinnedDigest": "sha256:3c47cb7da6267b6657c5f7b836cbed9767e8d9c49369207a206108d35641464f",
+        "tfRef": {
+          "repoPath": "specs/vetting/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). no server implements these; written for implementations that do.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+        "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vetting/request/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vetting/request/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vetting/request/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TE-VET-002",
+      "title": "vetting/attestation 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vetting/attestation/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vetting/attestation/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vetting/attestation/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vetting/attestation",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vetting/attestation/0.1",
+        "pinnedDigest": "sha256:d4db7fab1b4d000eae0d11e088af36d3ab83aa2cc75a2f8cb8174d23ac1449a4",
+        "tfRef": {
+          "repoPath": "specs/vetting/attestation/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). no server implements these; written for implementations that do.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3e8abad5e6197022a8d3f469ac8f3e4cffdb1a9d544029a8a7f870b791c36733",
+        "schemaHash": "sha256:63f8a49560d4bc437366a2498189c64207691a3c7cbb88eeb93f25b8f2aa8934"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vetting/attestation/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vetting/attestation/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vetting/attestation/0.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TE-VET-003",
+      "title": "vetting/decline 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+      "tier": 1,
+      "spec": [
+        "payload schema of https://trusttasks.org/spec/vetting/decline/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "declared policy: https://trusttasks.org/spec/vetting/decline/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/vetting/decline/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+        "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+      ],
+      "source": {
+        "slug": "vetting/decline",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vetting/decline/0.1",
+        "pinnedDigest": "sha256:a32141d5a3ce70059fff60906dbcf0bcfdeb7f78a7818a226ccb9a683bd9f99e",
+        "tfRef": {
+          "repoPath": "specs/vetting/decline/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-5 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). no server implements these; written for implementations that do.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5ea846a760ac48b7e0eab714505525eca9dac0202cf0f3bc8fd563513a0c7bf5",
+        "schemaHash": "sha256:b7c89b6bcaf52a635bcfd714a61dc10fadc97a5b48eb6196ee579c224b7331d2"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:emit",
+        "emit:https://trusttasks.org/spec/vetting/decline/0.1"
+      ],
+      "mutants": [
+        "emitBadPayload",
+        "emitNoProof",
+        "emitNoRecipient",
+        "emitNoIssuedAt"
+      ],
+      "steps": [
+        {
+          "emit": {
+            "type": "https://trusttasks.org/spec/vetting/decline/0.1",
+            "args": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "emitted",
+            "plainType": "https://trusttasks.org/spec/vetting/decline/0.1"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "GE-UND",
+ "family": "gap",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "GE-UND-001",
+   "title": "understanding/exchange 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/understanding/exchange/0.1 (Trust Tasks specification understanding/exchange 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version))",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "understanding/exchange",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/exchange/0.1",
+    "pinnedDigest": "sha256:6c3567abce365eb86a40ac6e78956d492bc530ce3ffe47eb08a40e228aa9d80b",
+    "specHash": "sha256:5ecf68ce139c335195504a4aed8a25480d193a34d38ff3e8ce42a22865613011",
+    "schemaHash": "sha256:0a12f6687bddbd5e550bba2b89e31a8527e06422204846e3fb77f2d2145a8347",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/understanding/exchange/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/understanding/exchange/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-UND-002",
+   "title": "understanding/offer 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/understanding/offer/0.1 (Trust Tasks specification understanding/offer 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version))",
+    "declared policy: isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "understanding/offer",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/offer/0.1",
+    "pinnedDigest": "sha256:a43bbf7e9a921abb594bb4918617d26b0ab90c8c9b6f36ca55a0bde7a2c9213e",
+    "specHash": "sha256:e2fd6944727ba2e51dc88abbd55a27f242cc64a1a3b8ef99c8d8c7f40c1bbfa1",
+    "schemaHash": "sha256:46a23474a1195522cc9c3532120ee35985522ca33361c5b3c6554d33d5e37572",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/understanding/offer/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/understanding/offer/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-UND-003",
+   "title": "understanding/seal 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/understanding/seal/0.1 (Trust Tasks specification understanding/seal 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version))",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "understanding/seal",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/seal/0.1",
+    "pinnedDigest": "sha256:56e4b337042f648f0b28be37c0599f29629e2e777ad9f97826d0f78937b068bc",
+    "specHash": "sha256:04d276d6cc1493e286a6478be28479a20554bdf6317d29d8282addc7feace647",
+    "schemaHash": "sha256:ceef82679c0e1a2e442bf895fc2992c24de863f7c6250b5cdfef95cf711f9995",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/understanding/seal/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/understanding/seal/0.1"
+     }
+    }
+   ]
+  }
+ ]
+}

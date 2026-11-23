@@ -1,0 +1,95 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "VC-PROVISION",
+ "family": "complete",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "VC-PROVISION-001",
+   "title": "provision/integration 0.3: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/provision/integration/0.3 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/provision/integration/0.3#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "provision/integration",
+    "version": "0.3",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/provision/integration/0.3",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/provision/integration/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:1dd3dcc0715533697d2aa24e7569e476b854be8d4db20fb06323c3b6870289e4",
+    "schemaHash": "sha256:9b6eca27a00018cfa9e89667f3b923609b1c739ef57b9b352af529aaae35e9a9"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/provision/integration/0.3"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/provision/integration/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "request": {
+         "@context": [
+          "https://example.org/x",
+          "https://example.org/x"
+         ],
+         "type": [
+          "example",
+          "example"
+         ],
+         "id": "example",
+         "holder": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+         "nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+         "validUntil": "2026-11-12T10:00:00Z",
+         "ask": {
+          "type": "templateBootstrap",
+          "template": {
+           "name": "example"
+          }
+         },
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "example",
+          "verificationMethod": "did:web:alice.example",
+          "proofPurpose": "authentication",
+          "proofValue": "example"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/provision/integration/0.3"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  }
+ ]
+}

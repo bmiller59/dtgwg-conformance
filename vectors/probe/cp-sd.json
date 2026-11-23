@@ -1,0 +1,385 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "CP-SD",
+ "family": "coverage",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "CP-SD-001",
+   "title": "keys/sign-csr 0.1: a subject attribute value holding a control character is refused with keys/sign-csr:subjectInvalid (re-issued from the retired CB-SD-021 with the key created first)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The retired vector could not be reached from one document because the stated code needs this object (its tombstone says why); the object now exists, so the stated refusal is reachable.",
+    "specs/keys/sign-csr/0.1/spec.md: \"or a control character\"",
+    "specs/keys/sign-csr/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-csr/0.1",
+    "https://trusttasks.org/spec/keys/create/0.1",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "bs:keys/sign-csr/0.1:subjectInvalid"
+   ],
+   "source": {
+    "slug": "keys/sign-csr",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-csr/0.1",
+    "pinnedDigest": "sha256:0e98c5e6d35c3e3080d17a72bdb538e1da5e812f43d23ac497e0886dca79f47f",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-csr/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text. Re-issue of the retired CB-SD-021 (the tombstone is kept; this id is new): the object the retired vector needed is created by its first step. Advisory.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:4f30e76ca2dc0c3047bd4f93a4a7b87bef6d7cb13272718cadd525fd38778e3c",
+    "schemaHash": "sha256:76acf49f99b16efec030982ef433bd36982788211f8e58235b41835de6806ec7"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/keys/create/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyType": "ed25519",
+        "keyId": "$mint(key)",
+        "internal": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/keys/create/0.1#response",
+      "orRefusal": [
+       "keys:invalidArgument"
+      ]
+     },
+     "capture": {
+      "keyid": "/payload/keyId"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "$cap(keyid)",
+        "subject": [
+         {
+          "type": "CN",
+          "value": "example\u0001name"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys/sign-csr:subjectInvalid",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-SD-002",
+   "title": "keys/sign-jws 0.1: a header naming alg is refused with keys/sign-jws:headerMemberForbidden (re-issued from the retired CB-SD-023 with the key created first)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The retired vector could not be reached from one document because the stated code needs this object (its tombstone says why); the object now exists, so the stated refusal is reachable.",
+    "specs/keys/sign-jws/0.1/spec.md: \"names a member the custodian sets or refuses itself\"",
+    "specs/keys/sign-jws/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-jws/0.1",
+    "https://trusttasks.org/spec/keys/create/0.1",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "bs:keys/sign-jws/0.1:headerMemberForbidden"
+   ],
+   "source": {
+    "slug": "keys/sign-jws",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-jws/0.1",
+    "pinnedDigest": "sha256:d6c28d3ec2d0ab8985445f527d1eec07defb361b3b478ec3fee53a652382ea08",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-jws/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text. Re-issue of the retired CB-SD-023 (the tombstone is kept; this id is new): the object the retired vector needed is created by its first step. Advisory.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:7ad9f642f3c2f55920a4880f3efbb08e0ad8dc84e218137df49036d59b6f4740",
+    "schemaHash": "sha256:343e52d865cd03639f78d911839957f1ee889b5ed1fa96631d93cb46cb9e6b97"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/keys/create/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyType": "ed25519",
+        "keyId": "$mint(key)",
+        "internal": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/keys/create/0.1#response",
+      "orRefusal": [
+       "keys:invalidArgument"
+      ]
+     },
+     "capture": {
+      "keyid": "/payload/keyId"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "$cap(keyid)",
+        "payload": {},
+        "header": {
+         "alg": "none"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys/sign-jws:headerMemberForbidden",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-SD-003",
+   "title": "keys/sign-jws 0.1: a payloadBase64Url that is not canonical unpadded base64url is refused with keys/sign-jws:payloadInvalid (re-issued from the retired CB-SD-024 with the key created first)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The retired vector could not be reached from one document because the stated code needs this object (its tombstone says why); the object now exists, so the stated refusal is reachable.",
+    "specs/keys/sign-jws/0.1/spec.md: \"is not the canonical unpadded base64url encoding of any byte string\"",
+    "specs/keys/sign-jws/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-jws/0.1",
+    "https://trusttasks.org/spec/keys/create/0.1",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "bs:keys/sign-jws/0.1:payloadInvalid"
+   ],
+   "source": {
+    "slug": "keys/sign-jws",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-jws/0.1",
+    "pinnedDigest": "sha256:d6c28d3ec2d0ab8985445f527d1eec07defb361b3b478ec3fee53a652382ea08",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-jws/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text. Re-issue of the retired CB-SD-024 (the tombstone is kept; this id is new): the object the retired vector needed is created by its first step. Advisory.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:7ad9f642f3c2f55920a4880f3efbb08e0ad8dc84e218137df49036d59b6f4740",
+    "schemaHash": "sha256:343e52d865cd03639f78d911839957f1ee889b5ed1fa96631d93cb46cb9e6b97"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/keys/create/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyType": "ed25519",
+        "keyId": "$mint(key)",
+        "internal": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/keys/create/0.1#response",
+      "orRefusal": [
+       "keys:invalidArgument"
+      ]
+     },
+     "capture": {
+      "keyid": "/payload/keyId"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "$cap(keyid)",
+        "payloadBase64Url": "AB"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys/sign-jws:payloadInvalid",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-SD-004",
+   "title": "keys/sign-jws 0.1: a JOSE-registered header member (typ) that is not a string is refused with keys:invalidArgument (re-issued from the retired CB-SD-025 with the key created first)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The retired vector could not be reached from one document because the stated code needs this object (its tombstone says why); the object now exists, so the stated refusal is reachable.",
+    "specs/keys/sign-jws/0.1/spec.md: \"a JOSE-registered member whose value is not of the type RFC 7515 defines for it\"",
+    "specs/keys/sign-jws/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-jws/0.1",
+    "https://trusttasks.org/spec/keys/create/0.1",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "bs:keys/sign-jws/0.1:invalidArgument"
+   ],
+   "source": {
+    "slug": "keys/sign-jws",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-jws/0.1",
+    "pinnedDigest": "sha256:d6c28d3ec2d0ab8985445f527d1eec07defb361b3b478ec3fee53a652382ea08",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-jws/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text. Re-issue of the retired CB-SD-025 (the tombstone is kept; this id is new): the object the retired vector needed is created by its first step. Advisory.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:7ad9f642f3c2f55920a4880f3efbb08e0ad8dc84e218137df49036d59b6f4740",
+    "schemaHash": "sha256:343e52d865cd03639f78d911839957f1ee889b5ed1fa96631d93cb46cb9e6b97"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/keys/create/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyType": "ed25519",
+        "keyId": "$mint(key)",
+        "internal": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/keys/create/0.1#response",
+      "orRefusal": [
+       "keys:invalidArgument"
+      ]
+     },
+     "capture": {
+      "keyid": "/payload/keyId"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "$cap(keyid)",
+        "payload": {},
+        "header": {
+         "typ": 7
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "keys:invalidArgument",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  }
+ ]
+}

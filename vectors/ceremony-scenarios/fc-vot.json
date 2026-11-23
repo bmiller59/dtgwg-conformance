@@ -1,0 +1,538 @@
+{
+  "format": "tt-ceremony-scenarios/0.1",
+  "group": "FC-VOT",
+  "family": "ceremony-scenarios",
+  "evidence": "complete-ceremony",
+  "ceremony": {
+    "name": "Elections, the member's reads (wallet and community)",
+    "channel": "proposed",
+    "choreography": "docs/31-persona-rooms-elections-ceremonies.md section 6: the polls list, an unknown election, an outsider, and the version step-down against a legacy profile. Creating an election, registering, taking a ticket and casting are not run."
+  },
+  "scenarios": [
+    {
+      "id": "FC-VOT-001",
+      "title": "a member reads the community's polls at the newest version both sides serve (list 0.5): the community holds no election, so the list is empty",
+      "spec": [
+        "TF specs/vtc/elections/list/0.5/spec.md (a roll-scoped read of the elections the caller may see)",
+        "TF ceremonies (no election ceremony definition covers the member's reads; the choreography is the suite's)",
+        "docs/31-persona-rooms-elections-ceremonies.md section 6"
+      ],
+      "source": {
+        "slug": "vtc/elections/list",
+        "version": "0.5",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/elections/list/0.5",
+        "pinnedDigest": "sha256:d2d8427d33d7b040bfb277b052f4428478dee419316ef2e0e0829141507b950d",
+        "tfRef": {
+          "repoPath": "specs/vtc/elections/list/0.5/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4e1fb47b110573ed476c388d9ed6ed7618e290f0368c3aa43224751dd08517ca",
+        "schemaHash": "sha256:23b076cffba95f55fd8009cfbf72d05255190ebf04c7a3e712a22db23ccd3ef3"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/elections/list/0.5",
+            "https://trusttasks.org/spec/vtc/elections/show/0.6"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "list",
+          "source": {
+            "slug": "vtc/elections/list",
+            "version": "0.5",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/elections/list/0.5",
+            "pinnedDigest": "sha256:d2d8427d33d7b040bfb277b052f4428478dee419316ef2e0e0829141507b950d",
+            "tfRef": {
+              "repoPath": "specs/vtc/elections/list/0.5/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:4e1fb47b110573ed476c388d9ed6ed7618e290f0368c3aa43224751dd08517ca",
+            "schemaHash": "sha256:23b076cffba95f55fd8009cfbf72d05255190ebf04c7a3e712a22db23ccd3ef3"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vote-list",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "vote:polls:0",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "vote:version:0.5",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "vote:polls:0",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-VOT-002",
+      "title": "a member asks to see an election the community does not hold (show 0.6): refused with vtc/elections/show:electionUnknown",
+      "spec": [
+        "TF specs/vtc/elections/show/0.6/spec.md (errorCodes: vtc/elections/show:electionUnknown)",
+        "docs/31-persona-rooms-elections-ceremonies.md section 6"
+      ],
+      "source": {
+        "slug": "vtc/elections/show",
+        "version": "0.6",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/elections/show/0.6",
+        "pinnedDigest": "sha256:584200ee842d29dbc190720be06db0a4e93a413a39631062161b86b532f8acb0",
+        "tfRef": {
+          "repoPath": "specs/vtc/elections/show/0.6/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:25d40c448e7db0d74bfdd0fc6f3cd6af4912b5c4c91617d14845e91eff4b17b3",
+        "schemaHash": "sha256:d340b00cddcf5dca395f275d5e25a40d9b734f7f9fe000c5ae559265520f00da"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/elections/list/0.5",
+            "https://trusttasks.org/spec/vtc/elections/show/0.6"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "show",
+          "source": {
+            "slug": "vtc/elections/show",
+            "version": "0.6",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/elections/show/0.6",
+            "pinnedDigest": "sha256:584200ee842d29dbc190720be06db0a4e93a413a39631062161b86b532f8acb0",
+            "tfRef": {
+              "repoPath": "specs/vtc/elections/show/0.6/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:25d40c448e7db0d74bfdd0fc6f3cd6af4912b5c4c91617d14845e91eff4b17b3",
+            "schemaHash": "sha256:d340b00cddcf5dca395f275d5e25a40d9b734f7f9fe000c5ae559265520f00da"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vote-show",
+              "capture": "thread",
+              "args": {
+                "electionId": "no-such-election"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "vtc/elections/show:electionUnknown",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "vote:refused:electionUnknown",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-VOT-003",
+      "title": "a wallet whose persona is not on the community's roll asks for the polls: the community includes an election only when the caller may see it, so the answer is an empty list, not a refusal, and the wallet reads no poll",
+      "spec": [
+        "TF specs/vtc/elections/list/0.5/spec.md (consumer item 1: MUST include an election only when the caller may see it; the task declares no error code, so a caller who may see none is answered with an empty list)",
+        "docs/31-persona-rooms-elections-ceremonies.md section 6"
+      ],
+      "source": {
+        "slug": "vtc/elections/list",
+        "version": "0.5",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/elections/list/0.5",
+        "pinnedDigest": "sha256:d2d8427d33d7b040bfb277b052f4428478dee419316ef2e0e0829141507b950d",
+        "tfRef": {
+          "repoPath": "specs/vtc/elections/list/0.5/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4e1fb47b110573ed476c388d9ed6ed7618e290f0368c3aa43224751dd08517ca",
+        "schemaHash": "sha256:23b076cffba95f55fd8009cfbf72d05255190ebf04c7a3e712a22db23ccd3ef3"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/elections/list/0.5",
+            "https://trusttasks.org/spec/vtc/elections/show/0.6"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "list",
+          "source": {
+            "slug": "vtc/elections/list",
+            "version": "0.5",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/elections/list/0.5",
+            "pinnedDigest": "sha256:d2d8427d33d7b040bfb277b052f4428478dee419316ef2e0e0829141507b950d",
+            "tfRef": {
+              "repoPath": "specs/vtc/elections/list/0.5/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:4e1fb47b110573ed476c388d9ed6ed7618e290f0368c3aa43224751dd08517ca",
+            "schemaHash": "sha256:23b076cffba95f55fd8009cfbf72d05255190ebf04c7a3e712a22db23ccd3ef3"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vote-list",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "vote:polls:0",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "vote:polls:0",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-VOT-004",
+      "title": "the version skew: the wallet asks for the polls at 0.5 of a community that serves 0.3 only: the community names what it serves, the wallet's ladder asks at 0.3, and the list is read (a labelled step-down against a legacy profile)",
+      "spec": [
+        "TF specs/vtc/elections/list/0.3 and 0.5 (two served versions)",
+        "SPEC.md 8.3 (unsupportedVersion)",
+        "docs/31-persona-rooms-elections-ceremonies.md section 6"
+      ],
+      "source": {
+        "slug": "vtc/elections/list",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/elections/list/0.3",
+        "pinnedDigest": "sha256:a65bf810749c389b355b5c858f0b439f2803e0e31505d9a9e6c45309d56fc45c",
+        "tfRef": {
+          "repoPath": "specs/vtc/elections/list/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5973f4a110d35344c7d53c90f3061eeb9e300143d8a664f69dce918437280872",
+        "schemaHash": "sha256:4f87d434faf18f7d06c5b7a7906bc7ba1ce751b7ef2bf45314a619e303e2d89b"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "optional:trigger.serveVersions"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "serve-legacy",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "serveVersions",
+              "args": {
+                "profile": "legacy"
+              }
+            }
+          }
+        },
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "list",
+          "source": {
+            "slug": "vtc/elections/list",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/elections/list/0.3",
+            "pinnedDigest": "sha256:a65bf810749c389b355b5c858f0b439f2803e0e31505d9a9e6c45309d56fc45c",
+            "tfRef": {
+              "repoPath": "specs/vtc/elections/list/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:5973f4a110d35344c7d53c90f3061eeb9e300143d8a664f69dce918437280872",
+            "schemaHash": "sha256:4f87d434faf18f7d06c5b7a7906bc7ba1ce751b7ef2bf45314a619e303e2d89b"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vote-list",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "unsupportedVersion",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "vote:polls:0",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "vote:version:0.3",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "vote:version:0.3",
+              "count": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

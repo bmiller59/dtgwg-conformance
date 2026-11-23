@@ -1,0 +1,1220 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "GP-PAT",
+ "family": "gap",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "GP-PAT-001",
+   "title": "process-attestation 0.1: the payload is validated against the task's payload schema (missing required member artifact; unknown member in a closed payload; wrong type for artifact)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/process-attestation/0.1 (Trust Tasks specification process-attestation 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package): required [\"artifact\",\"challenge\"], additionalProperties false",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "source": {
+    "slug": "process-attestation",
+    "version": "0.1",
+    "ref": "kit:specs/process-attestation/0.1",
+    "pinnedDigest": "sha256:22da728625ddcf939b61c1a4e38f4a304f39714bc7b5588d224cd114f02425e0",
+    "specHash": "sha256:c83587477fddd886c41ddc54e7fc6e93de8c0fc2e08268340db322073125954a",
+    "schemaHash": "sha256:0459008aa7894fe24bec22a819ff760ec673d7a707f2b4132238742f54a4ad95",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/process-attestation/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/process-attestation/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation",
+    "openPayload"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "challenge": "examplexxxxxxxxx"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "algorithm": "sha-256"
+        },
+        "challenge": "examplexxxxxxxxx",
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p3)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": "x",
+        "challenge": "examplexxxxxxxxx"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PAT-002",
+   "title": "process-attestation 0.1: the policy the specification declares is enforced (recipient REQUIRED)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+    "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+    "declared policy: https://trusttasks.org/spec/process-attestation/0.1 (Trust Tasks specification process-attestation 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package), SPEC policy isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=true"
+   ],
+   "source": {
+    "slug": "process-attestation",
+    "version": "0.1",
+    "ref": "kit:specs/process-attestation/0.1",
+    "pinnedDigest": "sha256:22da728625ddcf939b61c1a4e38f4a304f39714bc7b5588d224cd114f02425e0",
+    "specHash": "sha256:c83587477fddd886c41ddc54e7fc6e93de8c0fc2e08268340db322073125954a",
+    "schemaHash": "sha256:0459008aa7894fe24bec22a819ff760ec673d7a707f2b4132238742f54a4ad95",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/process-attestation/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/process-attestation/0.1"
+   ],
+   "mutants": [
+    "recipientOptional"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(e1)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "algorithm": "sha-256"
+        },
+        "challenge": "examplexxxxxxxxx"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "malformedRequest",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PAT-003",
+   "title": "process-attestation 0.1: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+    "declared policy: https://trusttasks.org/spec/process-attestation/0.1 (Trust Tasks specification process-attestation 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package), SPEC policy isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=true"
+   ],
+   "source": {
+    "slug": "process-attestation",
+    "version": "0.1",
+    "ref": "kit:specs/process-attestation/0.1",
+    "pinnedDigest": "sha256:22da728625ddcf939b61c1a4e38f4a304f39714bc7b5588d224cd114f02425e0",
+    "specHash": "sha256:c83587477fddd886c41ddc54e7fc6e93de8c0fc2e08268340db322073125954a",
+    "schemaHash": "sha256:0459008aa7894fe24bec22a819ff760ec673d7a707f2b4132238742f54a4ad95",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/process-attestation/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+   "clarifyClass": "spec-silent",
+   "clarifySince": "2026-11-19",
+   "clarifyQuestions": [],
+   "requires": [
+    "https://trusttasks.org/spec/process-attestation/0.1"
+   ],
+   "mutants": [
+    "noFreshnessWindow"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "payload": {
+        "artifact": {
+         "digest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "algorithm": "sha-256"
+        },
+        "challenge": "examplexxxxxxxxx"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "any-refusal",
+      "noSideEffect": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PAT-004",
+   "title": "process-attestation 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "payload and response schemas of https://trusttasks.org/spec/process-attestation/0.1 (Trust Tasks specification process-attestation 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/process-attestation/0.1#response",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+   ],
+   "source": {
+    "slug": "process-attestation",
+    "version": "0.1",
+    "ref": "kit:specs/process-attestation/0.1",
+    "pinnedDigest": "sha256:22da728625ddcf939b61c1a4e38f4a304f39714bc7b5588d224cd114f02425e0",
+    "specHash": "sha256:c83587477fddd886c41ddc54e7fc6e93de8c0fc2e08268340db322073125954a",
+    "schemaHash": "sha256:0459008aa7894fe24bec22a819ff760ec673d7a707f2b4132238742f54a4ad95",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/process-attestation/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/process-attestation/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "algorithm": "sha-256"
+        },
+        "challenge": "examplexxxxxxxxx"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/process-attestation/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PAT-005",
+   "title": "process-attestation 0.1: a request missing any one required payload member is refused (artifact, challenge)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema of https://trusttasks.org/spec/process-attestation/0.1: required [\"artifact\",\"challenge\"] (Trust Tasks specification process-attestation 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)"
+   ],
+   "source": {
+    "slug": "process-attestation",
+    "version": "0.1",
+    "ref": "kit:specs/process-attestation/0.1",
+    "pinnedDigest": "sha256:22da728625ddcf939b61c1a4e38f4a304f39714bc7b5588d224cd114f02425e0",
+    "specHash": "sha256:c83587477fddd886c41ddc54e7fc6e93de8c0fc2e08268340db322073125954a",
+    "schemaHash": "sha256:0459008aa7894fe24bec22a819ff760ec673d7a707f2b4132238742f54a4ad95",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/process-attestation/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/process-attestation/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(r1)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "challenge": "examplexxxxxxxxx"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(r2)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "algorithm": "sha-256"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PAT-006",
+   "title": "process-attestation 0.1: a payload that breaks a constraint of its schema is refused (artifact: wrong type (not object); challenge: longer than maxLength 256; challenge: shorter than minLength 16; challenge: wrong type (not string))",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema constraints of https://trusttasks.org/spec/process-attestation/0.1 (Trust Tasks specification process-attestation 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)"
+   ],
+   "source": {
+    "slug": "process-attestation",
+    "version": "0.1",
+    "ref": "kit:specs/process-attestation/0.1",
+    "pinnedDigest": "sha256:22da728625ddcf939b61c1a4e38f4a304f39714bc7b5588d224cd114f02425e0",
+    "specHash": "sha256:c83587477fddd886c41ddc54e7fc6e93de8c0fc2e08268340db322073125954a",
+    "schemaHash": "sha256:0459008aa7894fe24bec22a819ff760ec673d7a707f2b4132238742f54a4ad95",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/process-attestation/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/process-attestation/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(c1)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": "x",
+        "challenge": "examplexxxxxxxxx"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c2)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "algorithm": "sha-256"
+        },
+        "challenge": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c3)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "algorithm": "sha-256"
+        },
+        "challenge": "aaaaaaaaaaaaaaa"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c4)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+         "algorithm": "sha-256"
+        },
+        "challenge": 5
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PAT-007",
+   "title": "process-attestation 0.1: the payload examples the specification lists as invalid are refused (18)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/process-attestation/0.1: (1) Bare/unnamespaced ext key. SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (2) Unknown top-level payload member. additionalProperties: false catches `frobnicate`. (3) Challenge below the 16-character floor. A short nonce is guessable, and anti-replay is the only integrity property the request has. (4) Digest carries base64 padding and '+'. The Artifact pattern is base64url unpadded, so a producer emitting standard base64 is rejected rather than silently compared against a differently-encoded digest. (5) Unregistered disclosure category. An enum rather than a",
+    "Trust Tasks specification process-attestation 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
+   ],
+   "source": {
+    "slug": "process-attestation",
+    "version": "0.1",
+    "ref": "kit:specs/process-attestation/0.1",
+    "pinnedDigest": "sha256:22da728625ddcf939b61c1a4e38f4a304f39714bc7b5588d224cd114f02425e0",
+    "specHash": "sha256:c83587477fddd886c41ddc54e7fc6e93de8c0fc2e08268340db322073125954a",
+    "schemaHash": "sha256:0459008aa7894fe24bec22a819ff760ec673d7a707f2b4132238742f54a4ad95",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/process-attestation/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/process-attestation/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "ext": {
+         "bare-key": {
+          "anything": "here"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i2)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "frobnicate": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i3)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "challenge": "tooshort"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i4)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8+Rk2vN4pT7sYwD1jB6xK0aC3eI9M=",
+         "algorithm": "sha-256"
+        },
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i5)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "disclosure": [
+         "summary",
+         "keystroke-samples"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i6)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "disclosure": [
+         "document",
+         "document"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i7)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M"
+        },
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i8)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "result": "attested",
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "receiptReference": {
+         "type": "uri",
+         "uri": "https://evidence.author.example/r/4b8e1f05.cpoe",
+         "mediaType": "application/cpoe+cbor"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i9)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "result": "attested",
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "assessment": {
+         "primitive": "https://lf-decentralized-trust-labs.github.io/proof-of-effort/profiles/rats-eat-profile-pop-1.0.json",
+         "determination": "authentic"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i10)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "result": "unavailable",
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "assessment": {
+         "primitive": "https://lf-decentralized-trust-labs.github.io/proof-of-effort/profiles/rats-eat-profile-pop-1.0.json",
+         "determination": "authentic"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i11)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "result": "unavailable",
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "disclosed": {
+         "document": {
+          "mediaType": "text/markdown"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i12)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "result": "pending",
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i13)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "result": "attested",
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "assessment": {
+         "primitive": "https://lf-decentralized-trust-labs.github.io/proof-of-effort/profiles/rats-eat-profile-pop-1.0.json",
+         "determination": "authentic",
+         "confidence": 101
+        },
+        "receiptReference": {
+         "type": "uri",
+         "uri": "https://evidence.author.example/r/4b8e1f05.cpoe",
+         "mediaType": "application/cpoe+cbor"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i14)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "result": "attested",
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "assessment": {
+         "primitive": "https://lf-decentralized-trust-labs.github.io/proof-of-effort/profiles/rats-eat-profile-pop-1.0.json",
+         "determination": "authentic"
+        },
+        "receiptReference": {
+         "type": "inline",
+         "mediaType": "application/cpoe+cbor",
+         "data": "AQID+/8="
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i15)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "result": "attested",
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "assessment": {
+         "primitive": "https://lf-decentralized-trust-labs.github.io/proof-of-effort/profiles/rats-eat-profile-pop-1.0.json",
+         "determination": "authentic"
+        },
+        "receiptReference": {
+         "type": "uri",
+         "uri": "https://evidence.author.example/r/4b8e1f05.cpoe",
+         "mediaType": "application/cpoe+cbor",
+         "digestMultibase": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i16)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "result": "attested",
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "assessment": {
+         "primitive": "https://lf-decentralized-trust-labs.github.io/proof-of-effort/profiles/rats-eat-profile-pop-1.0.json",
+         "determination": "authentic"
+        },
+        "receiptReference": {
+         "type": "uri",
+         "uri": "https://evidence.author.example/r/4b8e1f05.cpoe",
+         "mediaType": "application/cpoe+cbor"
+        },
+        "disclosed": {
+         "integrity": {
+          "chainValid": true,
+          "signatureValid": true,
+          "keyCustody": "hsm"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i17)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "result": "attested",
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "assessment": {
+         "primitive": "https://lf-decentralized-trust-labs.github.io/proof-of-effort/profiles/rats-eat-profile-pop-1.0.json",
+         "determination": "authentic"
+        },
+        "receiptReference": {
+         "type": "uri",
+         "uri": "https://evidence.author.example/r/4b8e1f05.cpoe",
+         "mediaType": "application/cpoe+cbor"
+        },
+        "disclosed": {
+         "anchors": [
+          {
+           "kind": "ntp",
+           "anchoredAt": "2026-09-08T11:50:00Z"
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i18)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "result": "attested",
+        "challenge": "tooshort",
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "assessment": {
+         "primitive": "https://lf-decentralized-trust-labs.github.io/proof-of-effort/profiles/rats-eat-profile-pop-1.0.json",
+         "determination": "authentic"
+        },
+        "receiptReference": {
+         "type": "uri",
+         "uri": "https://evidence.author.example/r/4b8e1f05.cpoe",
+         "mediaType": "application/cpoe+cbor"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-PAT-008",
+   "title": "process-attestation 0.1: the request examples in the specification are not refused for an envelope reason (1)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/process-attestation/0.1 (Trust Tasks specification process-attestation 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+   ],
+   "source": {
+    "slug": "process-attestation",
+    "version": "0.1",
+    "ref": "kit:specs/process-attestation/0.1",
+    "pinnedDigest": "sha256:22da728625ddcf939b61c1a4e38f4a304f39714bc7b5588d224cd114f02425e0",
+    "specHash": "sha256:c83587477fddd886c41ddc54e7fc6e93de8c0fc2e08268340db322073125954a",
+    "schemaHash": "sha256:0459008aa7894fe24bec22a819ff760ec673d7a707f2b4132238742f54a4ad95",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/process-attestation/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/process-attestation/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/process-attestation/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "artifact": {
+         "digest": "hcHFbGVGLXVQqZ8mRk2vN4pT7sYwD1jB6xK0aC3eI9M",
+         "algorithm": "sha-256"
+        },
+        "challenge": "9tKpX2mQzR7vLbN4hJ8cWfA6dY0sE5uT3gO1iZ",
+        "disclosure": [
+         "document",
+         "timeline"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/process-attestation/0.1"
+     }
+    }
+   ]
+  }
+ ]
+}

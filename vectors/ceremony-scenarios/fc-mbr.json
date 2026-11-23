@@ -1,0 +1,3340 @@
+{
+  "format": "tt-ceremony-scenarios/0.1",
+  "group": "FC-MBR",
+  "family": "ceremony-scenarios",
+  "evidence": "complete-ceremony",
+  "ceremony": {
+    "name": "Community member onboarding (wallet and community)",
+    "channel": "proposed",
+    "choreography": "docs/30-onboarding-vetting-ceremonies.md section 3: the criteria, the application, the administrator's decision (the community's own act), the applicant's poll, withdrawal; negatives for a replay, a tampered or unsigned submission, a wrong recipient, an unknown or repeated decision, an outsider's poll and decision, a foreign presentation, a stale clock; the version skew of submit 0.2 against 0.3."
+  },
+  "scenarios": [
+    {
+      "id": "FC-MBR-001",
+      "title": "the applicant's wallet reads the community's criteria, applies under the review criterion, the community queues the request for its administrator, the administrator approves, and the wallet's status poll reads approved: the community holds one approved request and the applicant as a member",
+      "spec": [
+        "TF ceremonies/vtc/member-onboarding/0.1/ceremony.json (the definition cites submit and manifest 0.1; the retired vtc/join-requests/submit/0.1 stays a documented step of it and is not claimed here: these scenarios run submit 0.3 and manifest 0.4, the versions the platforms serve)",
+        "TF specs/vtc/join-requests/manifest/0.4/spec.md (the applicant reads the criteria first)",
+        "TF specs/vtc/join-requests/submit/0.3/spec.md (the community decides the submission under the criterion it names and answers a referral naming the request)",
+        "TF specs/vtc/join-requests/status/0.1/spec.md (the applicant polls only its own request)",
+        "TF specs/vtc/join-requests/decide/0.1/spec.md (approved admits the applicant as a member)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/submit",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+        "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+        "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "discover",
+          "source": {
+            "slug": "vtc/join-requests/manifest",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "pinnedDigest": "sha256:5f0253bd3f5b8e3ce094d7224423bed4e0c9f81f14c96bae42c797b3d6a3082d",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/manifest/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:667878a2693af716703bda1a87a07ea07669e01b1022df9975a4ff44708061fc",
+            "schemaHash": "sha256:d3ece361a6553407a6118e3e1317f0d0f9b50377f3135ce53559b000231bbc4e"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-manifest",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "apply",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:pending",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "member:$K",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "status-pending",
+          "source": {
+            "slug": "vtc/join-requests/status",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "pinnedDigest": "sha256:d19f3762549df160fb86190f47f4294e2c719de3b91004863839f4f71e6046ab",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/status/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:de30796f11d6595b7b96b1886811b112a55f0e1ecd7df4759faa57d7e5172045",
+            "schemaHash": "sha256:52fa93ed92a592549ce4fb1644532024295994dd0c0dac772c7f43aba1d91e93"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-status",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "join-status:pending",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "approve",
+          "source": {
+            "slug": "vtc/join-requests/decide",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/join-requests/decide/0.1",
+            "pinnedDigest": "sha256:a9dd921e2a8720d347940d8d2a01df4317c5a196226ba6d0860c3e3031df0ea4",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/decide/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:c69b6707d61985859045acbe89c899e2b5a72659f6c4d193f2cee1c88ed70bdc",
+            "schemaHash": "sha256:12d5ad626eb2955c60842fa224b2b4bee5a2ac5d38a6d04fc703a5a4f7f1c018"
+          },
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "decide",
+              "args": {
+                "decision": "approved",
+                "request": "latest"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:approved",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "member:$K",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "admin:decide:ok",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "pushed:credential-exchange/issue",
+                "count": 2
+              }
+            }
+          ]
+        },
+        {
+          "id": "status-approved",
+          "source": {
+            "slug": "vtc/join-requests/status",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "pinnedDigest": "sha256:d19f3762549df160fb86190f47f4294e2c719de3b91004863839f4f71e6046ab",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/status/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:de30796f11d6595b7b96b1886811b112a55f0e1ecd7df4759faa57d7e5172045",
+            "schemaHash": "sha256:52fa93ed92a592549ce4fb1644532024295994dd0c0dac772c7f43aba1d91e93"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-status",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "join-status:approved",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "member:$K",
+              "count": 1
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request:approved",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-002",
+      "title": "the administrator rejects with a reason: the wallet's status poll reads rejected with that reason, the applicant is not a member, and the community holds one rejected request",
+      "spec": [
+        "TF ceremonies/vtc/member-onboarding/0.1/ceremony.json (the definition cites submit and manifest 0.1; the retired vtc/join-requests/submit/0.1 stays a documented step of it and is not claimed here: these scenarios run submit 0.3 and manifest 0.4, the versions the platforms serve)",
+        "TF specs/vtc/join-requests/decide/0.1/spec.md (rejected refuses the applicant and records the reason; the reason is relayed to the applicant by status)",
+        "TF specs/vtc/join-requests/status/0.1/spec.md (the rejected answer carries code, reason and decidedAt)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/decide",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vtc/join-requests/decide/0.1",
+        "pinnedDigest": "sha256:a9dd921e2a8720d347940d8d2a01df4317c5a196226ba6d0860c3e3031df0ea4",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/decide/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:c69b6707d61985859045acbe89c899e2b5a72659f6c4d193f2cee1c88ed70bdc",
+        "schemaHash": "sha256:12d5ad626eb2955c60842fa224b2b4bee5a2ac5d38a6d04fc703a5a4f7f1c018"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "apply",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "reject",
+          "source": {
+            "slug": "vtc/join-requests/decide",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/join-requests/decide/0.1",
+            "pinnedDigest": "sha256:a9dd921e2a8720d347940d8d2a01df4317c5a196226ba6d0860c3e3031df0ea4",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/decide/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:c69b6707d61985859045acbe89c899e2b5a72659f6c4d193f2cee1c88ed70bdc",
+            "schemaHash": "sha256:12d5ad626eb2955c60842fa224b2b4bee5a2ac5d38a6d04fc703a5a4f7f1c018"
+          },
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "decide",
+              "args": {
+                "decision": "rejected",
+                "request": "latest",
+                "reason": "not now"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:rejected",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "admin:decide:ok",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "status-rejected",
+          "source": {
+            "slug": "vtc/join-requests/status",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "pinnedDigest": "sha256:d19f3762549df160fb86190f47f4294e2c719de3b91004863839f4f71e6046ab",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/status/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:de30796f11d6595b7b96b1886811b112a55f0e1ecd7df4759faa57d7e5172045",
+            "schemaHash": "sha256:52fa93ed92a592549ce4fb1644532024295994dd0c0dac772c7f43aba1d91e93"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-status",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "join-status:rejected",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "join-status-reason:not now",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "member:$K",
+              "count": 0
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request:rejected",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-003",
+      "title": "the applicant withdraws its open request: the request reads withdrawn, a status poll naming it afterwards reads withdrawn, and the applicant may apply again",
+      "spec": [
+        "TF ceremonies/vtc/member-onboarding/0.1/ceremony.json (the definition cites submit and manifest 0.1; the retired vtc/join-requests/submit/0.1 stays a documented step of it and is not claimed here: these scenarios run submit 0.3 and manifest 0.4, the versions the platforms serve)",
+        "TF specs/vtc/join-requests/withdraw/0.1/spec.md (closes the applicant's own open request and frees it to apply again)",
+        "TF specs/vtc/join-requests/status/0.1/spec.md (status enum: pending, deferred, approved, rejected, withdrawn)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/withdraw",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+        "pinnedDigest": "sha256:188563e801f4d2ff1a485967000ae949b33a79ee2b896756beac71fa07e0e3ed",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/withdraw/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:0579534eb696793fefeb4d3ac31dc70283176976d4671a0ecb166b4fed2c71ec",
+        "schemaHash": "sha256:fc920b3a9c870b1f4288b0cc05943f6b50491374db563d1aaa7fb79a79048788"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "apply",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:pending",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "withdraw",
+          "source": {
+            "slug": "vtc/join-requests/withdraw",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "pinnedDigest": "sha256:188563e801f4d2ff1a485967000ae949b33a79ee2b896756beac71fa07e0e3ed",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/withdraw/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:0579534eb696793fefeb4d3ac31dc70283176976d4671a0ecb166b4fed2c71ec",
+            "schemaHash": "sha256:fc920b3a9c870b1f4288b0cc05943f6b50491374db563d1aaa7fb79a79048788"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-withdraw",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:withdrawn",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:pending",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "status-after",
+          "source": {
+            "slug": "vtc/join-requests/status",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "pinnedDigest": "sha256:d19f3762549df160fb86190f47f4294e2c719de3b91004863839f4f71e6046ab",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/status/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:de30796f11d6595b7b96b1886811b112a55f0e1ecd7df4759faa57d7e5172045",
+            "schemaHash": "sha256:52fa93ed92a592549ce4fb1644532024295994dd0c0dac772c7f43aba1d91e93"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-status",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "join-status:withdrawn",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "apply-again",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:pending",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 2
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request:withdrawn",
+              "count": 1
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request:pending",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-004",
+      "title": "an applicant with a request already open applies again: the community refuses the second submission (vtc/join-requests/submit:requestAlreadyOpen, naming the open request) and still holds one request",
+      "spec": [
+        "TF ceremonies/vtc/member-onboarding/0.1/ceremony.json (the definition cites submit and manifest 0.1; the retired vtc/join-requests/submit/0.1 stays a documented step of it and is not claimed here: these scenarios run submit 0.3 and manifest 0.4, the versions the platforms serve)",
+        "TF specs/vtc/join-requests/submit/0.3/spec.md (a community holds one open request per applicant; the consumer-minted code is `requestAlreadyOpen` under the slug of the request, SPEC 8.5)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/submit",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+        "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+        "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "apply",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:pending",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "apply-second",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "vtc/join-requests/submit:requestAlreadyOpen",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request",
+              "count": 1
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request:pending",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-005",
+      "title": "the version skew: the wallet submits at 0.2 (an older community's version) to a community that serves 0.3 only: the community refuses at dispatch with unsupportedVersion naming what it serves, the wallet's own handling reads the criteria again and submits at 0.3, and exactly one request is held",
+      "spec": [
+        "TF specs/vtc/join-requests/submit/0.3/spec.md (served version 0.3; the older 0.2 is not served)",
+        "SPEC.md 8.3 (unsupportedVersion: the request was not taken, so asking again in the served version is the first submission)",
+        "TF ceremonies/vtc/member-onboarding/0.1/ceremony.json (the definition cites submit and manifest 0.1; the retired vtc/join-requests/submit/0.1 stays a documented step of it and is not claimed here: these scenarios run submit 0.3 and manifest 0.4, the versions the platforms serve)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/submit",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+        "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+        "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "apply-at-0-2",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread",
+              "args": {
+                "wire": "0.2"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "unsupportedVersion",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:pending",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-006",
+      "title": "the wallet's signed submission is delivered again unchanged after the applicant was admitted: the community does not record a second request or admit twice",
+      "spec": [
+        "TF specs/vtc/join-requests/submit/0.3/spec.md (issuedAt REQUIRED: a replayed submission re-opens a request the applicant no longer has)",
+        "SPEC.md 7.2 item 11 (a repeated id is not executed twice)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/submit",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+        "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+        "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "apply",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "approve",
+          "source": {
+            "slug": "vtc/join-requests/decide",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/join-requests/decide/0.1",
+            "pinnedDigest": "sha256:a9dd921e2a8720d347940d8d2a01df4317c5a196226ba6d0860c3e3031df0ea4",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/decide/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:c69b6707d61985859045acbe89c899e2b5a72659f6c4d193f2cee1c88ed70bdc",
+            "schemaHash": "sha256:12d5ad626eb2955c60842fa224b2b4bee5a2ac5d38a6d04fc703a5a4f7f1c018"
+          },
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "decide",
+              "args": {
+                "decision": "approved",
+                "request": "latest"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "stored": {
+                "kind": "member:$K",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "replay-submit",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "replay": {
+              "step": "apply",
+              "by": "K",
+              "to": "V",
+              "mode": "same",
+              "index": 1
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:pending",
+                "count": 0
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "member:$K",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request",
+              "count": 1
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request:pending",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-007",
+      "title": "the wallet's signed submission with a payload value changed after signing (fresh id, and its own id) and the same submission with its proof removed: the community refuses all three and records nothing beyond the one request",
+      "spec": [
+        "TF specs/vtc/join-requests/submit/0.3/spec.md (proofRequirement REQUIRED)",
+        "SPEC.md 7.2 (a document whose proof does not verify, or that carries none where one is REQUIRED, is refused)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/submit",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+        "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+        "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "apply",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "tampered",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "replay": {
+              "step": "apply",
+              "by": "K",
+              "to": "V",
+              "mode": "tamper",
+              "index": 1
+            }
+          },
+          "expect": [
+            {
+              "reply": {
+                "code": "proofInvalid"
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "conflicting",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "replay": {
+              "step": "apply",
+              "by": "K",
+              "to": "V",
+              "mode": "conflict",
+              "index": 1
+            }
+          },
+          "expect": [
+            {
+              "reply": {
+                "code": "idConflict|proofInvalid"
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "no-proof",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "replay": {
+              "step": "apply",
+              "by": "K",
+              "to": "V",
+              "mode": "stripProof",
+              "index": 1
+            }
+          },
+          "expect": [
+            {
+              "reply": {
+                "code": "proofRequired"
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-008",
+      "title": "the wallet addresses its application to a different community than the one that receives it: the community refuses it (wrongRecipient) and records no request",
+      "spec": [
+        "TF specs/vtc/join-requests/submit/0.3/spec.md (parties: the community maintainer is the recipient)",
+        "SPEC.md 8.3 (wrongRecipient: the document's recipient does not identify the receiving consumer)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/submit",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+        "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+        "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "apply-misaddressed",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread",
+              "args": {
+                "recipient": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "wrongRecipient",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-009",
+      "title": "the administrator decides a request id the community never minted: refused with vtc/join-requests/decide:notFound, and the applicant's real request is still pending",
+      "spec": [
+        "TF specs/vtc/join-requests/decide/0.1/spec.md (errorCodes: vtc/join-requests/decide:notFound)",
+        "TF ceremonies/vtc/member-onboarding/0.1/ceremony.json (the definition cites submit and manifest 0.1; the retired vtc/join-requests/submit/0.1 stays a documented step of it and is not claimed here: these scenarios run submit 0.3 and manifest 0.4, the versions the platforms serve)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/decide",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vtc/join-requests/decide/0.1",
+        "pinnedDigest": "sha256:a9dd921e2a8720d347940d8d2a01df4317c5a196226ba6d0860c3e3031df0ea4",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/decide/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:c69b6707d61985859045acbe89c899e2b5a72659f6c4d193f2cee1c88ed70bdc",
+        "schemaHash": "sha256:12d5ad626eb2955c60842fa224b2b4bee5a2ac5d38a6d04fc703a5a4f7f1c018"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "apply",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:pending",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide-unknown",
+          "source": {
+            "slug": "vtc/join-requests/decide",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/join-requests/decide/0.1",
+            "pinnedDigest": "sha256:a9dd921e2a8720d347940d8d2a01df4317c5a196226ba6d0860c3e3031df0ea4",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/decide/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:c69b6707d61985859045acbe89c899e2b5a72659f6c4d193f2cee1c88ed70bdc",
+            "schemaHash": "sha256:12d5ad626eb2955c60842fa224b2b4bee5a2ac5d38a6d04fc703a5a4f7f1c018"
+          },
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "decide",
+              "args": {
+                "decision": "approved",
+                "request": "unknown"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "stored": {
+                "kind": "admin:decide:vtc/join-requests/decide:notFound",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:pending",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "member:$K",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request:pending",
+              "count": 1
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "member:$K",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-010",
+      "title": "the administrator decides an already approved request again: refused with vtc/join-requests/decide:notPending, and the request stays approved",
+      "spec": [
+        "TF specs/vtc/join-requests/decide/0.1/spec.md (errorCodes: vtc/join-requests/decide:notPending; a request already decided cannot be re-decided)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/decide",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vtc/join-requests/decide/0.1",
+        "pinnedDigest": "sha256:a9dd921e2a8720d347940d8d2a01df4317c5a196226ba6d0860c3e3031df0ea4",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/decide/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:c69b6707d61985859045acbe89c899e2b5a72659f6c4d193f2cee1c88ed70bdc",
+        "schemaHash": "sha256:12d5ad626eb2955c60842fa224b2b4bee5a2ac5d38a6d04fc703a5a4f7f1c018"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "apply",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "approve",
+          "source": {
+            "slug": "vtc/join-requests/decide",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/join-requests/decide/0.1",
+            "pinnedDigest": "sha256:a9dd921e2a8720d347940d8d2a01df4317c5a196226ba6d0860c3e3031df0ea4",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/decide/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:c69b6707d61985859045acbe89c899e2b5a72659f6c4d193f2cee1c88ed70bdc",
+            "schemaHash": "sha256:12d5ad626eb2955c60842fa224b2b4bee5a2ac5d38a6d04fc703a5a4f7f1c018"
+          },
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "decide",
+              "args": {
+                "decision": "approved",
+                "request": "latest"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:approved",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "approve-again",
+          "source": {
+            "slug": "vtc/join-requests/decide",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/join-requests/decide/0.1",
+            "pinnedDigest": "sha256:a9dd921e2a8720d347940d8d2a01df4317c5a196226ba6d0860c3e3031df0ea4",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/decide/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:c69b6707d61985859045acbe89c899e2b5a72659f6c4d193f2cee1c88ed70bdc",
+            "schemaHash": "sha256:12d5ad626eb2955c60842fa224b2b4bee5a2ac5d38a6d04fc703a5a4f7f1c018"
+          },
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "decide",
+              "args": {
+                "decision": "rejected",
+                "request": "latest"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "stored": {
+                "kind": "admin:decide:vtc/join-requests/decide:notPending",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:approved",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:rejected",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request:approved",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-011",
+      "title": "a wallet that never applied polls its status: the community answers vtc/join-requests/status:notFound (an applicant sees only its own request) and holds no request",
+      "spec": [
+        "TF specs/vtc/join-requests/status/0.1/spec.md (errorCodes: vtc/join-requests/status:notFound; the poll resolves the request from who signs it)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/status",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+        "pinnedDigest": "sha256:d19f3762549df160fb86190f47f4294e2c719de3b91004863839f4f71e6046ab",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/status/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:de30796f11d6595b7b96b1886811b112a55f0e1ecd7df4759faa57d7e5172045",
+        "schemaHash": "sha256:52fa93ed92a592549ce4fb1644532024295994dd0c0dac772c7f43aba1d91e93"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "status-outsider",
+          "source": {
+            "slug": "vtc/join-requests/status",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "pinnedDigest": "sha256:d19f3762549df160fb86190f47f4294e2c719de3b91004863839f4f71e6046ab",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/status/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:de30796f11d6595b7b96b1886811b112a55f0e1ecd7df4759faa57d7e5172045",
+            "schemaHash": "sha256:52fa93ed92a592549ce4fb1644532024295994dd0c0dac772c7f43aba1d91e93"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-status",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "vtc/join-requests/status:notFound",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-012",
+      "title": "a member with no administrative authority decides the applicant's request: refused with permissionDenied (the community takes a decision only from its administrators), and the request stays pending",
+      "spec": [
+        "TF specs/vtc/join-requests/decide/0.1/spec.md (the community-admin capability is verified; permissionDenied otherwise)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/decide",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vtc/join-requests/decide/0.1",
+        "pinnedDigest": "sha256:a9dd921e2a8720d347940d8d2a01df4317c5a196226ba6d0860c3e3031df0ea4",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/decide/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:c69b6707d61985859045acbe89c899e2b5a72659f6c4d193f2cee1c88ed70bdc",
+        "schemaHash": "sha256:12d5ad626eb2955c60842fa224b2b4bee5a2ac5d38a6d04fc703a5a4f7f1c018"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "apply",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:pending",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "decide-by-member",
+          "source": {
+            "slug": "vtc/join-requests/decide",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/join-requests/decide/0.1",
+            "pinnedDigest": "sha256:a9dd921e2a8720d347940d8d2a01df4317c5a196226ba6d0860c3e3031df0ea4",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/decide/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:c69b6707d61985859045acbe89c899e2b5a72659f6c4d193f2cee1c88ed70bdc",
+            "schemaHash": "sha256:12d5ad626eb2955c60842fa224b2b4bee5a2ac5d38a6d04fc703a5a4f7f1c018"
+          },
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "decide",
+              "args": {
+                "decision": "approved",
+                "request": "latest",
+                "as": "member"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "stored": {
+                "kind": "admin:decide:permissionDenied",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:pending",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "member:$K",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request:pending",
+              "count": 1
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "member:$K",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-013",
+      "title": "an application whose presentation names another holder than the document's signer is refused with vtc/join-requests/submit:presentationInvalid: no request is recorded",
+      "spec": [
+        "TF specs/vtc/join-requests/submit/0.3/spec.md (the presentation must be the applicant's own; errorCodes: vtc/join-requests/submit:presentationInvalid)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/submit",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+        "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+        "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received",
+            "optional:initiate.foreignPresentation"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "apply-foreign",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply-foreign",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "vtc/join-requests/submit:presentationInvalid",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-014",
+      "title": "the wallet's clock is two hours behind when it signs its application: the community refuses the stale document and records no request",
+      "spec": [
+        "TF specs/vtc/join-requests/submit/0.3/spec.md (issuedAtRequirement REQUIRED)",
+        "SPEC.md 7.2 (the receiver's acceptance window)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/submit",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+        "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+        "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "clock-back",
+          "do": {
+            "decide": {
+              "by": "K",
+              "action": "clockOffset",
+              "args": {
+                "seconds": -7200
+              }
+            }
+          }
+        },
+        {
+          "id": "apply-stale",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "clock-restore",
+          "do": {
+            "decide": {
+              "by": "K",
+              "action": "clockOffset",
+              "args": {
+                "seconds": 0
+              }
+            }
+          }
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-015",
+      "title": "an applicant that never received its request id (its first answer was lost) polls after the administrator rejected it: the answer must not leave it believing the request is pending or approved: it reads rejected, or the community's notFound",
+      "spec": [
+        "TF specs/vtc/join-requests/status/0.1/spec.md (requestId is optional: an applicant whose first reply was lost polls from its own DID; a refusal they cannot ask about is a refusal they cannot act on; the refusal members only with rejected)",
+        "TF specs/vtc/join-requests/status/0.1/spec.md (the id-less form resolves the applicant's request from the proof signer)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/status",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+        "pinnedDigest": "sha256:d19f3762549df160fb86190f47f4294e2c719de3b91004863839f4f71e6046ab",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/status/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:de30796f11d6595b7b96b1886811b112a55f0e1ecd7df4759faa57d7e5172045",
+        "schemaHash": "sha256:52fa93ed92a592549ce4fb1644532024295994dd0c0dac772c7f43aba1d91e93"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "apply",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "reject",
+          "source": {
+            "slug": "vtc/join-requests/decide",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/join-requests/decide/0.1",
+            "pinnedDigest": "sha256:a9dd921e2a8720d347940d8d2a01df4317c5a196226ba6d0860c3e3031df0ea4",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/decide/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:c69b6707d61985859045acbe89c899e2b5a72659f6c4d193f2cee1c88ed70bdc",
+            "schemaHash": "sha256:12d5ad626eb2955c60842fa224b2b4bee5a2ac5d38a6d04fc703a5a4f7f1c018"
+          },
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "decide",
+              "args": {
+                "decision": "rejected",
+                "request": "latest",
+                "reason": "not now"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:rejected",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "status-idless",
+          "source": {
+            "slug": "vtc/join-requests/status",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "pinnedDigest": "sha256:d19f3762549df160fb86190f47f4294e2c719de3b91004863839f4f71e6046ab",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/status/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:de30796f11d6595b7b96b1886811b112a55f0e1ecd7df4759faa57d7e5172045",
+            "schemaHash": "sha256:52fa93ed92a592549ce4fb1644532024295994dd0c0dac772c7f43aba1d91e93"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-status",
+              "capture": "thread",
+              "args": {
+                "idless": true
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "join-status-not-misleading",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request:rejected",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-016",
+      "title": "the applicant supplements a request that is pending, not awaiting evidence: refused with vtc/join-requests/supplement:notAwaitingEvidence, and the request is unchanged",
+      "spec": [
+        "TF specs/vtc/join-requests/supplement/0.1/spec.md (errorCodes: vtc/join-requests/supplement:notAwaitingEvidence)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/supplement",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+        "pinnedDigest": "sha256:d957600a2ea02907c7ea9b2d6f655a22eae2b25c4f2be93fd97b85499c73e491",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/supplement/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7376d24678152db1b8ba02b5f24238a5c7ce87382f72d8a122a66cce2cad5ab5",
+        "schemaHash": "sha256:c735e6ab8dbaf424a1c074f9569c6506028aa1983526888f66a16d5dc7c1499d"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "apply",
+          "source": {
+            "slug": "vtc/join-requests/submit",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "pinnedDigest": "sha256:4647ea134ead2824707773b36f1195f30560802aae41701cdb8b0296abea9ae8",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/submit/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:852a7c9810fcccda52fcd4f65065c787f3c2c87aa381c402f3b580634ebc9858",
+            "schemaHash": "sha256:66a1fa56894aa66eb37289f6fe0179bfd9fb1c7180169c3123f0b5cfe88060c5"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-apply",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:pending",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "supplement",
+          "source": {
+            "slug": "vtc/join-requests/supplement",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+            "pinnedDigest": "sha256:d957600a2ea02907c7ea9b2d6f655a22eae2b25c4f2be93fd97b85499c73e491",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/supplement/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7376d24678152db1b8ba02b5f24238a5c7ce87382f72d8a122a66cce2cad5ab5",
+            "schemaHash": "sha256:c735e6ab8dbaf424a1c074f9569c6506028aa1983526888f66a16d5dc7c1499d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-supplement",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "vtc/join-requests/supplement:notAwaitingEvidence",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request:pending",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-MBR-017",
+      "title": "a wallet that never applied supplements a request: refused with vtc/join-requests/supplement:notFound (an applicant supplements only its own request) and the community holds no request",
+      "spec": [
+        "TF specs/vtc/join-requests/supplement/0.1/spec.md (errorCodes: vtc/join-requests/supplement:notFound)",
+        "docs/30-onboarding-vetting-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "vtc/join-requests/supplement",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+        "pinnedDigest": "sha256:d957600a2ea02907c7ea9b2d6f655a22eae2b25c4f2be93fd97b85499c73e491",
+        "tfRef": {
+          "repoPath": "specs/vtc/join-requests/supplement/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:7376d24678152db1b8ba02b5f24238a5c7ce87382f72d8a122a66cce2cad5ab5",
+        "schemaHash": "sha256:c735e6ab8dbaf424a1c074f9569c6506028aa1983526888f66a16d5dc7c1499d"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/join-requests/manifest/0.4",
+            "https://trusttasks.org/spec/vtc/join-requests/submit/0.3",
+            "https://trusttasks.org/spec/vtc/join-requests/status/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/withdraw/0.1",
+            "https://trusttasks.org/spec/vtc/join-requests/decide/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "know-applicant",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "knowApplicant",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "supplement-outsider",
+          "source": {
+            "slug": "vtc/join-requests/supplement",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/join-requests/supplement/0.1",
+            "pinnedDigest": "sha256:d957600a2ea02907c7ea9b2d6f655a22eae2b25c4f2be93fd97b85499c73e491",
+            "tfRef": {
+              "repoPath": "specs/vtc/join-requests/supplement/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:7376d24678152db1b8ba02b5f24238a5c7ce87382f72d8a122a66cce2cad5ab5",
+            "schemaHash": "sha256:c735e6ab8dbaf424a1c074f9569c6506028aa1983526888f66a16d5dc7c1499d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "join-supplement",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "vtc/join-requests/supplement:notFound",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "join-request",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "join-request",
+              "count": 0
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

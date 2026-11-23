@@ -1,0 +1,1217 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "GE-VOT",
+ "family": "gap",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "GE-VOT-001",
+   "title": "voting/ballot/cast-encrypted 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/ballot/cast-encrypted/0.1 (Trust Tasks specification voting/ballot/cast-encrypted 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/ballot/cast-encrypted",
+    "version": "0.1",
+    "ref": "kit:specs/voting/ballot/cast-encrypted/0.1",
+    "pinnedDigest": "sha256:e4528bcd9a588b637b91dcfd24aaf2dda1ee6b4c7fd99509792d14a3c7f3f4b0",
+    "specHash": "sha256:f3e8236119c16d5d9e45e6f0e7ca718dac60b9b3627b656dc795755f1b94ce40",
+    "schemaHash": "sha256:c07010693fa4a7d74a2ee286478f349aff163309fb22ef5c62561658ca174335",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013. PROVISIONAL AGAINST BRANCHES: a copy of this version on origin/feat/voting-trustees (fac72c8aa), origin/tmp/voting-hardening-032 (1aa536da6) differs from main; the vector follows main and the branch text is not vectored.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/ballot/cast-encrypted/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/ballot/cast-encrypted/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/ballot/cast-encrypted/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/ballot/cast-encrypted/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-002",
+   "title": "voting/board/consistency 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/board/consistency/0.1 (Trust Tasks specification voting/board/consistency 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/board/consistency",
+    "version": "0.1",
+    "ref": "kit:specs/voting/board/consistency/0.1",
+    "pinnedDigest": "sha256:a4fdb80668a458ab00609b4809d23b0d5d1072d5ec436a24602b84153dc15640",
+    "specHash": "sha256:460c3b258e3bbe62c3df1fe7e24e12c976b3ee875e292611a4adaba437f1fd36",
+    "schemaHash": "sha256:7806e5eee7dd513afea545297dcd261f2da5f33aa8be815b6aad15e6f718907a",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/board/consistency/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/board/consistency/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoRecipient"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/board/consistency/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/board/consistency/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-003",
+   "title": "voting/board/inclusion 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/board/inclusion/0.1 (Trust Tasks specification voting/board/inclusion 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/board/inclusion",
+    "version": "0.1",
+    "ref": "kit:specs/voting/board/inclusion/0.1",
+    "pinnedDigest": "sha256:2aea7c7b68663a755b4090c3ff4366b530110812194d3bff7fdd59a103eb7f0c",
+    "specHash": "sha256:e9b93db5dd11462d3f2834a0d624726cfb80846696a19cae6175f9e6bc6e2567",
+    "schemaHash": "sha256:52742199e7132f212ce5207455dc5e887408ce556bc95e6a7a5c42852f7079e7",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/board/inclusion/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/board/inclusion/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoRecipient"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/board/inclusion/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/board/inclusion/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-004",
+   "title": "voting/board/read 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/board/read/0.1 (Trust Tasks specification voting/board/read 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/board/read",
+    "version": "0.1",
+    "ref": "kit:specs/voting/board/read/0.1",
+    "pinnedDigest": "sha256:5845e323cb3de232f57a5462fdfc89ea4f4668302a5b22c8e09ae1bc49fdbf96",
+    "specHash": "sha256:42edbb45072baedbb4004aeec4806b9fc9b8adac08b1a5c2a3584b23bdd2f661",
+    "schemaHash": "sha256:ca24f2a055b493a0d4a131cd636339d342a7ce516780345f3ed2e49fcc08fe14",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/board/read/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/board/read/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoRecipient"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/board/read/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/board/read/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-005",
+   "title": "voting/board/read 0.2: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/board/read/0.2 (Trust Tasks specification voting/board/read 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/board/read",
+    "version": "0.2",
+    "ref": "kit:specs/voting/board/read/0.2",
+    "pinnedDigest": "sha256:9325856824e1045ada07b4c2b28aae5ce903e49ec4b2892c31bb6af45533c76a",
+    "specHash": "sha256:4928c2bf087f6f0e717d7c8497b5dc5cac396a283c3681fb42ec92290056a534",
+    "schemaHash": "sha256:9e19be02c347e04e5cc7024f89b52cd6c5ae06d5a7b9b5d96c4d4936ecb67619",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/board/read/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/board/read/0.2"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoRecipient"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/board/read/0.2",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/board/read/0.2"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-006",
+   "title": "voting/election/cancel 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/election/cancel/0.1 (Trust Tasks specification voting/election/cancel 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/election/cancel",
+    "version": "0.1",
+    "ref": "kit:specs/voting/election/cancel/0.1",
+    "pinnedDigest": "sha256:127dedf02aaa18e08161498c9ba4a2e81b8bc3d56c84d306010266b0102917e2",
+    "specHash": "sha256:1781b2fb2f8f16a733e328e2fe23768f34e183cf4e0425d890e391d9697c357b",
+    "schemaHash": "sha256:52c509fdccb53734c9e3914e32aee1924a4f87c135104525da5d8b72371e3186",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/election/cancel/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/election/cancel/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/election/cancel/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/election/cancel/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-007",
+   "title": "voting/election/close 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/election/close/0.1 (Trust Tasks specification voting/election/close 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/election/close",
+    "version": "0.1",
+    "ref": "kit:specs/voting/election/close/0.1",
+    "pinnedDigest": "sha256:6bd31473e4622e7bbcbbada4c1acb2a53269bc4f3d6ec20d62bf2222e66a9286",
+    "specHash": "sha256:a88dc737671d7a5706483fa4e702569d9651969157ed784c5680c5d333d53004",
+    "schemaHash": "sha256:9595bbf126024a7cea3c1c0c4435f4cb51c938fab11b17b3a9ca364af9571a26",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/election/close/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/election/close/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/election/close/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/election/close/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-008",
+   "title": "voting/election/register 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/election/register/0.1 (Trust Tasks specification voting/election/register 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/election/register",
+    "version": "0.1",
+    "ref": "kit:specs/voting/election/register/0.1",
+    "pinnedDigest": "sha256:b8f7a760f45ab7a82a5660fddf22bc08e8c0c076bad72f2c74c15baf397dbe81",
+    "specHash": "sha256:8bc9fe50c8c9605d9654f82d8dd4f986053392db2d66d084eb0a8f7a33dadf47",
+    "schemaHash": "sha256:58d0d8ac49fa873dbfe5859769d1e08657f22150cd02887fabdf68ab911be9eb",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/election/register/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/election/register/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/election/register/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/election/register/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-009",
+   "title": "voting/election/register 0.2: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/election/register/0.2 (Trust Tasks specification voting/election/register 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/election/register",
+    "version": "0.2",
+    "ref": "kit:specs/voting/election/register/0.2",
+    "pinnedDigest": "sha256:bb516515fc34c5be8d8ff24c5a32d51844c9796cf53e8ad920a4495a764d0e97",
+    "specHash": "sha256:863e8dc37d05ff3c96293312e72a1e2a89c927c41c7e88b1909e37da8590fa4c",
+    "schemaHash": "sha256:437c27abc606d400574aae453bc747286768a04a7ef5f0aa009ca379b0c67bc2",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/election/register/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/election/register/0.2"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/election/register/0.2",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/election/register/0.2"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-010",
+   "title": "voting/election/register 0.3: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/election/register/0.3 (Trust Tasks specification voting/election/register 0.3 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/election/register",
+    "version": "0.3",
+    "ref": "kit:specs/voting/election/register/0.3",
+    "pinnedDigest": "sha256:ef03fb74f6d30988ce2ce4f8d67cb359fb5ce30f716d8d052787eef5889022c8",
+    "specHash": "sha256:7df4e0e92e583303fd2d24a7a3db786466282791e3771b37dd57aa6efe63a041",
+    "schemaHash": "sha256:105e89aa1a8f0bbefe2ca361c6453e7f4d22de91e42e10d66ac0a9ccfd6b0314",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/election/register/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/election/register/0.3"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/election/register/0.3",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/election/register/0.3"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-011",
+   "title": "voting/election/register 0.4: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/election/register/0.4 (Trust Tasks specification voting/election/register 0.4 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/election/register",
+    "version": "0.4",
+    "ref": "kit:specs/voting/election/register/0.4",
+    "pinnedDigest": "sha256:379ded49c729870c3defbb9d7ca8f383274f170e60186cadb8191f3921e1273b",
+    "specHash": "sha256:287ff7aa33cfb44b2fff73e20f6bf27f8df0b82fe15fb5b26c801446c642f214",
+    "schemaHash": "sha256:247d18ecae1900b3f7cf4f90447ddf8e39e6a50562df037b311d6cae88a2dc9e",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/election/register/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/election/register/0.4"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/election/register/0.4",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/election/register/0.4"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-012",
+   "title": "voting/election/show 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/election/show/0.1 (Trust Tasks specification voting/election/show 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/election/show",
+    "version": "0.1",
+    "ref": "kit:specs/voting/election/show/0.1",
+    "pinnedDigest": "sha256:0969921fecddd9566aa172ba551463e2bc3e84c147822e31fe039ff11260223d",
+    "specHash": "sha256:3920e8a28405255369d3e716080857c49ca8d65f2b56708ae793b4aa0c6ea2af",
+    "schemaHash": "sha256:7082c21987333c18b4821c529be7c303825d536d07c81eed07f8dcf5452f66ad",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/election/show/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/election/show/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoRecipient"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/election/show/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/election/show/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-013",
+   "title": "voting/election/show 0.2: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/election/show/0.2 (Trust Tasks specification voting/election/show 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/election/show",
+    "version": "0.2",
+    "ref": "kit:specs/voting/election/show/0.2",
+    "pinnedDigest": "sha256:5a5ce6558f8c192d02afd615c8fcd4dbe0de8a17bdccda74651876cfb2b9ddce",
+    "specHash": "sha256:0fb1f24bfb721a5095619dbb4ab1de71f2e1745f628754e842e31e8d2b80d666",
+    "schemaHash": "sha256:2bab3ea14de53593b11f9611dbbb12f898f395ad083ef92d8a6715ff704fd3b9",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/election/show/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/election/show/0.2"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoRecipient"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/election/show/0.2",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/election/show/0.2"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-014",
+   "title": "voting/election/show 0.3: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/election/show/0.3 (Trust Tasks specification voting/election/show 0.3 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/election/show",
+    "version": "0.3",
+    "ref": "kit:specs/voting/election/show/0.3",
+    "pinnedDigest": "sha256:0ffd1efbe5410aefe7c5b46e8634c73d829ad8b2af513b5b075dd34191eb71ee",
+    "specHash": "sha256:e5d729099d928a60e2ad928dd4dee874bbd5e013863567bf54e544a7c05f4124",
+    "schemaHash": "sha256:3c20a1dc51ec570d7bbb68b06f3d7a396b311b053687b452e418889dc361f83c",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/election/show/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/election/show/0.3"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoRecipient"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/election/show/0.3",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/election/show/0.3"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-015",
+   "title": "voting/election/show 0.4: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/election/show/0.4 (Trust Tasks specification voting/election/show 0.4 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/election/show",
+    "version": "0.4",
+    "ref": "kit:specs/voting/election/show/0.4",
+    "pinnedDigest": "sha256:3f6ea639a2c656791ce7d97667f9142659a92546dcf80570305437aaad5f6787",
+    "specHash": "sha256:4219bf54b8cd6323b0720dc84d4be8c01de69a900ab643799e2550510100934c",
+    "schemaHash": "sha256:df27e2ed9e7de2f45274c877c326501ba29b55a04223cb4dbb91fc5a682f904e",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/election/show/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/election/show/0.4"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoRecipient"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/election/show/0.4",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/election/show/0.4"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-016",
+   "title": "voting/result/show 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/result/show/0.1 (Trust Tasks specification voting/result/show 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/result/show",
+    "version": "0.1",
+    "ref": "kit:specs/voting/result/show/0.1",
+    "pinnedDigest": "sha256:7dcfd5b03c9e32fc6feb8666ce2c9ae490c4bf4d9453de02ba08c6ae5a7a399e",
+    "specHash": "sha256:4191cca098446de9a53f8cc2ee03f701b4b89a3224c6f0c1782321fc81c115fa",
+    "schemaHash": "sha256:86fe5b0ffaa03a75317a698653ba7f635c9c30f139ebf165fa44a8833e56eaf4",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/result/show/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/result/show/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoRecipient"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/result/show/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/result/show/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-017",
+   "title": "voting/trustees/authorize 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/trustees/authorize/0.1 (Trust Tasks specification voting/trustees/authorize 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/trustees/authorize",
+    "version": "0.1",
+    "ref": "kit:specs/voting/trustees/authorize/0.1",
+    "pinnedDigest": "sha256:78f6d125589192fa526fb93e1442e99dcaedf0aec73aac925864aeb26c9d82f2",
+    "specHash": "sha256:debcd9c7cbc04d051342985e7a7d49eef42758185f3a48270578d856abd584d2",
+    "schemaHash": "sha256:4d69db28acabf8eea34f8698e03dafefb476e581db9057112732390976184738",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013. PROVISIONAL AGAINST BRANCHES: a copy of this version on origin/tmp/voting-hardening-032 (1aa536da6) differs from main; the vector follows main and the branch text is not vectored.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/trustees/authorize/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/trustees/authorize/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/trustees/authorize/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/trustees/authorize/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-018",
+   "title": "voting/trustees/confirm 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/trustees/confirm/0.1 (Trust Tasks specification voting/trustees/confirm 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/trustees/confirm",
+    "version": "0.1",
+    "ref": "kit:specs/voting/trustees/confirm/0.1",
+    "pinnedDigest": "sha256:a225db59dcf926804932fdb43e0c5572ffec373b9ec19381e45ff22b0dad0bfa",
+    "specHash": "sha256:e3119950e18fd81dc0ebb84b4df434041f6524ddc97c3ae5f3f81ab61af9baa6",
+    "schemaHash": "sha256:f4e2dedb8f83d8f73c9df0f40e40d24c87c3971391aa8bff72f6edd670bd4488",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013. PROVISIONAL AGAINST BRANCHES: a copy of this version on origin/feat/voting-trustees (fac72c8aa) differs from main; the vector follows main and the branch text is not vectored.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/trustees/confirm/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/trustees/confirm/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/trustees/confirm/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/trustees/confirm/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-019",
+   "title": "voting/trustees/deal 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/trustees/deal/0.1 (Trust Tasks specification voting/trustees/deal 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/trustees/deal",
+    "version": "0.1",
+    "ref": "kit:specs/voting/trustees/deal/0.1",
+    "pinnedDigest": "sha256:e9d6e4fd1f742e6b664799875512d7d106372433a52375799d00e4536f0fe5a5",
+    "specHash": "sha256:049cd9738d7219d89b32c5528bd8cfcf27c0b49b1c0aa012739320947bd2d8de",
+    "schemaHash": "sha256:9f4664ebd8966f1d9830d5f868ee955f818d0fce40f92f944e9186ae146c398a",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013. PROVISIONAL AGAINST BRANCHES: a copy of this version on origin/feat/voting-trustees (fac72c8aa) differs from main; the vector follows main and the branch text is not vectored.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/trustees/deal/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/trustees/deal/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/trustees/deal/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/trustees/deal/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-020",
+   "title": "voting/trustees/decrypt 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/trustees/decrypt/0.1 (Trust Tasks specification voting/trustees/decrypt 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/trustees/decrypt",
+    "version": "0.1",
+    "ref": "kit:specs/voting/trustees/decrypt/0.1",
+    "pinnedDigest": "sha256:580832dfd6e884c7e0bec5ec541f1d3a34e6a15392974f29f8c5870d4c18271c",
+    "specHash": "sha256:ff545e9b5316a9cb08d8e14820b05a2dc80195296ff908f4031542bbeaf7a654",
+    "schemaHash": "sha256:ced0c48cb226163d6db6526c216c101b33e3f2ce6cecc28afd866e7b99d94239",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013. PROVISIONAL AGAINST BRANCHES: a copy of this version on origin/feat/voting-trustees (fac72c8aa), origin/tmp/voting-hardening-032 (1aa536da6) differs from main; the vector follows main and the branch text is not vectored.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/trustees/decrypt/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/trustees/decrypt/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/trustees/decrypt/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/trustees/decrypt/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-021",
+   "title": "voting/trustees/enrol 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/trustees/enrol/0.1 (Trust Tasks specification voting/trustees/enrol 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/trustees/enrol",
+    "version": "0.1",
+    "ref": "kit:specs/voting/trustees/enrol/0.1",
+    "pinnedDigest": "sha256:e4652a74968009f7e870ccdbf458271be2e3820df7f5a6a4c8ffad136e8be3eb",
+    "specHash": "sha256:f4d22650abe20e6597ec8d51bd326a59efdd2631a384b9f3da8c36ffcd0730f7",
+    "schemaHash": "sha256:ca77900dd37928bc33bb19fd41e45d07220e714567010301b0d0d2cf28bf04d7",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013. PROVISIONAL AGAINST BRANCHES: a copy of this version on origin/feat/voting-trustees (fac72c8aa) differs from main; the vector follows main and the branch text is not vectored.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/trustees/enrol/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/trustees/enrol/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/trustees/enrol/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/trustees/enrol/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-022",
+   "title": "voting/trustees/justify 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/trustees/justify/0.1 (Trust Tasks specification voting/trustees/justify 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/trustees/justify",
+    "version": "0.1",
+    "ref": "kit:specs/voting/trustees/justify/0.1",
+    "pinnedDigest": "sha256:777c1f4957cce5cee155a84d969fe1dd0d533fe9d5116c93afaf538a9e22d053",
+    "specHash": "sha256:ac196b1eb625f10f7989b2d67aeffa8f12bb77ec9b35501a308614f40cde6da4",
+    "schemaHash": "sha256:da745ce0ec93f9da47b5722a544ee6eb5d6942bd0ad76b8b305bc50358104150",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013. PROVISIONAL AGAINST BRANCHES: a copy of this version on origin/feat/voting-trustees (fac72c8aa) differs from main; the vector follows main and the branch text is not vectored.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/trustees/justify/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/trustees/justify/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/trustees/justify/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/trustees/justify/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GE-VOT-023",
+   "title": "voting/trustees/status 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/voting/trustees/status/0.1 (Trust Tasks specification voting/trustees/status 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=true",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "voting/trustees/status",
+    "version": "0.1",
+    "ref": "kit:specs/voting/trustees/status/0.1",
+    "pinnedDigest": "sha256:bea74921f5af73c244368070cc0f00994390da3e9beabaf30b2aeee626b65a19",
+    "specHash": "sha256:124f2fcf01f4c1ff166dfd0209f27bba96a143a7f8904baf071574bdb20b166c",
+    "schemaHash": "sha256:3aa462f5581a2a23cf0d40fd3ae46d6a02057ffc8ac29d6edf08507b5bcb0ebf",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013. PROVISIONAL AGAINST BRANCHES: a copy of this version on origin/feat/voting-trustees (fac72c8aa), origin/tmp/voting-hardening-032 (1aa536da6) differs from main; the vector follows main and the branch text is not vectored.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/voting/trustees/status/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/voting/trustees/status/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoRecipient",
+    "emitNoIssuedAt"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/voting/trustees/status/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/voting/trustees/status/0.1"
+     }
+    }
+   ]
+  }
+ ]
+}

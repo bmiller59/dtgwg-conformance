@@ -1,0 +1,41 @@
+--- a/docker/mediator.Dockerfile
++++ b/docker/mediator.Dockerfile
+@@ -24,14 +24,25 @@
+     && git checkout -q FETCH_HEAD \
+     && test "$(git rev-parse HEAD)" = "${MEDIATOR_REF}"
+ ARG FEATURES="tsp,secrets-aws"
+-RUN cargo build --release --locked -p affinidi-messaging-mediator --features "${FEATURES}"
++# LOCAL TEST-ONLY PATCH (class D stand-in, bam wire3 D407/D430): the DID resolver of the mediator may fetch did:webvh / did:web
++# from loopback and private hosts (HostPolicy::AllowPrivate instead of the default PublicOnly). Never for production.
++RUN set -e; M=crates/affinidi-messaging-mediator; \
++    for f in $M/src/common/config/mod.rs $M/src/builder.rs; do \
++      test "$(grep -c 'with_cache_capacity(' $f)" -ge 1; \
++      sed -i 's/\.with_cache_capacity(/.with_host_policy(affinidi_did_web::HostPolicy::AllowPrivate).with_cache_capacity(/' $f; \
++      grep -q 'HostPolicy::AllowPrivate' $f; \
++    done; \
++    grep -n '^\[dependencies\]' $M/Cargo.toml; \
++    sed -i '0,/^\[dependencies\]/s//[dependencies]\naffinidi-did-web = "0.1.6"/' $M/Cargo.toml; \
++    grep -n 'affinidi-did-web' $M/Cargo.toml
++RUN cargo build --release -p affinidi-messaging-mediator --features "${FEATURES}"
+ RUN cargo build --release --locked -p affinidi-messaging-mediator-setup \
+       --no-default-features --features secrets-aws,publish-aws
+ 
+ FROM debian:bookworm-slim
+ ARG MEDIATOR_REF=unknown
+ LABEL org.opencontainers.image.source="https://github.com/affinidi/affinidi-messaging-mediator" \
+-      org.opencontainers.image.title="buildathon mediator" \
++      org.opencontainers.image.title="buildathon mediator (LOOPBACK TEST PATCH)" \
+       org.opencontainers.image.licenses="Apache-2.0" \
+       org.buildathon.mediator-ref="${MEDIATOR_REF}"
+ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl \
+--- a/scripts/images-build.ts
++++ b/scripts/images-build.ts
+@@ -89,7 +89,7 @@
+   console.log(MEDIATOR_BUILD_NOTICE);
+   const warn = memoryWarning(availKb(), 8);
+   if (warn) console.warn(`WARNING: ${warn}`);
+-  const tags = localRefs({ name: m.image, version: m.version, ref: m.ref }, { local: true });
++  const tags = ["mediator-buildathon:e6e2c636-loopback"]; // bam wire3: distinct tag, never the pinned ones
+   const dockerfile = resolve("docker/mediator.Dockerfile");
+   const labels = labelArgs(buildLabels("mediator", pins(), { dockerfileSha256: sha256(dockerfile) }));
+   guardTags(tags);

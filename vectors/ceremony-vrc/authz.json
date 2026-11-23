@@ -1,0 +1,200 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "AUTHZ",
+  "family": "vrc-issue",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "AUTHZ-001",
+      "title": "a delivery on another party's accepted thread is indistinguishable from one on an unknown thread",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1020 (7.2 item 10 validation is not authorization)",
+        "specs/vrc/relationships/issue/0.1/spec.md:115-122 (authorization is the accepted proposal)",
+        "SPEC.md:1282 (an error that varies with a consumer-internal fact is an oracle)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/issue",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/vrc/relationships/issue/0.1",
+        "pinnedDigest": "sha256:1538dee01f59dba0532aaf988f592d819d8f72a4a114c16fa0c18488cd01d20f",
+        "tfRef": {
+          "repoPath": "specs/vrc/relationships/issue/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:eb5c6d51d31a10488150cf97d270d4a6f24a0ccb845fed1590d057cb7a3b6c63",
+        "schemaHash": "sha256:5d2b1f52a94b691a85c103d08014649b8b06449982512bd8b36e6f739bd15881"
+      },
+      "clarify": "Step 4 compares the refusal for a delivery by the wrong party on an accepted thread with the refusal for an unknown thread (vrc/relationships/issue spec.md:51: authorisation is the accepted proposal). The text does not say that the two refusals must be indistinguishable; the 'oracle' reading rests on a privacy note of the framework, not on a rule that names this case. Spec-open (class C, O-14), recorded only, nothing filed. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-22",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/issue/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "foreignThreadDistinct",
+        "acceptUnsolicited"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "issue.request",
+            "vrc": {},
+            "params": {
+              "issuer": "$X",
+              "id": "$id(iss)"
+            },
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/issue:notAccepted",
+            "noSideEffect": true,
+            "state": {
+              "stored": 0
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "issue.request",
+            "vrc": {},
+            "params": {
+              "id": "$id(iss2)",
+              "threadId": "$id(nothing)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/issue:notAccepted",
+            "noSideEffect": true,
+            "state": {
+              "stored": 0
+            },
+            "sameErrorAs": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "AUTHZ-002",
+      "title": "a proposal resubmitted by a party other than the proposer is refused permissionDenied and learns nothing of the outcome",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1020 (7.2 item 10)",
+        "SPEC.md:1414-1420 (a resubmission is answered in the same thread, for the producer that held it)",
+        "docs/06 section 2.2 (AUTHZ-001 design: contested identity gives permissionDenied)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "Which code a contested thread yields is a design rule (permissionDenied), not specification text; the specification only forbids treating validation as authorization (item 10). Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "proposeLeaksForeignOutcome"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "propose.request",
+            "params": {
+              "id": "$id(req2)",
+              "threadId": "$id(req)",
+              "issuer": "$X",
+              "payload": {
+                "relationshipDid": "$S"
+              }
+            },
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "permissionDenied",
+            "noSideEffect": true
+          }
+        }
+      ]
+    }
+  ]
+}

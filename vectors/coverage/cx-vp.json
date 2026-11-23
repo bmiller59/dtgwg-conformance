@@ -1,0 +1,3758 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "CX-VP",
+ "family": "coverage",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "CX-VP-001",
+   "title": "vta/pcs/vote 0.2: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vta/pcs/vote 0.2 (task-force repository origin/main bd0c05013, specification status draft): 4 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vta/pcs/vote/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 2, 3, 4."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.2"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.2",
+    "pinnedDigest": "sha256:6f161de2c0ff41ade05f6c5c56af5a4973f89e06ae7e7f0012fdc2a6f6a025be",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e4e5b51c43a0c3ec8e11dfe471b474d1d131cec352b7af895bc26066aba92442",
+    "schemaHash": "sha256:4af377d3e2e59c04ea9d63f48279897bb53f88e24d467d01894a37f7b817c1bf",
+    "versionRole": "older"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "z6MkvVotingKey1abcXYZ"
+        },
+        "manifest": {
+         "electionId": "board-2026",
+         "community": "did:webvh:QmCommunity:vtc.example.org",
+         "questions": [
+          {
+           "key": "chair",
+           "type": "choice",
+           "options": [
+            {
+             "key": "ana"
+            },
+            {
+             "key": "ben"
+            }
+           ],
+           "minSelections": 1,
+           "maxSelections": 1,
+           "optional": true
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "$now+1h",
+         "votingOpensAt": "$now+1h",
+         "votingClosesAt": "$now+1h",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:webvh:QmBallotBox:vote.example.net",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 10
+        },
+        "ballot": {
+         "electionId": "board-2026",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "chair",
+           "choice": [
+            "ana"
+           ],
+           "abstain": true
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "parameters": {
+         "suite": "bbs-2023",
+         "votingKey": "z6MkvVotingKey1abcXYZ"
+        },
+        "manifest": {
+         "electionId": "board-2026",
+         "community": "did:webvh:QmCommunity:vtc.example.org",
+         "questions": [
+          {
+           "key": "chair",
+           "type": "choice",
+           "options": [
+            {
+             "key": "ana"
+            },
+            {
+             "key": "ben"
+            }
+           ],
+           "minSelections": 1,
+           "maxSelections": 1,
+           "optional": true
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "$now+1h",
+         "votingOpensAt": "$now+1h",
+         "votingClosesAt": "$now+1h",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:webvh:QmBallotBox:vote.example.net",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 10
+        },
+        "ballot": {
+         "electionId": "board-2026",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "chair",
+           "choice": [
+            "ana"
+           ]
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "z6MkvVotingKey1abcXYZ"
+        },
+        "manifest": {
+         "electionId": "board-2026",
+         "community": "did:webvh:QmCommunity:vtc.example.org",
+         "title": "Board election 2026",
+         "questions": [
+          {
+           "key": "chair",
+           "type": "choice",
+           "text": "Who should chair the board?",
+           "options": [
+            {
+             "key": "ana",
+             "label": "Ana"
+            },
+            {
+             "key": "ben",
+             "label": "Ben"
+            }
+           ],
+           "minSelections": 1,
+           "maxSelections": 1,
+           "optional": false
+          },
+          {
+           "key": "budget",
+           "type": "choice",
+           "text": "Approve the 2027 budget?",
+           "options": [
+            {
+             "key": "yes"
+            },
+            {
+             "key": "no"
+            }
+           ],
+           "minSelections": 1,
+           "maxSelections": 1,
+           "optional": true
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "$now+1h",
+         "votingOpensAt": "$now+1h",
+         "votingCloses": "$now+1h",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:webvh:QmBallotBox:vote.example.net",
+         "binding": true,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 10
+        },
+        "ballot": {
+         "electionId": "board-2026",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "chair",
+           "choice": [
+            "ana"
+           ]
+          },
+          {
+           "question": "budget",
+           "abstain": true
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-VP-002",
+   "title": "vta/pcs/vote 0.3: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vta/pcs/vote 0.3 (task-force repository origin/main bd0c05013, specification status draft): 5 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vta/pcs/vote/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 2, 3, 4, 5."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.3"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.3",
+    "pinnedDigest": "sha256:edfa032ed30c5baf6d50cc2ceada7dbd706fd59ba9dca0c9433960e5b8f699bb",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:aa879f81934bb91c11e8bad12784bc984b0bafa6f9a6cb14c914c4fe7595d54d",
+    "schemaHash": "sha256:c02208c9e311d4f19d8cdc194bc8f0cb5b2078e24dbcdde138f32cad33fccff7",
+    "versionRole": "older"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "z6MkvVotingKey1abcXYZ"
+        },
+        "manifest": {
+         "electionId": "board-2026",
+         "community": "did:webvh:QmCommunity:vtc.example.org",
+         "questions": [
+          {
+           "key": "chair",
+           "type": "choice",
+           "options": [
+            {
+             "key": "ana"
+            },
+            {
+             "key": "ben"
+            }
+           ],
+           "minSelections": 1,
+           "maxSelections": 1,
+           "optional": true
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "$now+1h",
+         "votingOpensAt": "$now+1h",
+         "votingClosesAt": "$now+1h",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:webvh:QmBallotBox:vote.example.net",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 10
+        },
+        "ballot": {
+         "electionId": "board-2026",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "chair",
+           "choice": [
+            "ana"
+           ],
+           "abstain": true
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "parameters": {
+         "suite": "bbs-2023",
+         "votingKey": "z6MkvVotingKey1abcXYZ"
+        },
+        "manifest": {
+         "electionId": "board-2026",
+         "community": "did:webvh:QmCommunity:vtc.example.org",
+         "questions": [
+          {
+           "key": "chair",
+           "type": "choice",
+           "options": [
+            {
+             "key": "ana"
+            },
+            {
+             "key": "ben"
+            }
+           ],
+           "minSelections": 1,
+           "maxSelections": 1,
+           "optional": true
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "$now+1h",
+         "votingOpensAt": "$now+1h",
+         "votingClosesAt": "$now+1h",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:webvh:QmBallotBox:vote.example.net",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 10
+        },
+        "ballot": {
+         "electionId": "board-2026",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "chair",
+           "choice": [
+            "ana"
+           ]
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "z6MkvVotingKey1abcXYZ"
+        },
+        "manifest": {
+         "electionId": "board-2026",
+         "community": "did:webvh:QmCommunity:vtc.example.org",
+         "title": "Board election 2026",
+         "questions": [
+          {
+           "key": "chair",
+           "type": "choice",
+           "text": "Who should chair the board?",
+           "options": [
+            {
+             "key": "ana",
+             "label": "Ana"
+            },
+            {
+             "key": "ben",
+             "label": "Ben"
+            }
+           ],
+           "minSelections": 1,
+           "maxSelections": 1,
+           "optional": false
+          },
+          {
+           "key": "budget",
+           "type": "choice",
+           "text": "Approve the 2027 budget?",
+           "options": [
+            {
+             "key": "yes"
+            },
+            {
+             "key": "no"
+            }
+           ],
+           "minSelections": 1,
+           "maxSelections": 1,
+           "optional": true
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "$now+1h",
+         "votingOpensAt": "$now+1h",
+         "votingCloses": "$now+1h",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:webvh:QmBallotBox:vote.example.net",
+         "binding": true,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 10
+        },
+        "ballot": {
+         "electionId": "board-2026",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "chair",
+           "choice": [
+            "ana"
+           ]
+          },
+          {
+           "question": "budget",
+           "abstain": true
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "z6MkvVotingKey1abcXYZ"
+        },
+        "manifest": {
+         "electionId": "board-2026",
+         "community": "did:webvh:QmCommunity:vtc.example.org",
+         "questions": [
+          {
+           "key": "chair",
+           "type": "choice",
+           "options": [
+            {
+             "key": "ana"
+            },
+            {
+             "key": "ben"
+            }
+           ],
+           "minSelections": 1,
+           "maxSelections": 1,
+           "optional": true
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "$now+1h",
+         "votingOpensAt": "$now+1h",
+         "votingClosesAt": "$now+1h",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:webvh:QmBallotBox:vote.example.net",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 0
+        },
+        "ballot": {
+         "electionId": "board-2026",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "chair",
+           "choice": [
+            "ana"
+           ]
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-VP-003",
+   "title": "vta/pcs/vote 0.4: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vta/pcs/vote 0.4 (task-force repository origin/main bd0c05013, specification status draft): 5 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vta/pcs/vote/0.4/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 2, 3, 4, 5."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/vote/0.4"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vta/pcs/vote",
+    "version": "0.4",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/vote/0.4",
+    "pinnedDigest": "sha256:437517cc50cd30c7a91b4fb777723a8e41ccab3db0fb6e01cd0b308eb2505d0b",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/vote/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:1cfeb9ad0bddd00e9fbd63b0730123023f726c39e02566560e311d6b0f1d61e6",
+    "schemaHash": "sha256:c76c6a0604d52d2d4d0d1214fda5434de2455f36cd476312efc90ab7f37b936d",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "z6MkvVotingKey1abcXYZ"
+        },
+        "manifest": {
+         "electionId": "board-2026",
+         "community": "did:webvh:QmCommunity:vtc.example.org",
+         "questions": [
+          {
+           "key": "chair",
+           "type": "choice",
+           "options": [
+            {
+             "key": "ana"
+            },
+            {
+             "key": "ben"
+            }
+           ],
+           "minSelections": 1,
+           "maxSelections": 1,
+           "optional": true
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "$now+1h",
+         "votingOpensAt": "$now+1h",
+         "votingClosesAt": "$now+1h",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:webvh:QmBallotBox:vote.example.net",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 10
+        },
+        "ballot": {
+         "electionId": "board-2026",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "chair",
+           "choice": [
+            "ana"
+           ],
+           "abstain": true
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "parameters": {
+         "suite": "bbs-2023",
+         "votingKey": "z6MkvVotingKey1abcXYZ"
+        },
+        "manifest": {
+         "electionId": "board-2026",
+         "community": "did:webvh:QmCommunity:vtc.example.org",
+         "questions": [
+          {
+           "key": "chair",
+           "type": "choice",
+           "options": [
+            {
+             "key": "ana"
+            },
+            {
+             "key": "ben"
+            }
+           ],
+           "minSelections": 1,
+           "maxSelections": 1,
+           "optional": true
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "$now+1h",
+         "votingOpensAt": "$now+1h",
+         "votingClosesAt": "$now+1h",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:webvh:QmBallotBox:vote.example.net",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 10
+        },
+        "ballot": {
+         "electionId": "board-2026",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "chair",
+           "choice": [
+            "ana"
+           ]
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "z6MkvVotingKey1abcXYZ"
+        },
+        "manifest": {
+         "electionId": "board-2026",
+         "community": "did:webvh:QmCommunity:vtc.example.org",
+         "title": "Board election 2026",
+         "questions": [
+          {
+           "key": "chair",
+           "type": "choice",
+           "text": "Who should chair the board?",
+           "options": [
+            {
+             "key": "ana",
+             "label": "Ana"
+            },
+            {
+             "key": "ben",
+             "label": "Ben"
+            }
+           ],
+           "minSelections": 1,
+           "maxSelections": 1,
+           "optional": false
+          },
+          {
+           "key": "budget",
+           "type": "choice",
+           "text": "Approve the 2027 budget?",
+           "options": [
+            {
+             "key": "yes"
+            },
+            {
+             "key": "no"
+            }
+           ],
+           "minSelections": 1,
+           "maxSelections": 1,
+           "optional": true
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "$now+1h",
+         "votingOpensAt": "$now+1h",
+         "votingCloses": "$now+1h",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:webvh:QmBallotBox:vote.example.net",
+         "binding": true,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 10
+        },
+        "ballot": {
+         "electionId": "board-2026",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "chair",
+           "choice": [
+            "ana"
+           ]
+          },
+          {
+           "question": "budget",
+           "abstain": true
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/vta/pcs/vote/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "parameters": {
+         "suite": "ps-ddh-bls12381",
+         "votingKey": "z6MkvVotingKey1abcXYZ"
+        },
+        "manifest": {
+         "electionId": "board-2026",
+         "community": "did:webvh:QmCommunity:vtc.example.org",
+         "questions": [
+          {
+           "key": "chair",
+           "type": "choice",
+           "options": [
+            {
+             "key": "ana"
+            },
+            {
+             "key": "ben"
+            }
+           ],
+           "minSelections": 1,
+           "maxSelections": 1,
+           "optional": true
+          }
+         ],
+         "secrecy": "open",
+         "roll": {
+          "rule": "members"
+         },
+         "registrationOpensAt": "$now+1h",
+         "votingOpensAt": "$now+1h",
+         "votingClosesAt": "$now+1h",
+         "revote": "replace",
+         "board": {
+          "visibility": "public",
+          "auditors": []
+         },
+         "ballotBox": "did:webvh:QmBallotBox:vote.example.net",
+         "binding": false,
+         "allowEarlyClose": false,
+         "resultsBeforeClose": false,
+         "textReleaseThreshold": 0
+        },
+        "ballot": {
+         "electionId": "board-2026",
+         "manifestDigest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+         "answers": [
+          {
+           "question": "chair",
+           "choice": [
+            "ana"
+           ]
+          }
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-VP-004",
+   "title": "vta/pcs/voter/read 0.6: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vta/pcs/voter/read 0.6 (task-force repository origin/main bd0c05013, specification status draft): 5 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vta/pcs/voter/read/0.6/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: step 5."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/voter/read/0.6"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vta/pcs/voter/read",
+    "version": "0.6",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/voter/read/0.6",
+    "pinnedDigest": "sha256:249a9bdd6111c40ccc259251dbb0e04bc657b32d7e1b833cc37147a411e39fc3",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/voter/read/0.6/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:b8f58839ed03b42c96f9c07c61c0e4a7d82663420806397a4a913753b46af05a",
+    "schemaHash": "sha256:155e78e5def1c22bf9f8e67612cfa5e62cfb57b5e461661e91df3955288a4d2e",
+    "versionRole": "older"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/voter/read/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "member": "did:key:z6MkmMemberPersonaExampleKey22222222222222222222",
+        "read": "list",
+        "payload": {},
+        "membershipCredential": "vc-7f3a"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vta/pcs/voter/read/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "member": "did:key:z6MkmMemberPersonaExampleKey22222222222222222222",
+        "read": "show",
+        "payload": {
+         "electionId": "partner-charter-2026"
+        },
+        "membershipCredential": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/vta/pcs/voter/read/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "member": "did:key:z6MkmMemberPersonaExampleKey22222222222222222222",
+        "read": "show",
+        "payload": {
+         "electionId": "partner-charter-2026"
+        },
+        "memberOf": "did:webvh:QmPartner:partner.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/vta/pcs/voter/read/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "member": "did:key:z6MkmMemberPersonaExampleKey22222222222222222222",
+        "read": "show",
+        "payload": {
+         "electionId": "partner-charter-2026"
+        },
+        "membershipCredential": "vc-7f3a",
+        "memberOf": "Partner Community"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/vta/pcs/voter/read/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "document": {
+         "id": "urn:uuid:0e2f9b1c-5d4a-4e3b-9a8c-7d6e5f4a3b2c",
+         "type": "https://trusttasks.org/spec/vtc/elections/show/0.5",
+         "issuer": "did:key:z6MkmMemberPersonaExampleKey22222222222222222222",
+         "recipient": "did:webvh:QmCommunity:vtc.example.org",
+         "issuedAt": "$now+0s",
+         "payload": {
+          "electionId": "board-2026"
+         },
+         "proof": {
+          "type": "DataIntegrityProof"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-VP-005",
+   "title": "vta/pcs/voter/receipt 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vta/pcs/voter/receipt 0.1 (task-force repository origin/main bd0c05013, specification status draft): 2 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vta/pcs/voter/receipt/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vta/pcs/voter/receipt/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vta/pcs/voter/receipt",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/pcs/voter/receipt/0.1",
+    "pinnedDigest": "sha256:68c09ed89c69112ad8625d1c6c74df220471d4e5283abed744e1cc5f926d6d9d",
+    "tfRef": {
+     "repoPath": "specs/vta/pcs/voter/receipt/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:3a386b32710dc0b96e6352541fd758a709a4c6643f3a2f54192ac7ed9e934eb7",
+    "schemaHash": "sha256:655bbba4a53f26b6214a06e4226457e955bc7dc00677dbc35016e962c6750067",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vta/pcs/voter/receipt/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vta/pcs/voter/receipt/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "personal/communities",
+        "community": "did:webvh:QmCommunity:vtc.example.org",
+        "electionId": "board-2026",
+        "receipt": {
+         "id": "urn:uuid:9b2e4c71-5d3a-4f08-a6e1-0c7d8b3f2a95",
+         "type": "https://trusttasks.org/spec/voting/ballot/cast/0.1#response",
+         "issuer": "did:webvh:QmBallotBox:vote.example.net",
+         "payload": {},
+         "proof": {}
+        },
+        "checkpoint": {
+         "id": "urn:uuid:c1a7e2d4-6b38-4f91-8d05-2e9f4a7b1c63",
+         "type": "https://trusttasks.org/spec/voting/board/head/0.1#response",
+         "issuer": "did:webvh:QmBallotBox:vote.example.net",
+         "payload": {},
+         "proof": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-VP-006",
+   "title": "vtc/vetting/auto-grant/show 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vtc/vetting/auto-grant/show 0.1 (task-force repository origin/main bd0c05013, specification status draft): 3 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vtc/vetting/auto-grant/show/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/vetting/auto-grant/show/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vtc/vetting/auto-grant/show",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/auto-grant/show/0.1",
+    "pinnedDigest": "sha256:e6ecaecac29f93e488274aee6ec26939f9c49c4aa0d4839b888c26f24abaa4f1",
+    "tfRef": {
+     "repoPath": "specs/vtc/vetting/auto-grant/show/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:124647df5403f78784f0a8245e7ea3752e96ce7ef68052afde7fb274efc0ba6f",
+    "schemaHash": "sha256:a45fba329aecccc988fed8a36d87ec6f5a0771b991847ce5a72091e28e9575f9",
+    "promotion": {
+     "batch": "B2",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/auto-grant/show/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enabled": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/auto-grant/show/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "autoGrant": {
+         "enabled": false,
+         "sweepMinutes": 60
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/auto-grant/show/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "autoGrant": {
+         "enabled": true,
+         "sweepMinutes": 1,
+         "validitySeconds": 31536000
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-VP-007",
+   "title": "vtc/vetting/auto-grant/update 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vtc/vetting/auto-grant/update 0.1 (task-force repository origin/main bd0c05013, specification status draft): 5 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vtc/vetting/auto-grant/update/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: step 5."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/vetting/auto-grant/update/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vtc/vetting/auto-grant/update",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/auto-grant/update/0.1",
+    "pinnedDigest": "sha256:79cdae6300afdd9d078d3974fe4e288becf0c4e3f9fb0eaf1919214232e6387e",
+    "tfRef": {
+     "repoPath": "specs/vtc/vetting/auto-grant/update/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:92227a4ead50e3b45c5bf82268bbca01760619ea00748b54fb41cf8afc10bc37",
+    "schemaHash": "sha256:48eba13ccde439d731bc0201d4a7abf26c8719834659a2c51fa509994823d416",
+    "promotion": {
+     "batch": "B2",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/auto-grant/update/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "sweepMinutes": 60
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/auto-grant/update/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enabled": true,
+        "sweepMinutes": 2880
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/auto-grant/update/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enabled": true,
+        "validitySeconds": 3600
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/auto-grant/update/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "enabled": true,
+        "validitySeconds": 94608000
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/auto-grant/update/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "autoGrant": {
+         "enabled": true,
+         "sweepMinutes": 60,
+         "validitySeconds": 31536000,
+         "lastSweep": {
+          "ranAt": "$now+1h",
+          "granted": -1,
+          "revoked": 0,
+          "errors": 0
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-VP-008",
+   "title": "vtc/vetting/revocations/list 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vtc/vetting/revocations/list 0.1 (task-force repository origin/main bd0c05013, specification status draft): 4 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vtc/vetting/revocations/list/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 3, 4."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/vetting/revocations/list/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vtc/vetting/revocations/list",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/revocations/list/0.1",
+    "pinnedDigest": "sha256:7eb20422292b878bae676d693d527f813c0882d3fd822238b3635d61fc0d2b89",
+    "tfRef": {
+     "repoPath": "specs/vtc/vetting/revocations/list/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:8822dc8ba7e862c83993fbf85aa8804ab65a8a5028c6f8df4c698ecf31609dee",
+    "schemaHash": "sha256:9e9cc9f42f673a6eaea100bf162cf69f24be1e59c1ae7836f09850748475173b",
+    "promotion": {
+     "batch": "B2",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/revocations/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "reviewState": "reviewed"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/revocations/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "limit": 101
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/revocations/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "items": [
+         {
+          "issuer": "did:example:vetter",
+          "statementId": "urn:uuid:5e4d3c2b-1a09-4f8e-9d7c-6b5a4f3e2d1c",
+          "statementDigestMultibase": "zQmYtUc4iTCbbfVSDNKvtQqrfyezPPnFvE33wFmutw9PBBk",
+          "reason": "changedMyMind",
+          "recordedAt": "$now+1h",
+          "reviewState": "needsReview",
+          "affectedJoinRequests": [
+           "0f8e7d6c-5b4a-4938-8271-605f4e3d2c1b"
+          ],
+          "affectedMembers": [
+           "did:example:member"
+          ]
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/revocations/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "items": [
+         {
+          "issuer": "did:example:vetter",
+          "statementId": "urn:uuid:5e4d3c2b-1a09-4f8e-9d7c-6b5a4f3e2d1c",
+          "statementDigestMultibase": "zQmYtUc4iTCbbfVSDNKvtQqrfyezPPnFvE33wFmutw9PBBk",
+          "reason": "newInformation",
+          "recordedAt": "$now+1h",
+          "reviewState": "needsReview",
+          "affectedJoinRequests": [
+           "0f8e7d6c-5b4a-4938-8271-605f4e3d2c1b"
+          ]
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-VP-009",
+   "title": "vtc/vetting/revoke-statement 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vtc/vetting/revoke-statement 0.1 (task-force repository origin/main bd0c05013, specification status draft): 7 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vtc/vetting/revoke-statement/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "specs/vtc/vetting/revoke-statement/0.1/spec.md front matter errorCodes: vtc/vetting/revoke-statement:notMember (the caller's standing): a refusal for it is accepted beside malformedRequest and permissionDenied, because SPEC.md 7.2 items 2 and 10 do not order the payload check against the authorisation check; an object lookup or state code is not accepted",
+    "Destructive task: only payloads that fail the schema are sent (nothing is sent that could be executed)."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/vetting/revoke-statement/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vtc/vetting/revoke-statement",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/revoke-statement/0.1",
+    "pinnedDigest": "sha256:6bc14c81579192317bda21986567bc9f9931bf0ad9760fee241b8ef068bdbc07",
+    "tfRef": {
+     "repoPath": "specs/vtc/vetting/revoke-statement/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:74f3735237fb29a4ab365c228932f5fc47f7c3b4c5bdfaaa6d252b0031cf3e11",
+    "schemaHash": "sha256:5f36c2bdb93a411a4161e3337e30a2b6012a77745a882381af507f21ea87b763",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/revoke-statement/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "statementId": "urn:uuid:7e5d3c1b-9f8a-4b6c-a2d1-e0f9a8b7c601"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/revoke-statement:notMember"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/revoke-statement/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "statementId": "urn:uuid:7e5d3c1b-9f8a-4b6c-a2d1-e0f9a8b7c601",
+        "statementDigestMultibase": "zQmbbYmkMsiznb5v6ZKZyjtmcpxGf6Ka6QhAX9A6hALcoM8",
+        "reason": "new-information"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/revoke-statement:notMember"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/revoke-statement/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "statementId": "urn:uuid:7e5d3c1b-9f8a-4b6c-a2d1-e0f9a8b7c601",
+        "statementDigestMultibase": "015abd7f5cc57a2dd94b7590f04ad8084273905ee33ec5cebeae62276a97f862"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/revoke-statement:notMember"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/revoke-statement/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "statementId": "urn:uuid:7e5d3c1b-9f8a-4b6c-a2d1-e0f9a8b7c601",
+        "statementDigestMultibase": "zQmbbYmkMsiznb5v6ZKZyjtmcpxGf6Ka6QhAX9A6hALcoM8",
+        "statement": {
+         "type": [
+          "VerifiableCredential",
+          "DTGCredential",
+          "StatementCredential"
+         ],
+         "credentialSubject": {
+          "predicate": "https://registry.trustoverip.org/dtg/vsc/vetted/1"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/revoke-statement:notMember"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/revoke-statement/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "statementId": "urn:uuid:7e5d3c1b-9f8a-4b6c-a2d1-e0f9a8b7c601",
+        "statementDigestMultibase": "zQmbbYmkMsiznb5v6ZKZyjtmcpxGf6Ka6QhAX9A6hALcoM8",
+        "reason": "other",
+        "details": "I think the applicant used someone else's passport."
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/revoke-statement:notMember"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x6)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/revoke-statement/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "statementId": "statement-42",
+        "statementDigestMultibase": "zQmbbYmkMsiznb5v6ZKZyjtmcpxGf6Ka6QhAX9A6hALcoM8"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/revoke-statement:notMember"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x7)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/revoke-statement/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "statementId": "urn:uuid:7e5d3c1b-9f8a-4b6c-a2d1-e0f9a8b7c601",
+        "statementDigestMultibase": "zQmbbYmkMsiznb5v6ZKZyjtmcpxGf6Ka6QhAX9A6hALcoM8",
+        "ext": {
+         "mine": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/revoke-statement:notMember"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-VP-010",
+   "title": "vtc/vetting/vetters/grant 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vtc/vetting/vetters/grant 0.1 (task-force repository origin/main bd0c05013, specification status draft): 6 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vtc/vetting/vetters/grant/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "specs/vtc/vetting/vetters/grant/0.1/spec.md front matter errorCodes: vtc/vetting/vetters/grant:notMember (the caller's standing): a refusal for it is accepted beside malformedRequest and permissionDenied, because SPEC.md 7.2 items 2 and 10 do not order the payload check against the authorisation check; an object lookup or state code is not accepted"
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/vetting/vetters/grant/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vtc/vetting/vetters/grant",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/grant/0.1",
+    "pinnedDigest": "sha256:e4926135aa3ec50db8ce96412f4f8afc3cd6e9182067c891dbb0ee59ca4f29b4",
+    "tfRef": {
+     "repoPath": "specs/vtc/vetting/vetters/grant/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:4683acebeb0739d71c49de7102e2d9452a1c5ca6e85864b1155d82cbfba154d5",
+    "schemaHash": "sha256:dd32a58ac119da6f3daaf4273891d1d510747b5487b364672e8996d4d065124a",
+    "promotion": {
+     "batch": "B2",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/grant/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/grant:notMember"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/grant/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "memberDid": "carol"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/grant:notMember"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/grant/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "memberDid": "did:webvh:QmCarolScid1:kernel-vtc.example:carol",
+        "validitySeconds": 3600
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/grant:notMember"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/grant/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "memberDid": "did:webvh:QmCarolScid1:kernel-vtc.example:carol",
+        "validitySeconds": 63072001
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/grant:notMember"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/grant/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "memberDid": "did:webvh:QmCarolScid1:kernel-vtc.example:carol",
+        "validitySeconds": "P365D"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/grant:notMember"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x7)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/grant/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "memberDid": "did:webvh:QmCarolScid1:kernel-vtc.example:carol",
+        "ext": {
+         "mine": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/grant:notMember"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-VP-011",
+   "title": "vtc/vetting/vetters/grants/list 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vtc/vetting/vetters/grants/list 0.1 (task-force repository origin/main bd0c05013, specification status draft): 5 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vtc/vetting/vetters/grants/list/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 3, 4, 5."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/vetting/vetters/grants/list/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vtc/vetting/vetters/grants/list",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/grants/list/0.1",
+    "pinnedDigest": "sha256:c2e81d4231e2d962af7ba78938042fa04bad6783b6bdd00fa0ba7c07fe62950b",
+    "tfRef": {
+     "repoPath": "specs/vtc/vetting/vetters/grants/list/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:72032ceb01c96b545ce0b10732c6f6dae2870563cbcc159856372e0702585b9a",
+    "schemaHash": "sha256:5254b47aaef9d6cbf79410b36ef8d93f1d71ef287711da81bbd190c234993cd7",
+    "promotion": {
+     "batch": "B2",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/grants/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "limit": 1000
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/grants/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "memberDid": "did:example:vetter"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/grants/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "items": [
+         {
+          "endorsementId": "urn:uuid:3c1f0e52-1a2b-4c3d-8e9f-0a1b2c3d4e5f",
+          "memberDid": "did:example:vetter",
+          "credentialId": "urn:uuid:7a8b9c0d-1e2f-4a3b-8c4d-5e6f7a8b9c0d",
+          "validFrom": "$now+1h",
+          "validUntil": "$now+1h",
+          "revoked": false,
+          "live": true,
+          "origin": "imported",
+          "profile": {
+           "listed": true,
+           "displayName": "Sam",
+           "country": "DE",
+           "languages": [
+            "de",
+            "en"
+           ],
+           "methods": [
+            "inPerson",
+            "video"
+           ],
+           "eventCount": 1,
+           "updatedAt": "$now+1h"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/grants/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "items": [
+         {
+          "endorsementId": "urn:uuid:3c1f0e52-1a2b-4c3d-8e9f-0a1b2c3d4e5f",
+          "memberDid": "did:example:vetter",
+          "credentialId": "urn:uuid:7a8b9c0d-1e2f-4a3b-8c4d-5e6f7a8b9c0d",
+          "validFrom": "$now+1h",
+          "validUntil": "$now+1h",
+          "revoked": false,
+          "origin": "auto",
+          "profile": {
+           "listed": true,
+           "displayName": "Sam",
+           "country": "DE",
+           "languages": [
+            "de",
+            "en"
+           ],
+           "methods": [
+            "inPerson",
+            "video"
+           ],
+           "eventCount": 1,
+           "updatedAt": "$now+1h"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/grants/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "items": [
+         {
+          "endorsementId": "urn:uuid:3c1f0e52-1a2b-4c3d-8e9f-0a1b2c3d4e5f",
+          "memberDid": "did:example:vetter",
+          "credentialId": "urn:uuid:7a8b9c0d-1e2f-4a3b-8c4d-5e6f7a8b9c0d",
+          "validFrom": "$now+1h",
+          "validUntil": "$now+1h",
+          "revoked": false,
+          "live": true,
+          "origin": "auto",
+          "profile": {
+           "listed": true,
+           "displayName": "Sam",
+           "country": "DE",
+           "languages": [
+            "de",
+            "en"
+           ],
+           "methods": [
+            "telepathy"
+           ],
+           "eventCount": 1,
+           "updatedAt": "$now+1h"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-VP-012",
+   "title": "vtc/vetting/vetters/list 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vtc/vetting/vetters/list 0.1 (task-force repository origin/main bd0c05013, specification status draft): 12 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vtc/vetting/vetters/list/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: step 9."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vtc/vetting/vetters/list",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+    "pinnedDigest": "sha256:2e1629b7c0b57fdf435251922ecbb00b160f648475fa79364e747b2f0b179f22",
+    "tfRef": {
+     "repoPath": "specs/vtc/vetting/vetters/list/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:662a4a715dea5c423933d1c719da1e0673b9c838a94ff7c650014832cf06d01c",
+    "schemaHash": "sha256:e9e58032e460e724e3ce46ffe314b837f78e07e9381f02d334386b5187178c47",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "vetterDid": "did:webvh:QmCarolScid1:kernel-vtc.example:carol"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "limit": 0
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "limit": 101
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "cursor": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "language": "German"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x6)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "country": "at"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x7)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "method": "phone"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x8)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "eventFrom": "next week"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x9)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "eventTo": "$now+1h"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x10)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "eventName": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x11)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": false
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x12)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "ext": {
+         "mine": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-VP-013",
+   "title": "vtc/vetting/vetters/profile 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vtc/vetting/vetters/profile 0.1 (task-force repository origin/main bd0c05013, specification status draft): 18 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vtc/vetting/vetters/profile/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "specs/vtc/vetting/vetters/profile/0.1/spec.md front matter errorCodes: vtc/vetting/vetters/profile:notEligible (the caller's standing): a refusal for it is accepted beside malformedRequest and permissionDenied, because SPEC.md 7.2 items 2 and 10 do not order the payload check against the authorisation check; an object lookup or state code is not accepted",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: step 14."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vtc/vetting/vetters/profile",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+    "pinnedDigest": "sha256:059552b5ca570abd541c57bcb6385bca9879a9647df3b3d20c85abe42b83c832",
+    "tfRef": {
+     "repoPath": "specs/vtc/vetting/vetters/profile/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:8dac44f92b8f81d98ed80effab511cf12bfe29ea7f855f54812a85010a789ebe",
+    "schemaHash": "sha256:e8f4f9d2d5b32cb02f966deb89f745351175447a626ef0a350fa725fe68f5828",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "languages": [
+         "en"
+        ],
+        "methods": [
+         "video"
+        ],
+        "acceptsDocumentation": [],
+        "events": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": false,
+        "languages": [],
+        "acceptsDocumentation": [],
+        "events": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "languages": [
+         "en"
+        ],
+        "methods": [],
+        "acceptsDocumentation": [],
+        "events": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "languages": [
+         "en"
+        ],
+        "methods": [
+         "in-person"
+        ],
+        "acceptsDocumentation": [],
+        "events": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "languages": [
+         "en"
+        ],
+        "methods": [
+         "video",
+         "video"
+        ],
+        "acceptsDocumentation": [],
+        "events": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x6)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "displayName": "",
+        "languages": [
+         "en"
+        ],
+        "methods": [
+         "video"
+        ],
+        "acceptsDocumentation": [],
+        "events": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x7)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "languages": [
+         "English"
+        ],
+        "methods": [
+         "video"
+        ],
+        "acceptsDocumentation": [],
+        "events": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x8)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "languages": [
+         "aa",
+         "ab",
+         "ae",
+         "af",
+         "ak",
+         "am",
+         "an",
+         "ar",
+         "as",
+         "av",
+         "ay",
+         "az",
+         "ba",
+         "be",
+         "bg",
+         "bh",
+         "bi"
+        ],
+        "methods": [
+         "video"
+        ],
+        "acceptsDocumentation": [],
+        "events": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x9)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "languages": [
+         "de"
+        ],
+        "location": {
+         "country": "de"
+        },
+        "methods": [
+         "inPerson"
+        ],
+        "acceptsDocumentation": [],
+        "events": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x10)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "languages": [
+         "de"
+        ],
+        "location": {
+         "city": "Vienna"
+        },
+        "methods": [
+         "inPerson"
+        ],
+        "acceptsDocumentation": [],
+        "events": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x11)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "languages": [
+         "de"
+        ],
+        "location": {
+         "country": "AT",
+         "street": "Stephansplatz 1"
+        },
+        "methods": [
+         "inPerson"
+        ],
+        "acceptsDocumentation": [],
+        "events": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x12)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "languages": [
+         "en"
+        ],
+        "methods": [
+         "inPerson"
+        ],
+        "acceptsDocumentation": [
+         "national-id"
+        ],
+        "events": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x13)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "languages": [
+         "en"
+        ],
+        "methods": [
+         "video"
+        ],
+        "acceptsDocumentation": [],
+        "contactHint": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "events": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x14)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "languages": [
+         "en"
+        ],
+        "methods": [
+         "inPerson"
+        ],
+        "acceptsDocumentation": [],
+        "events": [
+         {
+          "name": "Linux Plumbers Conference 2026",
+          "startDate": "$now+1h",
+          "endDate": "2026-11-13"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x15)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "languages": [
+         "en"
+        ],
+        "methods": [
+         "inPerson"
+        ],
+        "acceptsDocumentation": [],
+        "events": [
+         {
+          "name": "Linux Plumbers Conference 2026",
+          "startDate": "2026-11-11"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x16)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "languages": [
+         "en"
+        ],
+        "methods": [
+         "inPerson"
+        ],
+        "acceptsDocumentation": [],
+        "events": [
+         {
+          "name": "Linux Plumbers Conference 2026",
+          "startDate": "2026-11-11",
+          "endDate": "2026-11-13",
+          "url": "http://lpc.events/"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x17)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "vetterDid": "did:webvh:QmCarolScid1:kernel-vtc.example:carol",
+        "languages": [
+         "en"
+        ],
+        "methods": [
+         "video"
+        ],
+        "acceptsDocumentation": [],
+        "events": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x18)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "listed": true,
+        "languages": [
+         "en"
+        ],
+        "methods": [
+         "video"
+        ],
+        "acceptsDocumentation": [],
+        "events": [],
+        "ext": {
+         "mine": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "vtc/vetting/vetters/profile:notEligible"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-VP-014",
+   "title": "vtc/vetting/vetters/resend 0.2: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vtc/vetting/vetters/resend 0.2 (task-force repository origin/main bd0c05013, specification status draft): 6 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vtc/vetting/vetters/resend/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/vetting/vetters/resend/0.2"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vtc/vetting/vetters/resend",
+    "version": "0.2",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/resend/0.2",
+    "pinnedDigest": "sha256:83e670cc0cf6abc01356da9032b8408fe3ea189698e8f8f2e1f5cda0d143a5a3",
+    "tfRef": {
+     "repoPath": "specs/vtc/vetting/vetters/resend/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family VP (Vetting, process attestation and voting): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:1423aac664516c31c9849811373da00342c8689543ef640421da35046b3c5554",
+    "schemaHash": "sha256:99afe7b39a7f2ed61a6baaf4cffac1a43f0f89d874b96aa0743a93e6af09962c",
+    "promotion": {
+     "batch": "B2",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/resend/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "memberDid": 12345
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/resend/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "memberDid": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/resend/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "credentialId": "urn:uuid:5c7e9a1b-3d5f-4b7c-9e1a-2c4e6a8b0d01"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/resend/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "deliverTo": "did:webvh:QmMalloryScid1:mallory.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/resend/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "validitySeconds": 31536000
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x6)",
+       "type": "https://trusttasks.org/spec/vtc/vetting/vetters/resend/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "ext": {
+         "mine": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  }
+ ]
+}

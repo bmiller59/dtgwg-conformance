@@ -1,0 +1,2165 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "TC",
+  "family": "dtg-task-consent",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "TC-001",
+      "title": "an approver's decision under assertionMethod, echoing the challenge and digest of the pending request, completes the quorum: the response of the decision type carries status granted and the echoed digest, and the effect exists",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.2/spec.md (consumer 1 to 3, 10; Response)",
+        "docs/04-suite-design.md section 11.4 (the pending request is a ceremony held for approvals)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.2",
+        "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+        "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.2",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              }
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/task-consent/decision/0.2#response",
+            "state": {
+              "effects": 1
+            },
+            "pointer": {
+              "/payload/status": "granted",
+              "/payload/payloadDigest": "$cap(consentDigest)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-002",
+      "title": "a decision whose proof purpose is authentication is refused and records nothing",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.2/spec.md (producer 1: proofPurpose MUST be assertionMethod; consumer 1: refuse any other purpose)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.2",
+        "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+        "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.2",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "mutants": [
+        "consentAnyProofPurpose"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              }
+            },
+            "sign": {
+              "purpose": "authentication"
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-003",
+      "title": "a decision whose payloadDigest names no pending request is refused with task-consent/decision:noPending",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.2/spec.md (consumer 2; errorCodes noPending)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.2",
+        "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+        "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.2",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "mutants": [
+        "consentNoDigestCheck"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                "decision": "approve"
+              }
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "task-consent/decision:noPending",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-004",
+      "title": "a decision whose challenge is not the one issued for the pending request is refused with task-consent/decision:challengeMismatch",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.2/spec.md (consumer 3; errorCodes challengeMismatch)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.2",
+        "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+        "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.2",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "mutants": [
+        "consentNoChallengeCheck"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "0123456789abcdef0123456789abcdef",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              }
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "task-consent/decision:challengeMismatch",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-005",
+      "title": "a decision whose actionId names another action than the pending request is refused with task-consent/decision:actionMismatch",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.2/spec.md (consumer 4; errorCodes actionMismatch)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.2",
+        "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+        "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.2",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "mutants": [
+        "consentNoActionCheck"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve",
+                "actionId": "act_no-such-action"
+              }
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "task-consent/decision:actionMismatch",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-006",
+      "title": "a decision by a signer that is not an approver is refused with task-consent/decision:notAnApprover and records nothing; the approver's own decision still completes the quorum",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.2/spec.md (consumer 5; errorCodes notAnApprover)",
+        "specs/task-consent/decision/0.2/spec.md (Authorization: membership of the approver set held by the approver's own DID)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.2",
+        "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+        "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.2",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "mutants": [
+        "consentNonApproverWrongCode",
+        "consentNonApproverApproves"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EO",
+            "params": {
+              "issuer": "$EO",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              },
+              "id": "$id(decQ)"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "task-consent/decision:notAnApprover",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              }
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/task-consent/decision/0.2#response",
+            "state": {
+              "effects": 1
+            },
+            "pointer": {
+              "/payload/status": "granted",
+              "/payload/payloadDigest": "$cap(consentDigest)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-007",
+      "title": "evidence that does not verify is refused with task-consent/decision:evidenceInvalid; the pending request is not decided",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.2/spec.md (consumer 7; errorCodes evidenceInvalid)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.2",
+        "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+        "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.2",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "mutants": [
+        "consentEvidenceIgnored"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve",
+                "evidence": {
+                  "kind": "approverSigned",
+                  "statement": {
+                    "id": "$id(stmt)"
+                  }
+                }
+              }
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "task-consent/decision:evidenceInvalid",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-008",
+      "title": "a decision payload that the schema does not allow is malformedRequest: a decision outside the enum, an unknown member, evidence outside the tagged union",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.2/spec.md payload.invalid-examples.json (decision outside the closed enum; unknown property; evidence kind outside the union)",
+        "SPEC.md:1011 (7.2 item 1: the payload is validated against the task's schema)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.2",
+        "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+        "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.2",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "maybe"
+              },
+              "id": "$id(dec1)"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve",
+                "approverSet": "operators"
+              },
+              "id": "$id(dec2)"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve",
+                "evidence": {
+                  "kind": "didSigned",
+                  "statement": {}
+                }
+              },
+              "id": "$id(dec3)"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-009",
+      "title": "a denial closes the pending request for every approver: it is answered with status denied, and a later approval by the other approver is refused and runs no effect",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.2/spec.md (consumer 9: on deny, close the pending request for every approver; Response status denied)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.2",
+        "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+        "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.2",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "mutants": [
+        "consentDenyKeepsPending"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "deny"
+              }
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/task-consent/decision/0.2#response",
+            "pointer": {
+              "/payload/status": "denied"
+            },
+            "state": {
+              "effects": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EN",
+            "params": {
+              "issuer": "$EN",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              },
+              "id": "$id(decA)"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-010",
+      "title": "a decision without a proof is refused with proofRequired",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.2/spec.md (proofRequirement REQUIRED: the proof is the authorization)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.2",
+        "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+        "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.2",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "mutants": [
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-011",
+      "title": "an approval repeated by the same approver after the commit does not run a second effect and is answered like the first",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.2/spec.md (consumer 10: record the approval idempotently per approver)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.2",
+        "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+        "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+      },
+      "clarify": "The specification asks for idempotent recording but also says a request that was already decided is noPending; which answer a repeat after the commit gets is not stated. The vector asserts the repeated answer and no second effect. Not gating.",
+      "clarifyClass": "spec-inconsistent",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.2",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "mutants": [
+        "consentReapproveSecondEffect"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              }
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/task-consent/decision/0.2#response",
+            "state": {
+              "effects": 1
+            },
+            "pointer": {
+              "/payload/status": "granted",
+              "/payload/payloadDigest": "$cap(consentDigest)"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              },
+              "id": "$id(dec2)"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/task-consent/decision/0.2#response",
+            "state": {
+              "effects": 1
+            },
+            "pointer": {
+              "/payload/status": "granted",
+              "/payload/payloadDigest": "$cap(consentDigest)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-012",
+      "title": "a request from an enrolled executor is answered with a response of the request type carrying status prompted, and one prompt is raised",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/request/0.1/spec.md (consumer 7: return a response with status prompted or refused)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "clarify": "Vector over-reads: the text is clear (consumer 6, spec.md:154: refuse with notEligible when the device is not a member of approverSet; consumer 7, spec.md:155: #response with status prompted or refused), but membership of the named approverSet is set by the policy (spec.md:197), which the harness does not declare; the vector asserts prompted, which presumes membership. The suite can fix this by declaring membership (governance declaration, docs/04 section 19, consent.approverSet) and gating on it, or by asserting only a #response with status prompted or refused. Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/request/0.1",
+        "optional:trigger.consentEnrol"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "enrolExecutor",
+            "args": {
+              "vid": "$A"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.request"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/task-consent/request/0.1#response",
+            "pointer": {
+              "/payload/status": "prompted"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-013",
+      "title": "a request signed by an executor this device is not enrolled with is refused with task-consent/request:untrustedIssuer, and no prompt is raised",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/request/0.1/spec.md (consumer 1: untrustedIssuer; the device MUST NOT prompt)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/request/0.1",
+        "optional:trigger.consentEnrol"
+      ],
+      "mutants": [
+        "consentRequestTrustsAnyone"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "enrolExecutor",
+            "args": {
+              "vid": "$A"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.request",
+            "params": {
+              "issuer": "$Q"
+            },
+            "from": "Q"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "task-consent/request:untrustedIssuer",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "handled": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-014",
+      "title": "a request without a proof is refused with proofRequired, and no prompt is raised",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/request/0.1/spec.md (proofRequirement REQUIRED; consumer 1: an unverifiable request does not prompt)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/request/0.1",
+        "optional:trigger.consentEnrol"
+      ],
+      "mutants": [
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "enrolExecutor",
+            "args": {
+              "vid": "$A"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.request",
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "state": {
+              "handled": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-015",
+      "title": "a request whose expiresAt has passed raises no prompt",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/request/0.1/spec.md (consumer 6: refuse to prompt when expiresAt has passed)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "clarify": "The specification says the device refuses to prompt and names `expired`, and also allows a response with status refused; which of the two is the refusal is not stated. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/request/0.1",
+        "optional:trigger.consentEnrol"
+      ],
+      "mutants": [
+        "consentRequestPromptsExpired"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "enrolExecutor",
+            "args": {
+              "vid": "$A"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.request",
+            "params": {
+              "payload": {
+                "challenge": "9c1f4b7a2e6d80f35a4c9b1e7d2f6083",
+                "taskType": "https://trusttasks.org/spec/conformance/widget/0.1",
+                "payloadDigest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                "sideEffects": "mutating",
+                "exposure": {
+                  "discloses": "none",
+                  "actsAsSubject": false
+                },
+                "effects": [
+                  {
+                    "kind": "documentChange",
+                    "summary": "Changes one record."
+                  }
+                ],
+                "requester": "$Q",
+                "approverSet": "operators",
+                "minApprovals": 1,
+                "excludeRequester": false,
+                "expiresAt": "$nowAt(-10s)"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "expired",
+            "noSideEffect": true,
+            "state": {
+              "handled": 0
+            }
+          }
+        }
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "TC-016",
+      "title": "a request naming this device itself as the requester while excludeRequester is set is refused with task-consent/request:notEligible, and no prompt is raised",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/request/0.1/spec.md (consumer 6: notEligible when the device is the requester and excludeRequester is set; errorCodes notEligible)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/request/0.1",
+        "optional:trigger.consentEnrol"
+      ],
+      "mutants": [
+        "consentRequestNoSelfExclusion"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "enrolExecutor",
+            "args": {
+              "vid": "$A"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.request",
+            "params": {
+              "payload": {
+                "challenge": "9c1f4b7a2e6d80f35a4c9b1e7d2f6083",
+                "taskType": "https://trusttasks.org/spec/conformance/widget/0.1",
+                "payloadDigest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                "sideEffects": "mutating",
+                "exposure": {
+                  "discloses": "none",
+                  "actsAsSubject": false
+                },
+                "effects": [
+                  {
+                    "kind": "documentChange",
+                    "summary": "Changes one record."
+                  }
+                ],
+                "requester": "$iut",
+                "approverSet": "operators",
+                "minApprovals": 1,
+                "excludeRequester": true,
+                "expiresAt": "$nowAt(+600s)"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "task-consent/request:notEligible",
+            "noSideEffect": true,
+            "state": {
+              "handled": 0
+            }
+          }
+        }
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "TC-017",
+      "title": "a request payload that the schema does not allow is malformedRequest, and no prompt is raised: effects missing, a challenge under 128 bits, an unknown member, minApprovals below 1",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/request/0.1/spec.md payload.invalid-examples.json (missing effects; challenge too short; unknown property; minApprovals below 1)",
+        "SPEC.md:1011 (7.2 item 1)"
+      ],
+      "source": {
+        "slug": "task-consent/request",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/request/0.1",
+        "pinnedDigest": "sha256:7043c570a396c48ad8d0b5ea5e343562c0d85ac43468e2780cc9d1bb71a05e92",
+        "tfRef": {
+          "repoPath": "specs/task-consent/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:3056a1c6b832375f185d578484efea5669791b479ad5e0b607bcebfecdc0c648",
+        "schemaHash": "sha256:f2377cf6097fe1e9fef3edb2da39434e52640a5ff4a500da5a9cbc61cfef20f0"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/request/0.1",
+        "optional:trigger.consentEnrol"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "enrolExecutor",
+            "args": {
+              "vid": "$A"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.request",
+            "params": {
+              "id": "$id(c1)",
+              "payload": {
+                "challenge": "9c1f4b7a2e6d80f35a4c9b1e7d2f6083",
+                "taskType": "https://trusttasks.org/spec/conformance/widget/0.1",
+                "payloadDigest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                "sideEffects": "mutating",
+                "exposure": {
+                  "discloses": "none",
+                  "actsAsSubject": false
+                },
+                "requester": "$Q",
+                "approverSet": "operators",
+                "minApprovals": 1,
+                "excludeRequester": false,
+                "expiresAt": "$nowAt(+600s)"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "handled": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.request",
+            "params": {
+              "id": "$id(c2)",
+              "payload": {
+                "challenge": "abc",
+                "taskType": "https://trusttasks.org/spec/conformance/widget/0.1",
+                "payloadDigest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                "sideEffects": "mutating",
+                "exposure": {
+                  "discloses": "none",
+                  "actsAsSubject": false
+                },
+                "effects": [
+                  {
+                    "kind": "documentChange",
+                    "summary": "Changes one record."
+                  }
+                ],
+                "requester": "$Q",
+                "approverSet": "operators",
+                "minApprovals": 1,
+                "excludeRequester": false,
+                "expiresAt": "$nowAt(+600s)"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "handled": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.request",
+            "params": {
+              "id": "$id(c3)",
+              "payload": {
+                "challenge": "9c1f4b7a2e6d80f35a4c9b1e7d2f6083",
+                "taskType": "https://trusttasks.org/spec/conformance/widget/0.1",
+                "payloadDigest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                "sideEffects": "mutating",
+                "exposure": {
+                  "discloses": "none",
+                  "actsAsSubject": false
+                },
+                "effects": [
+                  {
+                    "kind": "documentChange",
+                    "summary": "Changes one record."
+                  }
+                ],
+                "requester": "$Q",
+                "approverSet": "operators",
+                "minApprovals": 1,
+                "excludeRequester": false,
+                "expiresAt": "$nowAt(+600s)",
+                "origin2": "x"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "handled": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.request",
+            "params": {
+              "id": "$id(c4)",
+              "payload": {
+                "challenge": "9c1f4b7a2e6d80f35a4c9b1e7d2f6083",
+                "taskType": "https://trusttasks.org/spec/conformance/widget/0.1",
+                "payloadDigest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                "sideEffects": "mutating",
+                "exposure": {
+                  "discloses": "none",
+                  "actsAsSubject": false
+                },
+                "effects": [
+                  {
+                    "kind": "documentChange",
+                    "summary": "Changes one record."
+                  }
+                ],
+                "requester": "$Q",
+                "approverSet": "operators",
+                "minApprovals": 0,
+                "excludeRequester": false,
+                "expiresAt": "$nowAt(+600s)"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "handled": 0
+            }
+          }
+        }
+      ],
+      "synthetic": true
+    },
+    {
+      "id": "TC-018",
+      "title": "a decision that leaves the quorum short is answered with a response of the decision type (status pending) or with a hold (trust-task-next-step), and a repeat by the same approver is not another approver's approval: the quorum is completed only by the other approver's decision",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.2/spec.md (consumer 10: record the approval idempotently per approver, and at the threshold of distinct approvers...; Response status pending; framework 8.6, a held task is answered with trust-task-next-step)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.2",
+        "pinnedDigest": "sha256:2be68d95f1585e8270f6dbcd9d246db6581c8072714a7f215662c33cecbc065b",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:f4affb8aeaa81ecab2cb5096ebd1c9ece9e23b8aab6da2b585bb243baecd3fe6",
+        "schemaHash": "sha256:fe905ea25d32bbc87e3407b33031113fe43f1ec12fe6134eb46d2f290e6d94df"
+      },
+      "clarify": "A decision that leaves the threshold unmet is answered with the specification's `pending` status or, equally, with a trust-task-next-step hold (the framework's own vocabulary for a held task; the hold rule of 8.6 is checked); the two differ in form only. Which one an implementation uses is not asserted. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.2",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "mutants": [
+        "consentDoubleApproveCounts"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "E1",
+            "params": {
+              "issuer": "$E1",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              },
+              "id": "$id(decA1)"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/task-consent/decision/0.2#response",
+            "orHold": true,
+            "pointer": {
+              "/payload/status": "pending"
+            },
+            "state": {
+              "effects": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "E1",
+            "params": {
+              "issuer": "$E1",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              },
+              "id": "$id(decA2)"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/task-consent/decision/0.2#response",
+            "orHold": true,
+            "pointer": {
+              "/payload/status": "pending"
+            },
+            "state": {
+              "effects": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              }
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/task-consent/decision/0.2#response",
+            "state": {
+              "effects": 1
+            },
+            "pointer": {
+              "/payload/status": "granted",
+              "/payload/payloadDigest": "$cap(consentDigest)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-019",
+      "title": "a granted notice for a payloadDigest the requester holds no pending task for is dropped silently, never answered with an error",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/granted/0.1/spec.md (consumer 3: Handle redelivery and spurious notices idempotently: a notice for an unknown or already-resolved `payloadDigest` is dropped, not an error; There is no `#response` form)"
+      ],
+      "source": {
+        "slug": "task-consent/granted",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/granted/0.1",
+        "pinnedDigest": "sha256:671e775d4f9cd729aad865a8c40288bef9d3d782ff81e55a22064979bdf411af",
+        "tfRef": {
+          "repoPath": "specs/task-consent/granted/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6524ca74d8ff0d7baa824695d51c5400b65c15ed60a78f0c1b8ff9d4d68c80d3",
+        "schemaHash": "sha256:7a1a0d17b26d51934d8694319c21d8308cc8f73bf8db224e6b7cba62ae399097"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/granted/0.1"
+      ],
+      "mutants": [
+        "grantedUnknownIsError"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "consent.granted"
+          },
+          "expect": {
+            "disposition": "silence"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-020",
+      "title": "a granted notice the schema does not allow is refused or ignored and changes nothing: a status other than granted, a missing payloadDigest, a missing taskType, an unknown member",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/granted/0.1/spec.md payload.invalid-examples.json (wrong status, only granted exists; missing payloadDigest; missing taskType; unknown property)",
+        "specs/task-consent/granted/0.1/spec.md (Payload: status REQUIRED, always `granted`; payloadDigest REQUIRED; taskType REQUIRED)"
+      ],
+      "source": {
+        "slug": "task-consent/granted",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/granted/0.1",
+        "pinnedDigest": "sha256:671e775d4f9cd729aad865a8c40288bef9d3d782ff81e55a22064979bdf411af",
+        "tfRef": {
+          "repoPath": "specs/task-consent/granted/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:6524ca74d8ff0d7baa824695d51c5400b65c15ed60a78f0c1b8ff9d4d68c80d3",
+        "schemaHash": "sha256:7a1a0d17b26d51934d8694319c21d8308cc8f73bf8db224e6b7cba62ae399097"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/granted/0.1"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload",
+        "grantedAnyStatus"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "consent.granted",
+            "params": {
+              "id": "$id(g1)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/status",
+                "value": "denied"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "consent.granted",
+            "params": {
+              "id": "$id(g2)"
+            },
+            "mutate": [
+              {
+                "op": "remove",
+                "path": "/payload/payloadDigest"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "consent.granted",
+            "params": {
+              "id": "$id(g3)"
+            },
+            "mutate": [
+              {
+                "op": "remove",
+                "path": "/payload/taskType"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "consent.granted",
+            "params": {
+              "id": "$id(g4)"
+            },
+            "mutate": [
+              {
+                "op": "set",
+                "path": "/payload/extra",
+                "value": true
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-021",
+      "title": "a decision of version 0.1 under assertionMethod, echoing the challenge and digest of the pending request, completes the quorum: the response is of the 0.1 decision type with status granted",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.1/spec.md (producer 1: proofPurpose MUST be assertionMethod; consumer: verify the proof and take the approver's identity from it; at the threshold authorizes the pending task)",
+        "docs/04-suite-design.md section 11.4 (the pending request is a ceremony held for approvals)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.1",
+        "pinnedDigest": "sha256:50fc64666b392e9ece2052be21098086d7d85f24bfd5e1d1e4ca91234998b593",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4392a8eff379559447b80a9d0911795e25059b88d4d91cceadba7385a9553b3d",
+        "schemaHash": "sha256:fd65b1a9c52837657fd57cf5a34eda23b9a90db003086902a7aeb3b4b8cdde17",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.1",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              },
+              "type": "https://trusttasks.org/spec/task-consent/decision/0.1"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/task-consent/decision/0.1#response",
+            "state": {
+              "effects": 1
+            },
+            "pointer": {
+              "/payload/status": "granted",
+              "/payload/payloadDigest": "$cap(consentDigest)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-022",
+      "title": "a version 0.1 decision whose challenge is not the one issued for the pending request is refused with task-consent/decision:challengeMismatch",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.1/spec.md (errorCodes: challengeMismatch, The `challenge` does not match the pending request for this digest)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.1",
+        "pinnedDigest": "sha256:50fc64666b392e9ece2052be21098086d7d85f24bfd5e1d1e4ca91234998b593",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4392a8eff379559447b80a9d0911795e25059b88d4d91cceadba7385a9553b3d",
+        "schemaHash": "sha256:fd65b1a9c52837657fd57cf5a34eda23b9a90db003086902a7aeb3b4b8cdde17",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.1",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "mutants": [
+        "consentNoChallengeCheck"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "0123456789abcdef0123456789abcdef",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              },
+              "type": "https://trusttasks.org/spec/task-consent/decision/0.1"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "task-consent/decision:challengeMismatch",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-023",
+      "title": "a version 0.1 decision without a proof is refused with proofRequired and records nothing",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.1/spec.md (proofRequirement REQUIRED: The decision IS the authorization, so the proof is the only thing that carries it)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.1",
+        "pinnedDigest": "sha256:50fc64666b392e9ece2052be21098086d7d85f24bfd5e1d1e4ca91234998b593",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4392a8eff379559447b80a9d0911795e25059b88d4d91cceadba7385a9553b3d",
+        "schemaHash": "sha256:fd65b1a9c52837657fd57cf5a34eda23b9a90db003086902a7aeb3b4b8cdde17",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.1",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "mutants": [
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve"
+              },
+              "type": "https://trusttasks.org/spec/task-consent/decision/0.1"
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-024",
+      "title": "a version 0.1 decision carrying evidence or actionId, the members added in 0.2, is malformedRequest: the 0.1 payload is closed",
+      "tier": 1,
+      "spec": [
+        "specs/task-consent/decision/0.1/spec.md payload.schema.json (additionalProperties false; members challenge, payloadDigest, decision, reason, ext)",
+        "specs/task-consent/decision/0.1/spec.md (the 0.1 payload has no evidence and no actionId; both are additions of 0.2)"
+      ],
+      "source": {
+        "slug": "task-consent/decision",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/task-consent/decision/0.1",
+        "pinnedDigest": "sha256:50fc64666b392e9ece2052be21098086d7d85f24bfd5e1d1e4ca91234998b593",
+        "tfRef": {
+          "repoPath": "specs/task-consent/decision/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4392a8eff379559447b80a9d0911795e25059b88d4d91cceadba7385a9553b3d",
+        "schemaHash": "sha256:fd65b1a9c52837657fd57cf5a34eda23b9a90db003086902a7aeb3b4b8cdde17",
+        "versionRole": "older"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/task-consent/decision/0.1",
+        "optional:ceremony",
+        "optional:trigger.consentBinding"
+      ],
+      "mutants": [
+        "dec01TakesNewMembers",
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "quorum": "pending"
+        },
+        {
+          "trigger": {
+            "action": "consentBinding",
+            "args": {
+              "thread": "$id(begin)"
+            }
+          },
+          "capture": {
+            "consentChallenge": "/challenge",
+            "consentDigest": "/payloadDigest"
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve",
+                "evidence": {
+                  "kind": "approverSigned",
+                  "statement": {
+                    "id": "$id(stmt)"
+                  }
+                }
+              },
+              "type": "https://trusttasks.org/spec/task-consent/decision/0.1",
+              "id": "$id(d1)"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "consent.decision",
+            "from": "EK",
+            "params": {
+              "issuer": "$EK",
+              "payload": {
+                "challenge": "$cap(consentChallenge)",
+                "payloadDigest": "$cap(consentDigest)",
+                "decision": "approve",
+                "actionId": "act_1"
+              },
+              "type": "https://trusttasks.org/spec/task-consent/decision/0.1",
+              "id": "$id(d2)"
+            },
+            "sign": {
+              "purpose": "assertionMethod"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

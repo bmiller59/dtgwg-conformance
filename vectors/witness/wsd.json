@@ -1,0 +1,583 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "WSD",
+  "family": "witness",
+  "clock": {
+    "start": "2026-11-15T12:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "WSD-001",
+      "title": "discovery without patterns lists exactly the types the witness declares, as bare Type URIs without duplicates",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md (draft) Conformance responder 2 (no patterns is the single pattern *)",
+        "specs/trust-task-discovery/0.4/spec.md (draft) Conformance responder 3 and 4 (bare Type URIs, no duplicates)",
+        "specs/trust-task-discovery/0.4/payload.schema.json (draft) (response schema)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(d1)",
+              "type": "https://trusttasks.org/spec/trust-task-discovery/0.4",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/trust-task-discovery/0.4#response",
+            "discovery": {
+              "matches": []
+            }
+          }
+        }
+      ],
+      "mutants": [
+        "discoveryNoDefaultStar",
+        "discoveryDuplicates",
+        "discoveryFragmentsListed"
+      ]
+    },
+    {
+      "id": "WSD-002",
+      "title": "an empty patterns array is the same as *",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md (draft) Conformance responder 2",
+        "specs/trust-task-discovery/0.4/payload.schema.json (draft) (patterns: omitted or empty means *)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(d1)",
+              "type": "https://trusttasks.org/spec/trust-task-discovery/0.4",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "patterns": []
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/trust-task-discovery/0.4#response",
+            "discovery": {
+              "matches": []
+            }
+          }
+        }
+      ],
+      "mutants": [
+        "discoveryNoDefaultStar"
+      ]
+    },
+    {
+      "id": "WSD-003",
+      "title": "the pattern witness/* lists the witness types",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/payload.schema.json (draft) (pattern grammar: <prefix>/* matches slugs starting with the prefix and the slash)",
+        "specs/trust-task-discovery/0.4/spec.md (draft) Conformance responder 2"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(d1)",
+              "type": "https://trusttasks.org/spec/trust-task-discovery/0.4",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "patterns": [
+                  "witness/*"
+                ]
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/trust-task-discovery/0.4#response",
+            "discovery": {
+              "matches": [
+                "witness/*"
+              ]
+            }
+          }
+        }
+      ],
+      "mutants": [
+        "discoveryIgnoresPatterns"
+      ]
+    },
+    {
+      "id": "WSD-004",
+      "title": "a pattern that matches nothing yields an empty list, not an error",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md (draft) Conformance responder 2 (the matching subset, possibly empty)",
+        "specs/trust-task-discovery/0.4/payload.schema.json (draft) (supportedTypes: an array)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(d1)",
+              "type": "https://trusttasks.org/spec/trust-task-discovery/0.4",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "patterns": [
+                  "no-such-family/*"
+                ]
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/trust-task-discovery/0.4#response",
+            "discovery": {
+              "matches": [
+                "no-such-family/*"
+              ]
+            }
+          }
+        }
+      ],
+      "mutants": [
+        "discoveryIgnoresPatterns",
+        "discoveryEmptyAsError"
+      ]
+    },
+    {
+      "id": "WSD-005",
+      "title": "more than 16 patterns are refused",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/payload.schema.json (draft) (patterns maxItems 16)",
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target) 8.3 (malformedRequest: the task-specific payload schema)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(d1)",
+              "type": "https://trusttasks.org/spec/trust-task-discovery/0.4",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "patterns": [
+                  "family0/*",
+                  "family1/*",
+                  "family2/*",
+                  "family3/*",
+                  "family4/*",
+                  "family5/*",
+                  "family6/*",
+                  "family7/*",
+                  "family8/*",
+                  "family9/*",
+                  "family10/*",
+                  "family11/*",
+                  "family12/*",
+                  "family13/*",
+                  "family14/*",
+                  "family15/*",
+                  "family16/*"
+                ]
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "errorReply": "should"
+          }
+        }
+      ],
+      "mutants": [
+        "discoveryNoPatternBound"
+      ]
+    },
+    {
+      "id": "WSD-006",
+      "title": "an unknown payload member is refused",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/payload.schema.json (draft) (additionalProperties false)",
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target) 8.3 (malformedRequest)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(d1)",
+              "type": "https://trusttasks.org/spec/trust-task-discovery/0.4",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "patterns": [
+                  "*"
+                ],
+                "unknownMember": true
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "errorReply": "should"
+          }
+        }
+      ],
+      "mutants": [
+        "discoveryOpenPayload"
+      ]
+    },
+    {
+      "id": "WSD-007",
+      "title": "a request that names no recipient is refused: the specification declares recipient REQUIRED",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md (draft) front matter parties (Responder: recipient REQUIRED)",
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target) 7.3 (parties) and 8.3 (malformedRequest)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(d1)",
+              "type": "https://trusttasks.org/spec/trust-task-discovery/0.4",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "errorReply": "should"
+          }
+        }
+      ],
+      "mutants": [
+        "recipientOptional"
+      ]
+    },
+    {
+      "id": "WSD-008",
+      "title": "a request whose recipient is not the witness is refused wrongRecipient (or identityMismatch)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target) 7.2 item 5 (a recipient that does not identify the consumer: wrongRecipient, 8.3) and item 6 (inconsistent with the transport-authenticated identity: identityMismatch)",
+        "bindings/didcomm-v1/0.2 spec.md section 3 (draft)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(d1)",
+              "type": "https://trusttasks.org/spec/trust-task-discovery/0.4",
+              "issuer": "$A",
+              "recipient": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "wrongRecipient",
+              "identityMismatch"
+            ],
+            "errorReply": "should"
+          }
+        }
+      ],
+      "mutants": [
+        "noRecipientCheck"
+      ]
+    },
+    {
+      "id": "WSD-010",
+      "title": "an expanded supportedTypes entry carries no member the 0.4 schema does not define (only type, requiredExt and acceptanceWindow)",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/payload.schema.json (draft) Response supportedTypes items (the object form: additionalProperties false; properties type, requiredExt and acceptanceWindow)",
+        "specs/trust-task-discovery/0.4/spec.md (draft) Conformance responder 1 (the payload validates against the response sub-schema)"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(d1)",
+              "type": "https://trusttasks.org/spec/trust-task-discovery/0.4",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/trust-task-discovery/0.4#response",
+            "forbidInReply": [
+              "offeredExt",
+              "optionalExt"
+            ]
+          }
+        }
+      ],
+      "mutants": [
+        "witnessOffersExt"
+      ]
+    },
+    {
+      "id": "WSD-009",
+      "title": "the response also lists the discovery type itself, which the responder acts on",
+      "tier": 1,
+      "spec": [
+        "specs/trust-task-discovery/0.4/spec.md (draft) Conformance responder 2 (\"the subset of Type URIs the responder can act upon\")"
+      ],
+      "source": {
+        "slug": "trust-task-discovery",
+        "version": "0.4",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-discovery/0.4",
+        "pinnedDigest": "sha256:dde4337cfe73f76854d7a5b06b079dfb66c475a559dfc3deadcbb2c9e0b5de8c",
+        "tfRef": {
+          "repoPath": "specs/trust-task-discovery/0.4/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:820de9d74d6942345e230ab71a0021d2468b19e661696b0af005d72fc5001ef5",
+        "schemaHash": "sha256:0d22e05dea8dec30a80cb0441e76e6eef8b62aef675d09c573e596b74df17831"
+      },
+      "clarify": "The specification text says a responder lists what it can act upon, but the witness-server documents its served set as the two witness types; whether a responder must list the discovery type it answers is not stated.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(d1)",
+              "type": "https://trusttasks.org/spec/trust-task-discovery/0.4",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "patterns": [
+                  "trust-task-discovery"
+                ]
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/trust-task-discovery/0.4#response",
+            "match": {
+              "/payload/supportedTypes/0": "^https://trusttasks\\.org/spec/trust-task-discovery/\\d+\\.\\d+$"
+            }
+          }
+        }
+      ],
+      "mutants": [
+        "witnessDiscoveryOmitsSelf"
+      ]
+    }
+  ]
+}

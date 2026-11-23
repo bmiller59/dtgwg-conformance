@@ -1,0 +1,656 @@
+{
+ "format": "tt-platform-run-map/0.1",
+ "about": "Which run folder belongs to which measured platform (decision D300). The coverage matrix reads run records only through this map; a folder's name is never used to guess its platform. Keys are paths relative to a run-records root passed with --runs: 'runs/<name>' inside an assembled results directory (docs/04 section 21, scripts/assemble-results-set.ts), '<name>' in a flat folder of run folders (the matrix-set folders). Every results.json and results-advisory.json below a key belongs to the entry. Fields: platform = vti or keyring-wallet; surface = what was measured (shim, didcomm, emit, 2l, gap-shim for the wallet; agent, community, emit, 2l for VTI); checkout = the code revision the run README names, or 'not stated in the run records'; date = the run date. ceremonyRows: the ceremony rows (ceremonies/<row>/ in the results directory) with the wallet as a participant, and which wallet platform it was (null: no wallet in the row); the record's own participants must also name the keyring-wallet adapter. Ceremony outcomes are an overlay and never conformance counts. notPlatform: run folders that hold results but belong to no measured platform (the reference adapter, truststackers, the witness oracle) or that are deliberately not merged into a platform column (the wallet's witness-server surface: WIT vectors target older witness versions, decision D251). A folder with results that is in neither list is reported in the matrix limits. To add a run: add its folder here (platform, surface, checkout, date) and regenerate with npm run coverage-matrix.",
+ "runs": [
+  {
+   "folder": "runs/2026-11-14-kw-shim",
+   "platform": "keyring-wallet",
+   "surface": "shim",
+   "checkout": "62af4d2d4",
+   "date": "2026-11-14"
+  },
+  {
+   "folder": "runs/2026-11-14-vti-26d0da81",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "26d0da81",
+   "date": "2026-11-14"
+  },
+  {
+   "folder": "runs/2026-11-14-vti-26d0da81-rcpt",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "26d0da81",
+   "date": "2026-11-14"
+  },
+  {
+   "folder": "runs/2026-11-15-2l-keyring-wallet",
+   "platform": "keyring-wallet",
+   "surface": "2l",
+   "checkout": "62af4d2d4",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-2l-vti-emit",
+   "platform": "vti",
+   "surface": "emit",
+   "checkout": "not stated in the run records",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-2l-vti-emit-advisory",
+   "platform": "vti",
+   "surface": "emit",
+   "checkout": "not stated in the run records",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-2l-vti-inprocess",
+   "platform": "vti",
+   "surface": "2l",
+   "checkout": "26d0da81a1ae2df800ee6b9c1806bb3c3c7a9d2f",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-final-keyring-wallet",
+   "platform": "keyring-wallet",
+   "surface": "shim",
+   "checkout": "not stated in the run records",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-final-kw-didcomm",
+   "platform": "keyring-wallet",
+   "surface": "didcomm",
+   "checkout": "not stated in the run records",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-final-vtc-inprocess",
+   "platform": "vti",
+   "surface": "community",
+   "checkout": "26d0da81",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-final-vti-emit",
+   "platform": "vti",
+   "surface": "emit",
+   "checkout": "26d0da81",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-final-vti-inprocess",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "26d0da81a1ae2df800ee6b9c1806bb3c3c7a9d2f",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-final2-keyring-wallet",
+   "platform": "keyring-wallet",
+   "surface": "shim",
+   "checkout": "62af4d2d4",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-final2-kw-didcomm",
+   "platform": "keyring-wallet",
+   "surface": "didcomm",
+   "checkout": "62af4d2d4",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-final2-vtc-inprocess",
+   "platform": "vti",
+   "surface": "community",
+   "checkout": "26d0da81",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-final2-vti-emit",
+   "platform": "vti",
+   "surface": "emit",
+   "checkout": "26d0da81",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-final2-vti-inprocess",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "26d0da81",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-integration-keyring-wallet",
+   "platform": "keyring-wallet",
+   "surface": "shim",
+   "checkout": "62af4d2d4",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-integration-vti-inprocess",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "26d0da81a1ae2df800ee6b9c1806bb3c3c7a9d2f",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-kw-didcomm",
+   "platform": "keyring-wallet",
+   "surface": "didcomm",
+   "checkout": "62af4d2d4",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-kw-emit",
+   "platform": "keyring-wallet",
+   "surface": "shim",
+   "checkout": "not stated in the run records",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-kw-emit-more",
+   "platform": "keyring-wallet",
+   "surface": "shim",
+   "checkout": "not stated in the run records",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-kw-shim-query",
+   "platform": "keyring-wallet",
+   "surface": "shim",
+   "checkout": "62af4d2d4",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-kw-shim-wider",
+   "platform": "keyring-wallet",
+   "surface": "shim",
+   "checkout": "62af4d2d4",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-observe-adopt-keyring-wallet",
+   "platform": "keyring-wallet",
+   "surface": "shim",
+   "checkout": "not stated in the run records",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-observe-adopt-kw-didcomm",
+   "platform": "keyring-wallet",
+   "surface": "didcomm",
+   "checkout": "not stated in the run records",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-observe-adopt-vta-inprocess",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "26d0da81",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-observe-adopt-vtc-inprocess",
+   "platform": "vti",
+   "surface": "community",
+   "checkout": "26d0da81",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-vti-emit",
+   "platform": "vti",
+   "surface": "emit",
+   "checkout": "26d0da81a1ae2df800ee6b9c1806bb3c3c7a9d2f",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-vti-inprocess-26d0da81",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "26d0da81",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-vti-inprocess-query",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "26d0da81",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-vti-reach-inprocess-core",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "26d0da81",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-vti-reach-inprocess-nonattested",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "not stated in the run records",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-vti-reach-inprocess-plain",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "26d0da81",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-vti-reach-vtc-inprocess-core",
+   "platform": "vti",
+   "surface": "community",
+   "checkout": "26d0da81",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-15-vti-reach-vtc-inprocess-plain",
+   "platform": "vti",
+   "surface": "community",
+   "checkout": "not stated in the run records",
+   "date": "2026-11-15"
+  },
+  {
+   "folder": "runs/2026-11-16-agreed-keyring-wallet",
+   "platform": "keyring-wallet",
+   "surface": "shim",
+   "checkout": "62af4d2d4",
+   "date": "2026-11-16"
+  },
+  {
+   "folder": "runs/2026-11-16-agreed-kw-didcomm",
+   "platform": "keyring-wallet",
+   "surface": "didcomm",
+   "checkout": "62af4d2d4",
+   "date": "2026-11-16"
+  },
+  {
+   "folder": "runs/2026-11-16-agreed-vtc-inprocess",
+   "platform": "vti",
+   "surface": "community",
+   "checkout": "26d0da81",
+   "date": "2026-11-16"
+  },
+  {
+   "folder": "runs/2026-11-16-agreed-vti-emit",
+   "platform": "vti",
+   "surface": "emit",
+   "checkout": "26d0da81",
+   "date": "2026-11-16"
+  },
+  {
+   "folder": "runs/2026-11-16-agreed-vti-inprocess",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "26d0da81",
+   "date": "2026-11-16"
+  },
+  {
+   "folder": "runs/2026-11-16-fixed-upstream-keyring-wallet",
+   "platform": "keyring-wallet",
+   "surface": "shim",
+   "checkout": "62af4d2d4",
+   "date": "2026-11-16"
+  },
+  {
+   "folder": "runs/2026-11-16-fixed-upstream-kw-didcomm",
+   "platform": "keyring-wallet",
+   "surface": "didcomm",
+   "checkout": "62af4d2d4",
+   "date": "2026-11-16"
+  },
+  {
+   "folder": "runs/2026-11-16-fixed-upstream-vtc-inprocess",
+   "platform": "vti",
+   "surface": "community",
+   "checkout": "26d0da81a1ae2df800ee6b9c1806bb3c3c7a9d2f",
+   "date": "2026-11-16"
+  },
+  {
+   "folder": "runs/2026-11-16-fixed-upstream-vti-emit",
+   "platform": "vti",
+   "surface": "emit",
+   "checkout": "26d0da81a1ae2df800ee6b9c1806bb3c3c7a9d2f",
+   "date": "2026-11-16"
+  },
+  {
+   "folder": "runs/2026-11-16-fixed-upstream-vti-inprocess",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "26d0da81a1ae2df800ee6b9c1806bb3c3c7a9d2f",
+   "date": "2026-11-16"
+  },
+  {
+   "folder": "runs/2026-11-17-final-upstream-keyring-wallet",
+   "platform": "keyring-wallet",
+   "surface": "shim",
+   "checkout": "62af4d2d",
+   "date": "2026-11-17"
+  },
+  {
+   "folder": "runs/2026-11-17-final-upstream-kw-didcomm",
+   "platform": "keyring-wallet",
+   "surface": "didcomm",
+   "checkout": "62af4d2d",
+   "date": "2026-11-17"
+  },
+  {
+   "folder": "runs/2026-11-17-final-upstream-vtc-inprocess",
+   "platform": "vti",
+   "surface": "community",
+   "checkout": "26d0da81a",
+   "date": "2026-11-17"
+  },
+  {
+   "folder": "runs/2026-11-17-final-upstream-vti-emit",
+   "platform": "vti",
+   "surface": "emit",
+   "checkout": "26d0da81a",
+   "date": "2026-11-17"
+  },
+  {
+   "folder": "runs/2026-11-17-final-upstream-vti-inprocess",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "26d0da81a",
+   "date": "2026-11-17"
+  },
+  {
+   "folder": "runs/2026-11-19-final-upstream-keyring-wallet",
+   "platform": "keyring-wallet",
+   "surface": "shim",
+   "checkout": "62af4d2d",
+   "date": "2026-11-19"
+  },
+  {
+   "folder": "runs/2026-11-19-final-upstream-kw-didcomm",
+   "platform": "keyring-wallet",
+   "surface": "didcomm",
+   "checkout": "62af4d2d",
+   "date": "2026-11-19"
+  },
+  {
+   "folder": "runs/2026-11-19-final-upstream-vtc-inprocess",
+   "platform": "vti",
+   "surface": "community",
+   "checkout": "26d0da81a",
+   "date": "2026-11-19"
+  },
+  {
+   "folder": "runs/2026-11-19-final-upstream-vti-emit",
+   "platform": "vti",
+   "surface": "emit",
+   "checkout": "26d0da81a",
+   "date": "2026-11-19"
+  },
+  {
+   "folder": "runs/2026-11-19-final-upstream-vti-inprocess",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "26d0da81a",
+   "date": "2026-11-19"
+  },
+  {
+   "folder": "kw-upstream-gap-shim",
+   "platform": "keyring-wallet",
+   "surface": "gap-shim",
+   "checkout": "62af4d2d (p119 kw-base)",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "kw-upstream-shim",
+   "platform": "keyring-wallet",
+   "surface": "shim",
+   "checkout": "62af4d2d (p119 kw-base)",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "vti-upstream-agent",
+   "platform": "vti",
+   "surface": "agent",
+   "checkout": "see 2026-11-20 uncovered report",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "vti-upstream-agent-probe",
+   "platform": "vti",
+   "surface": "agent-probe",
+   "checkout": "see 2026-11-20 uncovered report",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "vti-upstream-community",
+   "platform": "vti",
+   "surface": "community",
+   "checkout": "see 2026-11-20 uncovered report",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "vti-upstream-community-probe",
+   "platform": "vti",
+   "surface": "community-probe",
+   "checkout": "see 2026-11-20 uncovered report",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "vti-upstream-emit",
+   "platform": "vti",
+   "surface": "emit",
+   "checkout": "see 2026-11-20 uncovered report",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "vti-upstream-gap-agent",
+   "platform": "vti",
+   "surface": "gap-agent",
+   "checkout": "see 2026-11-20 uncovered report",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "vti-upstream-gap-community",
+   "platform": "vti",
+   "surface": "gap-community",
+   "checkout": "see 2026-11-20 uncovered report",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "vti-upstream-gap-emit",
+   "platform": "vti",
+   "surface": "gap-emit",
+   "checkout": "see 2026-11-20 uncovered report",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "kw-up-969-shim",
+   "platform": "keyring-wallet",
+   "surface": "emit (emit, emit-more)",
+   "checkout": "969963df (bifold a5bfcf3b2)",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "runs/2026-11-20-vti-live-core",
+   "platform": "vti",
+   "surface": "community-live",
+   "checkout": "26d0da81a",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "runs/2026-11-20-promote-b1-gating-vti-upstream-agent",
+   "platform": "vti",
+   "surface": "agent-gating",
+   "checkout": "see 2026-11-20 uncovered report",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "runs/2026-11-20-promote-b1-gating-vti-upstream-community",
+   "platform": "vti",
+   "surface": "community-gating",
+   "checkout": "see 2026-11-20 uncovered report",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "runs/2026-11-20-promote-b1-gating-kw-upstream-shim",
+   "platform": "keyring-wallet",
+   "surface": "shim-gating",
+   "checkout": "62af4d2d (p119 kw-base)",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "runs/2026-11-20-promote-b2-gating-vti-upstream-agent",
+   "platform": "vti",
+   "surface": "agent-gating",
+   "checkout": "see 2026-11-20 uncovered report",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "runs/2026-11-20-promote-b2-gating-vti-upstream-community",
+   "platform": "vti",
+   "surface": "community-gating",
+   "checkout": "see 2026-11-20 uncovered report",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "runs/2026-11-20-promote-b2-gating-kw-upstream-shim",
+   "platform": "keyring-wallet",
+   "surface": "shim-gating",
+   "checkout": "62af4d2d (p119 kw-base)",
+   "date": "2026-11-20"
+  },
+  {
+   "folder": "runs/2026-11-20-kw-reach-kw-up-969-shim",
+   "platform": "keyring-wallet",
+   "surface": "emit (emit, emit-more)",
+   "checkout": "969963df (bifold a5bfcf3b2)",
+   "date": "2026-11-20"
+  }
+ ],
+ "ceremonyRows": [
+  {
+   "row": "oracle",
+   "platform": null,
+   "note": "no wallet in this row (reference party or stand-ins only)"
+  },
+  {
+   "row": "kwo.up",
+   "platform": "keyring-wallet",
+   "note": "wallet row per results/ceremony-rows.json pair text"
+  },
+  {
+   "row": "avl.up.ref",
+   "platform": "keyring-wallet",
+   "note": "wallet row per results/ceremony-rows.json pair text"
+  },
+  {
+   "row": "avl.up.vti-up",
+   "platform": "keyring-wallet",
+   "note": "wallet row per results/ceremony-rows.json pair text"
+  },
+  {
+   "row": "kvx.up",
+   "platform": "keyring-wallet",
+   "note": "wallet row per results/ceremony-rows.json pair text"
+  },
+  {
+   "row": "kvh.up",
+   "platform": "keyring-wallet",
+   "note": "wallet row per results/ceremony-rows.json pair text"
+  },
+  {
+   "row": "live.onb.ref",
+   "platform": null,
+   "note": "no wallet in this row (reference member)"
+  },
+  {
+   "row": "live.onb.up",
+   "platform": "keyring-wallet",
+   "note": "wallet row per results/ceremony-rows.json pair text"
+  },
+  {
+   "row": "live.aut.ref",
+   "platform": null,
+   "note": "no wallet in this row (reference member)"
+  },
+  {
+   "row": "live.aut.up",
+   "platform": "keyring-wallet",
+   "note": "wallet row per results/ceremony-rows.json pair text"
+  },
+  {
+   "row": "live.kvc.ref",
+   "platform": null,
+   "note": "no wallet in this row (reference member)"
+  },
+  {
+   "row": "live.kvc.up",
+   "platform": "keyring-wallet",
+   "note": "wallet row per results/ceremony-rows.json pair text"
+  },
+  {
+   "row": "live.avl.up",
+   "platform": "keyring-wallet",
+   "note": "wallet row per results/ceremony-rows.json pair text"
+  },
+  {
+   "row": "wire.up",
+   "platform": "keyring-wallet",
+   "note": "wallet row per results/ceremony-rows.json pair text"
+  },
+  {
+   "row": "wire.kvc",
+   "platform": "keyring-wallet",
+   "note": "wallet row per results/ceremony-rows.json pair text"
+  },
+  {
+   "row": "wire.mbr",
+   "platform": "keyring-wallet",
+   "note": "wallet row per results/ceremony-rows.json pair text"
+  },
+  {
+   "row": "per.oracle",
+   "platform": null,
+   "note": "no wallet in this row (reference party or stand-ins only)"
+  },
+  {
+   "row": "dir.oracle",
+   "platform": null,
+   "note": "no wallet in this row (reference party or stand-ins only)"
+  },
+  {
+   "row": "vote.oracle",
+   "platform": null,
+   "note": "no wallet in this row (reference party or stand-ins only)"
+  }
+ ],
+ "notPlatform": [
+  "runs/2026-11-14-truststackers-i5",
+  "runs/2026-11-14-truststackers-i6",
+  "runs/2026-11-15-2l-reference",
+  "runs/2026-11-15-final-reference",
+  "runs/2026-11-15-final-witness-server",
+  "runs/2026-11-15-final2-reference",
+  "runs/2026-11-15-final2-witness-server",
+  "runs/2026-11-15-integration-reference",
+  "runs/2026-11-15-integration-witness-server",
+  "runs/2026-11-15-observe-oracle-v2",
+  "runs/2026-11-15-plain-probe",
+  "runs/2026-11-15-truststackers-bridge-query",
+  "runs/2026-11-15-witness-oracle",
+  "runs/2026-11-15-witness-server",
+  "runs/2026-11-16-agreed-reference",
+  "runs/2026-11-16-agreed-witness-server",
+  "runs/2026-11-17-final-reference",
+  "runs/2026-11-19-final-reference",
+  "runs/2026-11-22-rc-reference",
+  "runs/2026-11-19-final-upstream-witness-server",
+  "runs/2026-11-19-final-upstream-witness-server-didcomm",
+  "reference",
+  "reference-gap",
+  "reference-probe",
+  "runs/2026-11-20-promote-b1-gating-reference",
+  "runs/2026-11-20-promote-b2-gating-reference"
+ ]
+}

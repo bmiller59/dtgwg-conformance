@@ -1,0 +1,3249 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "CB-RM",
+ "family": "coverage",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "CB-RM-001",
+   "title": "rooms/blobs/chunk 0.1: downloadId = \"00000000-0000-4000-8000-00000000c0de\" is refused with rooms/blobs/chunk:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/blobs/chunk/0.1/spec.md: \"No open download with this id exists that the caller may read from\"",
+    "specs/rooms/blobs/chunk/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/blobs/chunk",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/blobs/chunk/0.1",
+    "pinnedDigest": "sha256:9abe7814e7508f14586efd4fc942361585ccd57376dadb3982bb7195788b9315",
+    "tfRef": {
+     "repoPath": "specs/rooms/blobs/chunk/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:169d6c0bde9e8ea4b76d2d43100234d8552122d1307f916cc5ca233d62f8e550",
+    "schemaHash": "sha256:8f60362bac9b482f159ffa66332a140e1a268b62710e45ed8afc5d71e2841c28"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/blobs/chunk/0.1"
+   ],
+   "mutants": [
+    "bx:rooms/blobs/chunk/0.1:rooms/blobs/chunk:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/chunk/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "downloadId": "00000000-0000-4000-8000-00000000c0de",
+        "index": 0
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/blobs/chunk:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-002",
+   "title": "rooms/blobs/get 0.2: blobRef = \"zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnS\" is refused with rooms/blobs/get:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/blobs/get/0.2/spec.md: \"No blob with this BlobRef is committed in this room\"",
+    "specs/rooms/blobs/get/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/blobs/get",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/blobs/get/0.2",
+    "pinnedDigest": "sha256:6b74c2dedac8cee9e8dbb2f607d31f58d36cd7bbf76d8a4e60986d78b471fd94",
+    "tfRef": {
+     "repoPath": "specs/rooms/blobs/get/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e4d7421da0298be22eb013a875ce9a01219006bc52a172cd75732cbdb2fe6035",
+    "schemaHash": "sha256:90e1b25fa9addf584d56f1111a26cea57e4e88d12f84fea0b4b1217f5f36c07c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/blobs/get/0.2"
+   ],
+   "retired": {
+    "reason": "the host authorises from the presentation alone against a room it holds before it answers anything else (consumer item 1), so the stated code is reached only for an existing room and a presentation that verifies: prior state",
+    "since": "0.1.0-draft"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/get/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        },
+        "blobRef": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnS"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/blobs/get:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-003",
+   "title": "rooms/blobs/upload/abort 0.2: uploadId = \"00000000-0000-4000-8000-00000000c0de\" is refused with rooms/blobs/upload/abort:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/blobs/upload/abort/0.2/spec.md: \"No upload with this id exists that the caller may abort\"",
+    "specs/rooms/blobs/upload/abort/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/blobs/upload/abort",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/blobs/upload/abort/0.2",
+    "pinnedDigest": "sha256:331bd9b16c4d31b249c641e07547e3d838594b08d76233068525f36edef45d55",
+    "tfRef": {
+     "repoPath": "specs/rooms/blobs/upload/abort/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:b40c4c018967df465a7605b9f8fa7190c0b1ff5349ab0325dafe8c5f2cf5f95c",
+    "schemaHash": "sha256:32465cb6c0309990a8d16619ea543dcab57b15c4e16a365064415d777f913403"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/blobs/upload/abort/0.2"
+   ],
+   "mutants": [
+    "bx:rooms/blobs/upload/abort/0.2:rooms/blobs/upload/abort:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/upload/abort/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "uploadId": "00000000-0000-4000-8000-00000000c0de"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/blobs/upload/abort:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-004",
+   "title": "rooms/blobs/upload/chunk 0.2: uploadId = \"00000000-0000-4000-8000-00000000c0de\" is refused with rooms/blobs/upload/chunk:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/blobs/upload/chunk/0.2/spec.md: \"No open upload with this id exists that the caller may write to\"",
+    "specs/rooms/blobs/upload/chunk/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/blobs/upload/chunk",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/blobs/upload/chunk/0.2",
+    "pinnedDigest": "sha256:5004aeca582c839e3b35c7e453efb9888cb78a3777a09787281415b378847908",
+    "tfRef": {
+     "repoPath": "specs/rooms/blobs/upload/chunk/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:c5ddd271e299b5c5b64471403e32b297bb098a3258277ec8335c43a0af4bc8b1",
+    "schemaHash": "sha256:bce3e8c627016f123853345af2205511621336b9a227470e9463183f8d8f977c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/blobs/upload/chunk/0.2"
+   ],
+   "mutants": [
+    "bx:rooms/blobs/upload/chunk/0.2:rooms/blobs/upload/chunk:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/upload/chunk/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "uploadId": "00000000-0000-4000-8000-00000000c0de",
+        "index": 0,
+        "digestMultibase": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+        "data": "AAAA"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/blobs/upload/chunk:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-005",
+   "title": "rooms/blobs/upload/commit 0.2: uploadId = \"00000000-0000-4000-8000-00000000c0de\" is refused with rooms/blobs/upload/commit:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/blobs/upload/commit/0.2/spec.md: \"No upload with this id exists that the caller may commit\"",
+    "specs/rooms/blobs/upload/commit/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/blobs/upload/commit",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/blobs/upload/commit/0.2",
+    "pinnedDigest": "sha256:ee1c96aa3b34f918edb107cfe7753dc8c00210b7a295eda131ea9eda9e59173e",
+    "tfRef": {
+     "repoPath": "specs/rooms/blobs/upload/commit/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:1db3c7f27c855bdf8cfaa9817519eff024adc168432c32540a758011ee5e619b",
+    "schemaHash": "sha256:91b010d6f6244a94b73a4bd00cc99cda6548de95f9769958870ba71a7074d06d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/blobs/upload/commit/0.2"
+   ],
+   "mutants": [
+    "bx:rooms/blobs/upload/commit/0.2:rooms/blobs/upload/commit:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/upload/commit/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "uploadId": "00000000-0000-4000-8000-00000000c0de"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/blobs/upload/commit:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-006",
+   "title": "rooms/epoch/chain 0.2: an identifier (roomId) that names nothing is refused with rooms/epoch/chain:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/epoch/chain/0.2/spec.md: \"No room with this identifier is served here\"",
+    "specs/rooms/epoch/chain/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/rooms/epoch/chain/0.2/spec.md front matter errorCodes: rooms/epoch/chain:forbidden (the caller's standing) is also accepted, as permissionDenied is: SPEC.md 7.2 items 2 and 10 do not order the authorisation check against the task's own checks",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/epoch/chain",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/epoch/chain/0.2",
+    "pinnedDigest": "sha256:45833a87035d878c7064d643611511c600723df8514b4ed28b36fa4e2169b5a7",
+    "tfRef": {
+     "repoPath": "specs/rooms/epoch/chain/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:4a2857a5f72eabf1b3499733e303fc399e482b16b4b3abfa78d570e3caa323fa",
+    "schemaHash": "sha256:41488d3329e37875a159f6266bf86e8eb82de4c016c31142b5b7148ac2f41de3"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/epoch/chain/0.2"
+   ],
+   "mutants": [
+    "bx:rooms/epoch/chain/0.2:rooms/epoch/chain:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/chain/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/epoch/chain:notFound",
+       "rooms/epoch/chain:forbidden",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-007",
+   "title": "rooms/records/get 0.2: an identifier (key) that names nothing is refused with rooms/records/get:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/records/get/0.2/spec.md: \"No record with that key in this room\"",
+    "specs/rooms/records/get/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/records/get",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/records/get/0.2",
+    "pinnedDigest": "sha256:e30dafa9993f61d353744d0c4036f98c12d41f57dc601e824c2fc2ed65a5a96d",
+    "tfRef": {
+     "repoPath": "specs/rooms/records/get/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:1829efc3200be992fc130539167864a175f7c9a70f90953bc20d25cabbb2b4ff",
+    "schemaHash": "sha256:777016e63d7ae491041ae7353a2c354636d76b1565cc52f094073e350597f4f3",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/records/get/0.2"
+   ],
+   "retired": {
+    "reason": "the host authorises from the presentation alone against a room it holds before it answers anything else (consumer item 1), so the stated code is reached only for an existing room and a presentation that verifies: prior state",
+    "since": "0.1.0-draft"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/records/get/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "key": "conformance-unknown-identifier",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/records/get:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-008",
+   "title": "rooms/keys/chain 0.2: an identifier (roomId) that names nothing is refused with rooms/keys/chain:notAMember",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/keys/chain/0.2/spec.md: \"The recipient holds no group state for this room, so there is nothing for the rungs to extend\"",
+    "specs/rooms/keys/chain/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/keys/chain",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/keys/chain/0.2",
+    "pinnedDigest": "sha256:f9995c54ffda222c885339fa0765a1ba148b9249f4afb345c3fd5b9a61dcf940",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/chain/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:b60bfb945540d17856e5b8dd44dd9dabbddea867ba31219e419c00f906a2c50d",
+    "schemaHash": "sha256:0d3d615d887f63bf2a0d5d6b79d3fa90d21039279dd420a761a10114f9abfb70"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/chain/0.2"
+   ],
+   "mutants": [
+    "bx:rooms/keys/chain/0.2:rooms/keys/chain:notAMember"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/chain/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "links": [
+         {
+          "epoch": 2,
+          "wrapped": "AAAA",
+          "nonce": "AAAA"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/keys/chain:notAMember",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-009",
+   "title": "rooms/keys/commit 0.1: an identifier (roomId) that names nothing is refused with rooms/keys/commit:notAMember",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/keys/commit/0.1/spec.md: \"The recipient holds no group state for this room\"",
+    "specs/rooms/keys/commit/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/keys/commit",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/keys/commit/0.1",
+    "pinnedDigest": "sha256:68328e84d664f8122b4a5bb5b6d6a99e2877fc129429780f7a261e2f0365eb4b",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/commit/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:647206cc67e52c6a28a83ea389e040f7deef83039e0d2dfb35000062f74e0fe3",
+    "schemaHash": "sha256:2ddb7545b9a52f7f09a53a142572b61ac40d2b37f8d5d4269da7f91192605306"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/commit/0.1"
+   ],
+   "mutants": [
+    "bx:rooms/keys/commit/0.1:rooms/keys/commit:notAMember"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/commit/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "commit": "AAAA",
+        "epoch": 1
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/keys/commit:notAMember",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-010",
+   "title": "rooms/keys/seal 0.2: an identifier (roomId) that names nothing is refused with rooms/keys/seal:notAMember",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/keys/seal/0.2/spec.md: \"so there is no key to seal with\"",
+    "specs/rooms/keys/seal/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/keys/seal",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/keys/seal/0.2",
+    "pinnedDigest": "sha256:41e31f2ea7d50c42718350928e3f8e65709a8bd948460b5d5d7e50c953a297d0",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/seal/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:1db32c2248e09df311203224c35c4d4d6297b70d52e018eaf8fdd6fd20545786",
+    "schemaHash": "sha256:c9913ff9c462c9a408037d07383ea9ac2aa0c8a68de498d9da525d3da3701b19",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/seal/0.2"
+   ],
+   "mutants": [
+    "bx:rooms/keys/seal/0.2:rooms/keys/seal:notAMember"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/seal/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "key": "example",
+        "version": 0,
+        "plaintext": "AAAA"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/keys/seal:notAMember",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-011",
+   "title": "rooms/keys/read 0.1: an identifier (roomId) that names nothing is refused with rooms/keys/read:notAMember",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/keys/read/0.1/spec.md: \"so it has nothing to present and nothing to open with\"",
+    "specs/rooms/keys/read/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/keys/read",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/keys/read/0.1",
+    "pinnedDigest": "sha256:5acadf19da351f1d2fd19ac5868268a2a81bbec3eff2685e9073907822895d6a",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/read/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:050bd0648028f641b716c8f32dec0692096111bc8ae84827ded7adf8552d2240",
+    "schemaHash": "sha256:a5a0ff5f1bf9c9d64d9c85a438e26c631a30ee3f0e630e482243b54e64725952",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/read/0.1"
+   ],
+   "mutants": [
+    "bx:rooms/keys/read/0.1:rooms/keys/read:notAMember"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/read/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "host": "example",
+        "key": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/keys/read:notAMember",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-012",
+   "title": "rooms/keys/browse 0.3: an identifier (roomId) that names nothing is refused with rooms/keys/browse:notAMember",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/keys/browse/0.3/spec.md: \"so it has nothing to present\"",
+    "specs/rooms/keys/browse/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/keys/browse",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/keys/browse/0.3",
+    "pinnedDigest": "sha256:565497b98a6943fbb510efbd9886c00b591db485ad73f955ecc7ac6710f33218",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/browse/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:9c42b22fa23f96506d406aa6884a1341f7902e1d181a44f4c0b68082bd48fb26",
+    "schemaHash": "sha256:0247187d835321a70e5d195a53be21bbfc5eeb2d249c5db3e8d2666255acbc64",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/browse/0.3"
+   ],
+   "mutants": [
+    "bx:rooms/keys/browse/0.3:rooms/keys/browse:notAMember"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/browse/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "host": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/keys/browse:notAMember",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-013",
+   "title": "rooms/keys/backfill 0.2: an identifier (roomId) that names nothing is refused with rooms/keys/backfill:notAMember",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/keys/backfill/0.2/spec.md: \"so there is nothing for the rungs to extend and no credentials to present\"",
+    "specs/rooms/keys/backfill/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/keys/backfill",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/keys/backfill/0.2",
+    "pinnedDigest": "sha256:11f1aaadbe5a34233b348a3e7e96a9d60835c7a43982ebc2b43ae37638d549c9",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/backfill/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:620e988bdafcc33a581bb18e119dfdc53c0e8e61a87d9f0232ac4d9ecb09ce9d",
+    "schemaHash": "sha256:6aa07c736076ef6811d4a8e086fd84f115661fea97f031ec1ea981230ee97fa2"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/backfill/0.2"
+   ],
+   "mutants": [
+    "bx:rooms/keys/backfill/0.2:rooms/keys/backfill:notAMember"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/backfill/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "host": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/keys/backfill:notAMember",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-014",
+   "title": "rooms/keys/file-key 0.2: an identifier (roomId) that names nothing is refused with rooms/keys/file-key:noGroup",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/keys/file-key/0.2/spec.md: \"The oracle holds no group for this room\"",
+    "specs/rooms/keys/file-key/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/keys/file-key",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/keys/file-key/0.2",
+    "pinnedDigest": "sha256:fdac45c2e36f6c5bcccd7a5ce4aff535e8aa23f8ce2120e5e57ba000754bc852",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/file-key/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:cacfc73e6a5849aa8e0cc8a0667cd9c8a8aeb60a6560ee9af2616e0c0e3a1ad9",
+    "schemaHash": "sha256:a3e57a404a30b2a118bb37feab9bd2286371d9b970660b0922040f9b1452e4ff",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/file-key/0.2"
+   ],
+   "mutants": [
+    "bx:rooms/keys/file-key/0.2:rooms/keys/file-key:noGroup"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/file-key/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "fileId": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "purpose": "seal"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/keys/file-key:noGroup",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-015",
+   "title": "rooms/owner/group/add 0.3: an identifier (roomId) that names nothing is refused with rooms/owner/group/add:noGroup",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/owner/group/add/0.3/spec.md: \"The recipient holds no group state for this room\"",
+    "specs/rooms/owner/group/add/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/rooms/owner/group/add/0.3/spec.md front matter errorCodes: rooms/owner/group/add:noAuthority (the caller's standing) is also accepted, as permissionDenied is: SPEC.md 7.2 items 2 and 10 do not order the authorisation check against the task's own checks",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/owner/group/add",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/owner/group/add/0.3",
+    "pinnedDigest": "sha256:c4b855939cafee7337c611dae870ea96a44eb7ecd5fe3cecca9e38b58958a186",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/group/add/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e3088dc292e396839d0a58712a03cfef45f72e8f9c8d307f1f5ad912139f607a",
+    "schemaHash": "sha256:19fafb98b81fd2678a32b3cd030a138b8a623d7486b493dacdc3c702d2aa6f52"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/group/add/0.3"
+   ],
+   "mutants": [
+    "bx:rooms/owner/group/add/0.3:rooms/owner/group/add:noGroup"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/group/add/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "host": "did:web:alice.example",
+        "member": "did:web:alice.example",
+        "keyPackage": "AAAA"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/owner/group/add:noGroup",
+       "rooms/owner/group/add:noAuthority",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-016",
+   "title": "rooms/owner/group/renew 0.2: an identifier (roomId) that names nothing is refused with rooms/owner/group/renew:noGroup",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/owner/group/renew/0.2/spec.md: \"The recipient holds no group state for this room\"",
+    "specs/rooms/owner/group/renew/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/rooms/owner/group/renew/0.2/spec.md front matter errorCodes: rooms/owner/group/renew:noAuthority (the caller's standing) is also accepted, as permissionDenied is: SPEC.md 7.2 items 2 and 10 do not order the authorisation check against the task's own checks",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/owner/group/renew",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/owner/group/renew/0.2",
+    "pinnedDigest": "sha256:787f9451324834f37b89940a88494566a021499837416795eb0bb174c80423e5",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/group/renew/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:02dd7acdd52f5f11ef35b7d21ec14af28eb3c88fbd0979f61d008cb88eddc329",
+    "schemaHash": "sha256:d2329d561b520ba7383f998841ae8a1f569b0b6c14e16c1300f4e1d5756be53f"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/group/renew/0.2"
+   ],
+   "mutants": [
+    "bx:rooms/owner/group/renew/0.2:rooms/owner/group/renew:noGroup"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/group/renew/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "host": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/owner/group/renew:noGroup",
+       "rooms/owner/group/renew:noAuthority",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-017",
+   "title": "rooms/keys/label 0.1: an identifier (roomId) that names nothing is refused with rooms/keys/label:notHeld",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/keys/label/0.1/spec.md: \"The recipient holds no group state for\"",
+    "specs/rooms/keys/label/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/keys/label",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/keys/label/0.1",
+    "pinnedDigest": "sha256:03718577685aa7ed3bf83a119eb2c2fda3613937dc2445ae1f861329b05d2c3d",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/label/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:ed7386ca15e83469e7c858671e3e601ae06350addccfd9aabf4076361b33f141",
+    "schemaHash": "sha256:7d4f6476f144e727bd3b9c7ca371e62363fc13438934576e72cd8f45c2e46e64"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/label/0.1"
+   ],
+   "mutants": [
+    "bx:rooms/keys/label/0.1:rooms/keys/label:notHeld"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/label/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "member": "did:web:alice.example",
+        "label": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/keys/label:notHeld",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-018",
+   "title": "vtc/rooms/community/archive 0.1: an identifier (roomId) that names nothing is refused with vtc/rooms/community/archive:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/community/archive/0.1/spec.md: \"The community owns no room with this identifier\"",
+    "specs/vtc/rooms/community/archive/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/community/archive",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/community/archive/0.1",
+    "pinnedDigest": "sha256:35b707f9b2d2319556b18bce34f890163ec6d8ee7721daf1a6a780db1219cfee",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/community/archive/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:536e420dbf190836e40f6a3153ca1cc10e8a5ca67b2ffa13c309c0c41324131f",
+    "schemaHash": "sha256:c82b873f7c4cd2f1aece4a18c55926007bd9daf6713f851e73dbc74f8bf4be31"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/community/archive/0.1"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/community/archive/0.1:vtc/rooms/community/archive:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/community/archive/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "access": "readOnly",
+        "reason": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/community/archive:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-019",
+   "title": "vtc/rooms/community/get 0.4: an identifier (roomId) that names nothing is refused with vtc/rooms/community/get:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/community/get/0.4/spec.md: \"The community owns no room with this identifier\"",
+    "specs/vtc/rooms/community/get/0.4/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/community/get",
+    "version": "0.4",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/community/get/0.4",
+    "pinnedDigest": "sha256:e6e0918f49757b9f28c654f61da8b669e5dd0a34982c55933c1d2e77550ed537",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/community/get/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e4af3f50f9511ef57c4e87f7cb96c3933c618138db1e3a0b2dece6bcc0d06abf",
+    "schemaHash": "sha256:b0b0c25660490caeca50e79499ba0f2674223039438b7e1b8b54936fcbd819c4",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/community/get/0.4"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/community/get/0.4:vtc/rooms/community/get:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/community/get/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/community/get:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-020",
+   "title": "vtc/rooms/community/members/add 0.2: an identifier (roomId) that names nothing is refused with vtc/rooms/community/members/add:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/community/members/add/0.2/spec.md: \"The community owns no room with this identifier\"",
+    "specs/vtc/rooms/community/members/add/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/vtc/rooms/community/members/add/0.2/spec.md front matter errorCodes: vtc/rooms/community/members/add:notAMember (the caller's standing) is also accepted, as permissionDenied is: SPEC.md 7.2 items 2 and 10 do not order the authorisation check against the task's own checks",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/community/members/add",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/community/members/add/0.2",
+    "pinnedDigest": "sha256:e3bce9d5d26e07a3da94cb6cf054e7f19ae0caca76597340009cbb981cdeb9c2",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/community/members/add/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:2fc3149bc7fc0b535b05a09a95b30e8336acb7ea135839abf094a02dbb4f5da8",
+    "schemaHash": "sha256:0a4c70c9e19a7a7ad5988b4b63c67a1289b6bf42ae17162e642ee10ead9081b1"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/community/members/add/0.2"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/community/members/add/0.2:vtc/rooms/community/members/add:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/community/members/add/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "member": "did:web:alice.example",
+        "actions": [
+         "read"
+        ],
+        "validUntil": "2026-11-12T10:00:00Z",
+        "reason": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/community/members/add:notFound",
+       "vtc/rooms/community/members/add:notAMember",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-021",
+   "title": "vtc/rooms/community/members/list 0.2: an identifier (roomId) that names nothing is refused with vtc/rooms/community/members/list:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/community/members/list/0.2/spec.md: \"The community owns no room with this identifier\"",
+    "specs/vtc/rooms/community/members/list/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/community/members/list",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/community/members/list/0.2",
+    "pinnedDigest": "sha256:ab76df05f051dd51b7c9ddc5424b437f36270b1883c1141f4061ffee2543fb07",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/community/members/list/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:b0babed35f6aee99212fd278dd0a38870684e44b593fa97e1786f7a68b7644ba",
+    "schemaHash": "sha256:c516d6d5223d781d975ee236abfe206b44869c4e1db5ba6c247996d5fa9914ed"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/community/members/list/0.2"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/community/members/list/0.2:vtc/rooms/community/members/list:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/community/members/list/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/community/members/list:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-022",
+   "title": "vtc/rooms/community/removal/cancel 0.1: an identifier (roomId) that names nothing is refused with vtc/rooms/community/removal/cancel:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/community/removal/cancel/0.1/spec.md: \"The community owns no room with this identifier\"",
+    "specs/vtc/rooms/community/removal/cancel/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/community/removal/cancel",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/community/removal/cancel/0.1",
+    "pinnedDigest": "sha256:d02b5139b442c34ec2839bfba3e0cb78030b2cb38fda2174a0149b19c32732ef",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/community/removal/cancel/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:2374236c98b9c6965d6bfbc297c30c08468a9e4cce74e7fe9e88a97f1bb10ab6",
+    "schemaHash": "sha256:c9849971c10234ccbab7d1624d34b4e05c38f58179065c57238370859081d100"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/community/removal/cancel/0.1"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/community/removal/cancel/0.1:vtc/rooms/community/removal/cancel:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/community/removal/cancel/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "reason": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/community/removal/cancel:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-023",
+   "title": "vtc/rooms/community/unarchive 0.1: an identifier (roomId) that names nothing is refused with vtc/rooms/community/unarchive:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/community/unarchive/0.1/spec.md: \"The community owns no room with this identifier\"",
+    "specs/vtc/rooms/community/unarchive/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/community/unarchive",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/community/unarchive/0.1",
+    "pinnedDigest": "sha256:29ba136ad7c23f1569856491c5b3ba87ade7f22f3a7915ed5c40edc0bf769974",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/community/unarchive/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:68daf61fd7647abeb702b0b6ee3ee8ac5342c83f0eafc029663906098b8cb2ff",
+    "schemaHash": "sha256:027d144bf6f08ebb23408397168af600dc6aa5e35eb0614574fbf3bce1982a22"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/community/unarchive/0.1"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/community/unarchive/0.1:vtc/rooms/community/unarchive:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/community/unarchive/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "reason": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/community/unarchive:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-024",
+   "title": "vtc/rooms/community/update 0.3: an identifier (roomId) that names nothing is refused with vtc/rooms/community/update:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/community/update/0.3/spec.md: \"The community owns no room with this identifier\"",
+    "specs/vtc/rooms/community/update/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/community/update",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/community/update/0.3",
+    "pinnedDigest": "sha256:b8615b47b0b6ca9c434b32e822987d2aefa5b236aaa22f1bf3aab83529eeaaf1",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/community/update/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:48a04660ccbff56f7dc17c3e021f5faf2da97e323bf34c6b08ad5c8e0ef2709a",
+    "schemaHash": "sha256:bfcf3516c75e6f577ab33eb62e252ae279e322319636cd0f04e75ea86d736b83",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/community/update/0.3"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/community/update/0.3:vtc/rooms/community/update:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/community/update/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "reason": "example",
+        "label": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/community/update:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-025",
+   "title": "vtc/rooms/get 0.3: an identifier (roomId) that names nothing is refused with vtc/rooms/get:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/get/0.3/spec.md: \"The community hosts no room with this identifier\"",
+    "specs/vtc/rooms/get/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/get",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/get/0.3",
+    "pinnedDigest": "sha256:c94b2044bdbc600b68f88605bd7564c9064daa61af6a61da7caf71d7b739e394",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/get/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:f7f8fd4753c10ba9e0ecaa95f6a903bcafe48d952c92f97ad21b036216eff859",
+    "schemaHash": "sha256:5695643620edd74d46b40ed79825e32503ed6f2044544a53b0230b9c4a58aba5"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/get/0.3"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/get/0.3:vtc/rooms/get:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/get/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/get:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-026",
+   "title": "vtc/rooms/limits/set 0.1: an identifier (roomId) that names nothing is refused with vtc/rooms/limits/set:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/limits/set/0.1/spec.md: \"The community hosts no room with this identifier\"",
+    "specs/vtc/rooms/limits/set/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/limits/set",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/limits/set/0.1",
+    "pinnedDigest": "sha256:c56628f871bcf9a6f9466b298b679d88d4bac9ab58a0cdf416c64a797dcb3afe",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/limits/set/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:0860584710bc34473355b53eb610c0d140bf50b0976c0c9448e028593d8e2c90",
+    "schemaHash": "sha256:2d7504a7e18b395e5d2b2f98ee14998a4edbd8575f77f40f52d5fe83c036a4af"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/limits/set/0.1"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/limits/set/0.1:vtc/rooms/limits/set:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/limits/set/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "target": {
+         "kind": "room"
+        },
+        "reason": "example",
+        "limits": {
+         "maxFileBytes": 1
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/limits/set:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-027",
+   "title": "vtc/rooms/storage/assign 0.2: an identifier (roomId) that names nothing is refused with vtc/rooms/storage/assign:roomNotFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/storage/assign/0.2/spec.md: \"The community hosts no room with this identifier\"",
+    "specs/vtc/rooms/storage/assign/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/storage/assign",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/storage/assign/0.2",
+    "pinnedDigest": "sha256:c4cb9b720fcb2e6e387656c4209fb14404d97b86a42f1342b670d7eb7277eb71",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/storage/assign/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:9c1c10c5e27cd81b5278e3acc574e4aab668a7fce7a6162246650f9c78654208",
+    "schemaHash": "sha256:db98767efcba6477f82e330f8e0679be114aab18274b8f9f885fa2564035c23d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/storage/assign/0.2"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/storage/assign/0.2:vtc/rooms/storage/assign:roomNotFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/storage/assign/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "configId": "a",
+        "reason": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/storage/assign:roomNotFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-028",
+   "title": "vtc/rooms/storage/assign 0.2: an identifier (configId) that names nothing is refused with vtc/rooms/storage/assign:configNotFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/storage/assign/0.2/spec.md: \"The community has no storage config with this identifier\"",
+    "specs/vtc/rooms/storage/assign/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/storage/assign",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/storage/assign/0.2",
+    "pinnedDigest": "sha256:c4cb9b720fcb2e6e387656c4209fb14404d97b86a42f1342b670d7eb7277eb71",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/storage/assign/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:9c1c10c5e27cd81b5278e3acc574e4aab668a7fce7a6162246650f9c78654208",
+    "schemaHash": "sha256:db98767efcba6477f82e330f8e0679be114aab18274b8f9f885fa2564035c23d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/storage/assign/0.2"
+   ],
+   "retired": {
+    "reason": "the text lists roomNotFound and configNotFound in one sentence with no order, and an unknown config can only be isolated against a room the community hosts: prior state",
+    "since": "0.1.0-draft"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/storage/assign/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "configId": "conformance-unknown-identifier",
+        "reason": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/storage/assign:configNotFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-029",
+   "title": "vtc/rooms/storage/migrate 0.3: an identifier (roomId) that names nothing is refused with vtc/rooms/storage/migrate:roomNotFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/storage/migrate/0.3/spec.md: \"The community hosts no room with this identifier\"",
+    "specs/vtc/rooms/storage/migrate/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/storage/migrate",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/storage/migrate/0.3",
+    "pinnedDigest": "sha256:4b71557443014d50ff8ba707982037ae1321f3e46f2dee5973722730a8165cc5",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/storage/migrate/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:6d15534e171de3a3b8a435af6a5a7893837d5aca8c7357549a0a993a8d056ed8",
+    "schemaHash": "sha256:a222d4c3d0afabcbabd2982eedb239f70dd5f28c51154035053c7822eb370c0a"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/storage/migrate/0.3"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/storage/migrate/0.3:vtc/rooms/storage/migrate:roomNotFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/storage/migrate/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "conformance-unknown-identifier",
+        "reason": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/storage/migrate:roomNotFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-030",
+   "title": "rooms/owner/group/create 0.1: an identifier (signingKeyId) that names nothing is refused with rooms/owner/group/create:noSigningKey",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/owner/group/create/0.1/spec.md: \"The recipient holds no key by that identifier\"",
+    "specs/rooms/owner/group/create/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/owner/group/create",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/owner/group/create/0.1",
+    "pinnedDigest": "sha256:7314d6cc629590ca595f79b32f59954b86e89913037e9c7689455011d6fa378a",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/group/create/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:4363192e24923c7da30d1fbcb8927a5144e226fcac512f89fa3a89df3041cad4",
+    "schemaHash": "sha256:a9d23fd27e3ae99d82bcabac399053b20897453062c44516feecff200e2122fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/group/create/0.1"
+   ],
+   "mutants": [
+    "bx:rooms/owner/group/create/0.1:rooms/owner/group/create:noSigningKey"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/group/create/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "signingKeyId": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/owner/group/create:noSigningKey",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-031",
+   "title": "rooms/owner/invite 0.1: an identifier (signingKeyId) that names nothing is refused with rooms/owner/invite:noSigningKey",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/owner/invite/0.1/spec.md: \"The recipient holds no key by that identifier\"",
+    "specs/rooms/owner/invite/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/owner/invite",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/owner/invite/0.1",
+    "pinnedDigest": "sha256:8e6e8de1eafa0c0b2d0e603229a7a5d55e8c3b8c5021c67cdaaf50093e51f5b6",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/invite/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:53110a7f9188b56e795ee3351ea6b6a21c5d25eafa42c0e06ef2747d2c5b8108",
+    "schemaHash": "sha256:884c9435c6e2f9bda354a4c7445c87ccc55285cf5e231a2135de3525769dbaeb"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/invite/0.1"
+   ],
+   "mutants": [
+    "bx:rooms/owner/invite/0.1:rooms/owner/invite:noSigningKey"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/invite/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "signingKeyId": "conformance-unknown-identifier",
+        "subject": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/owner/invite:noSigningKey",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-032",
+   "title": "rooms/owner/issue-authority 0.2: an identifier (signingKeyId) that names nothing is refused with rooms/owner/issue-authority:noSigningKey",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/owner/issue-authority/0.2/spec.md: \"The recipient holds no key by that identifier\"",
+    "specs/rooms/owner/issue-authority/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/owner/issue-authority",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/owner/issue-authority/0.2",
+    "pinnedDigest": "sha256:5d1e152d165724e5409ce8bdd14e5ecd585c787e3f1c98dc70338550ed2da1e1",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/issue-authority/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:3508523db7ee9e734c1f3c5195a5e29e20de3a1646d118d2a849311c068714ce",
+    "schemaHash": "sha256:7d98ced0478a166e9c7a4ac7e40cf061fb3d2081247293ff2808e58dcc50dfe7",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/issue-authority/0.2"
+   ],
+   "mutants": [
+    "bx:rooms/owner/issue-authority/0.2:rooms/owner/issue-authority:noSigningKey"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/issue-authority/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "signingKeyId": "conformance-unknown-identifier",
+        "subject": "example",
+        "actions": [
+         "read"
+        ],
+        "validUntil": "2026-11-12T10:00:00Z"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/owner/issue-authority:noSigningKey",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-033",
+   "title": "rooms/owner/issue-membership 0.1: an identifier (signingKeyId) that names nothing is refused with rooms/owner/issue-membership:noSigningKey",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/owner/issue-membership/0.1/spec.md: \"The recipient holds no key by that identifier\"",
+    "specs/rooms/owner/issue-membership/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/owner/issue-membership",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/owner/issue-membership/0.1",
+    "pinnedDigest": "sha256:549cc9809084935b4acc3ac251161738a47d5c9ffbda3945362ceed2fee36671",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/issue-membership/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:d738b7bab50f59b16bcfa8d0cf6adb39a7510f1f79b1f066f93bd3099a358ef8",
+    "schemaHash": "sha256:38b330dabcffa7ef995fa605679a112d78ad03df23122dc8dd6d5e5a111dd5f2"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/issue-membership/0.1"
+   ],
+   "mutants": [
+    "bx:rooms/owner/issue-membership/0.1:rooms/owner/issue-membership:noSigningKey"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/issue-membership/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "signingKeyId": "conformance-unknown-identifier",
+        "subject": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/owner/issue-membership:noSigningKey",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-034",
+   "title": "vtc/rooms/community/create 0.4: an identifier (storageConfig) that names nothing is refused with vtc/rooms/community/create:unknownStorageConfig",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/community/create/0.4/spec.md: \"names no config, or one that is not\"",
+    "specs/vtc/rooms/community/create/0.4/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/community/create",
+    "version": "0.4",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/community/create/0.4",
+    "pinnedDigest": "sha256:3aeec7a73a346f2ab5349ee8014458edab8d9af03307cb3646c96f5cd75813ab",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/community/create/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:51fd352df000e9d68f295317a63c8ba8f5cf865f56e73cea95fbbc76316a67b5",
+    "schemaHash": "sha256:1071a15334a6f0dcced5034cb6bc32ab4903a9c08d386632c082451835796a95",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/community/create/0.4"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/community/create/0.4:vtc/rooms/community/create:unknownStorageConfig"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/community/create/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "label": "example",
+        "visibility": "open",
+        "reason": "example",
+        "storageConfig": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/community/create:unknownStorageConfig",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-035",
+   "title": "rooms/records/list 0.5: cursor = \"conformance-unissued-cursor\" is refused with rooms/records/list:invalidCursor",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/records/list/0.5/spec.md: \"The cursor was not issued by this host, or has expired\"",
+    "specs/rooms/records/list/0.5/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/records/list",
+    "version": "0.5",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/records/list/0.5",
+    "pinnedDigest": "sha256:8b0e99f6a2303ab306f548d31fac96493d130a36edf817796cf8350817419159",
+    "tfRef": {
+     "repoPath": "specs/rooms/records/list/0.5/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:3a0b10eaad84279f527c3be720e01a89a50691a74fe8dfabc7f028ea1f7534fb",
+    "schemaHash": "sha256:c81f6b0e4d783ba3a01132f8a2720c8fd6c36e9847451e61ec21d019700e7222",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/records/list/0.5"
+   ],
+   "retired": {
+    "reason": "the host authorises from the presentation alone against a room it holds before it answers anything else (consumer item 1), so the stated code is reached only for an existing room and a presentation that verifies: prior state",
+    "since": "0.1.0-draft"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/records/list/0.5",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        },
+        "cursor": "conformance-unissued-cursor"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/records/list:invalidCursor",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-036",
+   "title": "vtc/rooms/usage 0.1: cursor = \"conformance-unissued-cursor\" is refused with vtc/rooms/usage:invalidCursor",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/usage/0.1/spec.md: \"was not issued by this community for this filter, grouping and sort\"",
+    "specs/vtc/rooms/usage/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/usage",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/usage/0.1",
+    "pinnedDigest": "sha256:b56a58f8d41ec5c868c48f4573f4fd84cf4d0f087e024645b39a7f7173b319c6",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/usage/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:d0f3628cbd171a9e7f9989a4a188e0f1b615fb7dd6c18fc40d6312737bb4ac32",
+    "schemaHash": "sha256:045a77604d93e6799351e470f63b3bb82bde5302bbd3293920fa4147c15b28aa"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/usage/0.1"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/usage/0.1:vtc/rooms/usage:invalidCursor"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/usage/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "groupBy": "room",
+        "cursor": "conformance-unissued-cursor"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/usage:invalidCursor",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-037",
+   "title": "rooms/blobs/upload/begin 0.2: chunks.chunkCount is not ceil(size / chunkSize), refused with invalidManifest",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/blobs/upload/begin/0.2/spec.md: \"is not ceil(size / chunks.chunkSize)\"",
+    "specs/rooms/blobs/upload/begin/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/blobs/upload/begin",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+    "pinnedDigest": "sha256:054b7dfab64e2c57359c7b94187c47a98f90537bd36c413c06f26854f772cb59",
+    "tfRef": {
+     "repoPath": "specs/rooms/blobs/upload/begin/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:27e5fc6ab008321e7271b61760d3f5083bc455cc060733fa2f1b1afb86c85a65",
+    "schemaHash": "sha256:64bede96e0da9406c2f2f02647020110a099473d67ac6dbaac2a9c7aea2327d7"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+   ],
+   "retired": {
+    "reason": "the host authorises the presentation (item 1) and checks filesDisabled (item 2) before it checks the manifest (item 3), so invalidManifest and invalidParts are reached only for an existing room and a presentation that verifies: prior state",
+    "since": "0.1.0-draft"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        },
+        "manifest": {
+         "size": 1,
+         "chunks": {
+          "chunkSize": 16384,
+          "chunkCount": 2,
+          "chunkDigests": [
+           "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+           "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+          ]
+         },
+         "digest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/blobs/upload/begin:invalidManifest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-038",
+   "title": "rooms/blobs/upload/begin 0.2: chunks.chunkDigests does not have exactly chunkCount items, refused with invalidManifest",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/blobs/upload/begin/0.2/spec.md: \"does not have exactly\"",
+    "specs/rooms/blobs/upload/begin/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/blobs/upload/begin",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+    "pinnedDigest": "sha256:054b7dfab64e2c57359c7b94187c47a98f90537bd36c413c06f26854f772cb59",
+    "tfRef": {
+     "repoPath": "specs/rooms/blobs/upload/begin/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:27e5fc6ab008321e7271b61760d3f5083bc455cc060733fa2f1b1afb86c85a65",
+    "schemaHash": "sha256:64bede96e0da9406c2f2f02647020110a099473d67ac6dbaac2a9c7aea2327d7"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+   ],
+   "retired": {
+    "reason": "the host authorises the presentation (item 1) and checks filesDisabled (item 2) before it checks the manifest (item 3), so invalidManifest and invalidParts are reached only for an existing room and a presentation that verifies: prior state",
+    "since": "0.1.0-draft"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        },
+        "manifest": {
+         "size": 1,
+         "chunks": {
+          "chunkSize": 16384,
+          "chunkCount": 1,
+          "chunkDigests": [
+           "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+           "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+          ]
+         },
+         "digest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/blobs/upload/begin:invalidManifest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-039",
+   "title": "rooms/blobs/upload/begin 0.2: directParts.partCount is not ceil(size / partSize), refused with invalidParts",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/blobs/upload/begin/0.2/spec.md: \"is not ceil(size / partSize)\"",
+    "specs/rooms/blobs/upload/begin/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/blobs/upload/begin",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+    "pinnedDigest": "sha256:054b7dfab64e2c57359c7b94187c47a98f90537bd36c413c06f26854f772cb59",
+    "tfRef": {
+     "repoPath": "specs/rooms/blobs/upload/begin/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:27e5fc6ab008321e7271b61760d3f5083bc455cc060733fa2f1b1afb86c85a65",
+    "schemaHash": "sha256:64bede96e0da9406c2f2f02647020110a099473d67ac6dbaac2a9c7aea2327d7"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+   ],
+   "retired": {
+    "reason": "the host authorises the presentation (item 1) and checks filesDisabled (item 2) before it checks the manifest (item 3), so invalidManifest and invalidParts are reached only for an existing room and a presentation that verifies: prior state",
+    "since": "0.1.0-draft"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        },
+        "manifest": {
+         "size": 1,
+         "chunks": {
+          "chunkSize": 16384,
+          "chunkCount": 1,
+          "chunkDigests": [
+           "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+          ]
+         },
+         "digest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+        },
+        "directParts": {
+         "partSize": 16384,
+         "partCount": 2,
+         "partDigests": [
+          "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+          "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/blobs/upload/begin:invalidParts",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-040",
+   "title": "rooms/blobs/upload/begin 0.2: directParts.partDigests does not have partCount items, refused with invalidParts",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/blobs/upload/begin/0.2/spec.md: \"does not have `partCount` items\"",
+    "specs/rooms/blobs/upload/begin/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/blobs/upload/begin",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+    "pinnedDigest": "sha256:054b7dfab64e2c57359c7b94187c47a98f90537bd36c413c06f26854f772cb59",
+    "tfRef": {
+     "repoPath": "specs/rooms/blobs/upload/begin/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:27e5fc6ab008321e7271b61760d3f5083bc455cc060733fa2f1b1afb86c85a65",
+    "schemaHash": "sha256:64bede96e0da9406c2f2f02647020110a099473d67ac6dbaac2a9c7aea2327d7"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2"
+   ],
+   "retired": {
+    "reason": "the host authorises the presentation (item 1) and checks filesDisabled (item 2) before it checks the manifest (item 3), so invalidManifest and invalidParts are reached only for an existing room and a presentation that verifies: prior state",
+    "since": "0.1.0-draft"
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/blobs/upload/begin/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        },
+        "manifest": {
+         "size": 1,
+         "chunks": {
+          "chunkSize": 16384,
+          "chunkCount": 1,
+          "chunkDigests": [
+           "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+          ]
+         },
+         "digest": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+        },
+        "directParts": {
+         "partSize": 16384,
+         "partCount": 1,
+         "partDigests": [
+          "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+          "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/blobs/upload/begin:invalidParts",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-041",
+   "title": "vtc/rooms/limits/set 0.1: limits is named with clear: true, refused with invalidCombination",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/limits/set/0.1/spec.md: \"names `limits` with `clear: true`\"",
+    "specs/vtc/rooms/limits/set/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/vtc/rooms/limits/set/0.1/spec.md front matter errorCodes: vtc/rooms/limits/set:notFound (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/limits/set",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/limits/set/0.1",
+    "pinnedDigest": "sha256:c56628f871bcf9a6f9466b298b679d88d4bac9ab58a0cdf416c64a797dcb3afe",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/limits/set/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:0860584710bc34473355b53eb610c0d140bf50b0976c0c9448e028593d8e2c90",
+    "schemaHash": "sha256:2d7504a7e18b395e5d2b2f98ee14998a4edbd8575f77f40f52d5fe83c036a4af"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/limits/set/0.1"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/limits/set/0.1:vtc/rooms/limits/set:invalidCombinationClear"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/limits/set/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "target": {
+         "kind": "room"
+        },
+        "reason": "example",
+        "limits": {
+         "maxFileBytes": 1
+        },
+        "clear": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/limits/set:invalidCombination",
+       "vtc/rooms/limits/set:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-042",
+   "title": "vtc/rooms/limits/set 0.1: filesEnabled is named with a target other than room, refused with invalidCombination",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/limits/set/0.1/spec.md: \"names `filesEnabled` with a target other than `room`\"",
+    "specs/vtc/rooms/limits/set/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/vtc/rooms/limits/set/0.1/spec.md front matter errorCodes: vtc/rooms/limits/set:notFound (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/limits/set",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/limits/set/0.1",
+    "pinnedDigest": "sha256:c56628f871bcf9a6f9466b298b679d88d4bac9ab58a0cdf416c64a797dcb3afe",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/limits/set/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:0860584710bc34473355b53eb610c0d140bf50b0976c0c9448e028593d8e2c90",
+    "schemaHash": "sha256:2d7504a7e18b395e5d2b2f98ee14998a4edbd8575f77f40f52d5fe83c036a4af"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/limits/set/0.1"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/limits/set/0.1:vtc/rooms/limits/set:invalidCombinationFilesEnabled"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/limits/set/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "target": {
+         "kind": "memberDefault"
+        },
+        "reason": "example",
+        "filesEnabled": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/limits/set:invalidCombination",
+       "vtc/rooms/limits/set:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-043",
+   "title": "rooms/keys/act 0.8: the document's type is not in the task's table of host-bound room requests, refused with typeNotActable",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/keys/act/0.8/spec.md: \"is not in this task's table of host-bound room requests\"",
+    "specs/rooms/keys/act/0.8/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/rooms/keys/act/0.8/spec.md front matter errorCodes: rooms/keys/act:notAMember (the caller's standing) is also accepted, as permissionDenied is: SPEC.md 7.2 items 2 and 10 do not order the authorisation check against the task's own checks",
+    "specs/rooms/keys/act/0.8/spec.md front matter errorCodes: rooms/keys/act:actionNotHeld (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "specs/rooms/keys/act/0.8/spec.md front matter errorCodes: rooms/keys/act:keyPackageNotHeld (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/keys/act",
+    "version": "0.8",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/keys/act/0.8",
+    "pinnedDigest": "sha256:5c3803d2075c561ca2b1dbc6894f73d95218a8fb49e2afcc0f9fdb42482a2070",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/act/0.8/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:14ff23a0b93a8bb544c42a0b8e9f6cafeefc8b986c57ba863457dedc40acee5b",
+    "schemaHash": "sha256:5c37bb4627d01a4e4fdd99d19c5ba8e44f33f2f5b7d9637b4a782b757844f0b9",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/act/0.8"
+   ],
+   "mutants": [
+    "bx:rooms/keys/act/0.8:rooms/keys/act:typeNotActable"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/act/0.8",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "document": {
+         "id": "example",
+         "type": "https://trusttasks.org/spec/rooms/conformance-unlisted/0.1",
+         "recipient": "did:web:alice.example",
+         "issuedAt": "2026-11-12T10:00:00Z",
+         "payload": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/keys/act:typeNotActable",
+       "rooms/keys/act:notAMember",
+       "rooms/keys/act:actionNotHeld",
+       "rooms/keys/act:keyPackageNotHeld",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-044",
+   "title": "rooms/keys/act 0.9: the document's type is not in the task's table of host-bound room requests, refused with typeNotActable",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/keys/act/0.9/spec.md: \"is not in this task's table of host-bound room requests\"",
+    "specs/rooms/keys/act/0.9/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/rooms/keys/act/0.9/spec.md front matter errorCodes: rooms/keys/act:notAMember (the caller's standing) is also accepted, as permissionDenied is: SPEC.md 7.2 items 2 and 10 do not order the authorisation check against the task's own checks",
+    "specs/rooms/keys/act/0.9/spec.md front matter errorCodes: rooms/keys/act:actionNotHeld (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "specs/rooms/keys/act/0.9/spec.md front matter errorCodes: rooms/keys/act:keyPackageNotHeld (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/keys/act",
+    "version": "0.9",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/keys/act/0.9",
+    "pinnedDigest": "sha256:cd142d15aba507aeff9560a5067f831e7bc66bace64d1daff617619069bdac20",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/act/0.9/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:022f2f716c42e933cdf2df30eb4fc12af2f10a50d2b6e0b8fad702cf7aa9cc6a",
+    "schemaHash": "sha256:46b35d0e0cd09687f92bea874b3a2aaff565fcd1474a6bbb8b411e27916dae35",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/act/0.9"
+   ],
+   "mutants": [
+    "bx:rooms/keys/act/0.9:rooms/keys/act:typeNotActable"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/act/0.9",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "document": {
+         "id": "example",
+         "type": "https://trusttasks.org/spec/rooms/conformance-unlisted/0.1",
+         "recipient": "did:web:alice.example",
+         "issuedAt": "2026-11-12T10:00:00Z",
+         "payload": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/keys/act:typeNotActable",
+       "rooms/keys/act:notAMember",
+       "rooms/keys/act:actionNotHeld",
+       "rooms/keys/act:keyPackageNotHeld",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-045",
+   "title": "rooms/keys/act 0.10: the document's type is not in the task's table of host-bound room requests, refused with typeNotActable",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/keys/act/0.10/spec.md: \"is not in this task's table of host-bound room requests\"",
+    "specs/rooms/keys/act/0.10/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/rooms/keys/act/0.10/spec.md front matter errorCodes: rooms/keys/act:notAMember (the caller's standing) is also accepted, as permissionDenied is: SPEC.md 7.2 items 2 and 10 do not order the authorisation check against the task's own checks",
+    "specs/rooms/keys/act/0.10/spec.md front matter errorCodes: rooms/keys/act:actionNotHeld (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "specs/rooms/keys/act/0.10/spec.md front matter errorCodes: rooms/keys/act:keyPackageNotHeld (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/keys/act",
+    "version": "0.10",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/keys/act/0.10",
+    "pinnedDigest": "sha256:ea9ab9fb9d63438299e42452cacb1ae4ca0d668056a9f69c73c5b2f1f7fdb9b2",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/act/0.10/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:1df65c315ed1a02623eb052f2d16a6c5dfb3391066fcfc79bf7f3de8b2589f16",
+    "schemaHash": "sha256:de0b89071c6bac8a37e49399d83a8f0c977ca564d6335c2667cb858e9fd0853f",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/act/0.10"
+   ],
+   "mutants": [
+    "bx:rooms/keys/act/0.10:rooms/keys/act:typeNotActable"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/act/0.10",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "document": {
+         "id": "example",
+         "type": "https://trusttasks.org/spec/rooms/conformance-unlisted/0.1",
+         "recipient": "did:web:alice.example",
+         "issuedAt": "2026-11-12T10:00:00Z",
+         "payload": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/keys/act:typeNotActable",
+       "rooms/keys/act:notAMember",
+       "rooms/keys/act:actionNotHeld",
+       "rooms/keys/act:keyPackageNotHeld",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-046",
+   "title": "rooms/keys/seal 0.2: under signAsPrincipal, plaintext does not decode to a sealed record body, refused with bodyInvalid",
+   "tier": 1,
+   "spec": [
+    "specs/rooms/keys/seal/0.2/spec.md: \"refuse with `bodyInvalid` unless it is a `SealedRecordBody` with no `proof` and no unknown member\"",
+    "specs/rooms/keys/seal/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/rooms/keys/seal/0.2/spec.md front matter errorCodes: rooms/keys/seal:notAMember (the caller's standing) is also accepted, as permissionDenied is: SPEC.md 7.2 items 2 and 10 do not order the authorisation check against the task's own checks",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "rooms/keys/seal",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/rooms/keys/seal/0.2",
+    "pinnedDigest": "sha256:41e31f2ea7d50c42718350928e3f8e65709a8bd948460b5d5d7e50c953a297d0",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/seal/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:1db32c2248e09df311203224c35c4d4d6297b70d52e018eaf8fdd6fd20545786",
+    "schemaHash": "sha256:c9913ff9c462c9a408037d07383ea9ac2aa0c8a68de498d9da525d3da3701b19",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/seal/0.2"
+   ],
+   "mutants": [
+    "bx:rooms/keys/seal/0.2:rooms/keys/seal:bodyInvalid"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/seal/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "key": "example",
+        "version": 0,
+        "plaintext": "bm90LWpzb24",
+        "signAsPrincipal": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "rooms/keys/seal:bodyInvalid",
+       "rooms/keys/seal:notAMember",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-047",
+   "title": "vtc/rooms/usage 0.1: from is after to, refused with invalidRange",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/usage/0.1/spec.md: \"is after `to`, the range is longer than 400 days\"",
+    "specs/vtc/rooms/usage/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/usage",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/usage/0.1",
+    "pinnedDigest": "sha256:b56a58f8d41ec5c868c48f4573f4fd84cf4d0f087e024645b39a7f7173b319c6",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/usage/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:d0f3628cbd171a9e7f9989a4a188e0f1b615fb7dd6c18fc40d6312737bb4ac32",
+    "schemaHash": "sha256:045a77604d93e6799351e470f63b3bb82bde5302bbd3293920fa4147c15b28aa"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/usage/0.1"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/usage/0.1:vtc/rooms/usage:invalidRange"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/usage/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "groupBy": "room",
+        "filter": {
+         "from": "2026-02-01",
+         "to": "2026-01-01"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/usage:invalidRange",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-RM-048",
+   "title": "vtc/rooms/usage 0.1: the range is longer than 400 days, refused with invalidRange",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/rooms/usage/0.1/spec.md: \"the range is longer than 400 days\"",
+    "specs/vtc/rooms/usage/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/rooms/usage",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/rooms/usage/0.1",
+    "pinnedDigest": "sha256:b56a58f8d41ec5c868c48f4573f4fd84cf4d0f087e024645b39a7f7173b319c6",
+    "tfRef": {
+     "repoPath": "specs/vtc/rooms/usage/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family RM (Rooms): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:d0f3628cbd171a9e7f9989a4a188e0f1b615fb7dd6c18fc40d6312737bb4ac32",
+    "schemaHash": "sha256:045a77604d93e6799351e470f63b3bb82bde5302bbd3293920fa4147c15b28aa"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/rooms/usage/0.1"
+   ],
+   "mutants": [
+    "bx:vtc/rooms/usage/0.1:vtc/rooms/usage:invalidRangeTooLong"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/rooms/usage/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "groupBy": "room",
+        "filter": {
+         "from": "2024-01-01",
+         "to": "2026-01-01"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/rooms/usage:invalidRange",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  }
+ ]
+}

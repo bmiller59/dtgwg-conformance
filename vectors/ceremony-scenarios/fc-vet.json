@@ -1,0 +1,1654 @@
+{
+  "format": "tt-ceremony-scenarios/0.1",
+  "group": "FC-VET",
+  "family": "ceremony-scenarios",
+  "evidence": "complete-ceremony",
+  "ceremony": {
+    "name": "Identity vetting",
+    "channel": "proposed",
+    "choreography": "docs/25-ceremony-scenarios.md section 6.6: request, session answered with a signed Vetting Card bound to the session (up to 3 rounds), then a Vetting Statement citing the session or a decline. The reference party models only what the scenario observes, never a community's vetter policy."
+  },
+  "scenarios": [
+    {
+      "id": "FC-VET-001",
+      "title": "request, session, the applicant's signed card bound to the session, then the vetter's statement citing that session: both read completed, the applicant holds the statement",
+      "source": {
+        "slug": "vetting/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vetting/request/0.1",
+        "pinnedDigest": "sha256:71573461b9dfeb3ef74a16b6d3d7354a7a20bfd18f702f5722ec8246392cfc97",
+        "tfRef": {
+          "repoPath": "specs/vetting/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+        "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+      },
+      "participants": {
+        "A": {
+          "role": "applicant",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent",
+            "https://trusttasks.org/spec/vetting/session/0.1",
+            "https://trusttasks.org/spec/vetting/decline/0.1",
+            "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+          ]
+        },
+        "V": {
+          "role": "vetter",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent",
+            "https://trusttasks.org/spec/vetting/request/0.1"
+          ]
+        }
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 30000,
+      "spec": [
+        "TF ceremonies/vetting/identity-vetting/0.1/ceremony.json (sha256 09a77e48ded83e3df1e5c52dd07cb5505636d4cb870ef921507a998adeb91826)",
+        "ceremony steps request (applicant), session (vetter, maxRounds 3), attest (credential-exchange/issue, prev session, terminal), decline (prev session, terminal); completion allOf request, session, anyOf attest, decline",
+        "TF specs/vetting/session/0.1/spec.md (the session's challenge and domain; the card bound to them, Conformance vetter 5; the statement cites the session by taskContext and taskDigestMultibase, the same outcome-evidence citation as FC-WSH)",
+        "TF specs/vetting/_shared/0.1/vetting-card.schema.json (the signed Vetting Card the applicant answers a session with)",
+        "the statement carries taskContext (the session's id) and taskDigestMultibase (the digest of the session document as received)"
+      ],
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "vetting/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/request/0.1",
+            "pinnedDigest": "sha256:71573461b9dfeb3ef74a16b6d3d7354a7a20bfd18f702f5722ec8246392cfc97",
+            "tfRef": {
+              "repoPath": "specs/vetting/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+            "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+          },
+          "do": {
+            "initiate": {
+              "by": "A",
+              "to": "V",
+              "kind": "vetting-request",
+              "capture": "thread",
+              "args": {
+                "community": "did:example:vetting-community"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "A",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/request/0.1#response",
+                "count": 1
+              }
+            },
+            {
+              "at": "A",
+              "ceremony": "open"
+            },
+            {
+              "at": "V",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "session",
+          "source": {
+            "slug": "vetting/session",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/session/0.1",
+            "pinnedDigest": "sha256:a15d89a3a87a1283f631215d4a6f9da264dde2d9f0876cd58223ed4c0fd562e4",
+            "tfRef": {
+              "repoPath": "specs/vetting/session/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ab64d929d3977f336937bc2e8f64eba4f21bd662d7e7af8dce124938fca01787",
+            "schemaHash": "sha256:d1034088a1aba1918767269cc4e12a2dce4d1bab222a47e8a0bc16ec50a81093"
+          },
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "A",
+              "kind": "vetting-session",
+              "thread": "thread",
+              "capture": "session"
+            }
+          },
+          "expect": [
+            {
+              "at": "A",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/session/0.1",
+                "count": 1
+              },
+              "thread": "session"
+            },
+            {
+              "at": "A",
+              "ceremony": "held"
+            },
+            {
+              "at": "V",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "answer",
+          "source": {
+            "slug": "vetting/session",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/session/0.1",
+            "pinnedDigest": "sha256:a15d89a3a87a1283f631215d4a6f9da264dde2d9f0876cd58223ed4c0fd562e4",
+            "tfRef": {
+              "repoPath": "specs/vetting/session/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ab64d929d3977f336937bc2e8f64eba4f21bd662d7e7af8dce124938fca01787",
+            "schemaHash": "sha256:d1034088a1aba1918767269cc4e12a2dce4d1bab222a47e8a0bc16ec50a81093"
+          },
+          "do": {
+            "initiate": {
+              "by": "A",
+              "to": "V",
+              "kind": "vetting-answer",
+              "thread": "session"
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/session/0.1#response",
+                "count": 1
+              },
+              "thread": "session"
+            },
+            {
+              "at": "V",
+              "ceremony": "held"
+            }
+          ]
+        },
+        {
+          "id": "attest",
+          "source": {
+            "slug": "credential-exchange/issue",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/credential-exchange/issue/0.1",
+            "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+            "tfRef": {
+              "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+            "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+          },
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "A",
+              "kind": "vetting-attest",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "A",
+              "stored": {
+                "kind": "credential",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "ceremony": "completed"
+            },
+            {
+              "at": "A",
+              "ceremony": "completed"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "A",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "ceremony": "completed"
+          },
+          {
+            "at": "A",
+            "stored": {
+              "kind": "credential",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-VET-002",
+      "title": "request, session, the applicant's card, then the vetter declines: both read declined, the applicant holds no statement",
+      "source": {
+        "slug": "vetting/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vetting/request/0.1",
+        "pinnedDigest": "sha256:71573461b9dfeb3ef74a16b6d3d7354a7a20bfd18f702f5722ec8246392cfc97",
+        "tfRef": {
+          "repoPath": "specs/vetting/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+        "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+      },
+      "participants": {
+        "A": {
+          "role": "applicant",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent",
+            "https://trusttasks.org/spec/vetting/session/0.1",
+            "https://trusttasks.org/spec/vetting/decline/0.1",
+            "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+          ]
+        },
+        "V": {
+          "role": "vetter",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent",
+            "https://trusttasks.org/spec/vetting/request/0.1"
+          ]
+        }
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 30000,
+      "spec": [
+        "TF ceremonies/vetting/identity-vetting/0.1/ceremony.json (sha256 09a77e48ded83e3df1e5c52dd07cb5505636d4cb870ef921507a998adeb91826)",
+        "ceremony steps request (applicant), session (vetter, maxRounds 3), attest (credential-exchange/issue, prev session, terminal), decline (prev session, terminal); completion allOf request, session, anyOf attest, decline",
+        "TF specs/vetting/session/0.1/spec.md (the session's challenge and domain; the card bound to them, Conformance vetter 5; the statement cites the session by taskContext and taskDigestMultibase, the same outcome-evidence citation as FC-WSH)",
+        "TF specs/vetting/_shared/0.1/vetting-card.schema.json (the signed Vetting Card the applicant answers a session with)",
+        "the decline is the other terminal step, after the session (prev session)"
+      ],
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "vetting/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/request/0.1",
+            "pinnedDigest": "sha256:71573461b9dfeb3ef74a16b6d3d7354a7a20bfd18f702f5722ec8246392cfc97",
+            "tfRef": {
+              "repoPath": "specs/vetting/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+            "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+          },
+          "do": {
+            "initiate": {
+              "by": "A",
+              "to": "V",
+              "kind": "vetting-request",
+              "capture": "thread",
+              "args": {
+                "community": "did:example:vetting-community"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "A",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/request/0.1#response",
+                "count": 1
+              }
+            },
+            {
+              "at": "A",
+              "ceremony": "open"
+            },
+            {
+              "at": "V",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "session",
+          "source": {
+            "slug": "vetting/session",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/session/0.1",
+            "pinnedDigest": "sha256:a15d89a3a87a1283f631215d4a6f9da264dde2d9f0876cd58223ed4c0fd562e4",
+            "tfRef": {
+              "repoPath": "specs/vetting/session/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ab64d929d3977f336937bc2e8f64eba4f21bd662d7e7af8dce124938fca01787",
+            "schemaHash": "sha256:d1034088a1aba1918767269cc4e12a2dce4d1bab222a47e8a0bc16ec50a81093"
+          },
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "A",
+              "kind": "vetting-session",
+              "thread": "thread",
+              "capture": "session"
+            }
+          },
+          "expect": [
+            {
+              "at": "A",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/session/0.1",
+                "count": 1
+              },
+              "thread": "session"
+            },
+            {
+              "at": "A",
+              "ceremony": "held"
+            },
+            {
+              "at": "V",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "answer",
+          "source": {
+            "slug": "vetting/session",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/session/0.1",
+            "pinnedDigest": "sha256:a15d89a3a87a1283f631215d4a6f9da264dde2d9f0876cd58223ed4c0fd562e4",
+            "tfRef": {
+              "repoPath": "specs/vetting/session/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ab64d929d3977f336937bc2e8f64eba4f21bd662d7e7af8dce124938fca01787",
+            "schemaHash": "sha256:d1034088a1aba1918767269cc4e12a2dce4d1bab222a47e8a0bc16ec50a81093"
+          },
+          "do": {
+            "initiate": {
+              "by": "A",
+              "to": "V",
+              "kind": "vetting-answer",
+              "thread": "session"
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/session/0.1#response",
+                "count": 1
+              },
+              "thread": "session"
+            },
+            {
+              "at": "V",
+              "ceremony": "held"
+            }
+          ]
+        },
+        {
+          "id": "decline",
+          "source": {
+            "slug": "vetting/decline",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/decline/0.1",
+            "pinnedDigest": "sha256:ad235b261495d165235ced073b961433cb21ad9e061f833c8e97245e34454d29",
+            "tfRef": {
+              "repoPath": "specs/vetting/decline/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:5ea846a760ac48b7e0eab714505525eca9dac0202cf0f3bc8fd563513a0c7bf5",
+            "schemaHash": "sha256:b7c89b6bcaf52a635bcfd714a61dc10fadc97a5b48eb6196ee579c224b7331d2"
+          },
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "A",
+              "kind": "vetting-decline",
+              "thread": "thread",
+              "capture": "dec"
+            }
+          },
+          "expect": [
+            {
+              "at": "A",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/decline/0.1",
+                "count": 1
+              },
+              "thread": "dec"
+            },
+            {
+              "at": "A",
+              "ceremony": "declined"
+            },
+            {
+              "at": "V",
+              "ceremony": "declined"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "declined"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "A",
+            "ceremony": "declined"
+          },
+          {
+            "at": "V",
+            "ceremony": "declined"
+          },
+          {
+            "at": "A",
+            "stored": {
+              "kind": "credential",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-VET-003",
+      "title": "the first session lapses unanswered, the vetter re-opens (round 2 of at most 3), the applicant answers the second, the statement cites the second session",
+      "source": {
+        "slug": "vetting/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vetting/request/0.1",
+        "pinnedDigest": "sha256:71573461b9dfeb3ef74a16b6d3d7354a7a20bfd18f702f5722ec8246392cfc97",
+        "tfRef": {
+          "repoPath": "specs/vetting/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+        "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+      },
+      "participants": {
+        "A": {
+          "role": "applicant",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent",
+            "https://trusttasks.org/spec/vetting/session/0.1",
+            "https://trusttasks.org/spec/vetting/decline/0.1",
+            "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+          ]
+        },
+        "V": {
+          "role": "vetter",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent",
+            "https://trusttasks.org/spec/vetting/request/0.1"
+          ]
+        }
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 30000,
+      "spec": [
+        "TF ceremonies/vetting/identity-vetting/0.1/ceremony.json (sha256 09a77e48ded83e3df1e5c52dd07cb5505636d4cb870ef921507a998adeb91826)",
+        "ceremony steps request (applicant), session (vetter, maxRounds 3), attest (credential-exchange/issue, prev session, terminal), decline (prev session, terminal); completion allOf request, session, anyOf attest, decline",
+        "TF specs/vetting/session/0.1/spec.md (the session's challenge and domain; the card bound to them, Conformance vetter 5; the statement cites the session by taskContext and taskDigestMultibase, the same outcome-evidence citation as FC-WSH)",
+        "TF specs/vetting/_shared/0.1/vetting-card.schema.json (the signed Vetting Card the applicant answers a session with)",
+        "session maxRounds 3: a session that lapses may be re-opened; each round is its own exchange with its own id and challenge"
+      ],
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "vetting/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/request/0.1",
+            "pinnedDigest": "sha256:71573461b9dfeb3ef74a16b6d3d7354a7a20bfd18f702f5722ec8246392cfc97",
+            "tfRef": {
+              "repoPath": "specs/vetting/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+            "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+          },
+          "do": {
+            "initiate": {
+              "by": "A",
+              "to": "V",
+              "kind": "vetting-request",
+              "capture": "thread",
+              "args": {
+                "community": "did:example:vetting-community"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "A",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/request/0.1#response",
+                "count": 1
+              }
+            },
+            {
+              "at": "A",
+              "ceremony": "open"
+            },
+            {
+              "at": "V",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "session-1",
+          "source": {
+            "slug": "vetting/session",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/session/0.1",
+            "pinnedDigest": "sha256:a15d89a3a87a1283f631215d4a6f9da264dde2d9f0876cd58223ed4c0fd562e4",
+            "tfRef": {
+              "repoPath": "specs/vetting/session/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ab64d929d3977f336937bc2e8f64eba4f21bd662d7e7af8dce124938fca01787",
+            "schemaHash": "sha256:d1034088a1aba1918767269cc4e12a2dce4d1bab222a47e8a0bc16ec50a81093"
+          },
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "A",
+              "kind": "vetting-session",
+              "thread": "thread",
+              "capture": "session1"
+            }
+          },
+          "expect": [
+            {
+              "at": "A",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/session/0.1",
+                "count": 1
+              },
+              "thread": "session1"
+            },
+            {
+              "at": "A",
+              "ceremony": "held"
+            },
+            {
+              "at": "V",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "session-2",
+          "source": {
+            "slug": "vetting/session",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/session/0.1",
+            "pinnedDigest": "sha256:a15d89a3a87a1283f631215d4a6f9da264dde2d9f0876cd58223ed4c0fd562e4",
+            "tfRef": {
+              "repoPath": "specs/vetting/session/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ab64d929d3977f336937bc2e8f64eba4f21bd662d7e7af8dce124938fca01787",
+            "schemaHash": "sha256:d1034088a1aba1918767269cc4e12a2dce4d1bab222a47e8a0bc16ec50a81093"
+          },
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "A",
+              "kind": "vetting-session",
+              "thread": "thread",
+              "capture": "session2"
+            }
+          },
+          "expect": [
+            {
+              "at": "A",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/session/0.1",
+                "count": 1
+              },
+              "thread": "session2"
+            },
+            {
+              "at": "A",
+              "ceremony": "held"
+            },
+            {
+              "at": "V",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "answer",
+          "source": {
+            "slug": "vetting/session",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/session/0.1",
+            "pinnedDigest": "sha256:a15d89a3a87a1283f631215d4a6f9da264dde2d9f0876cd58223ed4c0fd562e4",
+            "tfRef": {
+              "repoPath": "specs/vetting/session/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ab64d929d3977f336937bc2e8f64eba4f21bd662d7e7af8dce124938fca01787",
+            "schemaHash": "sha256:d1034088a1aba1918767269cc4e12a2dce4d1bab222a47e8a0bc16ec50a81093"
+          },
+          "do": {
+            "initiate": {
+              "by": "A",
+              "to": "V",
+              "kind": "vetting-answer",
+              "thread": "session2"
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/session/0.1#response",
+                "count": 1
+              },
+              "thread": "session2"
+            },
+            {
+              "at": "V",
+              "ceremony": "held"
+            }
+          ]
+        },
+        {
+          "id": "attest",
+          "source": {
+            "slug": "credential-exchange/issue",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/credential-exchange/issue/0.1",
+            "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+            "tfRef": {
+              "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+            "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+          },
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "A",
+              "kind": "vetting-attest",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "A",
+              "stored": {
+                "kind": "credential",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "ceremony": "completed"
+            },
+            {
+              "at": "A",
+              "ceremony": "completed"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "A",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "ceremony": "completed"
+          },
+          {
+            "at": "A",
+            "stored": {
+              "kind": "credential",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-VET-004",
+      "title": "a card bound to another challenge than the session's is refused by the vetter; no card is accepted and the applicant reads refused",
+      "source": {
+        "slug": "vetting/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vetting/request/0.1",
+        "pinnedDigest": "sha256:71573461b9dfeb3ef74a16b6d3d7354a7a20bfd18f702f5722ec8246392cfc97",
+        "tfRef": {
+          "repoPath": "specs/vetting/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+        "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+      },
+      "participants": {
+        "A": {
+          "role": "applicant",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent",
+            "https://trusttasks.org/spec/vetting/session/0.1",
+            "https://trusttasks.org/spec/vetting/decline/0.1",
+            "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+          ]
+        },
+        "V": {
+          "role": "vetter",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent",
+            "https://trusttasks.org/spec/vetting/request/0.1"
+          ]
+        }
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 30000,
+      "spec": [
+        "TF ceremonies/vetting/identity-vetting/0.1/ceremony.json (sha256 09a77e48ded83e3df1e5c52dd07cb5505636d4cb870ef921507a998adeb91826)",
+        "ceremony steps request (applicant), session (vetter, maxRounds 3), attest (credential-exchange/issue, prev session, terminal), decline (prev session, terminal); completion allOf request, session, anyOf attest, decline",
+        "TF specs/vetting/session/0.1/spec.md (the session's challenge and domain; the card bound to them, Conformance vetter 5; the statement cites the session by taskContext and taskDigestMultibase, the same outcome-evidence citation as FC-WSH)",
+        "TF specs/vetting/_shared/0.1/vetting-card.schema.json (the signed Vetting Card the applicant answers a session with)",
+        "Conformance vetter 5: community, challenge and domain of the card must equal the session's; a card that fails is not accepted"
+      ],
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "vetting/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/request/0.1",
+            "pinnedDigest": "sha256:71573461b9dfeb3ef74a16b6d3d7354a7a20bfd18f702f5722ec8246392cfc97",
+            "tfRef": {
+              "repoPath": "specs/vetting/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+            "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+          },
+          "do": {
+            "initiate": {
+              "by": "A",
+              "to": "V",
+              "kind": "vetting-request",
+              "capture": "thread",
+              "args": {
+                "community": "did:example:vetting-community"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "A",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/request/0.1#response",
+                "count": 1
+              }
+            },
+            {
+              "at": "A",
+              "ceremony": "open"
+            },
+            {
+              "at": "V",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "session",
+          "source": {
+            "slug": "vetting/session",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/session/0.1",
+            "pinnedDigest": "sha256:a15d89a3a87a1283f631215d4a6f9da264dde2d9f0876cd58223ed4c0fd562e4",
+            "tfRef": {
+              "repoPath": "specs/vetting/session/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ab64d929d3977f336937bc2e8f64eba4f21bd662d7e7af8dce124938fca01787",
+            "schemaHash": "sha256:d1034088a1aba1918767269cc4e12a2dce4d1bab222a47e8a0bc16ec50a81093"
+          },
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "A",
+              "kind": "vetting-session",
+              "thread": "thread",
+              "capture": "session"
+            }
+          },
+          "expect": [
+            {
+              "at": "A",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/session/0.1",
+                "count": 1
+              },
+              "thread": "session"
+            },
+            {
+              "at": "A",
+              "ceremony": "held"
+            },
+            {
+              "at": "V",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "answer-unbound",
+          "source": {
+            "slug": "vetting/session",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/session/0.1",
+            "pinnedDigest": "sha256:a15d89a3a87a1283f631215d4a6f9da264dde2d9f0876cd58223ed4c0fd562e4",
+            "tfRef": {
+              "repoPath": "specs/vetting/session/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ab64d929d3977f336937bc2e8f64eba4f21bd662d7e7af8dce124938fca01787",
+            "schemaHash": "sha256:d1034088a1aba1918767269cc4e12a2dce4d1bab222a47e8a0bc16ec50a81093"
+          },
+          "do": {
+            "initiate": {
+              "by": "A",
+              "to": "V",
+              "kind": "vetting-answer",
+              "thread": "session",
+              "args": {
+                "bind": "other"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "A",
+              "received": {
+                "code": "taskFailed",
+                "count": 1
+              },
+              "thread": "session"
+            },
+            {
+              "at": "V",
+              "ceremony": "open"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "reads": [
+        "A"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "A",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "ceremony": "open"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-VET-005",
+      "title": "a statement issued with no session (it cites the request exchange) is refused by the applicant; the vetter reads refused and the applicant holds nothing",
+      "source": {
+        "slug": "vetting/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vetting/request/0.1",
+        "pinnedDigest": "sha256:71573461b9dfeb3ef74a16b6d3d7354a7a20bfd18f702f5722ec8246392cfc97",
+        "tfRef": {
+          "repoPath": "specs/vetting/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+        "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+      },
+      "participants": {
+        "A": {
+          "role": "applicant",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent",
+            "https://trusttasks.org/spec/vetting/session/0.1",
+            "https://trusttasks.org/spec/vetting/decline/0.1",
+            "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+          ]
+        },
+        "V": {
+          "role": "vetter",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent",
+            "https://trusttasks.org/spec/vetting/request/0.1"
+          ]
+        }
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 30000,
+      "spec": [
+        "TF ceremonies/vetting/identity-vetting/0.1/ceremony.json (sha256 09a77e48ded83e3df1e5c52dd07cb5505636d4cb870ef921507a998adeb91826)",
+        "ceremony steps request (applicant), session (vetter, maxRounds 3), attest (credential-exchange/issue, prev session, terminal), decline (prev session, terminal); completion allOf request, session, anyOf attest, decline",
+        "TF specs/vetting/session/0.1/spec.md (the session's challenge and domain; the card bound to them, Conformance vetter 5; the statement cites the session by taskContext and taskDigestMultibase, the same outcome-evidence citation as FC-WSH)",
+        "TF specs/vetting/_shared/0.1/vetting-card.schema.json (the signed Vetting Card the applicant answers a session with)",
+        "vetting/session: the statement MUST carry the session's id as taskContext and its task digest; the request exchange is not the session"
+      ],
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "vetting/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/request/0.1",
+            "pinnedDigest": "sha256:71573461b9dfeb3ef74a16b6d3d7354a7a20bfd18f702f5722ec8246392cfc97",
+            "tfRef": {
+              "repoPath": "specs/vetting/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+            "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+          },
+          "do": {
+            "initiate": {
+              "by": "A",
+              "to": "V",
+              "kind": "vetting-request",
+              "capture": "thread",
+              "args": {
+                "community": "did:example:vetting-community"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "A",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/request/0.1#response",
+                "count": 1
+              }
+            },
+            {
+              "at": "A",
+              "ceremony": "open"
+            },
+            {
+              "at": "V",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "attest-no-session",
+          "source": {
+            "slug": "credential-exchange/issue",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/credential-exchange/issue/0.1",
+            "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+            "tfRef": {
+              "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+            "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+          },
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "A",
+              "kind": "vetting-attest",
+              "thread": "thread",
+              "args": {
+                "without": "session"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "received": {
+                "code": "taskFailed",
+                "count": 1
+              }
+            },
+            {
+              "at": "A",
+              "stored": {
+                "kind": "credential",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "reads": [
+        "V"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "V",
+            "ceremony": "refused"
+          },
+          {
+            "at": "A",
+            "stored": {
+              "kind": "credential",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-VET-006",
+      "title": "after the statement the enactment has ended: a decline sent anyway is refused by the applicant, who still holds the statement; both read completed",
+      "source": {
+        "slug": "vetting/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vetting/request/0.1",
+        "pinnedDigest": "sha256:71573461b9dfeb3ef74a16b6d3d7354a7a20bfd18f702f5722ec8246392cfc97",
+        "tfRef": {
+          "repoPath": "specs/vetting/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+        "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+      },
+      "participants": {
+        "A": {
+          "role": "applicant",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent",
+            "https://trusttasks.org/spec/vetting/session/0.1",
+            "https://trusttasks.org/spec/vetting/decline/0.1",
+            "https://trusttasks.org/spec/credential-exchange/issue/0.1"
+          ]
+        },
+        "V": {
+          "role": "vetter",
+          "requires": [
+            "optional:initiate",
+            "optional:peer.connect",
+            "optional:observe.received",
+            "optional:observe.ceremony",
+            "optional:trigger.consent",
+            "https://trusttasks.org/spec/vetting/request/0.1"
+          ]
+        }
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 30000,
+      "spec": [
+        "TF ceremonies/vetting/identity-vetting/0.1/ceremony.json (sha256 09a77e48ded83e3df1e5c52dd07cb5505636d4cb870ef921507a998adeb91826)",
+        "ceremony steps request (applicant), session (vetter, maxRounds 3), attest (credential-exchange/issue, prev session, terminal), decline (prev session, terminal); completion allOf request, session, anyOf attest, decline",
+        "TF specs/vetting/session/0.1/spec.md (the session's challenge and domain; the card bound to them, Conformance vetter 5; the statement cites the session by taskContext and taskDigestMultibase, the same outcome-evidence citation as FC-WSH)",
+        "TF specs/vetting/_shared/0.1/vetting-card.schema.json (the signed Vetting Card the applicant answers a session with)",
+        "attest and decline are the two ways the enactment ends (anyOf): a second terminal step does not reopen it"
+      ],
+      "steps": [
+        {
+          "id": "connect",
+          "do": {
+            "connect": "all"
+          }
+        },
+        {
+          "id": "request",
+          "source": {
+            "slug": "vetting/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/request/0.1",
+            "pinnedDigest": "sha256:71573461b9dfeb3ef74a16b6d3d7354a7a20bfd18f702f5722ec8246392cfc97",
+            "tfRef": {
+              "repoPath": "specs/vetting/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+            "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+          },
+          "do": {
+            "initiate": {
+              "by": "A",
+              "to": "V",
+              "kind": "vetting-request",
+              "capture": "thread",
+              "args": {
+                "community": "did:example:vetting-community"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/request/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "A",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/request/0.1#response",
+                "count": 1
+              }
+            },
+            {
+              "at": "A",
+              "ceremony": "open"
+            },
+            {
+              "at": "V",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "session",
+          "source": {
+            "slug": "vetting/session",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/session/0.1",
+            "pinnedDigest": "sha256:a15d89a3a87a1283f631215d4a6f9da264dde2d9f0876cd58223ed4c0fd562e4",
+            "tfRef": {
+              "repoPath": "specs/vetting/session/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ab64d929d3977f336937bc2e8f64eba4f21bd662d7e7af8dce124938fca01787",
+            "schemaHash": "sha256:d1034088a1aba1918767269cc4e12a2dce4d1bab222a47e8a0bc16ec50a81093"
+          },
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "A",
+              "kind": "vetting-session",
+              "thread": "thread",
+              "capture": "session"
+            }
+          },
+          "expect": [
+            {
+              "at": "A",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/session/0.1",
+                "count": 1
+              },
+              "thread": "session"
+            },
+            {
+              "at": "A",
+              "ceremony": "held"
+            },
+            {
+              "at": "V",
+              "ceremony": "open"
+            }
+          ]
+        },
+        {
+          "id": "answer",
+          "source": {
+            "slug": "vetting/session",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/session/0.1",
+            "pinnedDigest": "sha256:a15d89a3a87a1283f631215d4a6f9da264dde2d9f0876cd58223ed4c0fd562e4",
+            "tfRef": {
+              "repoPath": "specs/vetting/session/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ab64d929d3977f336937bc2e8f64eba4f21bd662d7e7af8dce124938fca01787",
+            "schemaHash": "sha256:d1034088a1aba1918767269cc4e12a2dce4d1bab222a47e8a0bc16ec50a81093"
+          },
+          "do": {
+            "initiate": {
+              "by": "A",
+              "to": "V",
+              "kind": "vetting-answer",
+              "thread": "session"
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "received": {
+                "type": "https://trusttasks.org/spec/vetting/session/0.1#response",
+                "count": 1
+              },
+              "thread": "session"
+            },
+            {
+              "at": "V",
+              "ceremony": "held"
+            }
+          ]
+        },
+        {
+          "id": "attest",
+          "source": {
+            "slug": "credential-exchange/issue",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/credential-exchange/issue/0.1",
+            "pinnedDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+            "tfRef": {
+              "repoPath": "specs/credential-exchange/issue/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
+            "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51"
+          },
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "A",
+              "kind": "vetting-attest",
+              "thread": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "A",
+              "stored": {
+                "kind": "credential",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "ceremony": "completed"
+            },
+            {
+              "at": "A",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "decline-after-attest",
+          "source": {
+            "slug": "vetting/decline",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vetting/decline/0.1",
+            "pinnedDigest": "sha256:ad235b261495d165235ced073b961433cb21ad9e061f833c8e97245e34454d29",
+            "tfRef": {
+              "repoPath": "specs/vetting/decline/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/25): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance count.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:5ea846a760ac48b7e0eab714505525eca9dac0202cf0f3bc8fd563513a0c7bf5",
+            "schemaHash": "sha256:b7c89b6bcaf52a635bcfd714a61dc10fadc97a5b48eb6196ee579c224b7331d2"
+          },
+          "do": {
+            "initiate": {
+              "by": "V",
+              "to": "A",
+              "kind": "vetting-decline",
+              "thread": "thread",
+              "capture": "dec",
+              "args": {
+                "force": true
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "received": {
+                "code": "taskFailed",
+                "count": 1
+              },
+              "thread": "dec"
+            },
+            {
+              "at": "A",
+              "ceremony": "completed"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "A",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "ceremony": "completed"
+          },
+          {
+            "at": "A",
+            "stored": {
+              "kind": "credential",
+              "count": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

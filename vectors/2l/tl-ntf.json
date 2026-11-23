@@ -1,0 +1,1000 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "TL-NTF",
+  "family": "2l",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "TL-NTF-001",
+      "title": "notifications/notify 0.1: the payload is validated against the task's payload schema (missing required member notification; unknown member in a closed payload; wrong type for notification)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/notifications/notify/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"notification\"], additionalProperties false",
+        "specs/notifications/notify/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/notifications/notify/0.1"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p1)",
+              "type": "https://trusttasks.org/spec/notifications/notify/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/notifications/notify/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "notification": {
+                  "notificationId": "did:web:alice.example",
+                  "revision": 1,
+                  "kind": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                  "subject": {
+                    "heldBy": "did:web:alice.example",
+                    "id": "example",
+                    "openWith": "https://example.org/x"
+                  },
+                  "audience": "did:web:alice.example",
+                  "status": "available",
+                  "relayable": false
+                },
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p3)",
+              "type": "https://trusttasks.org/spec/notifications/notify/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "notification": "x"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "notifications/notify",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/notifications/notify/0.1",
+        "pinnedDigest": "sha256:4135694014cb8ccdc294f95696d51104f75772c141feeffe67970bb2fb8d7ed8",
+        "tfRef": {
+          "repoPath": "specs/notifications/notify/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). Promoted to the registry channel in batch B2b (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:523ff85bfe0cc3635bcdd0a465cd9e47635b4d3b8e2f4fc5e3953834dc945d07",
+        "schemaHash": "sha256:6d231ab9baa39f4c7517d9210485c65ef61b413557c3c103d06b83996ff20e4f",
+        "promotion": {
+          "batch": "B2b",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-NTF-002",
+      "title": "notifications/notify 0.1: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/notifications/notify/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/notifications/notify/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/notifications/notify/0.1"
+      ],
+      "mutants": [
+        "recipientOptional",
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/notifications/notify/0.1",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "notification": {
+                  "notificationId": "did:web:alice.example",
+                  "revision": 1,
+                  "kind": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                  "subject": {
+                    "heldBy": "did:web:alice.example",
+                    "id": "example",
+                    "openWith": "https://example.org/x"
+                  },
+                  "audience": "did:web:alice.example",
+                  "status": "available",
+                  "relayable": false
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(e2)",
+              "type": "https://trusttasks.org/spec/notifications/notify/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "notification": {
+                  "notificationId": "did:web:alice.example",
+                  "revision": 1,
+                  "kind": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                  "subject": {
+                    "heldBy": "did:web:alice.example",
+                    "id": "example",
+                    "openWith": "https://example.org/x"
+                  },
+                  "audience": "did:web:alice.example",
+                  "status": "available",
+                  "relayable": false
+                }
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "notifications/notify",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/notifications/notify/0.1",
+        "pinnedDigest": "sha256:4135694014cb8ccdc294f95696d51104f75772c141feeffe67970bb2fb8d7ed8",
+        "tfRef": {
+          "repoPath": "specs/notifications/notify/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:523ff85bfe0cc3635bcdd0a465cd9e47635b4d3b8e2f4fc5e3953834dc945d07",
+        "schemaHash": "sha256:6d231ab9baa39f4c7517d9210485c65ef61b413557c3c103d06b83996ff20e4f",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-NTF-003",
+      "title": "notifications/notify 0.1: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+        "declared policy: https://trusttasks.org/spec/notifications/notify/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/notifications/notify/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/notifications/notify/0.1"
+      ],
+      "mutants": [
+        "noFreshnessWindow"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(i1)",
+              "type": "https://trusttasks.org/spec/notifications/notify/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "payload": {
+                "notification": {
+                  "notificationId": "did:web:alice.example",
+                  "revision": 1,
+                  "kind": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                  "subject": {
+                    "heldBy": "did:web:alice.example",
+                    "id": "example",
+                    "openWith": "https://example.org/x"
+                  },
+                  "audience": "did:web:alice.example",
+                  "status": "available",
+                  "relayable": false
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        }
+      ],
+      "source": {
+        "slug": "notifications/notify",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/notifications/notify/0.1",
+        "pinnedDigest": "sha256:4135694014cb8ccdc294f95696d51104f75772c141feeffe67970bb2fb8d7ed8",
+        "tfRef": {
+          "repoPath": "specs/notifications/notify/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft).",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:523ff85bfe0cc3635bcdd0a465cd9e47635b4d3b8e2f4fc5e3953834dc945d07",
+        "schemaHash": "sha256:6d231ab9baa39f4c7517d9210485c65ef61b413557c3c103d06b83996ff20e4f"
+      }
+    },
+    {
+      "id": "TL-NTF-004",
+      "title": "notifications/notify 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/notifications/notify/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/notifications/notify/0.1#response",
+        "specs/notifications/notify/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "Mechanics only: this vector does not assert that the request is authorised, admitted, retained or what it does (that is the deployment's governance)."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/notifications/notify/0.1"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/notifications/notify/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "notification": {
+                  "notificationId": "did:web:alice.example",
+                  "revision": 1,
+                  "kind": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                  "subject": {
+                    "heldBy": "did:web:alice.example",
+                    "id": "example",
+                    "openWith": "https://example.org/x"
+                  },
+                  "audience": "did:web:alice.example",
+                  "status": "available",
+                  "relayable": false
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/notifications/notify/0.1"
+          }
+        }
+      ],
+      "source": {
+        "slug": "notifications/notify",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/notifications/notify/0.1",
+        "pinnedDigest": "sha256:4135694014cb8ccdc294f95696d51104f75772c141feeffe67970bb2fb8d7ed8",
+        "tfRef": {
+          "repoPath": "specs/notifications/notify/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:523ff85bfe0cc3635bcdd0a465cd9e47635b4d3b8e2f4fc5e3953834dc945d07",
+        "schemaHash": "sha256:6d231ab9baa39f4c7517d9210485c65ef61b413557c3c103d06b83996ff20e4f",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-NTF-005",
+      "title": "notifications/relay 0.1: the payload is validated against the task's payload schema (missing required member forwarded; unknown member in a closed payload; wrong type for forwarded)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+        "payload schema of https://trusttasks.org/spec/notifications/relay/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"forwarded\"], additionalProperties false",
+        "specs/notifications/relay/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/notifications/relay/0.1"
+      ],
+      "mutants": [
+        "noPayloadValidation",
+        "openPayload"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(p1)",
+              "type": "https://trusttasks.org/spec/notifications/relay/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {}
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p2)",
+              "type": "https://trusttasks.org/spec/notifications/relay/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "forwarded": {
+                  "id": "urn:uuid:00000000-0000-4000-8000-00000000a001",
+                  "type": "https://trusttasks.org/spec/notifications/notify/0.1",
+                  "issuer": "did:web:conformance-originator.example",
+                  "recipient": "$A",
+                  "issuedAt": "$now+0s",
+                  "payload": {
+                    "notification": {
+                      "notificationId": "did:web:alice.example",
+                      "revision": 1,
+                      "kind": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                      "subject": {
+                        "heldBy": "did:web:alice.example",
+                        "id": "example",
+                        "openWith": "https://example.org/x"
+                      },
+                      "audience": "did:web:alice.example",
+                      "status": "available",
+                      "relayable": false
+                    }
+                  },
+                  "proof": {
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-jcs-2022",
+                    "proofPurpose": "authentication",
+                    "verificationMethod": "did:web:conformance-originator.example#key-0",
+                    "created": "$now+0s",
+                    "proofValue": "z3placeholder"
+                  }
+                },
+                "conformanceUnknownMember": true
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(p3)",
+              "type": "https://trusttasks.org/spec/notifications/relay/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "forwarded": "x"
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "malformedRequest",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "notifications/relay",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/notifications/relay/0.1",
+        "pinnedDigest": "sha256:6bd09a21f5a5e288cf0812b0e4e00ce297bc7e8a41dc82d191ae8b0b7f9e86ff",
+        "tfRef": {
+          "repoPath": "specs/notifications/relay/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). Promoted to the registry channel in batch B2b (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bf41fcb2bbcafa5a30705388c15cb78db4b9ce5fe0b926c4ead9993a96a06769",
+        "schemaHash": "sha256:210bc8392805abb67f2016464b0d832d0e95a270cb16ca44b05382ef7edfb1a0",
+        "promotion": {
+          "batch": "B2b",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-NTF-006",
+      "title": "notifications/relay 0.1: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+        "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+        "declared policy: https://trusttasks.org/spec/notifications/relay/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/notifications/relay/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/notifications/relay/0.1"
+      ],
+      "mutants": [
+        "recipientOptional",
+        "proofOptional"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(e1)",
+              "type": "https://trusttasks.org/spec/notifications/relay/0.1",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "forwarded": {
+                  "id": "urn:uuid:00000000-0000-4000-8000-00000000a001",
+                  "type": "https://trusttasks.org/spec/notifications/notify/0.1",
+                  "issuer": "did:web:conformance-originator.example",
+                  "recipient": "$A",
+                  "issuedAt": "$now+0s",
+                  "payload": {
+                    "notification": {
+                      "notificationId": "did:web:alice.example",
+                      "revision": 1,
+                      "kind": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                      "subject": {
+                        "heldBy": "did:web:alice.example",
+                        "id": "example",
+                        "openWith": "https://example.org/x"
+                      },
+                      "audience": "did:web:alice.example",
+                      "status": "available",
+                      "relayable": false
+                    }
+                  },
+                  "proof": {
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-jcs-2022",
+                    "proofPurpose": "authentication",
+                    "verificationMethod": "did:web:conformance-originator.example#key-0",
+                    "created": "$now+0s",
+                    "proofValue": "z3placeholder"
+                  }
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(e2)",
+              "type": "https://trusttasks.org/spec/notifications/relay/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "forwarded": {
+                  "id": "urn:uuid:00000000-0000-4000-8000-00000000a001",
+                  "type": "https://trusttasks.org/spec/notifications/notify/0.1",
+                  "issuer": "did:web:conformance-originator.example",
+                  "recipient": "$A",
+                  "issuedAt": "$now+0s",
+                  "payload": {
+                    "notification": {
+                      "notificationId": "did:web:alice.example",
+                      "revision": 1,
+                      "kind": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                      "subject": {
+                        "heldBy": "did:web:alice.example",
+                        "id": "example",
+                        "openWith": "https://example.org/x"
+                      },
+                      "audience": "did:web:alice.example",
+                      "status": "available",
+                      "relayable": false
+                    }
+                  },
+                  "proof": {
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-jcs-2022",
+                    "proofPurpose": "authentication",
+                    "verificationMethod": "did:web:conformance-originator.example#key-0",
+                    "created": "$now+0s",
+                    "proofValue": "z3placeholder"
+                  }
+                }
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofRequired",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "notifications/relay",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/notifications/relay/0.1",
+        "pinnedDigest": "sha256:6bd09a21f5a5e288cf0812b0e4e00ce297bc7e8a41dc82d191ae8b0b7f9e86ff",
+        "tfRef": {
+          "repoPath": "specs/notifications/relay/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bf41fcb2bbcafa5a30705388c15cb78db4b9ce5fe0b926c4ead9993a96a06769",
+        "schemaHash": "sha256:210bc8392805abb67f2016464b0d832d0e95a270cb16ca44b05382ef7edfb1a0",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-NTF-007",
+      "title": "notifications/relay 0.1: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+        "declared policy: https://trusttasks.org/spec/notifications/relay/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)), isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true",
+        "specs/notifications/relay/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)"
+      ],
+      "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+      "clarifyClass": "spec-silent",
+      "clarifySince": "2026-11-15",
+      "clarifyQuestions": [],
+      "requires": [
+        "https://trusttasks.org/spec/notifications/relay/0.1"
+      ],
+      "mutants": [
+        "noFreshnessWindow"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(i1)",
+              "type": "https://trusttasks.org/spec/notifications/relay/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "payload": {
+                "forwarded": {
+                  "id": "urn:uuid:00000000-0000-4000-8000-00000000a001",
+                  "type": "https://trusttasks.org/spec/notifications/notify/0.1",
+                  "issuer": "did:web:conformance-originator.example",
+                  "recipient": "$A",
+                  "issuedAt": "$now+0s",
+                  "payload": {
+                    "notification": {
+                      "notificationId": "did:web:alice.example",
+                      "revision": 1,
+                      "kind": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                      "subject": {
+                        "heldBy": "did:web:alice.example",
+                        "id": "example",
+                        "openWith": "https://example.org/x"
+                      },
+                      "audience": "did:web:alice.example",
+                      "status": "available",
+                      "relayable": false
+                    }
+                  },
+                  "proof": {
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-jcs-2022",
+                    "proofPurpose": "authentication",
+                    "verificationMethod": "did:web:conformance-originator.example#key-0",
+                    "created": "$now+0s",
+                    "proofValue": "z3placeholder"
+                  }
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true
+          }
+        }
+      ],
+      "source": {
+        "slug": "notifications/relay",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/notifications/relay/0.1",
+        "pinnedDigest": "sha256:6bd09a21f5a5e288cf0812b0e4e00ce297bc7e8a41dc82d191ae8b0b7f9e86ff",
+        "tfRef": {
+          "repoPath": "specs/notifications/relay/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft).",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bf41fcb2bbcafa5a30705388c15cb78db4b9ce5fe0b926c4ead9993a96a06769",
+        "schemaHash": "sha256:210bc8392805abb67f2016464b0d832d0e95a270cb16ca44b05382ef7edfb1a0"
+      }
+    },
+    {
+      "id": "TL-NTF-008",
+      "title": "notifications/relay 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+        "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+        "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+        "payload and response schemas of https://trusttasks.org/spec/notifications/relay/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+        "response type https://trusttasks.org/spec/notifications/relay/0.1#response",
+        "specs/notifications/relay/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft)",
+        "Mechanics only: this vector does not assert that the request is authorised, admitted, retained or what it does (that is the deployment's governance)."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/notifications/relay/0.1"
+      ],
+      "mutants": [
+        "plainBadResponse"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(a1)",
+              "type": "https://trusttasks.org/spec/notifications/relay/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "forwarded": {
+                  "id": "urn:uuid:00000000-0000-4000-8000-00000000a001",
+                  "type": "https://trusttasks.org/spec/notifications/notify/0.1",
+                  "issuer": "did:web:conformance-originator.example",
+                  "recipient": "$A",
+                  "issuedAt": "$now+0s",
+                  "payload": {
+                    "notification": {
+                      "notificationId": "did:web:alice.example",
+                      "revision": 1,
+                      "kind": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                      "subject": {
+                        "heldBy": "did:web:alice.example",
+                        "id": "example",
+                        "openWith": "https://example.org/x"
+                      },
+                      "audience": "did:web:alice.example",
+                      "status": "available",
+                      "relayable": false
+                    }
+                  },
+                  "proof": {
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-jcs-2022",
+                    "proofPurpose": "authentication",
+                    "verificationMethod": "did:web:conformance-originator.example#key-0",
+                    "created": "$now+0s",
+                    "proofValue": "z3placeholder"
+                  }
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "answered",
+            "plainType": "https://trusttasks.org/spec/notifications/relay/0.1"
+          }
+        }
+      ],
+      "source": {
+        "slug": "notifications/relay",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/notifications/relay/0.1",
+        "pinnedDigest": "sha256:6bd09a21f5a5e288cf0812b0e4e00ce297bc7e8a41dc82d191ae8b0b7f9e86ff",
+        "tfRef": {
+          "repoPath": "specs/notifications/relay/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft). Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bf41fcb2bbcafa5a30705388c15cb78db4b9ce5fe0b926c4ead9993a96a06769",
+        "schemaHash": "sha256:210bc8392805abb67f2016464b0d832d0e95a270cb16ca44b05382ef7edfb1a0",
+        "promotion": {
+          "batch": "B2",
+          "rule": "single-implementer",
+          "provisional": false,
+          "decision": "D353",
+          "was": {
+            "channel": "proposed",
+            "profile": "2L"
+          }
+        }
+      }
+    },
+    {
+      "id": "TL-NTF-009",
+      "title": "notifications/relay 0.1: a relay whose forwarded layers are not a chain of notify and relay documents each addressed to the relayer carrying it is refused with chainInvalid",
+      "tier": 1,
+      "spec": [
+        "specs/notifications/relay/0.1/spec.md (task-force checkout origin/main bd0c05013 (2026-11-19), specification status draft): errorCodes notifications/relay:chainInvalid (\"a layer of the relay does not hold: ... a forwarded document is not addressed to the issuer of the relay carrying it, the innermost document is not a notification ...\"); consumer item 2 (\"refuses a relay that fails any of these ... with notifications/relay:chainInvalid, and holds nothing of it\")",
+        "producer item 1: the relayer relays only a document addressed to it, carried in forwarded exactly as received",
+        "The harness checks the refusal and its code only; the proofs inside the chain are not asserted (a relayer's acceptance policy is the deployment's governance)",
+        "Mechanics only: this vector does not assert that the request is authorised, admitted, retained or what it does (that is the deployment's governance)."
+      ],
+      "clarify": null,
+      "requires": [
+        "https://trusttasks.org/spec/notifications/relay/0.1"
+      ],
+      "mutants": [
+        "relayChainUnchecked"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(m1)",
+              "type": "https://trusttasks.org/spec/notifications/relay/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "forwarded": {
+                  "id": "urn:uuid:00000000-0000-4000-8000-00000000a001",
+                  "type": "https://trusttasks.org/spec/device/list/0.3",
+                  "issuer": "did:web:conformance-originator.example",
+                  "recipient": "$A",
+                  "issuedAt": "$now+0s",
+                  "payload": {
+                    "notification": {
+                      "notificationId": "did:web:alice.example",
+                      "revision": 1,
+                      "kind": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                      "subject": {
+                        "heldBy": "did:web:alice.example",
+                        "id": "example",
+                        "openWith": "https://example.org/x"
+                      },
+                      "audience": "did:web:alice.example",
+                      "status": "available",
+                      "relayable": false
+                    }
+                  },
+                  "proof": {
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-jcs-2022",
+                    "proofPurpose": "authentication",
+                    "verificationMethod": "did:web:conformance-originator.example#key-0",
+                    "created": "$now+0s",
+                    "proofValue": "z3placeholder"
+                  }
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "notifications/relay:chainInvalid",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(m2)",
+              "type": "https://trusttasks.org/spec/notifications/relay/0.1",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "forwarded": {
+                  "id": "urn:uuid:00000000-0000-4000-8000-00000000a001",
+                  "type": "https://trusttasks.org/spec/notifications/notify/0.1",
+                  "issuer": "did:web:conformance-originator.example",
+                  "recipient": "did:web:conformance-another-party.example",
+                  "issuedAt": "$now+0s",
+                  "payload": {
+                    "notification": {
+                      "notificationId": "did:web:alice.example",
+                      "revision": 1,
+                      "kind": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+                      "subject": {
+                        "heldBy": "did:web:alice.example",
+                        "id": "example",
+                        "openWith": "https://example.org/x"
+                      },
+                      "audience": "did:web:alice.example",
+                      "status": "available",
+                      "relayable": false
+                    }
+                  },
+                  "proof": {
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-jcs-2022",
+                    "proofPurpose": "authentication",
+                    "verificationMethod": "did:web:conformance-originator.example#key-0",
+                    "created": "$now+0s",
+                    "proofValue": "z3placeholder"
+                  }
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "notifications/relay:chainInvalid",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "source": {
+        "slug": "notifications/relay",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "2L",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/notifications/relay/0.1",
+        "pinnedDigest": "sha256:6bd09a21f5a5e288cf0812b0e4e00ce297bc7e8a41dc82d191ae8b0b7f9e86ff",
+        "tfRef": {
+          "repoPath": "specs/notifications/relay/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "2L profile 2L-3 member: the profile grouping is a suite proposal (docs/19) and advisory; the task itself is a Trust Tasks registry specification (tfRef, status draft).",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bf41fcb2bbcafa5a30705388c15cb78db4b9ce5fe0b926c4ead9993a96a06769",
+        "schemaHash": "sha256:210bc8392805abb67f2016464b0d832d0e95a270cb16ca44b05382ef7edfb1a0"
+      }
+    }
+  ]
+}

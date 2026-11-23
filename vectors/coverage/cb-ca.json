@@ -1,0 +1,1783 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "CB-CA",
+ "family": "coverage",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "CB-CA-001",
+   "title": "external/accounts/archive 0.2: an identifier (id) that names nothing is refused with external:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/external/accounts/archive/0.2/spec.md: \"No account with this id exists in the named context that the caller may see.\"",
+    "specs/external/accounts/archive/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "external/accounts/archive",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/external/accounts/archive/0.2",
+    "pinnedDigest": "sha256:5373ce5c14242004b3e2443d1f52ba5e90b47a22dd8dd4b10cb5b41a72068f69",
+    "tfRef": {
+     "repoPath": "specs/external/accounts/archive/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:d777eed85ab340591a29be7a98a0c9cd66e201970c5f6d0d8340708830e8feb2",
+    "schemaHash": "sha256:94522df5df6c7fb271e314965bc5f5247f4c5e9632d814841e0a96d5a9a8cc28"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/external/accounts/archive/0.2"
+   ],
+   "mutants": [
+    "bx:external/accounts/archive/0.2:external:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/external/accounts/archive/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "context": "example",
+        "id": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "external:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-002",
+   "title": "external/accounts/bindings/grant 0.2: an identifier (id) that names nothing is refused with external:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/external/accounts/bindings/grant/0.2/spec.md: \"No account with this id exists in the named context that the caller may see.\"",
+    "specs/external/accounts/bindings/grant/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "external/accounts/bindings/grant",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/external/accounts/bindings/grant/0.2",
+    "pinnedDigest": "sha256:0929c6de3b49884c38c83eb633065e1df7c76925b6346fcb31a9453d4d06bed8",
+    "tfRef": {
+     "repoPath": "specs/external/accounts/bindings/grant/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:8d8cf25904589c1c7918d0460cfb7bdeb8b3e6cecbe745595d15a606db95f4a1",
+    "schemaHash": "sha256:c7e43df0af445c3cf3a16ccf9c3cc15c76177f39780cc7901e3f0e4c9fa02b56"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/external/accounts/bindings/grant/0.2"
+   ],
+   "mutants": [
+    "bx:external/accounts/bindings/grant/0.2:external:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/external/accounts/bindings/grant/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "context": "example",
+        "id": "conformance-unknown-identifier",
+        "binding": {
+         "consumer": "did:web:alice.example",
+         "maxTtlSeconds": 60,
+         "ratePerMinute": 1
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "external:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-003",
+   "title": "external/accounts/get 0.2: an identifier (id) that names nothing is refused with external:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/external/accounts/get/0.2/spec.md: \"No account with this id exists in the named context that the caller may see.\"",
+    "specs/external/accounts/get/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "external/accounts/get",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/external/accounts/get/0.2",
+    "pinnedDigest": "sha256:b0c9ec8af641d59a6a1a706488f29fcd4ca4b831a273b6680a1edc2d63686c4f",
+    "tfRef": {
+     "repoPath": "specs/external/accounts/get/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:c2004628faa4d17f6f98996ed47c335f04c221ef7162958362865d75d63057fd",
+    "schemaHash": "sha256:93eab3cb779babaa3d055c2b9bbb63bff3bea98ea952a7521f348258df1cd435"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/external/accounts/get/0.2"
+   ],
+   "mutants": [
+    "bx:external/accounts/get/0.2:external:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/external/accounts/get/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "context": "example",
+        "id": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "external:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-004",
+   "title": "external/accounts/probe 0.2: an identifier (id) that names nothing is refused with external:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/external/accounts/probe/0.2/spec.md: \"No account with this id exists in the named context that the caller may see.\"",
+    "specs/external/accounts/probe/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "external/accounts/probe",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/external/accounts/probe/0.2",
+    "pinnedDigest": "sha256:8d3b4726788d859f488b4f3d65643049307cd77e056e4e1b4ef8b8a24e68860e",
+    "tfRef": {
+     "repoPath": "specs/external/accounts/probe/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e1e82af12738d658b61d8527b750de655447c95fb37e32f6f4a3285449f67806",
+    "schemaHash": "sha256:eb887c78d6eb9b9fdeded070a127ddf2a4e56475693b390b607400f443778fcc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/external/accounts/probe/0.2"
+   ],
+   "mutants": [
+    "bx:external/accounts/probe/0.2:external:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/external/accounts/probe/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "context": "example",
+        "id": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "external:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-005",
+   "title": "external/accounts/resume 0.2: an identifier (id) that names nothing is refused with external:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/external/accounts/resume/0.2/spec.md: \"No account with this id exists in the named context that the caller may see.\"",
+    "specs/external/accounts/resume/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "external/accounts/resume",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/external/accounts/resume/0.2",
+    "pinnedDigest": "sha256:64f524c5ea37ed383356c35bcf1fea6265eac3de8d477e0082f2a5f95f1478a5",
+    "tfRef": {
+     "repoPath": "specs/external/accounts/resume/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:d27b2689886e6eb11a8ad0ea5418480b687266fbd028d12fc073aacd8111af72",
+    "schemaHash": "sha256:8dd2c285b449a97cc13a4a51fe2de31b52e5da87ec3382de1d9ecee2a34f007f"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/external/accounts/resume/0.2"
+   ],
+   "mutants": [
+    "bx:external/accounts/resume/0.2:external:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/external/accounts/resume/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "context": "example",
+        "id": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "external:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-006",
+   "title": "external/accounts/secret/set 0.1: an identifier (id) that names nothing is refused with external:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/external/accounts/secret/set/0.1/spec.md: \"No account with this id exists in the named context that the caller may see.\"",
+    "specs/external/accounts/secret/set/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "external/accounts/secret/set",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/external/accounts/secret/set/0.1",
+    "pinnedDigest": "sha256:d2dd1f2c0e328860a0d737a22230cb90957d063769377a986c8dac78c626b8eb",
+    "tfRef": {
+     "repoPath": "specs/external/accounts/secret/set/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:b0d3b74a62969ae1fac0b2289de09d84673e880d72948d357b6b8e3133010763",
+    "schemaHash": "sha256:6cb69eb35be2847803909b37cb0bfbde3e95cd57c97f7f88655fe4ccd0406c82"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/external/accounts/secret/set/0.1"
+   ],
+   "mutants": [
+    "bx:external/accounts/secret/set/0.1:external:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/external/accounts/secret/set/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "context": "example",
+        "id": "conformance-unknown-identifier",
+        "wrappingKeyId": "example",
+        "sealedSecret": "-----BEGIN VTA SEALED BUNDLE----- -----END VTA SEALED BUNDLE-----"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "external:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-007",
+   "title": "external/accounts/setup 0.1: an identifier (id) that names nothing is refused with external:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/external/accounts/setup/0.1/spec.md: \"No account with this id exists in the named context that the caller may see.\"",
+    "specs/external/accounts/setup/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "external/accounts/setup",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/external/accounts/setup/0.1",
+    "pinnedDigest": "sha256:6128a9db969ade5a5070032eafce1f1c86becef259f05556a37cdeff52a54a82",
+    "tfRef": {
+     "repoPath": "specs/external/accounts/setup/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:dbed370dc4195c4c9015262209298579e301535122c3f744af34c7b3d07e6cb8",
+    "schemaHash": "sha256:719a76d9b4316c71dee46945e27108aa689fceee24f153b411c6f1bf3dd7106f"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/external/accounts/setup/0.1"
+   ],
+   "mutants": [
+    "bx:external/accounts/setup/0.1:external:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/external/accounts/setup/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "context": "example",
+        "id": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "external:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-008",
+   "title": "external/accounts/suspend 0.2: an identifier (id) that names nothing is refused with external:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/external/accounts/suspend/0.2/spec.md: \"No account with this id exists in the named context that the caller may see.\"",
+    "specs/external/accounts/suspend/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "external/accounts/suspend",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/external/accounts/suspend/0.2",
+    "pinnedDigest": "sha256:c386705da720a0b9bed73411b7f9aae558920f553403517d20b4f1a013aa5478",
+    "tfRef": {
+     "repoPath": "specs/external/accounts/suspend/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:42b0ec677ef7eea99161b5cd74b40d4aeb74ca22df2d02a3fd62aa3495895e14",
+    "schemaHash": "sha256:7a07ac39b978af3853cc7c6c802de799fc356a758d5b1074708967530ac2adfd"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/external/accounts/suspend/0.2"
+   ],
+   "mutants": [
+    "bx:external/accounts/suspend/0.2:external:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/external/accounts/suspend/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "context": "example",
+        "id": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "external:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-009",
+   "title": "external/accounts/update 0.2: an identifier (id) that names nothing is refused with external:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/external/accounts/update/0.2/spec.md: \"No account with this id exists in the named context that the caller may see.\"",
+    "specs/external/accounts/update/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "external/accounts/update",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/external/accounts/update/0.2",
+    "pinnedDigest": "sha256:213876e1dab854ff04130497375b7586bc0e7770c12016828264b900ba44d18b",
+    "tfRef": {
+     "repoPath": "specs/external/accounts/update/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:d6810a5c357d1fbb3f893de7b6edafbfba799641d4ef97be547bc285a487b86b",
+    "schemaHash": "sha256:d7989a75f4c78d554d7b9a0c8835895ba4e43f1f46672f861177c77243513948"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/external/accounts/update/0.2"
+   ],
+   "mutants": [
+    "bx:external/accounts/update/0.2:external:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/external/accounts/update/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "context": "example",
+        "id": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "external:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-010",
+   "title": "external/credentials/issue 0.3: an identifier (account) that names nothing is refused with external:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/external/credentials/issue/0.3/spec.md: \"No account with this id exists in the named context that the caller may see.\"",
+    "specs/external/credentials/issue/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "external/credentials/issue",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/external/credentials/issue/0.3",
+    "pinnedDigest": "sha256:a876078c71c7db99d56ac489baff3ae0a47c4f9698fb68723b4d753b7e893c96",
+    "tfRef": {
+     "repoPath": "specs/external/credentials/issue/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:195f61fa10f8dfd3bb1f3d51466bff876ba4d1e1c008854d59618c4814b486ab",
+    "schemaHash": "sha256:0e2f78ddfe5254fbb8497848a58e6ee227525208490e7a613c09bf707fac7101"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/external/credentials/issue/0.3"
+   ],
+   "mutants": [
+    "bx:external/credentials/issue/0.3:external:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/external/credentials/issue/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "context": "example",
+        "account": "conformance-unknown-identifier",
+        "ttlSeconds": 60,
+        "scope": {}
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "external:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-011",
+   "title": "git-ns/account/link-status 0.1: an identifier (linkId) that names nothing is refused with git-ns/account/link-status:unknownLink",
+   "tier": 1,
+   "spec": [
+    "specs/git-ns/account/link-status/0.1/spec.md: \"No link with this identifier was begun by the caller\"",
+    "specs/git-ns/account/link-status/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "git-ns/account/link-status",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/git-ns/account/link-status/0.1",
+    "pinnedDigest": "sha256:fd23123071e32454d48f4d08509cfe8d6c5aa697521882f6a3b110864b61c8ac",
+    "tfRef": {
+     "repoPath": "specs/git-ns/account/link-status/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:fb33e279fa370f676395a1cc68cce1804f65c85559a570f36057265a6ae0e9c3",
+    "schemaHash": "sha256:6f483c7ccbd1cd02c5af840381ceab3b20f97f33e8eb35d4eca171ec1ca768f4"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/account/link-status/0.1"
+   ],
+   "mutants": [
+    "bx:git-ns/account/link-status/0.1:git-ns/account/link-status:unknownLink"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/git-ns/account/link-status/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "linkId": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "git-ns/account/link-status:unknownLink",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-012",
+   "title": "git-ns/bridge/result 0.2: an identifier (jobId) that names nothing is refused with git-ns/bridge/result:unknownJob",
+   "tier": 1,
+   "spec": [
+    "specs/git-ns/bridge/result/0.2/spec.md: \"The VTC sent no job with this\"",
+    "specs/git-ns/bridge/result/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "git-ns/bridge/result",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/git-ns/bridge/result/0.2",
+    "pinnedDigest": "sha256:058987e25853a3babff507045d39cab5f5ff151e8ffc7d1e869b7170c83ab6fb",
+    "tfRef": {
+     "repoPath": "specs/git-ns/bridge/result/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:0c5bbbe2dfab06bec3910fcfc2581ef57e22ba9cc02e22748c9445847d23884e",
+    "schemaHash": "sha256:56056870d2105635fdfa3b07373c999b7ad1c573e92ac3bbb234f314bf19fb93"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/bridge/result/0.2"
+   ],
+   "mutants": [
+    "bx:git-ns/bridge/result/0.2:git-ns/bridge/result:unknownJob"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/git-ns/bridge/result/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "jobId": "conformance-unknown-identifier",
+        "outcome": "succeeded"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "git-ns/bridge/result:unknownJob",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-013",
+   "title": "git-ns/repo/create 0.4: an identifier (namespace) that names nothing is refused with git-ns:unknownNamespace",
+   "tier": 1,
+   "spec": [
+    "specs/git-ns/repo/create/0.4/spec.md: \"No namespace bound to this VTC has this identifier\"",
+    "specs/git-ns/repo/create/0.4/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "git-ns/repo/create",
+    "version": "0.4",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/git-ns/repo/create/0.4",
+    "pinnedDigest": "sha256:26977a3b68f43db6b031dcb2f4d1191f4df0613884ba1e1f782fd371eb351bad",
+    "tfRef": {
+     "repoPath": "specs/git-ns/repo/create/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:81545d09efbc97f7eb7ce1104e78bdc645b814cacbd431578bd76be7b52869b0",
+    "schemaHash": "sha256:1c26978888f291592288f712ec31429dd17b12bae8e3ca1ca368466f07d539b6"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/repo/create/0.4"
+   ],
+   "mutants": [
+    "bx:git-ns/repo/create/0.4:git-ns:unknownNamespace"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/create/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "namespace": "conformance-unknown-identifier",
+        "name": "a",
+        "visibility": "public"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "git-ns:unknownNamespace",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-014",
+   "title": "git-ns/repo/archive 0.3: resource = \"b.b/b/b\" is refused with git-ns:unknownRepo",
+   "tier": 1,
+   "spec": [
+    "specs/git-ns/repo/archive/0.3/spec.md: \"The resource names no repository this VTC records.\"",
+    "specs/git-ns/repo/archive/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "git-ns/repo/archive",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/git-ns/repo/archive/0.3",
+    "pinnedDigest": "sha256:e91cc2a6efa0940eb880367210053b144b8508795832d62ab7b1f45b228d08f0",
+    "tfRef": {
+     "repoPath": "specs/git-ns/repo/archive/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e91f3a2f1b005b158974df9d124af8e5ac0179e55e593bc975be8d5cc3ad329f",
+    "schemaHash": "sha256:577522015bb20ef025e427a69f9a891fe3dce7e9df40c6a1b6bc17b6ad815a8e"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/repo/archive/0.3"
+   ],
+   "mutants": [
+    "bx:git-ns/repo/archive/0.3:git-ns:unknownRepo"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/archive/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "resource": "b.b/b/b"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "git-ns:unknownRepo",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-015",
+   "title": "git-ns/repo/transfer 0.3: resource = \"b.b/b/b\" is refused with git-ns:unknownRepo",
+   "tier": 1,
+   "spec": [
+    "specs/git-ns/repo/transfer/0.3/spec.md: \"The resource names no repository this VTC records.\"",
+    "specs/git-ns/repo/transfer/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/git-ns/repo/transfer/0.3/spec.md front matter errorCodes: git-ns/repo/transfer:notOwner (the caller's standing) is also accepted, as permissionDenied is: SPEC.md 7.2 items 2 and 10 do not order the authorisation check against the task's own checks",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "git-ns/repo/transfer",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/git-ns/repo/transfer/0.3",
+    "pinnedDigest": "sha256:584eb34bae7d3cf463ccf2be77e08e2214beeb255a9e3564835d8622edcaed16",
+    "tfRef": {
+     "repoPath": "specs/git-ns/repo/transfer/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:8c744400df5f085aae44efb33e2289b83abdfd6bb19205459cc3149a1762bcf6",
+    "schemaHash": "sha256:4faa4f77d500812da72181ea42157c5f2f85c00b98315084dd26f191efa92103"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/repo/transfer/0.3"
+   ],
+   "mutants": [
+    "bx:git-ns/repo/transfer/0.3:git-ns:unknownRepo"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/git-ns/repo/transfer/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "resource": "b.b/b/b",
+        "to": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "git-ns:unknownRepo",
+       "git-ns/repo/transfer:notOwner",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-016",
+   "title": "git-ns/right/grant 0.4: an expiresAt that is not in the future is refused with git-ns/right/grant:expiryInPast",
+   "tier": 1,
+   "spec": [
+    "specs/git-ns/right/grant/0.4/spec.md: \"expiresAt is not in the future.\"",
+    "specs/git-ns/right/grant/0.4/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/git-ns/right/grant/0.4/spec.md front matter errorCodes: git-ns:unknownNamespace (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "specs/git-ns/right/grant/0.4/spec.md front matter errorCodes: git-ns:namespaceNotBound (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "specs/git-ns/right/grant/0.4/spec.md front matter errorCodes: git-ns:unknownRepo (a lookup of an object the request names) is also accepted: the lookup may run before the check this rule states, and the suite holds no such object; such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "git-ns/right/grant",
+    "version": "0.4",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/git-ns/right/grant/0.4",
+    "pinnedDigest": "sha256:3c8ee1607e8df7597f8394ed84a08c08e0a56e30595a7708d00ad2ef83e8a41f",
+    "tfRef": {
+     "repoPath": "specs/git-ns/right/grant/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:adcf7330d167d807a7b065516cd13286382724be08a621ffd70831dafa34b16d",
+    "schemaHash": "sha256:3ea3232ac8c871db08c0a029361fb0673ad95082608685202315373b5eb21d3f"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/git-ns/right/grant/0.4"
+   ],
+   "mutants": [
+    "bx:git-ns/right/grant/0.4:expiryInPast"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/git-ns/right/grant/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:alice.example",
+        "right": "git.ns.admin",
+        "resource": "a.a/a",
+        "expiresAt": "2001-01-01T00:00:00Z"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "git-ns/right/grant:expiryInPast",
+       "git-ns:unknownNamespace",
+       "git-ns:namespaceNotBound",
+       "git-ns:unknownRepo",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-017",
+   "title": "vtc/admin/actions/acknowledge 0.3: an identifier (actionId) that names nothing is refused with vtc/admin/actions/acknowledge:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/admin/actions/acknowledge/0.3/spec.md: \"No action with this actionId exists that the caller may see.\"",
+    "specs/vtc/admin/actions/acknowledge/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/admin/actions/acknowledge",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/admin/actions/acknowledge/0.3",
+    "pinnedDigest": "sha256:f567e0261dc30bd3e4df45a2aa02bb7bccb40ad0c7ff060e052f8b9228913876",
+    "tfRef": {
+     "repoPath": "specs/vtc/admin/actions/acknowledge/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:2d8cecfb6aa37dc57ccdb9f3f8981910a07d5f6c4b3c5b52197342aeebea839d",
+    "schemaHash": "sha256:048fc0374d9150f2a14418bf91dd8b317ffba729f0c4bea849b00817df7c8c2a"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/admin/actions/acknowledge/0.3"
+   ],
+   "mutants": [
+    "bx:vtc/admin/actions/acknowledge/0.3:vtc/admin/actions/acknowledge:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/admin/actions/acknowledge/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "actionId": "did:web:conformance-unknown.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/admin/actions/acknowledge:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-018",
+   "title": "vtc/admin/actions/cancel 0.3: an identifier (actionId) that names nothing is refused with vtc/admin/actions/cancel:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/admin/actions/cancel/0.3/spec.md: \"No action with this actionId exists that the caller may see.\"",
+    "specs/vtc/admin/actions/cancel/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "specs/vtc/admin/actions/cancel/0.3/spec.md front matter errorCodes: vtc/admin/actions/cancel:notRequester (the caller's standing) is also accepted, as permissionDenied is: SPEC.md 7.2 items 2 and 10 do not order the authorisation check against the task's own checks",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/admin/actions/cancel",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/admin/actions/cancel/0.3",
+    "pinnedDigest": "sha256:7845b24f6f15fb329af5ee997924abfe5bfb6c77bda6b9d4132728c260035fd5",
+    "tfRef": {
+     "repoPath": "specs/vtc/admin/actions/cancel/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:172e6483aeae52403421ec491ae321c213489d3a31f0c914e25da7fa28124c42",
+    "schemaHash": "sha256:8cfce5a60127141111b095dffde554c0b6484e711cc3375cd1c3a6ea948dcc65"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/admin/actions/cancel/0.3"
+   ],
+   "mutants": [
+    "bx:vtc/admin/actions/cancel/0.3:vtc/admin/actions/cancel:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/admin/actions/cancel/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "actionId": "did:web:conformance-unknown.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/admin/actions/cancel:notFound",
+       "vtc/admin/actions/cancel:notRequester",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-019",
+   "title": "vtc/admin/actions/show 0.3: an identifier (actionId) that names nothing is refused with vtc/admin/actions/show:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/admin/actions/show/0.3/spec.md: \"No action with this actionId exists that the caller may see.\"",
+    "specs/vtc/admin/actions/show/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vtc/admin/actions/show:notAdministrator, a code the text lists for this task and may be answered first where it fixes no order (\"a caller holding no administrative role is `notAdministrator`\"); such a pass shows only that the request was refused",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/admin/actions/show",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/admin/actions/show/0.3",
+    "pinnedDigest": "sha256:e2d23460dd5f0b7949827d2f4016433771d653f9cd6c4c76be9271deb9faa75b",
+    "tfRef": {
+     "repoPath": "specs/vtc/admin/actions/show/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:66c19f7f107f886ae7e5af1d13cc915f9e95ef568885ed89f191951b001d2036",
+    "schemaHash": "sha256:273d39ce4a9f4822c99383b67b30b561b74f1a09cfebe32fa3d686be9f23d05f"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/admin/actions/show/0.3"
+   ],
+   "mutants": [
+    "bx:vtc/admin/actions/show/0.3:vtc/admin/actions/show:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/admin/actions/show/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "actionId": "did:web:conformance-unknown.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/admin/actions/show:notFound",
+       "vtc/admin/actions/show:notAdministrator",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-020",
+   "title": "vtc/admin/actions/list 0.3: cursor = \"conformance-unissued-cursor\" is refused with vtc/admin/actions/list:invalidCursor",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/admin/actions/list/0.3/spec.md: \"is not one this community issued\"",
+    "specs/vtc/admin/actions/list/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vtc/admin/actions/list:notAdministrator, a code the text lists for this task and may be answered first where it fixes no order (\"refuse a caller holding no administrative role with `notAdministrator`\"); such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/admin/actions/list",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/admin/actions/list/0.3",
+    "pinnedDigest": "sha256:533c6b16295149d56d7d042b7b47fb9c464675f7678ce37484c33c1387f4812f",
+    "tfRef": {
+     "repoPath": "specs/vtc/admin/actions/list/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e5cc01125128a47acd2ec6033e201519eb07f8a16c8780049ab243eac226d219",
+    "schemaHash": "sha256:4c9b47938d0029aef7e97f0a54becddfc521df3c5685dc142def91f53713b950"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/admin/actions/list/0.3"
+   ],
+   "mutants": [
+    "bx:vtc/admin/actions/list/0.3:vtc/admin/actions/list:invalidCursor"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/admin/actions/list/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "view": "waitingForMe",
+        "cursor": "conformance-unissued-cursor"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/admin/actions/list:invalidCursor",
+       "vtc/admin/actions/list:notAdministrator",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-021",
+   "title": "vtc/admin/actions/list 0.3: a since supplied with a view other than history is refused with vtc/admin/actions/list:invalidFilter",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/admin/actions/list/0.3/spec.md: \"since was supplied with a view other than history\"",
+    "specs/vtc/admin/actions/list/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Also accepted: vtc/admin/actions/list:notAdministrator, a code the text lists for this task and may be answered first where it fixes no order (\"refuse a caller holding no administrative role with `notAdministrator`\"); such a pass shows only that the request was refused",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/admin/actions/list",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/admin/actions/list/0.3",
+    "pinnedDigest": "sha256:533c6b16295149d56d7d042b7b47fb9c464675f7678ce37484c33c1387f4812f",
+    "tfRef": {
+     "repoPath": "specs/vtc/admin/actions/list/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e5cc01125128a47acd2ec6033e201519eb07f8a16c8780049ab243eac226d219",
+    "schemaHash": "sha256:4c9b47938d0029aef7e97f0a54becddfc521df3c5685dc142def91f53713b950"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/admin/actions/list/0.3"
+   ],
+   "mutants": [
+    "bx:vtc/admin/actions/list/0.3:invalidFilter"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/admin/actions/list/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "view": "waitingForMe",
+        "since": "2026-01-01T00:00:00Z"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/admin/actions/list:invalidFilter",
+       "vtc/admin/actions/list:notAdministrator",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-022",
+   "title": "vtc/schemas/accepts/show 0.2: an identifier (id) that names nothing is refused with vtc/schemas/accepts/show:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/schemas/accepts/show/0.2/spec.md: \"No criterion is registered under this id.\"",
+    "specs/vtc/schemas/accepts/show/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/schemas/accepts/show",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/schemas/accepts/show/0.2",
+    "pinnedDigest": "sha256:da87d9c6427ee3ea5c16405287d6d0fdbb750093b4370505186b05e4a4ff978c",
+    "tfRef": {
+     "repoPath": "specs/vtc/schemas/accepts/show/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:cd59600c3e95c22c96649cf645b02f335f746d71554cf318da9c4b3d1ba29aeb",
+    "schemaHash": "sha256:9e31f9daa22fe131f59ff68d0f8943a8c35fad67d6c82d4de0783f1b435301e0"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/schemas/accepts/show/0.2"
+   ],
+   "mutants": [
+    "bx:vtc/schemas/accepts/show/0.2:vtc/schemas/accepts/show:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/schemas/accepts/show/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "id": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/schemas/accepts/show:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-023",
+   "title": "vtc/schemas/show 0.1: an identifier (typeUri) that names nothing is refused with vtc/schemas/show:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/schemas/show/0.1/spec.md: \"No entry is registered for this type URI.\"",
+    "specs/vtc/schemas/show/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "State-free: the identifier names nothing on a platform with no such object; a platform with seeded state may answer differently, so the vector accepts only the task's code, permissionDenied and the further codes it names (the task's own standing codes, and a code the text runs earlier).",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/schemas/show",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/schemas/show/0.1",
+    "pinnedDigest": "sha256:0f5ba94552f26f0443433c9dc13c913f4203bc70471f5200b0ba406079a869a5",
+    "tfRef": {
+     "repoPath": "specs/vtc/schemas/show/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:b3153ec74660b7ef0fe7e3ab92d2fec84dfaabace2f7dfcb1caf179e1045de90",
+    "schemaHash": "sha256:11010d8ac29761a89d7f93ac215f6c22b962210a130776b18c301acd076476c8"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/schemas/show/0.1"
+   ],
+   "mutants": [
+    "bx:vtc/schemas/show/0.1:vtc/schemas/show:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/schemas/show/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "typeUri": "conformance-unknown-identifier"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/schemas/show:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-024",
+   "title": "vtc/storage/configs/get 0.2: configId = \"b\" is refused with vtc/storage/configs/get:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/storage/configs/get/0.2/spec.md: \"The community has no storage config with this identifier.\"",
+    "specs/vtc/storage/configs/get/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/storage/configs/get",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/storage/configs/get/0.2",
+    "pinnedDigest": "sha256:176eace0d93522eb4d60cb8f2da18e7fe57d48558dc120d0929c08404b0dc628",
+    "tfRef": {
+     "repoPath": "specs/vtc/storage/configs/get/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:6b67f92e26b651a248f56a797a92f0beb7123a9842e61f3f2c49a76fef951da4",
+    "schemaHash": "sha256:99b7295881eccbbb2418f1220c0c268956382f60f8c17a2f288b9f3ae7ce7a26"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/storage/configs/get/0.2"
+   ],
+   "mutants": [
+    "bx:vtc/storage/configs/get/0.2:vtc/storage/configs/get:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/storage/configs/get/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "configId": "b"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/storage/configs/get:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-025",
+   "title": "vtc/storage/configs/probe 0.1: configId = \"b\" is refused with vtc/storage/configs/probe:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/storage/configs/probe/0.1/spec.md: \"The community has no storage config with this identifier.\"",
+    "specs/vtc/storage/configs/probe/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/storage/configs/probe",
+    "version": "0.1",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/storage/configs/probe/0.1",
+    "pinnedDigest": "sha256:7100f03931a461c78160f6afa150376031639fb024ea6b73c5267313a7c986c4",
+    "tfRef": {
+     "repoPath": "specs/vtc/storage/configs/probe/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:cc7d297bbb8c9bfd908f61d42a7938477b68eefca585452d82f1e748dfe32d0d",
+    "schemaHash": "sha256:19870fe171caf7b69f51e1ec4f83deb1c2b684daf2803d2ab85efc43931ce99d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/storage/configs/probe/0.1"
+   ],
+   "mutants": [
+    "bx:vtc/storage/configs/probe/0.1:vtc/storage/configs/probe:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/storage/configs/probe/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "configId": "b"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/storage/configs/probe:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-026",
+   "title": "vtc/storage/configs/retire 0.3: configId = \"b\" is refused with vtc/storage/configs/retire:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/storage/configs/retire/0.3/spec.md: \"The community has no storage config with this identifier.\"",
+    "specs/vtc/storage/configs/retire/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/storage/configs/retire",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/storage/configs/retire/0.3",
+    "pinnedDigest": "sha256:9543677b8285a0bc552e0025c0ea2021f4357984755b1847eecc05a898f539dc",
+    "tfRef": {
+     "repoPath": "specs/vtc/storage/configs/retire/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:aeb9b19ed34eb8f996f57bd4677a0147144a675937e4bfdc521fa9f698332f24",
+    "schemaHash": "sha256:0a9d8e7158f27296dabd6c48ddf355b8150c8b97917322aa21ef1c9eca2d426d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/storage/configs/retire/0.3"
+   ],
+   "mutants": [
+    "bx:vtc/storage/configs/retire/0.3:vtc/storage/configs/retire:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/storage/configs/retire/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "configId": "b",
+        "reason": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/storage/configs/retire:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-027",
+   "title": "vtc/storage/configs/update 0.3: configId = \"b\" is refused with vtc/storage/configs/update:notFound",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/storage/configs/update/0.3/spec.md: \"The community has no storage config with this identifier.\"",
+    "specs/vtc/storage/configs/update/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/storage/configs/update",
+    "version": "0.3",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/storage/configs/update/0.3",
+    "pinnedDigest": "sha256:04172812c727f51afd35119fb819abe8ee7d2ea4bc1487251b8ef09a37a0c3e7",
+    "tfRef": {
+     "repoPath": "specs/vtc/storage/configs/update/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:4819c35c7ebf89fdc610cc49b520ab5d4c11de1768daad9aa6d6dae9c0ceb637",
+    "schemaHash": "sha256:349b9ea30d2b948773b454e3bb3312357829d8e42de65c38f31e03e11a2d2c2d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/storage/configs/update/0.3"
+   ],
+   "mutants": [
+    "bx:vtc/storage/configs/update/0.3:vtc/storage/configs/update:notFound"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/storage/configs/update/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "configId": "b",
+        "reason": "example",
+        "label": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/storage/configs/update:notFound",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CB-CA-028",
+   "title": "vtc/storage/configs/list 0.2: cursor = \"conformance-unissued-cursor\" is refused with vtc/storage/configs/list:invalidCursor",
+   "tier": 1,
+   "spec": [
+    "specs/vtc/storage/configs/list/0.2/spec.md: \"was not issued by this community for this filter\"",
+    "specs/vtc/storage/configs/list/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The caller's standing is the deployment's governance: a refusal for lack of authority (permissionDenied) is accepted in place of the task's code, so no authorisation outcome is asserted",
+    "A permissionDenied answer shows only that an authorisation gate answered first, not that the stated rule held: the vector passes on it because the request was refused, and only a pass with the task's own code carries the evidence for the rule",
+    "Evidence basis: the task force's specification text (the quoted words)"
+   ],
+   "source": {
+    "slug": "vtc/storage/configs/list",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "coverage",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/storage/configs/list/0.2",
+    "pinnedDigest": "sha256:102a016a6bc590fef2d615a13742a250a601fd9924979c3b5bcf25f750a7b9d9",
+    "tfRef": {
+     "repoPath": "specs/vtc/storage/configs/list/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family CA (Community administration): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's specification text.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:046468724494e3b0b9a607df37ef3415a593f88c9851faa4b8e0f82e376c9203",
+    "schemaHash": "sha256:069cd185ac2434bd455628bf0c0a2afb0a0cdc74ac53bef90e3feb9769a88edc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vtc/storage/configs/list/0.2"
+   ],
+   "mutants": [
+    "bx:vtc/storage/configs/list/0.2:vtc/storage/configs/list:invalidCursor"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(b1)",
+       "type": "https://trusttasks.org/spec/vtc/storage/configs/list/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "cursor": "conformance-unissued-cursor"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "vtc/storage/configs/list:invalidCursor",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  }
+ ]
+}

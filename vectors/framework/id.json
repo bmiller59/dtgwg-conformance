@@ -1,0 +1,236 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "ID",
+  "family": "framework",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "ID-001",
+      "title": "wrong recipient",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1015 (7.2 item 5)",
+        "SPEC.md:1071 (the error reply is a SHOULD)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "mutants": [
+        "noRecipientCheck"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "recipient": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "wrongRecipient",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "advisoryMutants": [
+        "replyIssuerFromRequest"
+      ],
+      "requires": [
+        "carrier:consequential"
+      ]
+    },
+    {
+      "id": "ID-002",
+      "title": "transport sender differs from issuer: identityMismatch to the sender, no leak, no echoed id",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1016 (7.2 item 6)",
+        "SPEC.md:1071 (the error reply is a SHOULD)",
+        "SPEC.md:1221 (no identityMismatch error without a transport sender)",
+        "framework 8.1",
+        "framework 8.2",
+        "framework 8.2.1"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "optional:transportIdentity"
+      ],
+      "mutants": [
+        "ignoreTransportIdentity",
+        "leakIdentityInMessage"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "from": {
+              "spoof": "X"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "identityMismatch",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ID-003",
+      "title": "tier 2: the issuer and the proof signer are one identity",
+      "tier": 2,
+      "spec": [
+        "SPEC.md:394-423 (4.8.1 in-band identity is authoritative)",
+        "SPEC.md:1017 (7.2 item 7)",
+        "profile:attested (pinned as one identity)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "mutants": [
+        "acceptUnverifiedProof"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "sign": {
+              "as": "X",
+              "allowIssuerMismatch": true
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "proofInvalid",
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(req3)"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "state": {
+              "handled": 1
+            }
+          }
+        }
+      ],
+      "subgroup": "attested",
+      "requires": [
+        "carrier:consequential"
+      ]
+    },
+    {
+      "id": "ID-004",
+      "title": "tier 2: the issuer and the transport-authenticated sender are one identity",
+      "tier": 2,
+      "spec": [
+        "SPEC.md:394-423 (4.8.1 the transport identity is a cross-check)",
+        "SPEC.md:1016 (7.2 item 6, only where the transport authenticates the sender)",
+        "profile:attested (pinned as one identity)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "optional:transportIdentity"
+      ],
+      "mutants": [
+        "ignoreTransportIdentity"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(req2)",
+              "issuer": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "identityMismatch",
+            "noSideEffect": true
+          }
+        },
+        {
+          "send": {
+            "template": "carrier.request",
+            "params": {
+              "id": "$id(req3)"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "state": {
+              "handled": 1
+            }
+          }
+        }
+      ],
+      "subgroup": "attested"
+    }
+  ]
+}

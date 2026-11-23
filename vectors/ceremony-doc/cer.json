@@ -1,0 +1,1735 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "CER",
+  "family": "ceremony-doc",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "CER-001",
+      "title": "a ceremony that still needs approvals is answered with a next-step: in the begin's thread, naming the begin, never an error or silence; nothing is established",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1414 (8.6: a held task is answered with a next step, never an error)",
+        "SPEC.md:1417 (an approval by someone else: expects names a task to learn the outcome or, where there is none, the originating Type URI with continuation resubmit)",
+        "specs/trust-task-next-step/0.1/spec.md:82-84 (threadId; expects at least one entry; inResponseTo)",
+        "specs/trust-task-next-step/0.1/payload.schema.json:42 (continuation: resubmit is the default; proceed means the expected task is the continuation)",
+        "docs/04-suite-design.md section 11.4 (the continuation of a hold that names a status task is an open question; asserted only where expects names the request's own type)"
+      ],
+      "source": {
+        "slug": "trust-task-next-step",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-next-step/0.1",
+        "pinnedDigest": "sha256:03a3b3f52d26a130a9bfc2ba9e4fd1c4c635c96cd889cc5489e4a6894c3c1cdd",
+        "tfRef": {
+          "repoPath": "specs/trust-task-next-step/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5ba10e5ee613705d3910f0cf64f96b36e8ca49c422db9e9982cc42cfcab0e482",
+        "schemaHash": "sha256:c8025d3e6ac372438efd3e7176a47df2d118e90f792033993efe320fd0621b46"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:ceremony"
+      ],
+      "mutants": [
+        "cerHoldAnswersError",
+        "cerHoldSilent",
+        "cerHoldContinuationProceed"
+      ],
+      "steps": [
+        {
+          "quorum": "begin"
+        }
+      ],
+      "advisoryMutants": [
+        "cerHoldNoInResponseTo"
+      ]
+    },
+    {
+      "id": "CER-002",
+      "title": "where the implementation offers no status task, a resubmitted begin (fresh id, same thread) gets a further next-step while the approvals are awaited and the outcome once it is known, without a second effect",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1414 (8.6: a held task is answered with a next step, never an error)",
+        "SPEC.md:1417 (an approval by someone else: expects names a task to learn the outcome or, where there is none, the originating Type URI with continuation resubmit)",
+        "SPEC.md:1417 (the consumer answers a resubmission in the same thread with the outcome once it is known, or with a further next step)",
+        "specs/trust-task-next-step/0.1/spec.md:94 (resubmit: a new document with a fresh id and the same threadId)"
+      ],
+      "source": {
+        "slug": "trust-task-next-step",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-next-step/0.1",
+        "pinnedDigest": "sha256:03a3b3f52d26a130a9bfc2ba9e4fd1c4c635c96cd889cc5489e4a6894c3c1cdd",
+        "tfRef": {
+          "repoPath": "specs/trust-task-next-step/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5ba10e5ee613705d3910f0cf64f96b36e8ca49c422db9e9982cc42cfcab0e482",
+        "schemaHash": "sha256:c8025d3e6ac372438efd3e7176a47df2d118e90f792033993efe320fd0621b46"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony"
+      ],
+      "skipIfOptional": [
+        "ceremony.status"
+      ],
+      "mutants": [
+        "cerResubmitError",
+        "cerResubmitSecondEffect",
+        "cerHoldSilent"
+      ],
+      "steps": [
+        {
+          "quorum": "begin"
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "ceremony.begin",
+            "from": "E1",
+            "params": {
+              "id": "$id(begin2)",
+              "threadId": "$id(begin)",
+              "issuer": "$E1"
+            }
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+10s",
+          "quorum": "rest"
+        },
+        {
+          "at": "+15s",
+          "send": {
+            "template": "ceremony.begin",
+            "from": "E1",
+            "params": {
+              "id": "$id(begin3)",
+              "threadId": "$id(begin)",
+              "issuer": "$E1"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(begin)",
+            "state": {
+              "effects": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CER-003",
+      "title": "an approval that completes the quorum is answered with the response, and the effect exists when it is",
+      "tier": 2,
+      "spec": [
+        "docs/04-suite-design.md section 12 assertion 1 (a #response only after the observable outcome is committed and the effect exists)",
+        "SPEC.md:1022 (7.2 item 12: conditions re-evaluated before each irreversible effect)",
+        "docs/04-suite-design.md section 11.4"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony"
+      ],
+      "mutants": [
+        "cerRespondWithoutEffect",
+        "cerRespondOnFirstApproval"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+3s",
+          "when": {
+            "proposerApproves": false
+          },
+          "send": {
+            "template": "ceremony.approve",
+            "from": "A",
+            "params": {
+              "id": "$id(appA)",
+              "issuer": "$A"
+            }
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(approve)",
+            "state": {
+              "effects": 1,
+              "handled": 1,
+              "documentState": {
+                "$id(app)": "responded"
+              }
+            }
+          }
+        }
+      ],
+      "subgroup": "profile-ceremony"
+    },
+    {
+      "id": "CER-004",
+      "title": "approving twice is idempotent: a repeat by the same administrator does not count as another's, and a repeat after the commit is answered with the outcome again, without a second effect",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1061 (setting a state: an operation SHOULD succeed when the target is already in that state)",
+        "docs/04-suite-design.md section 11.4 (re-approve is a no-op, also after the commit)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "Idempotent approval rests on a SHOULD about setting a state (SPEC.md 1061) and a profile rule; the framework does not say what a repeated approval yields. Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony"
+      ],
+      "mutants": [
+        "cerDoubleApproveCountsTwice",
+        "cerReapproveAfterCommitError",
+        "cerReapproveSecondEffect"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "A",
+            "params": {
+              "id": "$id(app0)",
+              "issuer": "$A"
+            }
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+7s",
+          "when": {
+            "proposerApproves": false
+          },
+          "send": {
+            "template": "ceremony.approve",
+            "from": "A",
+            "params": {
+              "id": "$id(appA2)",
+              "issuer": "$A"
+            }
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+10s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(approve)",
+            "state": {
+              "effects": 1
+            }
+          }
+        },
+        {
+          "at": "+15s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X",
+            "params": {
+              "id": "$id(app2)"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(approve)",
+            "state": {
+              "effects": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CER-005",
+      "title": "the same approval document delivered again after the commit is absorbed: the first reply again, and the effect count stays 1",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1021 (7.2 item 11: the same consequential document is not executed twice)",
+        "SPEC.md:1055 (disposition of a duplicate: the previously determined result)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony"
+      ],
+      "mutants": [
+        "duplicateAsFailure"
+      ],
+      "steps": [
+        {
+          "quorum": "complete"
+        },
+        {
+          "at": "+10s",
+          "send": {
+            "same": "previous"
+          },
+          "expect": {
+            "disposition": "duplicate",
+            "state": {
+              "effects": 1,
+              "handled": 1
+            }
+          }
+        }
+      ],
+      "advisoryMutants": [
+        "noReplayRecord"
+      ]
+    },
+    {
+      "id": "CER-006",
+      "title": "an approval by a party that is not an administrator is permissionDenied, records nothing, and leaves the ceremony able to commit",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1305 (8.3 permissionDenied: the requesting party is not authorized)",
+        "SPEC.md:1020 (7.2 item 10: a verified proof is not authorization)",
+        "docs/04-suite-design.md section 11.4 (admins named in the begin are the approvers)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony"
+      ],
+      "mutants": [
+        "cerNonAdminApproves",
+        "cerNonAdminTaskFailed"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "Q",
+            "params": {
+              "issuer": "$Q",
+              "id": "$id(app0)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "permissionDenied",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        },
+        {
+          "at": "+7s",
+          "when": {
+            "proposerApproves": false
+          },
+          "send": {
+            "template": "ceremony.approve",
+            "from": "A",
+            "params": {
+              "id": "$id(appA)",
+              "issuer": "$A"
+            }
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+10s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(approve)",
+            "state": {
+              "effects": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CER-007",
+      "title": "a non-administrator's approval of a ceremony gets the same refusal as an approval of a ceremony that does not exist",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1063 (a missing target: the same code MAY serve a target that exists but which the requester may not see, so the answer reveals nothing)",
+        "docs/04-suite-design.md section 11.4"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "The framework permits (MAY) one code for 'missing' and 'not allowed to see'; it does not require the two answers to be identical. Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony"
+      ],
+      "mutants": [
+        "cerOracle"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "ceremony.approve",
+            "from": "Q",
+            "params": {
+              "issuer": "$Q",
+              "id": "$id(app0)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "permissionDenied",
+            "noSideEffect": true
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+10s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "Q",
+            "params": {
+              "issuer": "$Q",
+              "id": "$id(app1)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "permissionDenied",
+            "sameErrorAs": 1,
+            "noSideEffect": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "CER-008",
+      "title": "an approval after the ceremony's deadline is refused as taskFailed with details.reason deadlineLapsed (not the framework's expired), and nothing is established",
+      "tier": 2,
+      "spec": [
+        "docs/04-suite-design.md section 12 (deadline lapses while pending: taskFailed, details.reason deadlineLapsed; settled; a late approval is refused)",
+        "docs/decisions/README.md section Holds, ceremonies and relationship credentials (expired is reserved for the envelope's expiresAt)",
+        "SPEC.md:1045 (a ceremony's window is a lifetime set by policy, not an acceptance window)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony",
+        "optional:trigger.ceremonyDeadline"
+      ],
+      "mutants": [
+        "cerNoDeadline",
+        "cerDeadlineExpiredCode"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "ceremonyDeadline",
+            "args": {
+              "seconds": 3600
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+3601s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "taskFailed",
+            "retryable": false,
+            "noSideEffect": true,
+            "pointer": {
+              "/payload/details/reason": "deadlineLapsed"
+            },
+            "state": {
+              "effects": 0
+            }
+          }
+        }
+      ],
+      "subgroup": "profile-ceremony"
+    },
+    {
+      "id": "CER-009",
+      "title": "a reset is refused while the ceremony is pending and after it committed, and changes nothing",
+      "tier": 2,
+      "spec": [
+        "docs/04-suite-design.md section 12 (reset after commit is refused or reported with its effects, never a clean cancel)",
+        "docs/06-truststackers-conformance-plan.md section 3.9 (reset only from failed or expired)",
+        "SPEC.md:1022 (7.2 item 12: an irreversible effect is not undone by a later request)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony"
+      ],
+      "mutants": [
+        "cerResetPending",
+        "cerResetAfterCommit"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "ceremony.reset",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "taskFailed",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            }
+          }
+        },
+        {
+          "at": "+7s",
+          "when": {
+            "proposerApproves": false
+          },
+          "send": {
+            "template": "ceremony.approve",
+            "from": "A",
+            "params": {
+              "id": "$id(appA)",
+              "issuer": "$A"
+            }
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+10s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(approve)",
+            "state": {
+              "effects": 1
+            }
+          }
+        },
+        {
+          "at": "+15s",
+          "send": {
+            "template": "ceremony.reset",
+            "from": "A",
+            "params": {
+              "id": "$id(rst2)"
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "taskFailed",
+              "permissionDenied"
+            ],
+            "noSideEffect": true,
+            "state": {
+              "effects": 1
+            }
+          }
+        }
+      ],
+      "subgroup": "profile-ceremony"
+    },
+    {
+      "id": "CER-010",
+      "title": "a refused effect ends the ceremony failed: an error with a closed details.reason and no effect; a reset from failed is allowed",
+      "tier": 1,
+      "spec": [
+        "docs/04-suite-design.md section 12 (a vote no, or the transaction aborted: errored, taskFailed, details.reason from a closed vocabulary)",
+        "docs/06-truststackers-conformance-plan.md section 3.9 (reset from failed or expired is allowed)",
+        "SPEC.md:1310 (8.3 taskFailed)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "The closed vocabulary of details.reason and the use of taskFailed for a refused effect are the design of docs/04 section 12, not specification text (as for 2PC-002). Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony",
+        "optional:trigger.ceremonyEffect"
+      ],
+      "mutants": [
+        "cerFailAsInternalError",
+        "cerResetFailedRefused"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "ceremonyEffect",
+            "args": {
+              "outcome": "fail",
+              "reason": "nameTaken"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+3s",
+          "when": {
+            "proposerApproves": false
+          },
+          "send": {
+            "template": "ceremony.approve",
+            "from": "A",
+            "params": {
+              "id": "$id(appA)",
+              "issuer": "$A"
+            }
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "taskFailed",
+            "noSideEffect": true,
+            "match": {
+              "/payload/details/reason": "^[a-z][A-Za-z0-9]{1,63}$"
+            },
+            "state": {
+              "effects": 0,
+              "documentState": {
+                "$id(app)": "errored"
+              }
+            }
+          }
+        },
+        {
+          "at": "+10s",
+          "send": {
+            "template": "ceremony.reset",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(reset)",
+            "state": {
+              "effects": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CER-011",
+      "title": "while the effect's outcome is unknown the answer is a retryable indeterminate: not the response, not a refusal, nothing established; the response follows the commit",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1312 (8.3 indeterminate: could not decide; neither refused nor found invalid; retryable)",
+        "SPEC.md:1317 (indeterminate is a result of its own)",
+        "docs/04-suite-design.md section 12 (outcome unknown: indeterminate (retryable) or still accepted; never guessed as responded)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "SPEC.md 8.3 describes indeterminate as something the task needed and does not control that could not be obtained or checked (schema, key material, a status list, a referenced document); using it for an unknown effect outcome is an extension of that reading. Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony",
+        "optional:trigger.ceremonyEffect",
+        "optional:trigger.twoPhase"
+      ],
+      "mutants": [
+        "cerUnknownAsResponded",
+        "cerUnknownAsTaskFailed"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "ceremonyEffect",
+            "args": {
+              "outcome": "unknown"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+3s",
+          "when": {
+            "proposerApproves": false
+          },
+          "send": {
+            "template": "ceremony.approve",
+            "from": "A",
+            "params": {
+              "id": "$id(appA)",
+              "issuer": "$A"
+            }
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "indeterminate",
+            "retryable": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0,
+              "documentState": {
+                "$id(app)": "accepted"
+              }
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "settle",
+            "args": {
+              "outcome": "commit"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(approve)",
+            "state": {
+              "effects": 1
+            }
+          }
+        }
+      ],
+      "advisoryMutants": [
+        "cerUnknownNotRetryable"
+      ]
+    },
+    {
+      "id": "CER-012",
+      "title": "a reset after the commit is refused with details.reason alreadyCommitted",
+      "tier": 1,
+      "spec": [
+        "docs/04-suite-design.md section 12 (reset after commit is refused)",
+        "docs/06-truststackers-conformance-plan.md section 3.9 (reset after commit gives alreadyCommitted)",
+        "docs/06-truststackers-conformance-plan.md section 12.1 (closed reason vocabulary)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "The reason token alreadyCommitted is truststackers' closed vocabulary (docs/06 section 3.9), not framework text. Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony"
+      ],
+      "mutants": [
+        "cerResetAfterCommit",
+        "cerResetReasonWrong"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+3s",
+          "when": {
+            "proposerApproves": false
+          },
+          "send": {
+            "template": "ceremony.approve",
+            "from": "A",
+            "params": {
+              "id": "$id(appA)",
+              "issuer": "$A"
+            }
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(approve)",
+            "state": {
+              "effects": 1
+            }
+          }
+        },
+        {
+          "at": "+10s",
+          "send": {
+            "template": "ceremony.reset",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "taskFailed",
+            "noSideEffect": true,
+            "pointer": {
+              "/payload/details/reason": "alreadyCommitted"
+            },
+            "state": {
+              "effects": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CER-013",
+      "title": "a ceremony document is retained verbatim: the request as received (key order and layout kept) and the reply as sent",
+      "tier": 1,
+      "spec": [
+        "docs/06-truststackers-conformance-plan.md section 3.7 (raw document retained: store verbatim every accepted document and every one refused after verification)",
+        "docs/06-truststackers-conformance-plan.md section 12.2 (why verified documents are retained verbatim)",
+        "SPEC.md:1342-1346 (8.4: a retry is the bit-for-bit identical document; the proof is over those bytes)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "Verbatim retention is a profile rule (docs/06 section 3.7); the framework asks only for outcome evidence of cited exchanges (SPEC.md 4.9.4). Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony",
+        "optional:observe.retained"
+      ],
+      "mutants": [
+        "cerRetainNormalised",
+        "cerRetainNothing"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A",
+            "mutate": [
+              {
+                "op": "reorder"
+              }
+            ]
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0,
+              "retained": {
+                "id": "$id(begin)",
+                "request": 1,
+                "reply": 1
+              }
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CER-014",
+      "title": "the declared ceremony.proposerApproves is what the implementation does: where a begin counts as the proposer's approval, one approval by the other administrator completes the quorum; where it does not, that approval alone leaves the ceremony held and the proposer's own approval completes it",
+      "tier": 2,
+      "spec": [
+        "docs/04-suite-design.md section 11.4 (the declared property proposerApproves)",
+        "SPEC.md:1417 (a quorum: an approval by someone else holds the task until the approvals are in)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony"
+      ],
+      "mutants": [
+        "cerProposerApprovalFlip",
+        "cerRespondOnFirstApproval"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "when": {
+            "proposerApproves": true
+          },
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(approve)",
+            "state": {
+              "effects": 1
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "when": {
+            "proposerApproves": false
+          },
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0,
+              "handled": 0,
+              "documentState": {
+                "$id(begin)": "accepted"
+              }
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+10s",
+          "when": {
+            "proposerApproves": false
+          },
+          "send": {
+            "template": "ceremony.approve",
+            "from": "A",
+            "params": {
+              "id": "$id(appA)",
+              "issuer": "$A"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(approve)",
+            "state": {
+              "effects": 1
+            }
+          }
+        }
+      ],
+      "subgroup": "profile-ceremony"
+    },
+    {
+      "id": "CER-015",
+      "title": "where the implementation offers a status task, a ceremony held for approvals is answered with a next-step that names it in expects, in the begin's thread and naming the begin, and the begin stays open (accepted); the continuation value is not asserted",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1414 (8.6: a held task is answered with a next step, never an error)",
+        "SPEC.md:1417 (an approval by someone else: expects names a task to learn the outcome or, where there is none, the originating Type URI with continuation resubmit)",
+        "specs/trust-task-next-step/0.1/spec.md:82-84 (threadId; expects at least one entry; inResponseTo)",
+        "specs/trust-task-next-step/0.1/payload.schema.json:42 (continuation: neither value is defined for a status task; not asserted)",
+        "docs/04-suite-design.md section 11.4 (the continuation of a hold that names a status task is an open question)"
+      ],
+      "source": {
+        "slug": "trust-task-next-step",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-next-step/0.1",
+        "pinnedDigest": "sha256:03a3b3f52d26a130a9bfc2ba9e4fd1c4c635c96cd889cc5489e4a6894c3c1cdd",
+        "tfRef": {
+          "repoPath": "specs/trust-task-next-step/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5ba10e5ee613705d3910f0cf64f96b36e8ca49c422db9e9982cc42cfcab0e482",
+        "schemaHash": "sha256:c8025d3e6ac372438efd3e7176a47df2d118e90f792033993efe320fd0621b46"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:ceremony",
+        "optional:ceremony.status"
+      ],
+      "mutants": [
+        "cerHoldAnswersError",
+        "cerHoldSilent"
+      ],
+      "steps": [
+        {
+          "quorum": "begin",
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0,
+              "handled": 0,
+              "documentState": {
+                "$id(begin)": "accepted"
+              }
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        }
+      ],
+      "advisoryMutants": [
+        "cerHoldStatusNotNamed"
+      ]
+    },
+    {
+      "id": "CER-016",
+      "title": "where the implementation offers a status task, asking it about a held ceremony is answered with a response of its own type in the ceremony's thread and records no approval and no effect; asked again after the commit it answers again, without a second effect",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1417 (expects names a task by which the producer can learn the outcome)",
+        "docs/04-suite-design.md section 11.4 (the status task)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "proposed",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "profile": "ceremony-design",
+        "note": "suite ceremony and two-phase design (docs/04 sections 11.4 and 12), not framework text: advisory under decision 39 (essential versus extended governance)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "The status task's own behaviour is the implementation's design. SPEC.md 8.6 says only that expects names a task by which the producer can learn the outcome; that a query of a held ceremony is answered with a response of the task's own type, without recording an approval or running the effect, is the minimal reading of that and not stated text. Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "optional:ceremony",
+        "optional:ceremony.status"
+      ],
+      "mutants": [
+        "cerStatusSilent",
+        "cerStatusError",
+        "cerStatusAsNextStep",
+        "cerStatusApproves",
+        "cerStatusSecondEffect"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "ceremony.begin",
+            "from": "A"
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+3s",
+          "when": {
+            "proposerApproves": false
+          },
+          "send": {
+            "template": "ceremony.approve",
+            "from": "A",
+            "params": {
+              "id": "$id(appA)",
+              "issuer": "$A"
+            }
+          },
+          "expect": {
+            "disposition": "next-step",
+            "hold": true,
+            "noSideEffect": true,
+            "state": {
+              "effects": 0
+            },
+            "pointer": {
+              "/threadId": "$id(begin)"
+            }
+          }
+        },
+        {
+          "at": "+5s",
+          "send": {
+            "template": "ceremony.status",
+            "from": "X",
+            "params": {
+              "issuer": "$X"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(status)",
+            "pointer": {
+              "/threadId": "$id(begin)"
+            },
+            "state": {
+              "effects": 0,
+              "handled": 0,
+              "documentState": {
+                "$id(begin)": "accepted"
+              }
+            }
+          }
+        },
+        {
+          "at": "+10s",
+          "send": {
+            "template": "ceremony.approve",
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(approve)",
+            "state": {
+              "effects": 1
+            }
+          }
+        },
+        {
+          "at": "+15s",
+          "send": {
+            "template": "ceremony.status",
+            "from": "A",
+            "params": {
+              "id": "$id(sts2)"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "$cerResponse(status)",
+            "pointer": {
+              "/threadId": "$id(begin)"
+            },
+            "state": {
+              "effects": 1,
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CER-017",
+      "title": "behaves per declared E: the ceremony completes exactly at the k-th distinct approval from the declared authority set; each earlier one is held with no effect, and the k-th is answered with the response and the effect (runs at k = 1 too)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1414 (8.6: a held task is answered with a next step, never an error)",
+        "SPEC.md:1417 (an approval by someone else: expects names a task to learn the outcome or, where there is none, the originating Type URI with continuation resubmit)",
+        "SPEC.md:1022 (7.2 item 12: conditions re-evaluated before each irreversible effect)",
+        "docs/04-suite-design.md section 11.4 (the declared essential governance: authority set and minApprovals)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "candidate",
+        "ref": "suite:docs/04-suite-design.md",
+        "pinnedDigest": "sha256:741c12c9cf4cfdeddedb35dc565152d62fc10f38c48665218b062acb05b37162",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "candidate": {
+          "implementedBy": [],
+          "implementedByNote": "No recorded platform run declares its essential governance yet; only the suite's reference adapter runs these vectors.",
+          "localText": "docs/04-suite-design.md",
+          "adoptionNote": "Runs on the suite's synthetic ceremony family (conformance/ceremony), which has no Trust Tasks home; the essential-governance declaration is suite-local (docs/04 section 19). None filed."
+        },
+        "note": "behaves per declared essential governance (decision 39): candidate because the ceremony family has no Trust Tasks home",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:ceremony"
+      ],
+      "mutants": [
+        "cerQuorumEarly",
+        "cerQuorumLate",
+        "cerRespondOnFirstApproval"
+      ],
+      "steps": [
+        {
+          "quorum": "exact"
+        }
+      ]
+    },
+    {
+      "id": "CER-018",
+      "title": "behaves per declared E: an approval from a party outside the declared authority set is refused and not counted; the ceremony still completes only at the k-th distinct approval from the set",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1020 (7.2 item 10: a verified proof is not authorization)",
+        "SPEC.md:1305 (8.3 permissionDenied: the requesting party is not authorized)",
+        "docs/04-suite-design.md section 11.4 (the declared essential governance: authority set and minApprovals)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "candidate",
+        "ref": "suite:docs/04-suite-design.md",
+        "pinnedDigest": "sha256:741c12c9cf4cfdeddedb35dc565152d62fc10f38c48665218b062acb05b37162",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "candidate": {
+          "implementedBy": [],
+          "implementedByNote": "No recorded platform run declares its essential governance yet; only the suite's reference adapter runs these vectors.",
+          "localText": "docs/04-suite-design.md",
+          "adoptionNote": "Runs on the suite's synthetic ceremony family (conformance/ceremony), which has no Trust Tasks home; the essential-governance declaration is suite-local (docs/04 section 19). None filed."
+        },
+        "note": "behaves per declared essential governance (decision 39): candidate because the ceremony family has no Trust Tasks home",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:ceremony"
+      ],
+      "mutants": [
+        "cerNonAdminApproves"
+      ],
+      "steps": [
+        {
+          "quorum": "outsider"
+        }
+      ]
+    },
+    {
+      "id": "CER-019",
+      "title": "behaves per declared E: a repeat approval by the same member of the authority set (a fresh document) is not counted as another member's; completion still takes k distinct members (needs k of at least 2)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1061 (setting a state: an operation SHOULD succeed when the target is already in that state)",
+        "docs/04-suite-design.md section 11.4 (the declared essential governance: k distinct approvals)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "candidate",
+        "ref": "suite:docs/04-suite-design.md",
+        "pinnedDigest": "sha256:741c12c9cf4cfdeddedb35dc565152d62fc10f38c48665218b062acb05b37162",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "candidate": {
+          "implementedBy": [],
+          "implementedByNote": "No recorded platform run declares its essential governance yet; only the suite's reference adapter runs these vectors.",
+          "localText": "docs/04-suite-design.md",
+          "adoptionNote": "Runs on the suite's synthetic ceremony family (conformance/ceremony), which has no Trust Tasks home; the essential-governance declaration is suite-local (docs/04 section 19). None filed."
+        },
+        "note": "behaves per declared essential governance (decision 39): candidate because the ceremony family has no Trust Tasks home",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "optional:ceremony"
+      ],
+      "mutants": [
+        "cerDoubleApproveCountsTwice"
+      ],
+      "steps": [
+        {
+          "quorum": "repeat"
+        }
+      ]
+    }
+  ]
+}

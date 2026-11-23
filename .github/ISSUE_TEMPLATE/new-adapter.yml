@@ -1,0 +1,42 @@
+name: New or extended adapter
+description: Propose an adapter for a platform, or a change to an existing one.
+title: "[adapter] <platform>: <short summary>"
+labels: ["adapter"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This suite is a draft proposal for discussion and review by the DTGWG. An adapter must never answer what the platform would not:
+        an outcome the adapter produces itself measures the adapter, not the platform.
+  - type: input
+    id: platform
+    attributes:
+      label: "Platform, and the commit or release to measure"
+      description: "Say which original platform it is (VTI, keyring-wallet or truststackers)."
+    validations:
+      required: true
+  - type: dropdown
+    id: carrier
+    attributes:
+      label: "How the adapter reaches the platform"
+      options:
+        - Live service over HTTPS
+        - In process, behind a stand-in carrier
+        - Real DIDComm
+        - Other (describe below)
+    validations:
+      required: true
+  - type: textarea
+    id: capabilities
+    attributes:
+      label: "Capabilities and document types you expect to declare"
+      description: "Declare only what the platform does. Anything you cannot reach will be SKIP, with a reason. Name evidence (file and line at a commit) for anything you would call not offered."
+    validations:
+      required: true
+  - type: textarea
+    id: plan
+    attributes:
+      label: "Plan and what you need from the maintainers"
+      description: "Which files you would add under src/adapters/, and which part of docs/community/open-gaps.md this would help with, if any."
+    validations:
+      required: false

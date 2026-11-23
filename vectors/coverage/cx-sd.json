@@ -1,0 +1,2917 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "CX-SD",
+ "family": "coverage",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "CX-SD-001",
+   "title": "auth/revoke-session 0.2: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of auth/revoke-session 0.2 (task-force repository origin/main bd0c05013, specification status draft): 6 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/auth/revoke-session/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "Destructive task: only payloads that fail the schema are sent (nothing is sent that could be executed)."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/revoke-session/0.2"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "auth/revoke-session",
+    "version": "0.2",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/auth/revoke-session/0.2",
+    "pinnedDigest": "sha256:165689a9c8466ff29c8be16aaf0611f9978a451702ebcf33b36d9169380232b0",
+    "tfRef": {
+     "repoPath": "specs/auth/revoke-session/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:280b47c365cfbffc7c94ed4b7c524e96b952b030f6eaa7d7ed2dbb967bb3dc6c",
+    "schemaHash": "sha256:5f1725d625fdfd7e7620d06211adf9deb3ad3db137bf4ef0c3a7ac86a905320e",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/auth/revoke-session/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "reason": "logout"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/auth/revoke-session/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "sessionId": "ec5d3c89-3f49-49b2-9d7d-2a8c0a8a7b9b",
+        "all": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/auth/revoke-session/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "sessionId": "ec5d3c89-3f49-49b2-9d7d-2a8c0a8a7b9b",
+        "subject": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/auth/revoke-session/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "all": true,
+        "subject": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/auth/revoke-session/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "alice"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x6)",
+       "type": "https://trusttasks.org/spec/auth/revoke-session/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:alice.example",
+        "frobnicate": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-SD-002",
+   "title": "keys/export-secret 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of keys/export-secret 0.1 (task-force repository origin/main bd0c05013, specification status draft): 9 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/keys/export-secret/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/export-secret/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "keys/export-secret",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/export-secret/0.1",
+    "pinnedDigest": "sha256:ee87abc6f361793822ad6078e4f323b8c52c91cf3873d19db0a4b3f29f43fc01",
+    "tfRef": {
+     "repoPath": "specs/keys/export-secret/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:ce7ab6d5db4be7caf3b4bf07cb0465a30d40a42924534236c02e6e6999f76e84",
+    "schemaHash": "sha256:628436e9db91b69ce1f29838640958c1e6d12bcb059330a4c9870b91c02b7ffb",
+    "promotion": {
+     "batch": "B2",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/keys/export-secret/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/keys/export-secret/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/keys/export-secret/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": [
+         "did:example:issuer#key-0",
+         "did:example:issuer#key-1"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/keys/export-secret/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "did:example:issuer#key-0",
+        "keyIds": [
+         "did:example:issuer#key-1"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/keys/export-secret/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "did:example:issuer#key-0",
+        "contextId": "rooms"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x6)",
+       "type": "https://trusttasks.org/spec/keys/export-secret/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "did:example:issuer#key-0",
+        "exportable": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x7)",
+       "type": "https://trusttasks.org/spec/keys/export-secret/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "did:example:issuer#key-0",
+        "deliverTo": "did:example:elsewhere"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x8)",
+       "type": "https://trusttasks.org/spec/keys/export-secret/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": 42
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x9)",
+       "type": "https://trusttasks.org/spec/keys/export-secret/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "did:example:issuer#key-0",
+        "ext": {
+         "mine": {
+          "a": 1
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-SD-003",
+   "title": "keys/import-wrapping-key 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of keys/import-wrapping-key 0.1 (task-force repository origin/main bd0c05013, specification status draft): 3 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/keys/import-wrapping-key/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/import-wrapping-key/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "keys/import-wrapping-key",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/import-wrapping-key/0.1",
+    "pinnedDigest": "sha256:3fdb790ba510a20d3aefcdb806d5a5fb41342d5408d1fcd419123719e9719bbc",
+    "tfRef": {
+     "repoPath": "specs/keys/import-wrapping-key/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:f54bf2eddfa6bbc048fcd7b0fc428ffd617288a7005afee3cd67e456f9524213",
+    "schemaHash": "sha256:56f89f38d90e69760d8e6fa776699045457bed95dad855ed7c6f81289766966a",
+    "promotion": {
+     "batch": "B2",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/keys/import-wrapping-key/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "wrappingKey": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/keys/import-wrapping-key/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "ext": {
+         "bare-key": {
+          "anything": "here"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/keys/import-wrapping-key/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "ext": "vendor"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-SD-004",
+   "title": "keys/set-exportability 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of keys/set-exportability 0.1 (task-force repository origin/main bd0c05013, specification status draft): 9 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/keys/set-exportability/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/set-exportability/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "keys/set-exportability",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/set-exportability/0.1",
+    "pinnedDigest": "sha256:ba08b37f0dd5587dab6d7e0e9682b01454ca4396fd20cc079f1726dc09406d33",
+    "tfRef": {
+     "repoPath": "specs/keys/set-exportability/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:20e431cf59ea4649b2469775966e23c1c3293d179b1fd02c2b4354d5122b6ff8",
+    "schemaHash": "sha256:6cda2ae38ec4f21f707b7175eba80fc4cbba845c56e1e55560143ef9cba94b76",
+    "promotion": {
+     "batch": "B2",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/keys/set-exportability/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exportable": false
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/keys/set-exportability/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "did:example:issuer#key-0"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/keys/set-exportability/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "did:example:issuer#key-0",
+        "exportable": "false"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/keys/set-exportability/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "did:example:issuer#key-0",
+        "exportable": 0
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/keys/set-exportability/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "",
+        "exportable": false
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x6)",
+       "type": "https://trusttasks.org/spec/keys/set-exportability/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "did:example:issuer#key-0",
+        "toggle": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x7)",
+       "type": "https://trusttasks.org/spec/keys/set-exportability/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "did:example:issuer#key-0",
+        "exportable": false,
+        "reason": "rotating away from this key"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x8)",
+       "type": "https://trusttasks.org/spec/keys/set-exportability/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "did:example:issuer#key-0",
+        "exportable": false,
+        "privateKeyMultibase": "zSigning"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x9)",
+       "type": "https://trusttasks.org/spec/keys/set-exportability/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "did:example:issuer#key-0",
+        "exportable": false,
+        "ext": {
+         "mine": {
+          "a": 1
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-SD-005",
+   "title": "keys/sign-csr 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of keys/sign-csr 0.1 (task-force repository origin/main bd0c05013, specification status draft): 17 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/keys/sign-csr/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-csr/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "keys/sign-csr",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-csr/0.1",
+    "pinnedDigest": "sha256:0e98c5e6d35c3e3080d17a72bdb538e1da5e812f43d23ac497e0886dca79f47f",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-csr/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:4f30e76ca2dc0c3047bd4f93a4a7b87bef6d7cb13272718cadd525fd38778e3c",
+    "schemaHash": "sha256:76acf49f99b16efec030982ef433bd36982788211f8e58235b41835de6806ec7",
+    "promotion": {
+     "batch": "B2",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "subject": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "subject": "CN=Example Community Verifier,O=Example Community e.V.,C=DE"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "subject": [
+         {
+          "type": "2.5.4.12",
+          "value": "Verifier"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "subject": [
+         {
+          "type": "cn",
+          "value": "Example Community Verifier"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x6)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "subject": [
+         {
+          "type": "CN",
+          "value": ""
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x7)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "subject": [
+         {
+          "type": "CN",
+          "value": "Example Community Verifier",
+          "also": {
+           "type": "O",
+           "value": "Example Community e.V."
+          }
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x8)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "subject": [
+         {
+          "type": "CN",
+          "value": "Example Community Verifier"
+         }
+        ],
+        "certificationRequestInfo": "MIIBNgIBADB4MQswCQYDVQQGEwJERQ"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x9)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "subject": [
+         {
+          "type": "CN",
+          "value": "Example Community Verifier"
+         }
+        ],
+        "extensions": [
+         {
+          "oid": "2.5.29.19",
+          "critical": true,
+          "value": "MAMBAf8"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x10)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "subject": [
+         {
+          "type": "CN",
+          "value": "Example Community Verifier"
+         }
+        ],
+        "subjectAltNames": {
+         "dns": [
+          "*.community.example"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x11)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "subject": [
+         {
+          "type": "CN",
+          "value": "Example Community Verifier"
+         }
+        ],
+        "subjectAltNames": {
+         "ip": [
+          "192.0.2.1"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x12)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "subject": [
+         {
+          "type": "CN",
+          "value": "Example Community Verifier"
+         }
+        ],
+        "subjectAltNames": {}
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x13)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "subject": [
+         {
+          "type": "CN",
+          "value": "Example Community Verifier"
+         }
+        ],
+        "subjectAltNames": {
+         "uri": [
+          "https://verifier.community.example/a path"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x14)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "subject": [
+         {
+          "type": "CN",
+          "value": "Example Community Verifier"
+         }
+        ],
+        "ext": {
+         "no-dots": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x15)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "csr": "-----BEGIN CERTIFICATE REQUEST-----\nMIIBjzCCATYCAQAw\n-----END CERTIFICATE REQUEST-----\n"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x16)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "csr": "MIIBjzCCATYCAQAweDELMAkGA1UEBhMCREUx",
+        "publicKey": "zDnaezKfW1F36Bc3ranfFMiPJXexoqUeHSYLeQwGns4npGdh3"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x17)",
+       "type": "https://trusttasks.org/spec/keys/sign-csr/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "eudi-access-p256",
+        "csr": "-----BEGIN CERTIFICATE REQUEST-----\nMIIBjzCCATYCAQAw\n-----END CERTIFICATE REQUEST-----\n",
+        "publicKey": "zDnaezKfW1F36Bc3ranfFMiPJXexoqUeHSYLeQwGns4npGdh3",
+        "privateKey": "BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwc"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-SD-006",
+   "title": "keys/sign-document 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of keys/sign-document 0.1 (task-force repository origin/main bd0c05013, specification status draft): 12 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/keys/sign-document/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 11, 12."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-document/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "keys/sign-document",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-document/0.1",
+    "pinnedDigest": "sha256:1932225daf768a7a3ed77bff4f846895e42c6b7d404210c18ef26ffb96cc1a7e",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-document/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:359ca9208b4e13cc7c6bbf8e99e243590b5ee82a3ceeb671f4317877652935dc",
+    "schemaHash": "sha256:c6d94014abff1784cb677887e9f598e24913bd51e51a507441ac40ae2b40d14a",
+    "promotion": {
+     "batch": "B2",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/keys/sign-document/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "community-ed25519"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/keys/sign-document/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "document": {
+         "issuer": "did:example:community",
+         "type": [
+          "VerifiableCredential"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/keys/sign-document/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "community-ed25519",
+        "document": {
+         "issuer": "did:example:community"
+        },
+        "proofPurpose": "capabilityInvocation"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/keys/sign-document/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "community-ed25519",
+        "document": {
+         "issuer": "did:example:community"
+        },
+        "cryptosuite": "eddsa-rdfc-2022"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/keys/sign-document/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "community-ed25519",
+        "document": {
+         "issuer": "did:example:community"
+        },
+        "verificationMethod": "did:example:community#key-1"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x6)",
+       "type": "https://trusttasks.org/spec/keys/sign-document/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "community-ed25519",
+        "signingInput": "1/MQ4+IQjyIPRLrQ3g5Lgw"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x7)",
+       "type": "https://trusttasks.org/spec/keys/sign-document/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "community-ed25519",
+        "document": {
+         "issuer": "did:example:community"
+        },
+        "created": "2026-10-18"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x8)",
+       "type": "https://trusttasks.org/spec/keys/sign-document/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "community-ed25519",
+        "document": "{\"issuer\":\"did:example:community\"}"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x9)",
+       "type": "https://trusttasks.org/spec/keys/sign-document/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "community-ed25519",
+        "document": {
+         "issuer": "did:example:community"
+        },
+        "ext": {
+         "no-dots": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x10)",
+       "type": "https://trusttasks.org/spec/keys/sign-document/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "community-ed25519",
+        "signerDid": "did:example:community",
+        "document": {
+         "issuer": "did:example:community",
+         "proof": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x11)",
+       "type": "https://trusttasks.org/spec/keys/sign-document/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "community-ed25519",
+        "signerDid": "did:example:community",
+        "document": {
+         "issuer": "did:example:community",
+         "proof": {}
+        },
+        "proof": {
+         "type": "DataIntegrityProof",
+         "cryptosuite": "ecdsa-jcs-2019",
+         "created": "$now+0s",
+         "verificationMethod": "did:example:community#key-1",
+         "proofPurpose": "assertionMethod",
+         "proofValue": "z5e9cErCFXraDE8Cs3a46rSRaReyv68UtZz7JmzDUCcn"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x12)",
+       "type": "https://trusttasks.org/spec/keys/sign-document/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "community-ed25519",
+        "signerDid": "did:example:community",
+        "document": {
+         "issuer": "did:example:community",
+         "proof": {}
+        },
+        "proof": {
+         "type": "DataIntegrityProof",
+         "cryptosuite": "eddsa-jcs-2022",
+         "created": "$now+0s",
+         "verificationMethod": "did:example:community#key-1",
+         "proofPurpose": "assertionMethod",
+         "proofValue": "z5e9cErCFXraDE8Cs3a46rSRaReyv68UtZz7JmzDUCcn"
+        },
+        "privateKey": "z3u2en7t5LR2WtQH5PfsqMvGfHYH9ezPV7gKDvnBRLbRhkRp"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-SD-007",
+   "title": "keys/sign-jws 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of keys/sign-jws 0.1 (task-force repository origin/main bd0c05013, specification status draft): 13 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/keys/sign-jws/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-jws/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "keys/sign-jws",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-jws/0.1",
+    "pinnedDigest": "sha256:d6c28d3ec2d0ab8985445f527d1eec07defb361b3b478ec3fee53a652382ea08",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-jws/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:7ad9f642f3c2f55920a4880f3efbb08e0ad8dc84e218137df49036d59b6f4740",
+    "schemaHash": "sha256:343e52d865cd03639f78d911839957f1ee889b5ed1fa96631d93cb46cb9e6b97",
+    "promotion": {
+     "batch": "B2",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "verifier-p256",
+        "header": {
+         "typ": "oauth-authz-req+jwt"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "verifier-p256",
+        "payload": {
+         "nonce": "q8vTt3yN5mQ0aW2f"
+        },
+        "payloadBase64Url": "eyJub25jZSI6InE4dlR0M3lONW1RMGFXMmYifQ"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "payload": {
+         "nonce": "q8vTt3yN5mQ0aW2f"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "verifier-p256",
+        "algorithm": "ES256",
+        "payload": {
+         "nonce": "q8vTt3yN5mQ0aW2f"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "verifier-p256",
+        "signingInput": "ZXlKaGJHY2lPaUpGVXpJMU5pSjkuZXlKdWIyNWpaU0k2SW5FNGRsUjBNM2xPTlcxUk1HRlhNbVlpZlE"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x6)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "verifier-p256",
+        "payload": "{\"nonce\":\"q8vTt3yN5mQ0aW2f\"}"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x7)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "verifier-p256",
+        "payloadBase64Url": "aGVsbG8+d29ybGQ/IQ=="
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x8)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "verifier-p256",
+        "header": [
+         {
+          "typ": "oauth-authz-req+jwt"
+         }
+        ],
+        "payload": {
+         "nonce": "q8vTt3yN5mQ0aW2f"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x9)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "verifier-p256",
+        "payload": {
+         "nonce": "q8vTt3yN5mQ0aW2f"
+        },
+        "ext": {
+         "no-dots": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x10)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "verifier-p256",
+        "alg": "ES256"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x11)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "verifier-p256",
+        "alg": "none",
+        "jws": "eyJhbGciOiJub25lIn0.eyJub25jZSI6InE4dlR0M3lONW1RMGFXMmYifQ.c2ln"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x12)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "verifier-p256",
+        "alg": "ES256",
+        "jws": "eyJhbGciOiJFUzI1NiJ9.eyJub25jZSI6InE4dlR0M3lONW1RMGFXMmYifQ."
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x13)",
+       "type": "https://trusttasks.org/spec/keys/sign-jws/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "verifier-p256",
+        "alg": "ES256",
+        "jws": "eyJhbGciOiJFUzI1NiJ9.eyJub25jZSI6InE4dlR0M3lONW1RMGFXMmYifQ.c2ln",
+        "privateKey": "BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwc"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-SD-008",
+   "title": "keys/sign-sshsig 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of keys/sign-sshsig 0.1 (task-force repository origin/main bd0c05013, specification status draft): 11 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/keys/sign-sshsig/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign-sshsig/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "keys/sign-sshsig",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign-sshsig/0.1",
+    "pinnedDigest": "sha256:fbbd2a8f1c08db77311e24a0f27012913abe08d4810e8292b655bf80bae25160",
+    "tfRef": {
+     "repoPath": "specs/keys/sign-sshsig/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:0a36affc7c279278b5854a9bba2c17fc5ca43c071e0940b6ea9282d5245d8580",
+    "schemaHash": "sha256:ffaa099dc2de399e334c9a26c875b9c960c9ab3cd520e774ba46e50c2a51ce55",
+    "promotion": {
+     "batch": "B2",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/keys/sign-sshsig/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "key-1",
+        "algorithm": "EdDSA",
+        "hashAlgorithm": "sha512",
+        "messageHash": "ZNK6UR4HwIpHXYznMreGQrxQYoYkXyEqA9lXghSB8x0qCebX7kzmrrWkvpd-TTFuFZ7HD5DBVT80O19QxSt8FA"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/keys/sign-sshsig/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "key-1",
+        "algorithm": "EdDSA",
+        "namespace": "git",
+        "hashAlgorithm": "sha512",
+        "messageHash": "ZNK6UR4HwIpHXYznMreGQrxQYoYkXyEqA9lXghSB8x0qCebX7kzmrrWkvpd-TTFuFZ7HD5DBVT80O19QxSt8FA",
+        "payload": "aGVsbG8tY2hhbGxlbmdl"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/keys/sign-sshsig/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "key-1",
+        "algorithm": "ML-DSA-44",
+        "namespace": "git",
+        "hashAlgorithm": "sha512",
+        "messageHash": "ZNK6UR4HwIpHXYznMreGQrxQYoYkXyEqA9lXghSB8x0qCebX7kzmrrWkvpd-TTFuFZ7HD5DBVT80O19QxSt8FA"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/keys/sign-sshsig/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "key-1",
+        "algorithm": "EdDSA",
+        "namespace": "git",
+        "hashAlgorithm": "sha1",
+        "messageHash": "ZNK6UR4HwIpHXYznMreGQrxQYoYkXyEqA9lXghSB8x0qCebX7kzmrrWkvpd-TTFuFZ7HD5DBVT80O19QxSt8FA"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/keys/sign-sshsig/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "key-1",
+        "algorithm": "EdDSA",
+        "namespace": "",
+        "hashAlgorithm": "sha512",
+        "messageHash": "ZNK6UR4HwIpHXYznMreGQrxQYoYkXyEqA9lXghSB8x0qCebX7kzmrrWkvpd-TTFuFZ7HD5DBVT80O19QxSt8FA"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x6)",
+       "type": "https://trusttasks.org/spec/keys/sign-sshsig/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "key-1",
+        "algorithm": "EdDSA",
+        "namespace": "git commit",
+        "hashAlgorithm": "sha512",
+        "messageHash": "ZNK6UR4HwIpHXYznMreGQrxQYoYkXyEqA9lXghSB8x0qCebX7kzmrrWkvpd-TTFuFZ7HD5DBVT80O19QxSt8FA"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x7)",
+       "type": "https://trusttasks.org/spec/keys/sign-sshsig/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "key-1",
+        "algorithm": "EdDSA",
+        "namespace": "git",
+        "hashAlgorithm": "sha256",
+        "messageHash": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg="
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x8)",
+       "type": "https://trusttasks.org/spec/keys/sign-sshsig/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "key-1",
+        "algorithm": "EdDSA",
+        "namespace": "git",
+        "hashAlgorithm": "sha256",
+        "messageHash": "n4bQgYhMfWWaL"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x9)",
+       "type": "https://trusttasks.org/spec/keys/sign-sshsig/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "key-1",
+        "algorithm": "EdDSA",
+        "namespace": "git",
+        "hashAlgorithm": "sha512",
+        "messageHash": "ZNK6UR4HwIpHXYznMreGQrxQYoYkXyEqA9lXghSB8x0qCebX7kzmrrWkvpd-TTFuFZ7HD5DBVT80O19QxSt8FA",
+        "ext": {
+         "no-dots": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x10)",
+       "type": "https://trusttasks.org/spec/keys/sign-sshsig/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "key-1",
+        "algorithm": "EdDSA"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x11)",
+       "type": "https://trusttasks.org/spec/keys/sign-sshsig/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "key-1",
+        "algorithm": "EdDSA",
+        "signature": "qQkWdYdoux5DnKSW0G1nIGQMrGC2L1RJkfuq9nrNuuAlU8hFazUPwKWlS3A68WWHs0DQxVbPl2GXjPUJdSIPBQ",
+        "privateKey": "BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwc"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-SD-009",
+   "title": "keys/sign 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of keys/sign 0.1 (task-force repository origin/main bd0c05013, specification status draft): 6 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/keys/sign/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/keys/sign/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "keys/sign",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/sign/0.1",
+    "pinnedDigest": "sha256:f008abfce8e96f81c2dcccbd690ead36b11bd038434157e1ee5e01424ed9a4b2",
+    "tfRef": {
+     "repoPath": "specs/keys/sign/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B2 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:f396d0927cd0a6cc1e653c81fef6bc27ec89c5bbe923784a6f727d7ee9fe63eb",
+    "schemaHash": "sha256:fae2b1a1e8ee1e2f358b995041c59a10b9c1e114e2c246119d526474c8f2dec8",
+    "promotion": {
+     "batch": "B2",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/keys/sign/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "signing-key-1",
+        "payload": "aGVsbG8tY2hhbGxlbmdl"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/keys/sign/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "signing-key-1",
+        "algorithm": "EdDSA"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/keys/sign/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "signing-key-1",
+        "payload": "aGVsbG8tY2hhbGxlbmdl",
+        "algorithm": "RS256"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/keys/sign/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "",
+        "payload": "aGVsbG8tY2hhbGxlbmdl",
+        "algorithm": "EdDSA"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/keys/sign/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "signing-key-1",
+        "payload": "aGVsbG8tY2hhbGxlbmdl",
+        "algorithm": "EdDSA",
+        "ext": {
+         "no-dots": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x6)",
+       "type": "https://trusttasks.org/spec/keys/sign/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "keyId": "signing-key-1",
+        "payload": "aGVsbG8tY2hhbGxlbmdl",
+        "algorithm": "EdDSA",
+        "fallbackKeyId": "signing-key-2"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "CX-SD-010",
+   "title": "vault/credentials/receive 0.1: the payloads the task force lists as invalid for this task are refused",
+   "tier": 1,
+   "spec": [
+    "payload.invalid-examples.json of vault/credentials/receive 0.1 (task-force repository origin/main bd0c05013, specification status draft): 6 example(s) that the payload schema also rejects",
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
+    "specs/vault/credentials/receive/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
+    "The examples are the task force's own text, not derived from the registry schema",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/vault/credentials/receive/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "source": {
+    "slug": "vault/credentials/receive",
+    "version": "0.1",
+    "channel": "registry",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vault/credentials/receive/0.1",
+    "pinnedDigest": "sha256:e7c88c26bf9ddd9e1317cd80d60e9f6dbf873fa394167dac421553431606cece",
+    "tfRef": {
+     "repoPath": "specs/vault/credentials/receive/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Coverage family SD (Session, device, vault, keys, access and policy): the grouping is a suite proposal (docs/22) and advisory; the task is a Trust Tasks specification (tfRef, status draft). Evidence basis: the task force's own invalid payload examples. Promoted to the registry channel in batch B1 (single implementer, confirmed rule D353); see docs/33.",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:28fe19c05e26dc11cc6eac230a9051e20fcc5318ab31270e69696a379ceb88c2",
+    "schemaHash": "sha256:2751b5e9f1b5fb182a6ce681e00548a3bd1528a5203050b5578d716a8ad5b9f4",
+    "promotion": {
+     "batch": "B1",
+     "rule": "single-implementer",
+     "provisional": false,
+     "decision": "D353",
+     "was": {
+      "channel": "proposed",
+      "profile": "coverage"
+     }
+    }
+   },
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/vault/credentials/receive/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "ctx-a"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/vault/credentials/receive/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "credential": {
+         "type": [
+          "VerifiableCredential"
+         ]
+        },
+        "credentialBase64": "abc"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/vault/credentials/receive/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "credential": {
+         "type": [
+          "VerifiableCredential"
+         ]
+        },
+        "purpose": "membership"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x4)",
+       "type": "https://trusttasks.org/spec/vault/credentials/receive/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "credentialBase64": "ab+c/d=="
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x5)",
+       "type": "https://trusttasks.org/spec/vault/credentials/receive/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "credential": {
+         "type": [
+          "VerifiableCredential"
+         ]
+        },
+        "ext": {
+         "bare-key": {
+          "anything": "here"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x6)",
+       "type": "https://trusttasks.org/spec/vault/credentials/receive/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "credential": {
+         "type": [
+          "VerifiableCredential"
+         ]
+        },
+        "status": "valid"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  }
+ ]
+}

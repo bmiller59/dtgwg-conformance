@@ -1,0 +1,2431 @@
+{
+  "format": "tt-conformance-exceptions/0.1",
+  "exceptions": [
+    {
+      "impl": "verifiable-trust-infrastructure",
+      "vector": "BND-002",
+      "class": "C",
+      "reason": "A measured difference from the HTTPS binding. bindings/https/0.3/spec.md:53: a server 'MUST ... Read Authorization (if present) and map the bearer token to a Verifiable Identifier via a deployment-defined mechanism'; line 129: 'The mapping between bearer token and VID is deployment-defined'. The vti-trust-task-server endpoint reads no Authorization header (http.rs:3-6, 'The endpoint reads no bearer token'; the proof carries the authentication). The vector needs a deployment that maps the harness's tokens. Vector review 2026-11-15: class C (the literal MUST to read the header against a deployment-defined, possibly empty, mapping); a question for the task force, not a vector change; the entry stays.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/notifications/notify/0\\.1#response$",
+          "^step 1: observable state changed \\(noSideEffect\\)$",
+          "^step 1: HTTP status 200, expected 422$",
+          "^step 2: handled count 2, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-15",
+      "ref": "docs/05-reference-implementations.md; docs/decisions/02-specs-tiers-and-channels.md#d47 (Tier 1 audit: BND-002 stays Tier 1)",
+      "inherited": "measured in the 2026-11-14 live run (kept as a superseded record); the current live run (2026-11-20-vti-live-core) does not offer BND-002 (the adapter reads the VTC's trust-task door as bearer-less), so the next live run that drives a bearer decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure",
+      "vector": "CEX-031",
+      "class": "C",
+      "reason": "[Unconfirmed: VTI payload parser or specification text; pending, docs/decisions/06-runs-and-results.md#d264] credential-exchange/request 0.1 on the live community container: a request whose credential_request names credential_configuration_id and proofs is answered malformedRequest, so it never reaches the unknownOffer / invalidProof decision the vector expects. Same answer as the community service in process (the entry for verifiable-trust-infrastructure-vtc-inprocess). Whether the specification means the container's reading (a `format` member is required) or the vector's is the open question; the vector is unchanged.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code credential-exchange/request:unknownOffer\\|credential-exchange/request:invalidProof, got malformedRequest$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-15",
+      "ref": "docs/35-live-vti-rows.md; docs/decisions/06-runs-and-results.md#d264",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "AUTHZ-001",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 4.7.3] The wallet verifies an issue delivery's proof (issueProofPolicy, ceremony.ts) without naming a proof purpose, so the verifier demands assertionMethod and refuses a proof signed for authentication as proofInvalid. SPEC.md:373 says a producer SHOULD sign a Trust Task document with authentication, and SPEC.md:375 that a consumer checks the relationship the proof names. Single-vector debug runs found the proof's controller, the key and the sender DID right: the purpose is the whole refusal. The checks each vector is really about (party bindings, digest, duplicates, oracle) are not reached, so they are not measured. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 4: expected code vrc/relationships/issue:notAccepted, got proofInvalid$",
+          "^step 4: reply differs from step 3 in code \\(an existence oracle\\)$",
+          "^step 4: reply differs from step 3 in message \\(an existence oracle\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-001",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 7.2 item 11] The wallet keeps no duplicate record (TrustTasksService.ts:81-84, KEYRING_CONSUME_CHECKS = notConsequentialChecks). SPEC.md 7.2 item 11: a consumer 'MUST NOT execute a consequential Trust Task twice on account of the same Trust Task document'; and 'Bounding the record': the consumer chooses its own window ('It does not fix their values'), so an offline-mailbox wallet may choose a long window but must keep a record for it. The carrier is declared consequential by the adapter; the wallet's issue handler is a mutating task (issue 0.1 sideEffects mutating) run under the same checks. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: a duplicate was executed again$",
+          "^step 2: handled count 2, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-002",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 7.2 item 11] The wallet keeps no duplicate record (TrustTasksService.ts:81-84, KEYRING_CONSUME_CHECKS = notConsequentialChecks). SPEC.md 7.2 item 11: a consumer 'MUST NOT execute a consequential Trust Task twice on account of the same Trust Task document'; and 'Bounding the record': the consumer chooses its own window ('It does not fix their values'), so an offline-mailbox wallet may choose a long window but must keep a record for it. The carrier is declared consequential by the adapter; the wallet's issue handler is a mutating task (issue 0.1 sideEffects mutating) run under the same checks. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
+          "^step 2: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-003",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 7.2 item 11] The wallet keeps no duplicate record (TrustTasksService.ts:81-84, KEYRING_CONSUME_CHECKS = notConsequentialChecks). SPEC.md 7.2 item 11: a consumer 'MUST NOT execute a consequential Trust Task twice on account of the same Trust Task document'; and 'Bounding the record': the consumer chooses its own window ('It does not fix their values'), so an offline-mailbox wallet may choose a long window but must keep a record for it. The carrier is declared consequential by the adapter; the wallet's issue handler is a mutating task (issue 0.1 sideEffects mutating) run under the same checks. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
+          "^step 2: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-004",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 7.2 item 11] The wallet keeps no duplicate record (TrustTasksService.ts:81-84, KEYRING_CONSUME_CHECKS = notConsequentialChecks). SPEC.md 7.2 item 11: a consumer 'MUST NOT execute a consequential Trust Task twice on account of the same Trust Task document'; and 'Bounding the record': the consumer chooses its own window ('It does not fix their values'), so an offline-mailbox wallet may choose a long window but must keep a record for it. The carrier is declared consequential by the adapter; the wallet's issue handler is a mutating task (issue 0.1 sideEffects mutating) run under the same checks. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: a duplicate was executed again$",
+          "^step 2: handled count 2, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-005",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 7.2 item 11] The wallet keeps no duplicate record (TrustTasksService.ts:81-84, KEYRING_CONSUME_CHECKS = notConsequentialChecks). SPEC.md 7.2 item 11: a consumer 'MUST NOT execute a consequential Trust Task twice on account of the same Trust Task document'; and 'Bounding the record': the consumer chooses its own window ('It does not fix their values'), so an offline-mailbox wallet may choose a long window but must keep a record for it. The carrier is declared consequential by the adapter; the wallet's issue handler is a mutating task (issue 0.1 sideEffects mutating) run under the same checks. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
+          "^step 2: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-101",
+      "class": "D",
+      "reason": "[shim carrier] The fixture row is sent with no authenticated transport sender. The wallet's carriage handler retains and does not process a document with no authenticated connection (ceremony.ts, 'arrived without an authenticated connection'), and a DIDComm carriage is always authenticated, so the row is unreachable on this carrier; not reported as a wallet defect. The expected failure text is the observed one: a missing error reply after the first step is an advisory (the error reply is a SHOULD), and on DIDComm v2 the adapter cannot send an anonymous document at all (\"Message is undeliverable to service\"), so the v2 rows fail in the adapter before the wallet is reached.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: (expected one response, got 0 replies|adapter or harness error: Message is undeliverable to service with id did:peer:.+)$",
+          "^step (1: handled count 0, expected 1|2: adapter or harness error: Message is undeliverable to service with id did:peer:.+)$",
+          "^step 2: (handled count 0, expected 1|adapter or harness error: Message is undeliverable to service with id did:peer:.+)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-102",
+      "class": "D",
+      "reason": "[shim carrier] The fixture row is sent with no authenticated transport sender. The wallet's carriage handler retains and does not process a document with no authenticated connection (ceremony.ts, 'arrived without an authenticated connection'), and a DIDComm carriage is always authenticated, so the row is unreachable on this carrier; not reported as a wallet defect. The expected failure text is the observed one: a missing error reply after the first step is an advisory (the error reply is a SHOULD), and on DIDComm v2 the adapter cannot send an anonymous document at all (\"Message is undeliverable to service\"), so the v2 rows fail in the adapter before the wallet is reached.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: (expected one response, got 0 replies|adapter or harness error: Message is undeliverable to service with id did:peer:.+)$",
+          "^step (1: handled count 0, expected 1|2: adapter or harness error: Message is undeliverable to service with id did:peer:.+)$",
+          "^step 2: (handled count 0, expected 1|adapter or harness error: Message is undeliverable to service with id did:peer:.+)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-104",
+      "class": "D",
+      "reason": "[shim carrier] The fixture row is sent with no authenticated transport sender. The wallet's carriage handler retains and does not process a document with no authenticated connection (ceremony.ts, 'arrived without an authenticated connection'), and a DIDComm carriage is always authenticated, so the row is unreachable on this carrier; not reported as a wallet defect. The expected failure text is the observed one: a missing error reply after the first step is an advisory (the error reply is a SHOULD), and on DIDComm v2 the adapter cannot send an anonymous document at all (\"Message is undeliverable to service\"), so the v2 rows fail in the adapter before the wallet is reached.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: (expected one response, got 0 replies|adapter or harness error: Message is undeliverable to service with id did:peer:.+)$",
+          "^step (1: handled count 0, expected 1|2: adapter or harness error: Message is undeliverable to service with id did:peer:.+)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-105",
+      "class": "D",
+      "reason": "[shim carrier] The fixture row is sent with no authenticated transport sender. The wallet's carriage handler retains and does not process a document with no authenticated connection (ceremony.ts, 'arrived without an authenticated connection'), and a DIDComm carriage is always authenticated, so the row is unreachable on this carrier; not reported as a wallet defect. The expected failure text is the observed one: a missing error reply after the first step is an advisory (the error reply is a SHOULD), and on DIDComm v2 the adapter cannot send an anonymous document at all (\"Message is undeliverable to service\"), so the v2 rows fail in the adapter before the wallet is reached.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: (expected one response, got 0 replies|adapter or harness error: Message is undeliverable to service with id did:peer:.+)$",
+          "^step (1: handled count 0, expected 1|2: adapter or harness error: Message is undeliverable to service with id did:peer:.+)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-106",
+      "class": "D",
+      "reason": "[shim carrier] The fixture row is sent with no authenticated transport sender. The wallet's carriage handler retains and does not process a document with no authenticated connection (ceremony.ts, 'arrived without an authenticated connection'), and a DIDComm carriage is always authenticated, so the row is unreachable on this carrier; not reported as a wallet defect. The expected failure text is the observed one: a missing error reply after the first step is an advisory (the error reply is a SHOULD), and on DIDComm v2 the adapter cannot send an anonymous document at all (\"Message is undeliverable to service\"), so the v2 rows fail in the adapter before the wallet is reached.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: (expected one response, got 0 replies|adapter or harness error: Message is undeliverable to service with id did:peer:.+)$",
+          "^step (1: handled count 0, expected 1|2: adapter or harness error: Message is undeliverable to service with id did:peer:.+)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-107",
+      "class": "D",
+      "reason": "[shim carrier] The fixture row is sent with no authenticated transport sender. The wallet's carriage handler retains and does not process a document with no authenticated connection (ceremony.ts, 'arrived without an authenticated connection'), and a DIDComm carriage is always authenticated, so the row is unreachable on this carrier; not reported as a wallet defect. The expected failure text is the observed one: a missing error reply after the first step is an advisory (the error reply is a SHOULD), and on DIDComm v2 the adapter cannot send an anonymous document at all (\"Message is undeliverable to service\"), so the v2 rows fail in the adapter before the wallet is reached.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: (expected one response, got 0 replies|adapter or harness error: Message is undeliverable to service with id did:peer:.+)$",
+          "^step (1: handled count 0, expected 1|2: adapter or harness error: Message is undeliverable to service with id did:peer:.+)$",
+          "^step 2: (handled count 0, expected 1|adapter or harness error: Message is undeliverable to service with id did:peer:.+)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-108",
+      "class": "D",
+      "reason": "[shim carrier] The fixture row is sent with no authenticated transport sender. The wallet's carriage handler retains and does not process a document with no authenticated connection (ceremony.ts, 'arrived without an authenticated connection'), and a DIDComm carriage is always authenticated, so the row is unreachable on this carrier; not reported as a wallet defect. The expected failure text is the observed one: a missing error reply after the first step is an advisory (the error reply is a SHOULD), and on DIDComm v2 the adapter cannot send an anonymous document at all (\"Message is undeliverable to service\"), so the v2 rows fail in the adapter before the wallet is reached.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: (expected one response, got 0 replies|adapter or harness error: Message is undeliverable to service with id did:peer:.+)$",
+          "^step (1: handled count 0, expected 1|2: adapter or harness error: Message is undeliverable to service with id did:peer:.+)$",
+          "^step 2: (handled count 0, expected 1|adapter or harness error: Message is undeliverable to service with id did:peer:.+)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-109",
+      "class": "D",
+      "reason": "[shim carrier] The fixture row is sent with no authenticated transport sender. The wallet's carriage handler retains and does not process a document with no authenticated connection (ceremony.ts, 'arrived without an authenticated connection'), and a DIDComm carriage is always authenticated, so the row is unreachable on this carrier; not reported as a wallet defect. The expected failure text is the observed one: a missing error reply after the first step is an advisory (the error reply is a SHOULD), and on DIDComm v2 the adapter cannot send an anonymous document at all (\"Message is undeliverable to service\"), so the v2 rows fail in the adapter before the wallet is reached.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: (expected one response, got 0 replies|adapter or harness error: Message is undeliverable to service with id did:peer:.+)$",
+          "^step (1: handled count 0, expected 1|2: adapter or harness error: Message is undeliverable to service with id did:peer:.+)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "ENV-003",
+      "class": "A",
+      "reason": "[KW deviation (pinned runtime)] SPEC.md 7.2 item 1 (validate the outer structure; id is REQUIRED) and items 4 and 13 (timestamps). The wallet pins @openvtc/trust-tasks 0.28.1, whose consume pipeline has no envelope validation and reads a calendar-invalid timestamp differently from 0.29.0 (freshness.js, consume.js differ). Closed by a runtime bump, not by wallet logic. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null,
+      "notOn": {
+        "keyring-wallet-didcomm-v2": "Over DIDComm v2 the wallet's own v2 binding drops a carried document that has no id before the pinned runtime sees it (bifold 7e14c5124, packages/trust-tasks/src/TrustTaskEnvelopeV2Message.ts, document getter: a reassembled document needs id and type, else undefined), so the vector is ignored, never executed; the difference sits in the v1 and shim path only."
+      }
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "ENV-010",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 5.2] The wallet retains and logs a document whose Type URI carries a MAJOR segment it does not implement and sends no trust-task-error (ceremony.ts, setupTrustTasksInbound). Nothing is executed, so the rejection itself is right. SPEC.md:756 puts the reply inside the MUST: a consumer 'MUST reject any document whose Type URI carries a MAJOR segment it does not implement, returning unsupportedVersion where the transport permits a response'; the DIDComm carriage and the shim permit a response, so the wallet differs from the text (class A). It is not the SHOULD of SPEC.md:1071 (that sentence covers rejections under the other rules of 7.2, which ENV-006 to 009 now judge as a SHOULD advisory). The vector does not read a SHOULD as a MUST here.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected one error, got 0 replies$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "ERR-006",
+      "class": "A",
+      "reason": "[KW deviation (module default)] SPEC.md 7.2 item 7: 'If the document carries a proof member, verify it ... and reject the document with proofInvalid on verification failure'; 4.7.1: 'A consumer that does not implement the cryptosuite a proof names MUST reject the document with proofInvalid'. TrustTasksService.consume defaults to acceptUnverified (TrustTasksService.ts:104); the shim carrier, like the wallet's discovery and propose handlers, passes no policy, so a document whose proof is present and invalid is executed. Only the issue and witness-share handlers install a verifier. The supplementary run keyring-wallet-carrier-verify shows the result with the verifier installed. Vector review 2026-11-15: class A (the carrier part is also D).",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
+          "^step 2: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "ERR-007",
+      "class": "A",
+      "reason": "[KW deviation (module default)] SPEC.md 7.2 item 7: 'If the document carries a proof member, verify it ... and reject the document with proofInvalid on verification failure'; 4.7.1: 'A consumer that does not implement the cryptosuite a proof names MUST reject the document with proofInvalid'. TrustTasksService.consume defaults to acceptUnverified (TrustTasksService.ts:104); the shim carrier, like the wallet's discovery and propose handlers, passes no policy, so a document whose proof is present and invalid is executed. Only the issue and witness-share handlers install a verifier. The supplementary run keyring-wallet-carrier-verify shows the result with the verifier installed. Vector review 2026-11-15: class A (the carrier part is also D).",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
+          "^step 2: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "NS-001",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 8.6] SPEC.md 8.6: 'A consumer holding a task MUST answer with a next step'; a task 'held until an approval, a consent decision ... whoever has to perform that act' is blocked. handleInboundPropose (ceremony.ts:925-989) holds the proposal for the person and sends nothing until they answer. The next-step shape vectors (NS-001 to 003, 005) are therefore not measured at all, and VRC-ISS-005 needs a held proposal. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected a trust-task-next-step reply$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "NS-002",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 8.6] SPEC.md 8.6: 'A consumer holding a task MUST answer with a next step'; a task 'held until an approval, a consent decision ... whoever has to perform that act' is blocked. handleInboundPropose (ceremony.ts:925-989) holds the proposal for the person and sends nothing until they answer. The next-step shape vectors (NS-001 to 003, 005) are therefore not measured at all, and VRC-ISS-005 needs a held proposal. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected a trust-task-next-step reply$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "NS-003",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 8.6] SPEC.md 8.6: 'A consumer holding a task MUST answer with a next step'; a task 'held until an approval, a consent decision ... whoever has to perform that act' is blocked. handleInboundPropose (ceremony.ts:925-989) holds the proposal for the person and sends nothing until they answer. The next-step shape vectors (NS-001 to 003, 005) are therefore not measured at all, and VRC-ISS-005 needs a held proposal. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected a trust-task-next-step reply$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "NS-004",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 8.6] SPEC.md 8.6: 'A consumer holding a task MUST answer with a next step'; a task 'held until an approval, a consent decision ... whoever has to perform that act' is blocked. handleInboundPropose (ceremony.ts:925-989) holds the proposal for the person and sends nothing until they answer. The next-step shape vectors (NS-001 to 003, 005) are therefore not measured at all, and VRC-ISS-005 needs a held proposal. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected a trust-task-next-step reply$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "NS-005",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 8.6] SPEC.md 8.6: 'A consumer holding a task MUST answer with a next step'; a task 'held until an approval, a consent decision ... whoever has to perform that act' is blocked. handleInboundPropose (ceremony.ts:925-989) holds the proposal for the person and sends nothing until they answer. The next-step shape vectors (NS-001 to 003, 005) are therefore not measured at all, and VRC-ISS-005 needs a held proposal. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected a trust-task-next-step reply$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-010",
+      "class": "A",
+      "reason": "[KW deviation] The wallet's documentProof.verifyDocumentProof accepts a proof that the task force's proof fixture marks invalid (it does not check proof.expires, the timestamp members, the @context, or the key encoding beyond the signature). Basis, per row: SPEC.md 4.7 defers the proof to VC Data Integrity, whose `created` and `expires` MUST be dateTimeStamp strings (calendar-invalid values, a 60th second and offsets above 14:00 are not); the @context rows rest on vc-di-eddsa 3.3.2 step 4.1; PRF-018 on the proof's own expires having passed; PRF-032 on RFC 8032 5.1.3 (a y of p or more is refused). The fixture manifest states the verdict; the SPEC.md text itself is silent on proof members' ranges. Vector review 2026-11-15: class A. PRF-021, 027, 031 and 033 are CLARIFY (see the vector review).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-context-mismatch\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-011",
+      "class": "A",
+      "reason": "[KW deviation] The wallet's documentProof.verifyDocumentProof accepts a proof that the task force's proof fixture marks invalid (it does not check proof.expires, the timestamp members, the @context, or the key encoding beyond the signature). Basis, per row: SPEC.md 4.7 defers the proof to VC Data Integrity, whose `created` and `expires` MUST be dateTimeStamp strings (calendar-invalid values, a 60th second and offsets above 14:00 are not); the @context rows rest on vc-di-eddsa 3.3.2 step 4.1; PRF-018 on the proof's own expires having passed; PRF-032 on RFC 8032 5.1.3 (a y of p or more is refused). The fixture manifest states the verdict; the SPEC.md text itself is silent on proof members' ranges. Vector review 2026-11-15: class A. PRF-021, 027, 031 and 033 are CLARIFY (see the vector review).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-context-proof-only\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-018",
+      "class": "A",
+      "reason": "[KW deviation] The wallet's documentProof.verifyDocumentProof accepts a proof that the task force's proof fixture marks invalid (it does not check proof.expires, the timestamp members, the @context, or the key encoding beyond the signature). Basis, per row: SPEC.md 4.7 defers the proof to VC Data Integrity, whose `created` and `expires` MUST be dateTimeStamp strings (calendar-invalid values, a 60th second and offsets above 14:00 are not); the @context rows rest on vc-di-eddsa 3.3.2 step 4.1; PRF-018 on the proof's own expires having passed; PRF-032 on RFC 8032 5.1.3 (a y of p or more is refused). The fixture manifest states the verdict; the SPEC.md text itself is silent on proof members' ranges. Vector review 2026-11-15: class A. PRF-021, 027, 031 and 033 are CLARIFY (see the vector review).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-expired\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-020",
+      "class": "A",
+      "reason": "[KW deviation] The wallet's documentProof.verifyDocumentProof accepts a proof that the task force's proof fixture marks invalid (it does not check proof.expires, the timestamp members, the @context, or the key encoding beyond the signature). Basis, per row: SPEC.md 4.7 defers the proof to VC Data Integrity, whose `created` and `expires` MUST be dateTimeStamp strings (calendar-invalid values, a 60th second and offsets above 14:00 are not); the @context rows rest on vc-di-eddsa 3.3.2 step 4.1; PRF-018 on the proof's own expires having passed; PRF-032 on RFC 8032 5.1.3 (a y of p or more is refused). The fixture manifest states the verdict; the SPEC.md text itself is silent on proof members' ranges. Vector review 2026-11-15: class A. PRF-021, 027, 031 and 033 are CLARIFY (see the vector review).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-expires-february-30\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-022",
+      "class": "A",
+      "reason": "[KW deviation] The wallet's documentProof.verifyDocumentProof accepts a proof that the task force's proof fixture marks invalid (it does not check proof.expires, the timestamp members, the @context, or the key encoding beyond the signature). Basis, per row: SPEC.md 4.7 defers the proof to VC Data Integrity, whose `created` and `expires` MUST be dateTimeStamp strings (calendar-invalid values, a 60th second and offsets above 14:00 are not); the @context rows rest on vc-di-eddsa 3.3.2 step 4.1; PRF-018 on the proof's own expires having passed; PRF-032 on RFC 8032 5.1.3 (a y of p or more is refused). The fixture manifest states the verdict; the SPEC.md text itself is silent on proof members' ranges. Vector review 2026-11-15: class A. PRF-021, 027, 031 and 033 are CLARIFY (see the vector review).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-expires-leap-second\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-023",
+      "class": "A",
+      "reason": "[KW deviation] The wallet's documentProof.verifyDocumentProof accepts a proof that the task force's proof fixture marks invalid (it does not check proof.expires, the timestamp members, the @context, or the key encoding beyond the signature). Basis, per row: SPEC.md 4.7 defers the proof to VC Data Integrity, whose `created` and `expires` MUST be dateTimeStamp strings (calendar-invalid values, a 60th second and offsets above 14:00 are not); the @context rows rest on vc-di-eddsa 3.3.2 step 4.1; PRF-018 on the proof's own expires having passed; PRF-032 on RFC 8032 5.1.3 (a y of p or more is refused). The fixture manifest states the verdict; the SPEC.md text itself is silent on proof members' ranges. Vector review 2026-11-15: class A. PRF-021, 027, 031 and 033 are CLARIFY (see the vector review).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-expires-offset-24-hours\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-024",
+      "class": "A",
+      "reason": "[KW deviation] The wallet's documentProof.verifyDocumentProof accepts a proof that the task force's proof fixture marks invalid (it does not check proof.expires, the timestamp members, the @context, or the key encoding beyond the signature). Basis, per row: SPEC.md 4.7 defers the proof to VC Data Integrity, whose `created` and `expires` MUST be dateTimeStamp strings (calendar-invalid values, a 60th second and offsets above 14:00 are not); the @context rows rest on vc-di-eddsa 3.3.2 step 4.1; PRF-018 on the proof's own expires having passed; PRF-032 on RFC 8032 5.1.3 (a y of p or more is refused). The fixture manifest states the verdict; the SPEC.md text itself is silent on proof members' ranges. Vector review 2026-11-15: class A. PRF-021, 027, 031 and 033 are CLARIFY (see the vector review).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-expires-offset-minute-60\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-025",
+      "class": "A",
+      "reason": "[KW deviation] The wallet's documentProof.verifyDocumentProof accepts a proof that the task force's proof fixture marks invalid (it does not check proof.expires, the timestamp members, the @context, or the key encoding beyond the signature). Basis, per row: SPEC.md 4.7 defers the proof to VC Data Integrity, whose `created` and `expires` MUST be dateTimeStamp strings (calendar-invalid values, a 60th second and offsets above 14:00 are not); the @context rows rest on vc-di-eddsa 3.3.2 step 4.1; PRF-018 on the proof's own expires having passed; PRF-032 on RFC 8032 5.1.3 (a y of p or more is refused). The fixture manifest states the verdict; the SPEC.md text itself is silent on proof members' ranges. Vector review 2026-11-15: class A. PRF-021, 027, 031 and 033 are CLARIFY (see the vector review).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-expires-offset-99-hours\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-026",
+      "class": "A",
+      "reason": "[KW deviation] The wallet's documentProof.verifyDocumentProof accepts a proof that the task force's proof fixture marks invalid (it does not check proof.expires, the timestamp members, the @context, or the key encoding beyond the signature). Basis, per row: SPEC.md 4.7 defers the proof to VC Data Integrity, whose `created` and `expires` MUST be dateTimeStamp strings (calendar-invalid values, a 60th second and offsets above 14:00 are not); the @context rows rest on vc-di-eddsa 3.3.2 step 4.1; PRF-018 on the proof's own expires having passed; PRF-032 on RFC 8032 5.1.3 (a y of p or more is refused). The fixture manifest states the verdict; the SPEC.md text itself is silent on proof members' ranges. Vector review 2026-11-15: class A. PRF-021, 027, 031 and 033 are CLARIFY (see the vector review).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-created-february-30\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-028",
+      "class": "A",
+      "reason": "[KW deviation] The wallet's documentProof.verifyDocumentProof accepts a proof that the task force's proof fixture marks invalid (it does not check proof.expires, the timestamp members, the @context, or the key encoding beyond the signature). Basis, per row: SPEC.md 4.7 defers the proof to VC Data Integrity, whose `created` and `expires` MUST be dateTimeStamp strings (calendar-invalid values, a 60th second and offsets above 14:00 are not); the @context rows rest on vc-di-eddsa 3.3.2 step 4.1; PRF-018 on the proof's own expires having passed; PRF-032 on RFC 8032 5.1.3 (a y of p or more is refused). The fixture manifest states the verdict; the SPEC.md text itself is silent on proof members' ranges. Vector review 2026-11-15: class A. PRF-021, 027, 031 and 033 are CLARIFY (see the vector review).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-created-month-13\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-029",
+      "class": "A",
+      "reason": "[KW deviation] The wallet's documentProof.verifyDocumentProof accepts a proof that the task force's proof fixture marks invalid (it does not check proof.expires, the timestamp members, the @context, or the key encoding beyond the signature). Basis, per row: SPEC.md 4.7 defers the proof to VC Data Integrity, whose `created` and `expires` MUST be dateTimeStamp strings (calendar-invalid values, a 60th second and offsets above 14:00 are not); the @context rows rest on vc-di-eddsa 3.3.2 step 4.1; PRF-018 on the proof's own expires having passed; PRF-032 on RFC 8032 5.1.3 (a y of p or more is refused). The fixture manifest states the verdict; the SPEC.md text itself is silent on proof members' ranges. Vector review 2026-11-15: class A. PRF-021, 027, 031 and 033 are CLARIFY (see the vector review).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-created-leap-second\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-030",
+      "class": "A",
+      "reason": "[KW deviation] The wallet's documentProof.verifyDocumentProof accepts a proof that the task force's proof fixture marks invalid (it does not check proof.expires, the timestamp members, the @context, or the key encoding beyond the signature). Basis, per row: SPEC.md 4.7 defers the proof to VC Data Integrity, whose `created` and `expires` MUST be dateTimeStamp strings (calendar-invalid values, a 60th second and offsets above 14:00 are not); the @context rows rest on vc-di-eddsa 3.3.2 step 4.1; PRF-018 on the proof's own expires having passed; PRF-032 on RFC 8032 5.1.3 (a y of p or more is refused). The fixture manifest states the verdict; the SPEC.md text itself is silent on proof members' ranges. Vector review 2026-11-15: class A. PRF-021, 027, 031 and 033 are CLARIFY (see the vector review).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-created-offset-24-hours\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-032",
+      "class": "A",
+      "reason": "[KW deviation] The wallet's documentProof.verifyDocumentProof accepts a proof that the task force's proof fixture marks invalid (it does not check proof.expires, the timestamp members, the @context, or the key encoding beyond the signature). Basis, per row: SPEC.md 4.7 defers the proof to VC Data Integrity, whose `created` and `expires` MUST be dateTimeStamp strings (calendar-invalid values, a 60th second and offsets above 14:00 are not); the @context rows rest on vc-di-eddsa 3.3.2 step 4.1; PRF-018 on the proof's own expires having passed; PRF-032 on RFC 8032 5.1.3 (a y of p or more is refused). The fixture manifest states the verdict; the SPEC.md text itself is silent on proof members' ranges. Vector review 2026-11-15: class A. PRF-021, 027, 031 and 033 are CLARIFY (see the vector review).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-non-canonical-key\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-101",
+      "class": "A",
+      "reason": "[KW deviation (module default)] SPEC.md 7.2 item 7: 'If the document carries a proof member, verify it ... and reject the document with proofInvalid on verification failure'; 4.7.1: 'A consumer that does not implement the cryptosuite a proof names MUST reject the document with proofInvalid'. TrustTasksService.consume defaults to acceptUnverified (TrustTasksService.ts:104); the shim carrier, like the wallet's discovery and propose handlers, passes no policy, so a document whose proof is present and invalid is executed. Only the issue and witness-share handlers install a verifier. The supplementary run keyring-wallet-carrier-verify shows the result with the verifier installed. Vector review 2026-11-15: class A (the carrier part is also D).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
+          "^step 1: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-102",
+      "class": "A",
+      "reason": "[KW deviation (module default)] SPEC.md 7.2 item 7: 'If the document carries a proof member, verify it ... and reject the document with proofInvalid on verification failure'; 4.7.1: 'A consumer that does not implement the cryptosuite a proof names MUST reject the document with proofInvalid'. TrustTasksService.consume defaults to acceptUnverified (TrustTasksService.ts:104); the shim carrier, like the wallet's discovery and propose handlers, passes no policy, so a document whose proof is present and invalid is executed. Only the issue and witness-share handlers install a verifier. The supplementary run keyring-wallet-carrier-verify shows the result with the verifier installed. Vector review 2026-11-15: class A (the carrier part is also D).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
+          "^step 1: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-104",
+      "class": "A",
+      "reason": "[KW deviation (module default)] SPEC.md 7.2 item 7: 'If the document carries a proof member, verify it ... and reject the document with proofInvalid on verification failure'; 4.7.1: 'A consumer that does not implement the cryptosuite a proof names MUST reject the document with proofInvalid'. TrustTasksService.consume defaults to acceptUnverified (TrustTasksService.ts:104); the shim carrier, like the wallet's discovery and propose handlers, passes no policy, so a document whose proof is present and invalid is executed. Only the issue and witness-share handlers install a verifier. The supplementary run keyring-wallet-carrier-verify shows the result with the verifier installed. Vector review 2026-11-15: class A (the carrier part is also D).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
+          "^step 1: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "PRF-105",
+      "class": "A",
+      "reason": "[KW deviation (module default)] SPEC.md 7.2 item 7: 'If the document carries a proof member, verify it ... and reject the document with proofInvalid on verification failure'; 4.7.1: 'A consumer that does not implement the cryptosuite a proof names MUST reject the document with proofInvalid'. TrustTasksService.consume defaults to acceptUnverified (TrustTasksService.ts:104); the shim carrier, like the wallet's discovery and propose handlers, passes no policy, so a document whose proof is present and invalid is executed. Only the issue and witness-share handlers install a verifier. The supplementary run keyring-wallet-carrier-verify shows the result with the verifier installed. Vector review 2026-11-15: class A (the carrier part is also D).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
+          "^step 1: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "TIME-023",
+      "class": "A",
+      "reason": "[KW deviation (pinned runtime)] SPEC.md 7.2 item 1 (validate the outer structure; id is REQUIRED) and items 4 and 13 (timestamps). The wallet pins @openvtc/trust-tasks 0.28.1, whose consume pipeline has no envelope validation and reads a calendar-invalid timestamp differently from 0.29.0 (freshness.js, consume.js differ). Closed by a runtime bump, not by wallet logic. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
+          "^step 1: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "TIME-024",
+      "class": "A",
+      "reason": "[KW deviation (pinned runtime)] SPEC.md 7.2 item 1 (validate the outer structure; id is REQUIRED) and items 4 and 13 (timestamps). The wallet pins @openvtc/trust-tasks 0.28.1, whose consume pipeline has no envelope validation and reads a calendar-invalid timestamp differently from 0.29.0 (freshness.js, consume.js differ). Closed by a runtime bump, not by wallet logic. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
+          "^step 1: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "TIME-101",
+      "class": "C",
+      "reason": "[KW deviation (no acceptance window)] The wallet applies no maximum age (TrustTasksService.ts:69-84), declaring only its 5 minute skew. SPEC.md ('Bounding the record', Which time limits belong to the protocol): 'The framework names no default maximum age'; each consumer chooses its own, and one 'MUST NOT accept for execution a document older than the window over which it retains records'. The vectors measure the suite's profile maximum age for an implementation that declares none. Vector review 2026-11-15: class C (the specification fixes no value and does not say whether a consumer with no window at all conforms for a consequential task); a question for the task force; the entry stays until it is answered.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
+          "^step 1: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "TIME-105",
+      "class": "C",
+      "reason": "[KW deviation (no acceptance window)] The wallet applies no maximum age (TrustTasksService.ts:69-84), declaring only its 5 minute skew. SPEC.md ('Bounding the record', Which time limits belong to the protocol): 'The framework names no default maximum age'; each consumer chooses its own, and one 'MUST NOT accept for execution a document older than the window over which it retains records'. The vectors measure the suite's profile maximum age for an implementation that declares none. Vector review 2026-11-15: class C (the specification fixes no value and does not say whether a consumer with no window at all conforms for a consequential task); a question for the task force; the entry stays until it is answered.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
+          "^step 1: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-ISS-001",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 4.7.3] The wallet verifies an issue delivery's proof (issueProofPolicy, ceremony.ts) without naming a proof purpose, so the verifier demands assertionMethod and refuses a proof signed for authentication as proofInvalid. SPEC.md:373 says a producer SHOULD sign a Trust Task document with authentication, and SPEC.md:375 that a consumer checks the relationship the proof names. Single-vector debug runs found the proof's controller, the key and the sender DID right: the purpose is the whole refusal. The checks each vector is really about (party bindings, digest, duplicates, oracle) are not reached, so they are not measured. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected type https://trusttasks\\.org/spec/vrc/relationships/issue/0\\.1#response, got https://trusttasks\\.org/spec/trust-task-error/0\\.6$",
+          "^step 3: handled count 1, expected 2$",
+          "^step 3: stored credentials 0, expected 1$",
+          "^step 3: pointer /payload/vrcDigestMultibase: got undefined$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-ISS-002",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 4.7.3] The wallet verifies an issue delivery's proof (issueProofPolicy, ceremony.ts) without naming a proof purpose, so the verifier demands assertionMethod and refuses a proof signed for authentication as proofInvalid. SPEC.md:373 says a producer SHOULD sign a Trust Task document with authentication, and SPEC.md:375 that a consumer checks the relationship the proof names. Single-vector debug runs found the proof's controller, the key and the sender DID right: the purpose is the whole refusal. The checks each vector is really about (party bindings, digest, duplicates, oracle) are not reached, so they are not measured. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected type https://trusttasks\\.org/spec/vrc/relationships/issue/0\\.1#response, got https://trusttasks\\.org/spec/trust-task-error/0\\.6$",
+          "^step 3: stored credentials 0, expected 1$",
+          "^step 3: pointer /payload/vrcDigestMultibase: got undefined$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-ISS-005",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 8.6] SPEC.md 8.6: 'A consumer holding a task MUST answer with a next step'; a task 'held until an approval, a consent decision ... whoever has to perform that act' is blocked. handleInboundPropose (ceremony.ts:925-989) holds the proposal for the person and sends nothing until they answer. The next-step shape vectors (NS-001 to 003, 005) are therefore not measured at all, and VRC-ISS-005 needs a held proposal. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected a trust-task-next-step reply$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-ISS-007",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 4.7.3] The wallet verifies an issue delivery's proof (issueProofPolicy, ceremony.ts) without naming a proof purpose, so the verifier demands assertionMethod and refuses a proof signed for authentication as proofInvalid. SPEC.md:373 says a producer SHOULD sign a Trust Task document with authentication, and SPEC.md:375 that a consumer checks the relationship the proof names. Single-vector debug runs found the proof's controller, the key and the sender DID right: the purpose is the whole refusal. The checks each vector is really about (party bindings, digest, duplicates, oracle) are not reached, so they are not measured. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/issue:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-ISS-008",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 4.7.3] The wallet verifies an issue delivery's proof (issueProofPolicy, ceremony.ts) without naming a proof purpose, so the verifier demands assertionMethod and refuses a proof signed for authentication as proofInvalid. SPEC.md:373 says a producer SHOULD sign a Trust Task document with authentication, and SPEC.md:375 that a consumer checks the relationship the proof names. Single-vector debug runs found the proof's controller, the key and the sender DID right: the purpose is the whole refusal. The checks each vector is really about (party bindings, digest, duplicates, oracle) are not reached, so they are not measured. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/issue:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-ISS-009",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 4.7.3] The wallet verifies an issue delivery's proof (issueProofPolicy, ceremony.ts) without naming a proof purpose, so the verifier demands assertionMethod and refuses a proof signed for authentication as proofInvalid. SPEC.md:373 says a producer SHOULD sign a Trust Task document with authentication, and SPEC.md:375 that a consumer checks the relationship the proof names. Single-vector debug runs found the proof's controller, the key and the sender DID right: the purpose is the whole refusal. The checks each vector is really about (party bindings, digest, duplicates, oracle) are not reached, so they are not measured. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/issue:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-ISS-010",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 4.7.3] The wallet verifies an issue delivery's proof (issueProofPolicy, ceremony.ts) without naming a proof purpose, so the verifier demands assertionMethod and refuses a proof signed for authentication as proofInvalid. SPEC.md:373 says a producer SHOULD sign a Trust Task document with authentication, and SPEC.md:375 that a consumer checks the relationship the proof names. Single-vector debug runs found the proof's controller, the key and the sender DID right: the purpose is the whole refusal. The checks each vector is really about (party bindings, digest, duplicates, oracle) are not reached, so they are not measured. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/issue:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-ISS-012",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 4.7.3] The wallet verifies an issue delivery's proof (issueProofPolicy, ceremony.ts) without naming a proof purpose, so the verifier demands assertionMethod and refuses a proof signed for authentication as proofInvalid. SPEC.md:373 says a producer SHOULD sign a Trust Task document with authentication, and SPEC.md:375 that a consumer checks the relationship the proof names. Single-vector debug runs found the proof's controller, the key and the sender DID right: the purpose is the whole refusal. The checks each vector is really about (party bindings, digest, duplicates, oracle) are not reached, so they are not measured. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code malformedRequest, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-ISS-014",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 4.7.3] The wallet verifies an issue delivery's proof (issueProofPolicy, ceremony.ts) without naming a proof purpose, so the verifier demands assertionMethod and refuses a proof signed for authentication as proofInvalid. SPEC.md:373 says a producer SHOULD sign a Trust Task document with authentication, and SPEC.md:375 that a consumer checks the relationship the proof names. Single-vector debug runs found the proof's controller, the key and the sender DID right: the purpose is the whole refusal. The checks each vector is really about (party bindings, digest, duplicates, oracle) are not reached, so they are not measured. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected type https://trusttasks\\.org/spec/vrc/relationships/issue/0\\.1#response, got https://trusttasks\\.org/spec/trust-task-error/0\\.6$",
+          "^step 3: stored credentials 0, expected 1$",
+          "^step 3: pointer /payload/vrcDigestMultibase: got undefined$",
+          "^step 4: a duplicate was reported as an error \\(proofInvalid\\)$",
+          "^step 4: stored credentials 0, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-ISS-015",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 4.7.3] The wallet verifies an issue delivery's proof (issueProofPolicy, ceremony.ts) without naming a proof purpose, so the verifier demands assertionMethod and refuses a proof signed for authentication as proofInvalid. SPEC.md:373 says a producer SHOULD sign a Trust Task document with authentication, and SPEC.md:375 that a consumer checks the relationship the proof names. Single-vector debug runs found the proof's controller, the key and the sender DID right: the purpose is the whole refusal. The checks each vector is really about (party bindings, digest, duplicates, oracle) are not reached, so they are not measured. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected type https://trusttasks\\.org/spec/vrc/relationships/issue/0\\.1#response, got https://trusttasks\\.org/spec/trust-task-error/0\\.6$",
+          "^step 3: stored credentials 0, expected 1$",
+          "^step 3: pointer /payload/vrcDigestMultibase: got undefined$",
+          "^step 4: expected code idConflict, got proofInvalid$",
+          "^step 4: stored credentials 0, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-ISS-016",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 4.7.3] The wallet verifies an issue delivery's proof (issueProofPolicy, ceremony.ts) without naming a proof purpose, so the verifier demands assertionMethod and refuses a proof signed for authentication as proofInvalid. SPEC.md:373 says a producer SHOULD sign a Trust Task document with authentication, and SPEC.md:375 that a consumer checks the relationship the proof names. Single-vector debug runs found the proof's controller, the key and the sender DID right: the purpose is the whole refusal. The checks each vector is really about (party bindings, digest, duplicates, oracle) are not reached, so they are not measured. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected type https://trusttasks\\.org/spec/vrc/relationships/issue/0\\.1#response, got https://trusttasks\\.org/spec/trust-task-error/0\\.6$",
+          "^step 3: stored credentials 0, expected 1$",
+          "^step 3: pointer /payload/vrcDigestMultibase: got undefined$",
+          "^step 4: expected code idConflict, got proofInvalid$",
+          "^step 4: stored credentials 0, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-PRO-007",
+      "class": "B",
+      "reason": "[KW deviation (acceptance echoes witnessed)] acceptRelationshipProposal (ceremony.ts:1205) sets witnessed from the proposal alone. propose 0.1 spec.md:86: the counterparty 'Sets witnessed: true on that response where it agrees the exchange will be witnessed'. An accepting party that does agree may say true; the vector can only tell mirroring from agreement if the implementation can accept without agreeing, which the wallet cannot. Vector review 2026-11-15: class B (the vector presumes a state the wallet cannot express); a decision by the project owner on a capability gate; the entry stays.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: pointer /payload/witnessed: must not equal true$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-PRO-008",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 8.6] SPEC.md 8.6: 'A consumer holding a task MUST answer with a next step'; a task 'held until an approval, a consent decision ... whoever has to perform that act' is blocked. handleInboundPropose (ceremony.ts:925-989) holds the proposal for the person and sends nothing until they answer. The next-step shape vectors (NS-001 to 003, 005) are therefore not measured at all, and VRC-ISS-005 needs a held proposal. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected a trust-task-next-step reply$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-PRO-020",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 8.6] SPEC.md 8.6: 'A consumer holding a task MUST answer with a next step'; a task 'held until an approval, a consent decision ... whoever has to perform that act' is blocked. handleInboundPropose (ceremony.ts:925-989) holds the proposal for the person and sends nothing until they answer. The next-step shape vectors (NS-001 to 003, 005) are therefore not measured at all, and VRC-ISS-005 needs a held proposal. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected a trust-task-next-step reply$",
+          "^step 3: expected a trust-task-next-step reply$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "VRC-PRO-021",
+      "class": "A",
+      "reason": "[KW deviation from SPEC.md 8.6] SPEC.md 8.6: 'A consumer holding a task MUST answer with a next step'; a task 'held until an approval, a consent decision ... whoever has to perform that act' is blocked. handleInboundPropose (ceremony.ts:925-989) holds the proposal for the person and sends nothing until they answer. The next-step shape vectors (NS-001 to 003, 005) are therefore not measured at all, and VRC-ISS-005 needs a held proposal. Vector review 2026-11-15: class A.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected a trust-task-next-step reply$",
+          "^step 4: expected one response, got 0 replies$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-14-kw-shim/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure",
+      "vector": "PRF-101",
+      "class": "A",
+      "reason": "SPEC.md 7.2 item 7 (SPEC.md:1017): a proof that is present and fails verification is rejected 'with proofInvalid'; proofInvalid is 'A proof was present but failed verification' (SPEC.md:1304); 4.7.1: an unsupported cryptosuite 'MUST reject the document with proofInvalid'. VTI answers permissionDenied (HTTP 403): vti-trust-task-server/src/spine.rs:349-352 maps the verifier's error through reject.rs:58-61 and verify.rs:37 (Unauthorized to permissionDenied) so an anonymous caller cannot learn whether a DID resolves. SPEC.md 8.2.1 handles that concern in the message, not the code. Measured against the live service at ref 26d0da81. BND-004 and BND-007 fail only at their proofInvalid step. Vector review 2026-11-15: class A; VTI is the de facto reference, so the project owner should put the question to the task force (may a failed DID resolution be answered permissionDenied?) rather than change the vectors.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code proofInvalid, got permissionDenied$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-15",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "PRF-101",
+      "class": "A",
+      "reason": "SPEC.md 7.2 item 7 (SPEC.md:1017): a proof that is present and fails verification is rejected 'with proofInvalid'; proofInvalid is 'A proof was present but failed verification' (SPEC.md:1304); 4.7.1: an unsupported cryptosuite 'MUST reject the document with proofInvalid'. VTI answers permissionDenied (HTTP 403): vti-trust-task-server/src/spine.rs:349-352 maps the verifier's error through reject.rs:58-61 and verify.rs:37 (Unauthorized to permissionDenied) so an anonymous caller cannot learn whether a DID resolves. SPEC.md 8.2.1 handles that concern in the message, not the code. Measured against the live service at ref 26d0da81. BND-004 and BND-007 fail only at their proofInvalid step. Vector review 2026-11-15: class A; VTI is the de facto reference, so the project owner should put the question to the task force (may a failed DID resolution be answered permissionDenied?) rather than change the vectors.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code proofInvalid, got permissionDenied$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure",
+      "vector": "PRF-102",
+      "class": "A",
+      "reason": "SPEC.md 7.2 item 7 (SPEC.md:1017): a proof that is present and fails verification is rejected 'with proofInvalid'; proofInvalid is 'A proof was present but failed verification' (SPEC.md:1304); 4.7.1: an unsupported cryptosuite 'MUST reject the document with proofInvalid'. VTI answers permissionDenied (HTTP 403): vti-trust-task-server/src/spine.rs:349-352 maps the verifier's error through reject.rs:58-61 and verify.rs:37 (Unauthorized to permissionDenied) so an anonymous caller cannot learn whether a DID resolves. SPEC.md 8.2.1 handles that concern in the message, not the code. Measured against the live service at ref 26d0da81. BND-004 and BND-007 fail only at their proofInvalid step. Vector review 2026-11-15: class A; VTI is the de facto reference, so the project owner should put the question to the task force (may a failed DID resolution be answered permissionDenied?) rather than change the vectors.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code proofInvalid, got permissionDenied$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-15",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "PRF-102",
+      "class": "A",
+      "reason": "SPEC.md 7.2 item 7 (SPEC.md:1017): a proof that is present and fails verification is rejected 'with proofInvalid'; proofInvalid is 'A proof was present but failed verification' (SPEC.md:1304); 4.7.1: an unsupported cryptosuite 'MUST reject the document with proofInvalid'. VTI answers permissionDenied (HTTP 403): vti-trust-task-server/src/spine.rs:349-352 maps the verifier's error through reject.rs:58-61 and verify.rs:37 (Unauthorized to permissionDenied) so an anonymous caller cannot learn whether a DID resolves. SPEC.md 8.2.1 handles that concern in the message, not the code. Measured against the live service at ref 26d0da81. BND-004 and BND-007 fail only at their proofInvalid step. Vector review 2026-11-15: class A; VTI is the de facto reference, so the project owner should put the question to the task force (may a failed DID resolution be answered permissionDenied?) rather than change the vectors.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code proofInvalid, got permissionDenied$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure",
+      "vector": "PRF-104",
+      "class": "A",
+      "reason": "SPEC.md 7.2 item 7 (SPEC.md:1017): a proof that is present and fails verification is rejected 'with proofInvalid'; proofInvalid is 'A proof was present but failed verification' (SPEC.md:1304); 4.7.1: an unsupported cryptosuite 'MUST reject the document with proofInvalid'. VTI answers permissionDenied (HTTP 403): vti-trust-task-server/src/spine.rs:349-352 maps the verifier's error through reject.rs:58-61 and verify.rs:37 (Unauthorized to permissionDenied) so an anonymous caller cannot learn whether a DID resolves. SPEC.md 8.2.1 handles that concern in the message, not the code. Measured against the live service at ref 26d0da81. BND-004 and BND-007 fail only at their proofInvalid step. Vector review 2026-11-15: class A; VTI is the de facto reference, so the project owner should put the question to the task force (may a failed DID resolution be answered permissionDenied?) rather than change the vectors.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code proofInvalid, got permissionDenied$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-15",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "PRF-104",
+      "class": "A",
+      "reason": "SPEC.md 7.2 item 7 (SPEC.md:1017): a proof that is present and fails verification is rejected 'with proofInvalid'; proofInvalid is 'A proof was present but failed verification' (SPEC.md:1304); 4.7.1: an unsupported cryptosuite 'MUST reject the document with proofInvalid'. VTI answers permissionDenied (HTTP 403): vti-trust-task-server/src/spine.rs:349-352 maps the verifier's error through reject.rs:58-61 and verify.rs:37 (Unauthorized to permissionDenied) so an anonymous caller cannot learn whether a DID resolves. SPEC.md 8.2.1 handles that concern in the message, not the code. Measured against the live service at ref 26d0da81. BND-004 and BND-007 fail only at their proofInvalid step. Vector review 2026-11-15: class A; VTI is the de facto reference, so the project owner should put the question to the task force (may a failed DID resolution be answered permissionDenied?) rather than change the vectors.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code proofInvalid, got permissionDenied$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure",
+      "vector": "ERR-006",
+      "class": "A",
+      "reason": "SPEC.md 7.2 item 7 (SPEC.md:1017): a proof that is present and fails verification is rejected 'with proofInvalid'; proofInvalid is 'A proof was present but failed verification' (SPEC.md:1304); 4.7.1: an unsupported cryptosuite 'MUST reject the document with proofInvalid'. VTI answers permissionDenied (HTTP 403): vti-trust-task-server/src/spine.rs:349-352 maps the verifier's error through reject.rs:58-61 and verify.rs:37 (Unauthorized to permissionDenied) so an anonymous caller cannot learn whether a DID resolves. SPEC.md 8.2.1 handles that concern in the message, not the code. Measured against the live service at ref 26d0da81. BND-004 and BND-007 fail only at their proofInvalid step. Vector review 2026-11-15: class A; VTI is the de facto reference, so the project owner should put the question to the task force (may a failed DID resolution be answered permissionDenied?) rather than change the vectors.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected code proofInvalid, got permissionDenied$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-15",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "ERR-006",
+      "class": "A",
+      "reason": "SPEC.md 7.2 item 7 (SPEC.md:1017): a proof that is present and fails verification is rejected 'with proofInvalid'; proofInvalid is 'A proof was present but failed verification' (SPEC.md:1304); 4.7.1: an unsupported cryptosuite 'MUST reject the document with proofInvalid'. VTI answers permissionDenied (HTTP 403): vti-trust-task-server/src/spine.rs:349-352 maps the verifier's error through reject.rs:58-61 and verify.rs:37 (Unauthorized to permissionDenied) so an anonymous caller cannot learn whether a DID resolves. SPEC.md 8.2.1 handles that concern in the message, not the code. Measured against the live service at ref 26d0da81. BND-004 and BND-007 fail only at their proofInvalid step. Vector review 2026-11-15: class A; VTI is the de facto reference, so the project owner should put the question to the task force (may a failed DID resolution be answered permissionDenied?) rather than change the vectors.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected code proofInvalid, got permissionDenied$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure",
+      "vector": "ERR-007",
+      "class": "A",
+      "reason": "SPEC.md 7.2 item 7 (SPEC.md:1017): a proof that is present and fails verification is rejected 'with proofInvalid'; proofInvalid is 'A proof was present but failed verification' (SPEC.md:1304); 4.7.1: an unsupported cryptosuite 'MUST reject the document with proofInvalid'. VTI answers permissionDenied (HTTP 403): vti-trust-task-server/src/spine.rs:349-352 maps the verifier's error through reject.rs:58-61 and verify.rs:37 (Unauthorized to permissionDenied) so an anonymous caller cannot learn whether a DID resolves. SPEC.md 8.2.1 handles that concern in the message, not the code. Measured against the live service at ref 26d0da81. BND-004 and BND-007 fail only at their proofInvalid step. Vector review 2026-11-15: class A; VTI is the de facto reference, so the project owner should put the question to the task force (may a failed DID resolution be answered permissionDenied?) rather than change the vectors.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected code proofInvalid, got permissionDenied$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-15",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "ERR-007",
+      "class": "A",
+      "reason": "SPEC.md 7.2 item 7 (SPEC.md:1017): a proof that is present and fails verification is rejected 'with proofInvalid'; proofInvalid is 'A proof was present but failed verification' (SPEC.md:1304); 4.7.1: an unsupported cryptosuite 'MUST reject the document with proofInvalid'. VTI answers permissionDenied (HTTP 403): vti-trust-task-server/src/spine.rs:349-352 maps the verifier's error through reject.rs:58-61 and verify.rs:37 (Unauthorized to permissionDenied) so an anonymous caller cannot learn whether a DID resolves. SPEC.md 8.2.1 handles that concern in the message, not the code. Measured against the live service at ref 26d0da81. BND-004 and BND-007 fail only at their proofInvalid step. Vector review 2026-11-15: class A; VTI is the de facto reference, so the project owner should put the question to the task force (may a failed DID resolution be answered permissionDenied?) rather than change the vectors.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected code proofInvalid, got permissionDenied$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure",
+      "vector": "BND-004",
+      "class": "A",
+      "reason": "SPEC.md 7.2 item 7 (SPEC.md:1017): a proof that is present and fails verification is rejected 'with proofInvalid'; proofInvalid is 'A proof was present but failed verification' (SPEC.md:1304); 4.7.1: an unsupported cryptosuite 'MUST reject the document with proofInvalid'. VTI answers permissionDenied (HTTP 403): vti-trust-task-server/src/spine.rs:349-352 maps the verifier's error through reject.rs:58-61 and verify.rs:37 (Unauthorized to permissionDenied) so an anonymous caller cannot learn whether a DID resolves. SPEC.md 8.2.1 handles that concern in the message, not the code. Measured against the live service at ref 26d0da81. BND-004 and BND-007 fail only at their proofInvalid step. Vector review 2026-11-15: class A; VTI is the de facto reference, so the project owner should put the question to the task force (may a failed DID resolution be answered permissionDenied?) rather than change the vectors.",
+      "expectFailure": {
+        "failures": [
+          "^step 5: expected code proofInvalid, got permissionDenied$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-15",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "BND-004",
+      "class": "A",
+      "reason": "SPEC.md 7.2 item 7 (SPEC.md:1017): a proof that is present and fails verification is rejected 'with proofInvalid'; proofInvalid is 'A proof was present but failed verification' (SPEC.md:1304); 4.7.1: an unsupported cryptosuite 'MUST reject the document with proofInvalid'. VTI answers permissionDenied (HTTP 403): vti-trust-task-server/src/spine.rs:349-352 maps the verifier's error through reject.rs:58-61 and verify.rs:37 (Unauthorized to permissionDenied) so an anonymous caller cannot learn whether a DID resolves. SPEC.md 8.2.1 handles that concern in the message, not the code. Measured against the live service at ref 26d0da81. BND-004 and BND-007 fail only at their proofInvalid step. Vector review 2026-11-15: class A; VTI is the de facto reference, so the project owner should put the question to the task force (may a failed DID resolution be answered permissionDenied?) rather than change the vectors.",
+      "expectFailure": {
+        "failures": [
+          "^step 5: expected code proofInvalid, got permissionDenied$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure",
+      "vector": "BND-007",
+      "class": "A",
+      "reason": "SPEC.md 7.2 item 7 (SPEC.md:1017): a proof that is present and fails verification is rejected 'with proofInvalid'; proofInvalid is 'A proof was present but failed verification' (SPEC.md:1304); 4.7.1: an unsupported cryptosuite 'MUST reject the document with proofInvalid'. VTI answers permissionDenied (HTTP 403): vti-trust-task-server/src/spine.rs:349-352 maps the verifier's error through reject.rs:58-61 and verify.rs:37 (Unauthorized to permissionDenied) so an anonymous caller cannot learn whether a DID resolves. SPEC.md 8.2.1 handles that concern in the message, not the code. Measured against the live service at ref 26d0da81. BND-004 and BND-007 fail only at their proofInvalid step. Vector review 2026-11-15: class A; VTI is the de facto reference, so the project owner should put the question to the task force (may a failed DID resolution be answered permissionDenied?) rather than change the vectors.",
+      "expectFailure": {
+        "failures": [
+          "^step 5: expected code proofInvalid, got permissionDenied$",
+          "^step 5: HTTP status 403, expected 422$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-15",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "BND-007",
+      "class": "A",
+      "reason": "SPEC.md 7.2 item 7 (SPEC.md:1017): a proof that is present and fails verification is rejected 'with proofInvalid'; proofInvalid is 'A proof was present but failed verification' (SPEC.md:1304); 4.7.1: an unsupported cryptosuite 'MUST reject the document with proofInvalid'. VTI answers permissionDenied (HTTP 403): vti-trust-task-server/src/spine.rs:349-352 maps the verifier's error through reject.rs:58-61 and verify.rs:37 (Unauthorized to permissionDenied) so an anonymous caller cannot learn whether a DID resolves. SPEC.md 8.2.1 handles that concern in the message, not the code. Measured against the live service at ref 26d0da81. BND-004 and BND-007 fail only at their proofInvalid step. Vector review 2026-11-15: class A; VTI is the de facto reference, so the project owner should put the question to the task force (may a failed DID resolution be answered permissionDenied?) rather than change the vectors.",
+      "expectFailure": {
+        "failures": [
+          "^step 5: expected code proofInvalid, got permissionDenied$",
+          "^step 5: HTTP status 403, expected 422$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure",
+      "vector": "PRF-103",
+      "class": "B",
+      "reason": "Tier 2 attested profile pin (proofPurpose must be authentication). Not a framework MUST: SPEC.md:375 says the consumer checks the relationship the proof names and a specification MAY require a purpose as local policy. VTI authorises a proof for any purpose its signer lists the key under (VTI-KEY-022), and a did:key lists its key under every purpose, so the harness's did:key actor can sign with assertionMethod and be accepted. A stated profile difference, not a specification violation; any change request is for the maintainers to judge.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/notifications/notify/0\\.1#response$",
+          "^step 1: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-15",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "PRF-103",
+      "class": "B",
+      "reason": "Tier 2 attested profile pin (proofPurpose must be authentication). Not a framework MUST: SPEC.md:375 says the consumer checks the relationship the proof names and a specification MAY require a purpose as local policy. VTI authorises a proof for any purpose its signer lists the key under (VTI-KEY-022), and a did:key lists its key under every purpose, so the harness's did:key actor can sign with assertionMethod and be accepted. A stated profile difference, not a specification violation; any change request is for the maintainers to judge.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/notifications/notify/0\\.1#response$",
+          "^step 1: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "docs/05-reference-implementations.md V17",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "TD-001",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected type https://trusttasks\\.org/spec/vrc/relationships/witness-share/0\\.1#response, got https://trusttasks\\.org/spec/trust-task-error/0\\.6$",
+          "^step 3: stored witnessed credentials 0, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "TD-002",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected type https://trusttasks\\.org/spec/vrc/relationships/witness-share/0\\.1#response, got https://trusttasks\\.org/spec/trust-task-error/0\\.6$",
+          "^step 3: stored witnessed credentials 0, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "TD-003",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected type https://trusttasks\\.org/spec/vrc/relationships/witness-share/0\\.1#response, got https://trusttasks\\.org/spec/trust-task-error/0\\.6$",
+          "^step 3: stored witnessed credentials 0, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "TD-004",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected type https://trusttasks\\.org/spec/vrc/relationships/witness-share/0\\.1#response, got https://trusttasks\\.org/spec/trust-task-error/0\\.6$",
+          "^step 3: stored witnessed credentials 0, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "TD-005",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected type https://trusttasks\\.org/spec/vrc/relationships/witness-share/0\\.1#response, got https://trusttasks\\.org/spec/trust-task-error/0\\.6$",
+          "^step 3: stored witnessed credentials 0, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "TD-006",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "WSH-001",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected type https://trusttasks\\.org/spec/vrc/relationships/witness-share/0\\.1#response, got https://trusttasks\\.org/spec/trust-task-error/0\\.6$",
+          "^step 3: stored witnessed credentials 0, expected 1$",
+          "^step 3: pointer /payload/vwcDigestMultibase: got undefined$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "WSH-002",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "WSH-003",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "WSH-004",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "WSH-005",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$",
+          "^step 4: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "WSH-006",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$",
+          "^step 4: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "WSH-007",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$",
+          "^step 4: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$",
+          "^step 5: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "WSH-008",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "WSH-009",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "WSH-010",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "WSH-011",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected type https://trusttasks\\.org/spec/vrc/relationships/witness-share/0\\.1#response, got https://trusttasks\\.org/spec/trust-task-error/0\\.6$",
+          "^step 3: stored witnessed credentials 0, expected 1$",
+          "^step 3: pointer /payload/vwcDigestMultibase: got undefined$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "WSH-012",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "WSH-018",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected type https://trusttasks\\.org/spec/vrc/relationships/witness-share/0\\.1#response, got https://trusttasks\\.org/spec/trust-task-error/0\\.6$",
+          "^step 3: stored witnessed credentials 0, expected 1$",
+          "^step 3: pointer /payload/vwcDigestMultibase: got undefined$",
+          "^step 4: expected code idConflict, got proofInvalid$",
+          "^step 4: stored witnessed credentials 0, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "WSH-025",
+      "reason": "[KW deviation] witness-share is reached for the first time in this run. The wallet verifies the envelope proof of a witness-share under the sender's relationship DID, not under the envelope issuer (issueProofPolicy in ceremony.ts, the same rule as docs/05 K5), so a share signed under its issuer is refused proofInvalid at the first gate. The later checks this vector is about (challenge, domain, parties, digest pairing, terminal) are not reached, so the wallet's pairing logic is not measured by it. Presentation and credential crypto is a suite stand-in in this row, because the wallet's own verifier (Credo Ed25519Signature2018) cannot read the suite's eddsa-jcs-2022 bundles.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$",
+          "^step 4: expected code vrc/relationships/witness-share:notAccepted, got proofInvalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md; docs/05-reference-implementations.md section 2.2",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-006",
+      "reason": "[KW deviation] The wallet keeps no duplicate-execution record (docs/05 K2), so after a restart, as before it, an identical resend of an accepted document is executed again. Reached in this run: the shim restarts by rebuilding the wallet's services over the same stored records.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: a duplicate was executed again$",
+          "^step 3: handled count 2, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "DUP-103",
+      "class": "D",
+      "reason": "[shim carrier] The vector sends a document with no authenticated transport sender, as the shared fixture rows do; the wallet's carriage handler retains and does not process a document with no authenticated connection, and a DIDComm carriage is always authenticated, so the row is unreachable on this carrier; not reported as a wallet defect. Same class as DUP-101, 102, 104 to 109. Reached in the 2026-11-15 run. The expected failure text is the observed one: a missing error reply after the first step is an advisory (the error reply is a SHOULD), and on DIDComm v2 the adapter cannot send an anonymous document at all (\"Message is undeliverable to service\"), so the v2 rows fail in the adapter before the wallet is reached.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: (expected one response, got 0 replies|adapter or harness error: Message is undeliverable to service with id did:peer:.+)$",
+          "^step (1: handled count 0, expected 1|2: adapter or harness error: Message is undeliverable to service with id did:peer:.+)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-wider/issues-keyring-wallet.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet",
+      "vector": "CEX-022",
+      "class": "A",
+      "reason": "[KW deviation from credential-exchange/query 0.1] specs/credential-exchange/query/0.1/spec.md, 'Answer, defer, or refuse': 'Any other verifier is **deferred**: the query is persisted, the verifier is told `consentRequired`, and the decision moves out of band'; errorCodes: 'credential-exchange/query:consentRequired ... The holder deferred the query for an out-of-band decision ... retryable: true'. The wallet defers the matched query as the text asks (pendingCredentialExchangeQueries and credentialExchangeStore.setQueryPrompt, ceremony.ts:2117-2126; observe deferred 1) and tells the verifier nothing: its own comment reads 'No #response/error variant exists for this spec' (ceremony.ts:2070-2072). The wallet's pinned package (@openvtc/trust-tasks 0.28.1) carries no errorCodes for the task; its payload description says only 'The holder answers with credential-exchange/present, or defers for consent', which does not contradict the text. Classed 2026-11-15 (run 2026-11-15-kw-shim-query): class A (implementation differs from the specification text). The tension between this sentence and the indistinguishability MUST is CEX-024's CLARIFY; under either reading of it the verifier is sent an error, never silence.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected one error, got 0 replies$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-26",
+      "ref": "results/runs/2026-11-15-kw-shim-query/issues-keyring-wallet.md; results/runs/2026-11-15-kw-shim-query/draft-issues/01-query-deferral-consent-required.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "ID-002",
+      "class": "A",
+      "reason": "[VTI deviation] The VTA answers an identityMismatch refusal with the document's in-band issuer as the recipient. The framework (section on error responses) and the HTTPS binding (section 3) require it to be addressed to the transport-authenticated sender and never to the contested in-band issuer. Measured on the VTA handlers in process; the sender is the bearer holder.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: identityMismatch reply is not addressed to the transport sender$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-26d0da81/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "ID-004",
+      "class": "A",
+      "reason": "[VTI deviation] The VTA answers an identityMismatch refusal with the document's in-band issuer as the recipient. The framework (section on error responses) and the HTTPS binding (section 3) require it to be addressed to the transport-authenticated sender and never to the contested in-band issuer. Measured on the VTA handlers in process; the sender is the bearer holder.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: identityMismatch reply is not addressed to the transport sender$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-26d0da81/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "BND-002",
+      "class": "A",
+      "reason": "[VTI deviation] The VTA answers an identityMismatch refusal with the document's in-band issuer as the recipient. The framework (section on error responses) and the HTTPS binding (section 3) require it to be addressed to the transport-authenticated sender and never to the contested in-band issuer. Measured on the VTA handlers in process; the sender is the bearer holder.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: identityMismatch reply is not addressed to the transport sender$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-26d0da81/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "PRF-010",
+      "class": "A",
+      "reason": "[Difference observed through VTI's proof verification] VTI's verifier (verify_trust_task_proof_value, the function its pipeline calls, which hands the cryptographic check to affinidi-data-integrity) accepts a proof whose @context is not a prefix of the document's @context, where vc-di-eddsa 3.3.2 step 4.1 sets verified to false and the task-force fixture manifest lists no exception for any runtime. Whether the difference sits in VTI or in that library has not been traced.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-context-mismatch\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-26d0da81/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "PRF-011",
+      "class": "A",
+      "reason": "[Difference observed through VTI's proof verification] VTI's verifier accepts a proof that carries an @context when the document has none, where vc-di-eddsa 3.3.2 step 4.1 fails and the fixture manifest lists no exception. Whether it sits in VTI or in affinidi-data-integrity has not been traced.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-context-proof-only\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-26d0da81/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "PRF-029",
+      "class": "A",
+      "reason": "[Difference observed through VTI's proof verification] VTI's verifier accepts a proof whose created is a leap second (23:59:60Z); the fixture manifest says every runtime applies the ranges of expires to created and refuses it as malformed. Whether it sits in VTI or in affinidi-data-integrity has not been traced.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-created-leap-second\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-26d0da81/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "PRF-008",
+      "reason": "[Known upstream gap, stated in the fixture manifest] The Rust Data Integrity library VTI builds on (affinidi-data-integrity 0.8) holds a proof @context only as an array, so a proof whose @context is a single string does not parse; the manifest lists this as the expected result for the rust runtime. Not specific to VTI's own code.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-context-string\\.json is invalid, expected valid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-26d0da81/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "PRF-019",
+      "reason": "[Known upstream gap, stated in the fixture manifest] The same library has no expires member in its proof type, so a correctly signed proof carrying a future expires is refused; the manifest lists it as the expected result for the rust runtime. Not specific to VTI's own code.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-expires-future\\.json is invalid, expected valid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-26d0da81/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CEX-004",
+      "class": "A",
+      "reason": "[VTI deviation] The VTA's credential-exchange/issue handler does not open a sealed bundle (receive_issued_credential refuses the sealed member; the sealed path is only used for invites) and answers a schema-valid sealed payload with malformedRequest, where the specification declares unsupportedFormat and unopenableBundle for a bundle the holder cannot process or open.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code credential-exchange/issue:unsupportedFormat\\|credential-exchange/issue:unopenableBundle, got malformedRequest$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-26d0da81/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CEX-010",
+      "class": "B",
+      "reason": "[Profile difference] The attested profile row expects a credential about another party than the holder to be refused; the VTA stores it. The task specification leaves the authorization decision to the consumer and does not name the rule, so this is a stated difference from the profile, not a violation of the specification.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected silence or an error$",
+          "^step 1: observable state changed \\(noSideEffect\\)$",
+          "^step 1: stored credentials 1, expected 0$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-26d0da81/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "PRF-103",
+      "class": "B",
+      "reason": "[Profile difference] A did:key signer can sign operational documents under assertionMethod and be accepted; the profile row expects refusal. Same observation as the HTTPS-adapter run of the community service; SPEC 4.7 names the relationship the consumer checks.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/notifications/notify/0\\.1#response$",
+          "^step 1: observable state changed \\(noSideEffect\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-26d0da81/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "DUP-001",
+      "tier": 2,
+      "class": "B",
+      "reason": "[Profile difference] For a completed duplicate the VTA returns the same document id and payload with a fresh proof (it signs again) rather than the retained document byte for byte. SPEC 7.2 item 11 says SHOULD return the previously determined result or an equivalent one, so the Tier 1 vector records an advisory and the attested profile row fails it.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: duplicate answered with an equivalent response rather than the retained document \\(SPEC\\.md 7\\.2 item 11: SHOULD return the previously determined result\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-26d0da81/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "DUP-004",
+      "tier": 2,
+      "class": "B",
+      "reason": "[Profile difference] Same as DUP-001: the answer to a completed duplicate is re-signed, not the retained bytes.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: duplicate answered with an equivalent response rather than the retained document \\(SPEC\\.md 7\\.2 item 11: SHOULD return the previously determined result\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-26d0da81/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "BND-005",
+      "tier": 2,
+      "class": "B",
+      "reason": "[Profile difference] Same as DUP-001: the answer to a completed duplicate over HTTPS is re-signed, not the retained bytes.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: duplicate answered with an equivalent response rather than the retained document \\(SPEC\\.md 7\\.2 item 11: SHOULD return the previously determined result\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-26d0da81/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CEX-022",
+      "class": "A",
+      "reason": "[VTI deviation] The VTA's credential-exchange/query handler reads DCQL meta.type_values as a flat list of strings (meta_type_values), so a query in the DCQL form (an array of string arrays) gathers no candidate and is answered taskFailed (not_found) although the credential is held; and where a query does match (flat form, checked by a probe) a deferral is answered with no document (HTTP 204), where the query specification says the verifier is told credential-exchange/query:consentRequired.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected code credential-exchange/query:consentRequired, got taskFailed$",
+          "^step 2: deferred queries 0, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-query/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CEX-027",
+      "class": "A",
+      "reason": "[VTI deviation, same cause as CEX-022] The query without a proof is not refused for that (as the vector expects), but it is not deferred either: the DCQL-form type_values gathers no candidate, so no deferral is persisted.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: deferred queries 0, expected 1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-inprocess-query/issues-verifiable-trust-infrastructure.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "PRF-010",
+      "class": "A",
+      "reason": "[Difference observed through VTI's proof verification] VTI's verifier (verify_trust_task_proof_value, the function its pipeline calls, which hands the cryptographic check to affinidi-data-integrity) accepts a proof whose @context is not a prefix of the document's @context, where vc-di-eddsa 3.3.2 step 4.1 sets verified to false and the task-force fixture manifest lists no exception for any runtime. Whether the difference sits in VTI or in that library has not been traced. (The community service verifies with the same shared function, vti-common `verify_trust_task_proof_value`; reached through the in-process VTC host, /ctl/verify.)",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-context-mismatch\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/runs/2026-11-15-vti-reach-vtc-inprocess-core/README.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "PRF-011",
+      "class": "A",
+      "reason": "[Difference observed through VTI's proof verification] VTI's verifier accepts a proof that carries an @context when the document has none, where vc-di-eddsa 3.3.2 step 4.1 fails and the fixture manifest lists no exception. Whether it sits in VTI or in affinidi-data-integrity has not been traced. (The community service verifies with the same shared function, vti-common `verify_trust_task_proof_value`; reached through the in-process VTC host, /ctl/verify.)",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-context-proof-only\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/runs/2026-11-15-vti-reach-vtc-inprocess-core/README.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "PRF-029",
+      "class": "A",
+      "reason": "[Difference observed through VTI's proof verification] VTI's verifier accepts a proof whose created is a leap second (23:59:60Z); the fixture manifest says every runtime applies the ranges of expires to created and refuses it as malformed. Whether it sits in VTI or in affinidi-data-integrity has not been traced. (The community service verifies with the same shared function, vti-common `verify_trust_task_proof_value`; reached through the in-process VTC host, /ctl/verify.)",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-created-leap-second\\.json is valid, expected invalid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/runs/2026-11-15-vti-reach-vtc-inprocess-core/README.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "PRF-008",
+      "reason": "[Known upstream gap, stated in the fixture manifest] The Rust Data Integrity library VTI builds on (affinidi-data-integrity 0.8) holds a proof @context only as an array, so a proof whose @context is a single string does not parse; the manifest lists this as the expected result for the rust runtime. Not specific to VTI's own code. (The community service verifies with the same shared function, vti-common `verify_trust_task_proof_value`; reached through the in-process VTC host, /ctl/verify.)",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-context-string\\.json is invalid, expected valid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/runs/2026-11-15-vti-reach-vtc-inprocess-core/README.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "PRF-019",
+      "reason": "[Known upstream gap, stated in the fixture manifest] The same library has no expires member in its proof type, so a correctly signed proof carrying a future expires is refused; the manifest lists it as the expected result for the rust runtime. Not specific to VTI's own code. (The community service verifies with the same shared function, vti-common `verify_trust_task_proof_value`; reached through the in-process VTC host, /ctl/verify.)",
+      "expectFailure": {
+        "failures": [
+          "^step 1: proof/eddsa-jcs-2022-expires-future\\.json is invalid, expected valid$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/runs/2026-11-15-vti-reach-vtc-inprocess-core/README.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CEX-031",
+      "reason": "[Unconfirmed: VTI payload parser or specification text] credential-exchange/request 0.1 on the community service: a request whose credential_request names credential_configuration_id and proofs is answered malformedRequest, 'payload parse: missing field `format`' (the VTC's parser requires a `format` member of credential_request), so it never reaches the unknownOffer / invalidProof decision the vector expects. Observed through the in-process VTC host, 2026-11-15; not compared with the specification schema in this run.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code credential-exchange/request:unknownOffer\\|credential-exchange/request:invalidProof, got malformedRequest$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/runs/2026-11-15-vti-reach-vtc-inprocess-core/README.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "DUP-006",
+      "tier": 2,
+      "class": "B",
+      "reason": "[Observed in process, VTA] After the host's restart (the VTA rebuilt over its kept store directory) a resend of an accepted document is not executed again, but the answer is a fresh signing of the same content, not the retained bytes: in the host's traces id, issuedAt, payload and type of the duplicate answer equal the first answer and only the proof differs (its `created` is the time of the second answer, always a later second across a restart). Tier 2 reports 'an equivalent response rather than the retained document' (SPEC.md 7.2 item 11, a SHOULD; advisory at Tier 1, where it passes). The community service restarted by compose passed in its recorded run (a different service and handler path), so this is stated for the VTA only.",
+      "expectFailure": {
+        "failures": [
+          "^step 3: duplicate answered with an equivalent response rather than the retained document \\(SPEC\\.md 7\\.2 item 11: SHOULD return the previously determined result\\)$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-vti-reach-inprocess-core/README.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CEX-038",
+      "class": "A",
+      "reason": "[VTI deviation, same cause as CEX-022] The vector's deferred query is the DCQL form (type_values an array of string arrays). The VTA reads meta.type_values as a flat list, so the query gathers no candidate and is answered taskFailed (not_found) instead of being deferred; the vector's own precondition (one deferral) therefore does not hold and its decline step has nothing to decline. A probe with the flat form (results/runs/2026-11-15-observe-adopt-vta-probes/) defers, the operator's pending/deny is accepted, and the pushed-document observation sees that nothing is pushed: PASS.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: deferred queries 0, expected 1$",
+          "^step 3: adapter or harness error: https://trusttasks\\.org/spec/credential-exchange/pending/deny/0\\.1 on the VTA failed \\(HTTP 422\\): \\{\"code\":\"taskFailed\",\"details\":\\{\"reason\":\"not_found\"\\},\"inResponseTo\":\\{\"id\":\"urn:uuid:[0-9a-f-]+\",\"typeUri\":\"https://trusttasks\\.org/spec/credential-exchange/pending/deny/0\\.1\"\\},\"message\":\"task failed: not found: no pending presentation `urn:uuid:[0-9a-f-]+`\",\"retryable\":false\\}$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/runs/2026-11-15-observe-adopt-vta-probes/README.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CEX-036",
+      "reason": "[Unconfirmed: VTI payload parser or specification text, same cause as CEX-031] The vector's request carries credential_configuration_id and a stub proof; the community service answers malformedRequest where the vector accepts unknownOffer or invalidProof (its parser requires `format`, see CEX-031). The pushed-document step (nothing pushed to the sender) is observed from the VTC's push-engine records and holds.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code credential-exchange/request:unknownOffer\\|credential-exchange/request:invalidProof, got malformedRequest$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/runs/2026-11-15-observe-adopt-vtc-inprocess/README.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "witness-server",
+      "vector": "WSD-004",
+      "class": "A",
+      "reason": "Discovery 0.1 answers every pattern with the full served set: a pattern that matches nothing (no-such-family/*) still lists witness/session and witness/session/submit. The specification requires only the matching subset.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: discovery: listed types the implementation does not declare or the patterns do not match: https://trusttasks\\.org/spec/witness/session/0\\.1, https://trusttasks\\.org/spec/witness/session/submit/0\\.1$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-12",
+      "ref": "packages/witness-server/src/trustTasks/WitnessTaskSessions.ts handleDiscovery (the handler builds supportedTypes without reading payload.patterns)",
+      "acknowledged": null
+    },
+    {
+      "impl": "witness-server",
+      "vector": "WSD-010",
+      "class": "A",
+      "reason": "With the locality policy 'offered' the discovery response carries an expanded entry with an offeredExt member; the 0.1 response schema defines only type and requiredExt for an expanded entry and closes the object. Deployment-dependent: not present when the policy is off.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: reply discloses a string it must not: offeredExt$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-12",
+      "ref": "WitnessTaskSessions.ts handleDiscovery (offeredExt)",
+      "acknowledged": null
+    },
+    {
+      "impl": "witness-server",
+      "vector": "WSS-005",
+      "class": "A",
+      "reason": "A session opened by a party that is not named in parties is accepted and answered with a challenge. The witness specification requires witness/session:refused (Conformance witness 2).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/witness/session/0\\.1#response$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-12",
+      "ref": "WitnessTaskSessions.ts handleSession checks only that parties has two entries",
+      "acknowledged": null
+    },
+    {
+      "impl": "witness-server",
+      "vector": "WSS-010",
+      "reason": "A replay of the same session document (same id) is executed again: it opens another session and answers with a new challenge instead of the prior response or silence (SPEC.md 7.2 item 11).",
+      "expectFailure": {
+        "failures": [
+          "^step 2: duplicate reply is neither the prior reply nor an equivalent response$",
+          "^step 2: a duplicate was executed again$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2027-01-12",
+      "ref": "WitnessTaskSessions.ts handleSession; the witness consume checks keep no duplicate record for this task",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CB-AA-028",
+      "class": "A",
+      "reason": "[VTI deviation from the task's own error code] The task lists vta/did-templates/get:notFound and says specs/vta/did-templates/get/3.1/spec.md:37 'No template with this name in the selected scope.' specs/vta/did-templates/get/3.1/spec.md:90 'respond with `vta/did-templates/get:notFound`' The request names a template name that names nothing. VTI answers taskFailed with details.reason not_found (message \"task failed: not found: template not found: conformance-unknown-identifier\") instead of the task's code; the vector accepts the task's code or permissionDenied, and the platform answered neither. Measured on the agent service handlers in process, original VTI. Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code vta/did-templates/get:notFound\\|permissionDenied, got taskFailed$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI, which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CB-AA-029",
+      "class": "A",
+      "reason": "[VTI deviation from the task's own error code] The task lists vta/did-templates/render:notFound and says specs/vta/did-templates/render/2.0/spec.md:37 'No template with this name in the selected scope.' specs/vta/did-templates/render/2.0/spec.md:78 'respond with `vta/did-templates/render:notFound`' The request names a template name that names nothing. VTI answers taskFailed with details.reason not_found (message \"task failed: not found: template not found: conformance-unknown-identifier\") instead of the task's code; the vector accepts the task's code or permissionDenied, and the platform answered neither. Measured on the agent service handlers in process, original VTI. Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code vta/did-templates/render:notFound\\|permissionDenied, got taskFailed$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI, which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CB-AA-035",
+      "class": "A",
+      "reason": "[VTI deviation from the task's own error code] The task lists vta/webvh/agent-name/list:notFound and says specs/vta/webvh/agent-name/list/1.1/spec.md:36 'The DID is unknown to this VTA or unreachable by the caller.' The request names a DID the VTA does not hold. VTI answers taskFailed with details.reason not_found (message \"task failed: not found: DID did:web:conformance-unknown.example not found\") instead of the task's code; the vector accepts the task's code or permissionDenied, and the platform answered neither. Measured on the agent service handlers in process, original VTI. Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code vta/webvh/agent-name/list:notFound\\|permissionDenied, got taskFailed$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI, which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CB-AA-036",
+      "class": "A",
+      "reason": "[VTI deviation from the task's own error code] The task lists vta/webvh/agent-name/set:notFound and says specs/vta/webvh/agent-name/set/1.0/spec.md:39 'The DID is unknown to this VTA, unreachable by the caller, or does not hold this name.' The request names a DID the VTA does not hold. VTI answers taskFailed with details.reason not_found (message \"task failed: not found: DID did:web:conformance-unknown.example not found\") instead of the task's code; the vector accepts the task's code or permissionDenied, and the platform answered neither. Measured on the agent service handlers in process, original VTI. Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code vta/webvh/agent-name/set:notFound\\|permissionDenied, got taskFailed$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI, which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CB-AA-037",
+      "class": "A",
+      "reason": "[VTI deviation from the task's own error code] The task lists vta/webvh/agent-name/enable:notFound and says specs/vta/webvh/agent-name/enable/1.0/spec.md:39 'The DID is unknown to this VTA, unreachable by the caller, or does not hold this name.' The request names a DID the VTA does not hold. VTI answers taskFailed with details.reason not_found (message \"task failed: not found: DID did:web:conformance-unknown.example not found\") instead of the task's code; the vector accepts the task's code or permissionDenied, and the platform answered neither. Measured on the agent service handlers in process, original VTI. Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code vta/webvh/agent-name/enable:notFound\\|permissionDenied, got taskFailed$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI, which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CB-AA-038",
+      "class": "A",
+      "reason": "[VTI deviation from the task's own error code] The task lists vta/webvh/dids/get:notFound and says specs/vta/webvh/dids/get/1.0/spec.md:36 'No such DID is held by this VTA, or the caller cannot reach its context.' specs/vta/webvh/dids/get/1.0/spec.md:65 'answer `vta/webvh/dids/get:notFound` for a' specs/vta/webvh/dids/get/1.0/spec.md:66 'DID the caller cannot reach, whether or not the VTA holds it.' The request names a well-formed DID the VTA does not hold. VTI answers taskFailed with details.reason not_found (message \"task failed: not found: webvh DID not found: did:web:conformance-unknown.example\") instead of the task's code; the vector accepts the task's code or permissionDenied, and the platform answered neither. Measured on the agent service handlers in process, original VTI. Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code vta/webvh/dids/get:notFound\\|permissionDenied, got taskFailed$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI, which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CB-AA-040",
+      "class": "A",
+      "reason": "[VTI deviation from the task's own error code] The task lists vta/webvh/dids/update:notFound and says specs/vta/webvh/dids/update/1.1/spec.md:45 'The agent holds no update key for this DID.' The request names a DID the agent holds no update key for. VTI answers taskFailed with details.reason not_found (message \"task failed: not found: SCID did:web:conformance-unknown.example not found\") instead of the task's code; the vector accepts the task's code or permissionDenied, and the platform answered neither. Measured on the agent service handlers in process, original VTI. Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code vta/webvh/dids/update:notFound\\|permissionDenied, got taskFailed$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI, which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CB-SD-017",
+      "class": "A",
+      "reason": "[VTI deviation from the task's own error code] The task lists keys:notFound and says specs/keys/set-exportability/0.1/spec.md:56 'No key record on this custodian carries the named `keyId`.' The request names a keyId that names no key record. VTI answers taskFailed with details.reason not_found (message \"task failed: not found: key conformance-unknown-identifier not found\") instead of the task's code; the vector accepts the task's code or permissionDenied, and the platform answered neither. Measured on the agent service handlers in process, original VTI. Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code keys:notFound\\|permissionDenied, got taskFailed$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI, which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CB-RM-009",
+      "class": "A",
+      "reason": "[VTI deviation from the task's own error code] The task lists rooms/keys/commit:notAMember and says specs/rooms/keys/commit/0.1/spec.md:48 'The recipient holds no group state for this room.' The request names a commit for a room of which the recipient holds no group state. VTI answers taskFailed with details.reason not_found (message \"task failed: not found: this VTA holds no group state for room `conformance-unknown-identifier`\") instead of the task's code; the vector accepts the task's code or permissionDenied, and the platform answered neither. Measured on the agent service handlers in process, original VTI. Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code rooms/keys/commit:notAMember\\|permissionDenied, got taskFailed$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI, which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CB-RM-006",
+      "class": "A",
+      "reason": "[VTI deviation from the task's own error code] The task lists rooms/epoch/chain:notFound and says specs/rooms/epoch/chain/0.2/spec.md:53 'No room with this identifier is served here.' The request names a room identifier that names no room. VTI answers taskFailed with details.reason not_found (message \"task failed: not found: room `conformance-unknown-identifier` not found\") instead of the task's code; the vector accepts the task's code or permissionDenied, and the platform answered neither. Measured on the community service in process, original VTI. Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code rooms/epoch/chain:notFound\\|rooms/epoch/chain:forbidden\\|permissionDenied, got taskFailed$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI, which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CB-CS-004",
+      "class": "A",
+      "reason": "[VTI deviation from the task's own error code] The task lists auth/step-up/approve-response:challengeUnknown and says specs/auth/step-up/approve-response/0.7/spec.md:42 'The relying party has no pending step-up matching the echoed challenge.' specs/auth/step-up/approve-response/0.7/spec.md:139 'Unknown → `challengeUnknown`.' The request echoes a challenge that names no pending step-up. VTI answers taskFailed instead of the task's code: vta-service step_up.rs step_up_failure puts the code string (auth/step-up/approve-response:challengeUnknown) into the taskFailed reason rather than answering the typed code. The vector accepts the task's code or permissionDenied, and the platform answered neither. Measured on the agent service handlers in process, original VTI (the recorded result holds the answered code, taskFailed, and no message). Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code auth/step-up/approve-response:challengeUnknown\\|permissionDenied, got taskFailed$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI, which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-inprocess",
+      "vector": "CB-CS-010",
+      "class": "A",
+      "reason": "[VTI deviation from the task's own error code] The task lists consent/decision:challengeMismatch and says specs/consent/decision/1.0/spec.md:42 'The echoed challenge does not match any pending consent request for the subject.' specs/consent/decision/1.0/spec.md:95 'match it to a pending consent for the subject (else `challengeMismatch`)' (consumer item 2). The request echoes a challenge that names no pending consent request. VTI answers malformedRequest instead of the task's code: vta-service trust_tasks/consent.rs maps the no-match case to a validation error (message \"consent/decision: no pending request matches the challenge\") which the shared mapping answers as malformedRequest. The vector accepts the task's code or permissionDenied, and the platform answered neither. Measured on the agent service handlers in process, original VTI. Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code consent/decision:challengeMismatch\\|consent/decision:notAuthorized\\|permissionDenied, got malformedRequest$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-29",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI, which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CX-MB-040",
+      "class": "A",
+      "reason": "[VTI deviation from the payload schema] The task's payload schema is closed: specs/vtc/members/self-remove/0.1/payload.schema.json:6 '\"additionalProperties\": false,' and SPEC.md:1012 'member against the JSON Schema obtained by content-negotiating' is a consumer MUST (SPEC.md 7.2 item 2), whose refusal is malformedRequest (SPEC.md 8.3). The request carries a payload with an unknown top-level member. VTI answers internalError instead of malformedRequest: the community service's handle_self_remove reads the payload as SelfRemoveBody (vta-sdk protocols/join_requests.rs), which has no deny_unknown_fields, so the unknown member is accepted and the handler goes on to the removal, which then fails. The recorded result holds the answered code (internalError) and no message; the failing step after the accepted payload may depend on the in-process state of this surface (for example an audit writer the in-process state does not initialise), so the exact cause of the internalError is not claimed, only that the payload was not refused first. The vector accepts malformedRequest or permissionDenied and fixes no check order. Measured on the community service in process, original VTI. Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code malformedRequest\\|permissionDenied\\|vtc/members/self-remove:notMember, got internalError$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI, which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CX-CA-031",
+      "class": "A",
+      "reason": "[VTI does not enforce the owners constraints of the payload schema] The task's payload schema constrains owners: specs/git-ns/repo/adopt/0.3/payload.schema.json:21 '\"uniqueItems\": true,' and specs/git-ns/repo/adopt/0.3/payload.schema.json:19 '\"minItems\": 1,', and SPEC.md:1012 'member against the JSON Schema obtained by content-negotiating' is a consumer MUST (SPEC.md 7.2 item 2), whose refusal is malformedRequest (SPEC.md 8.3). Step 3 of the vector sends owners holding the same DID twice. VTI does not refuse it: the seeded probe CP-CA-002 (the namespace bound first by git-ns/namespace/bind) answers that same payload (its step 3) with git-ns:membersOnly, the task's own member check, so the duplicate was accepted past payload validation. In the VTI source (vtc-service/src/git_ns/ops.rs, repo_adopt) the handler parses the resource, looks the namespace up (git-ns:unknownNamespace), checks each owner as a DID and refuses an empty list itself, and never checks that owners are unique; the unseeded answer git-ns:unknownNamespace is that namespace lookup. Step 1 (empty owners) is a different matter: VTI does refuse it with malformedRequest once the namespace exists (CP-CA-002 step 2), so its unseeded failure is the platform looking the namespace up before validating, an order SPEC.md 7.2 does not fix (a suite note, not this entry); and the DID-syntax payloads of this vector pass. The vector accepts malformedRequest or permissionDenied and fixes no check order. Measured on the community service in process, original VTI. Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code malformedRequest\\|permissionDenied, got git-ns:unknownNamespace$",
+          "^step 3: expected code malformedRequest\\|permissionDenied, got git-ns:unknownNamespace$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "CX-CA-033",
+      "class": "A",
+      "reason": "[VTI does not enforce the owners constraints of the payload schema] The task's payload schema constrains owners: specs/git-ns/repo/create/0.4/payload.schema.json:34 '\"uniqueItems\": true,' and specs/git-ns/repo/create/0.4/payload.schema.json:32 '\"minItems\": 1,', and SPEC.md:1012 'member against the JSON Schema obtained by content-negotiating' is a consumer MUST (SPEC.md 7.2 item 2), whose refusal is malformedRequest (SPEC.md 8.3). Steps 6 and 7 of the vector send owners that is empty and owners that holds the same DID twice. VTI refuses neither: in the seeded probe CP-CA-003 (the namespace bound first by git-ns/namespace/bind; its steps 7 and 8 re-ask them) the empty owners list is answered with a success response, so a repository was created, a side effect of this probe on the in-process host only, and the duplicate is answered git-ns:membersOnly, the task's own member check. In the VTI source (vtc-service/src/git_ns/ops.rs, repo_create) the handler looks the namespace up (git-ns:unknownNamespace), checks the entitlement, then takes owners as given and checks each as a DID and a member, with no check for an empty or duplicated list; the unseeded answer git-ns:unknownNamespace is that namespace lookup. The vector accepts malformedRequest or permissionDenied and fixes no check order. Measured on the community service in process, original VTI. Advisory: proposed channel, coverage family. Class A (implementation differs from the specification text).",
+      "expectFailure": {
+        "failures": [
+          "^step 6: expected code malformedRequest\\|permissionDenied, got git-ns:unknownNamespace$",
+          "^step 7: expected code malformedRequest\\|permissionDenied, got git-ns:unknownNamespace$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/vector-review.md (VTI, coverage re-measure); the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the coverage re-measure runs of the original VTI (the final set and its seeded probe), which are not yet a recorded run folder of this surface; the next recorded run decides it",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet-witness-server",
+      "vector": "WIT-004",
+      "class": "A",
+      "reason": "[witness server differs from spec text] witness/session Conformance witness item 2 and Authorization: a session whose issuer is not one of the DIDs in `parties` MUST be refused witness/session:refused. WitnessTaskSessions.handleSession reads `parties` but never compares it with the document's issuer, so any connected party can open a session for a pair it is not in. The wallet's own session document sets the issuer to its connection DID, not a relationship DID in `parties` (witnessCeremony.ts), so a literal fix needs the wire contract to change first. Vector review 2026-11-19: class A.",
+      "owner": "unassigned",
+      "expires": "2027-01-19",
+      "ref": "results/runs/2026-11-19-final-upstream-witness-server/issues-keyring-wallet-witness-server.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet-witness-server",
+      "vector": "WIT-013",
+      "class": "A",
+      "reason": "[witness server differs from framework] SPEC.md 7.2 item 11: a byte-identical resend of a consequential document is absorbed and the prior response returned. The witness keeps no duplicate record by design (runtime.ts witnessConsumeChecks: 'keeps no acceptance window and no duplicate record'), so a resend opens a second session. Vector review 2026-11-19: class A (deliberate design choice recorded in the source; a question for the server's maintainers).",
+      "owner": "unassigned",
+      "expires": "2027-01-19",
+      "ref": "results/runs/2026-11-19-final-upstream-witness-server/issues-keyring-wallet-witness-server.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet-witness-server",
+      "vector": "WIT-014",
+      "class": "A",
+      "reason": "[witness server differs from framework] SPEC.md 7.2 item 11: the same id with different content is idConflict. Same cause as WIT-013: no duplicate record; the second document silently replaces the first session under the same id. Class A.",
+      "owner": "unassigned",
+      "expires": "2027-01-19",
+      "ref": "results/runs/2026-11-19-final-upstream-witness-server/issues-keyring-wallet-witness-server.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet-witness-server",
+      "vector": "WIT-024",
+      "class": "A",
+      "reason": "[witness server differs from spec text] witness/session/submit 'This response is the outcome evidence' item 2 and SPEC.md 4.9.4 check 4: the delivered credential's issuer is the session document's recipient, the witness whose proof is on the response. The server signs the response with the connection DID (did:peer in a deployment) and issues the credential under a separate dedicated issuer DID (ensureDedicatedIssuerDid), so the two differ. Class A.",
+      "owner": "unassigned",
+      "expires": "2027-01-19",
+      "ref": "results/runs/2026-11-19-final-upstream-witness-server/issues-keyring-wallet-witness-server.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet-witness-server",
+      "vector": "WIT-029",
+      "class": "A",
+      "reason": "[witness server differs from spec text] witness/session/submit errorCodes and Conformance witness item 2: a replay is challengeMismatch and a defective presentation (its own proof, holder binding or party bindings) is presentationInvalid. The server answers challengeMismatch for every presentation failure and never presentationInvalid. Class A.",
+      "owner": "unassigned",
+      "expires": "2027-01-19",
+      "ref": "results/runs/2026-11-19-final-upstream-witness-server/issues-keyring-wallet-witness-server.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet-witness-server",
+      "vector": "WIT-031",
+      "class": "A",
+      "reason": "[witness server differs from spec text] Same as WIT-029: a presentation held by a non-party is presentationInvalid (party bindings); the server answers challengeMismatch. Class A.",
+      "owner": "unassigned",
+      "expires": "2027-01-19",
+      "ref": "results/runs/2026-11-19-final-upstream-witness-server/issues-keyring-wallet-witness-server.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet-witness-server",
+      "vector": "WIT-035",
+      "class": "A",
+      "reason": "[witness server differs from framework] SPEC.md 7.2 item 11: a byte-identical redelivery of a completed submit returns the first response. The session is deleted when the credential is issued and the server keeps no duplicate record, so a redelivery (a mediator retry, a lost reply) is answered proofInvalid and the wallet that lost the response cannot recover the credential. Class A.",
+      "owner": "unassigned",
+      "expires": "2027-01-19",
+      "ref": "results/runs/2026-11-19-final-upstream-witness-server/issues-keyring-wallet-witness-server.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet-witness-server",
+      "vector": "WIT-039",
+      "class": "A",
+      "reason": "[witness server differs from framework] SPEC.md 4.7: the proof's verificationMethod MUST resolve to key material controlled by the document's issuer. The submit proof policy accepts a proof by ANY of the session's two parties, so a submit whose issuer is A but signed by X is accepted and a credential issued. The wallet itself sets the issuer to its connection DID and signs with the relationship DID, so a literal fix needs the wire contract to change first (same cause as the keyring-wallet AUTHZ exceptions). Class A.",
+      "owner": "unassigned",
+      "expires": "2027-01-19",
+      "ref": "results/runs/2026-11-19-final-upstream-witness-server/issues-keyring-wallet-witness-server.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "keyring-wallet-witness-server",
+      "vector": "WIT-050",
+      "class": "A",
+      "reason": "[witness server differs from spec text] Same as WIT-024 (credential issuer is not the responder), seen across both parties' sessions of the full ceremony; every other check of the ceremony passes (two challenges, taskContext, taskDigest, vwcDigest, subject, statement type, signed responses). Class A.",
+      "owner": "unassigned",
+      "expires": "2027-01-19",
+      "ref": "results/runs/2026-11-19-final-upstream-witness-server/issues-keyring-wallet-witness-server.md",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "TL-AUD-005",
+      "class": "A",
+      "reason": "[VTC differs from the task text] specs/audit/list/0.2/spec.md errorCodes audit/list:invalidCursor: the supplied cursor failed to verify (malformed, or minted before an audit-key rotation); an unverifiable cursor is invalidCursor. The community answers malformedRequest for a cursor it never issued. Class A (docs/33 section 6, 2026-11-20). Not filed.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code audit/list:invalidCursor\\|permissionDenied, got malformedRequest$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/vector-review.md; docs/33 section 6; the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the triage runs of 2026-11-20 (branch conformance/promote-b1, original VTI community host) and in the 2026-11-16 advisory 2L run; not yet a recorded run folder of this surface; the next recorded run decides it.",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "TL-JRQ-001",
+      "class": "A",
+      "reason": "[VTC does not validate the payload before the handler] SPEC.md 7.2 item 2 (SPEC.md:1012): validate the payload against the task's schema; vtc/join-requests/submit 0.3 has a closed payload (additionalProperties false) with vp typed. An unknown member and a vp of the wrong type are answered vtc/join-requests/submit:alreadyMember, the answer to an accepted payload. Class A (docs/33 section 6). Not filed.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected code malformedRequest\\|permissionDenied, got vtc/join-requests/submit:alreadyMember$",
+          "^step 3: expected code malformedRequest\\|permissionDenied, got vtc/join-requests/submit:alreadyMember$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/vector-review.md; docs/33 section 6; the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the triage runs of 2026-11-20 (branch conformance/promote-b1, original VTI community host) and in the 2026-11-16 advisory 2L run; not yet a recorded run folder of this surface; the next recorded run decides it.",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "TL-JRQ-005",
+      "class": "A",
+      "reason": "[VTC does not validate the payload before the handler] SPEC.md 7.2 item 2 (SPEC.md:1012); vtc/join-requests/status 0.1 has a closed payload (additionalProperties false). An unknown member is answered vtc/join-requests/status:notFound, the answer to an accepted payload. Class A (docs/33 section 6). Not filed.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code malformedRequest\\|permissionDenied, got vtc/join-requests/status:notFound$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/vector-review.md; docs/33 section 6; the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the triage runs of 2026-11-20 (branch conformance/promote-b1, original VTI community host) and in the 2026-11-16 advisory 2L run; not yet a recorded run folder of this surface; the next recorded run decides it.",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "TL-JRQ-009",
+      "class": "A",
+      "reason": "[VTC answers malformedRequest where the task declares notFound] specs/vtc/join-requests/status/0.1/spec.md errorCodes vtc/join-requests/status:notFound ('No join request with the supplied requestId exists'); the payload schema types requestId as a string of at least one character, with no UUID format, so a non-UUID id is schema-valid. Class A (docs/33 section 6). Not filed.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code vtc/join-requests/status:notFound\\|permissionDenied, got malformedRequest$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/vector-review.md; docs/33 section 6; the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the triage runs of 2026-11-20 (branch conformance/promote-b1, original VTI community host) and in the 2026-11-16 advisory 2L run; not yet a recorded run folder of this surface; the next recorded run decides it.",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "TL-JRQ-017",
+      "class": "A",
+      "reason": "[VTC answers malformedRequest where the task declares notFound] specs/vtc/join-requests/withdraw/0.1/spec.md declares vtc/join-requests/withdraw:notFound for an unknown request; requestId is a string of at least one character with no UUID format. Class A (docs/33 section 6). Not filed.",
+      "expectFailure": {
+        "failures": [
+          "^step 1: expected code vtc/join-requests/withdraw:notFound\\|permissionDenied, got malformedRequest$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/vector-review.md; docs/33 section 6; the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the triage runs of 2026-11-20 (branch conformance/promote-b1, original VTI community host) and in the 2026-11-16 advisory 2L run; not yet a recorded run folder of this surface; the next recorded run decides it.",
+      "acknowledged": null
+    },
+    {
+      "impl": "verifiable-trust-infrastructure-vtc-inprocess",
+      "vector": "TL-MBR-001",
+      "class": "A",
+      "reason": "[VTC does not validate the payload before the handler] SPEC.md 7.2 item 2 (SPEC.md:1012); vtc/members/vmc 0.1 has a closed payload with vc required. An unknown member and a vc of the wrong type are answered vtc/members/vmc:invalidCredential, the answer to an accepted payload. Class A (docs/33 section 6). Not filed.",
+      "expectFailure": {
+        "failures": [
+          "^step 2: expected code malformedRequest\\|permissionDenied\\|vtc/members/vmc:notAMember, got vtc/members/vmc:invalidCredential$",
+          "^step 3: expected code malformedRequest\\|permissionDenied\\|vtc/members/vmc:notAMember, got vtc/members/vmc:invalidCredential$"
+        ]
+      },
+      "owner": "unassigned",
+      "expires": "2026-12-22",
+      "ref": "results/vector-review.md; docs/33 section 6; the task's specification text at the pinned task-force commit",
+      "inherited": "measured in the triage runs of 2026-11-20 (branch conformance/promote-b1, original VTI community host) and in the 2026-11-16 advisory 2L run; not yet a recorded run folder of this surface; the next recorded run decides it.",
+      "acknowledged": null
+    }
+  ]
+}

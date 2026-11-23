@@ -1,0 +1,74 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "VC-CONSENT",
+ "family": "complete",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "VC-CONSENT-001",
+   "title": "consent/revoke 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/consent/revoke/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/consent/revoke/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "consent/revoke",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/consent/revoke/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/consent/revoke/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:5252a3902f28c420340f589e943155c1d5409d05a0e517fdb9237bcbebf794ae",
+    "schemaHash": "sha256:9a8cd6f97fee3e09853c8d6521ed98d5313f653346ddefe0f8181d0b334bd36a"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/revoke/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/consent/revoke/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/consent/revoke/1.0"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  }
+ ]
+}

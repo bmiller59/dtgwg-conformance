@@ -1,0 +1,739 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "WSS",
+  "family": "witness",
+  "clock": {
+    "start": "2026-11-15T12:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "WSS-001",
+      "title": "a session opened by a party named in parties is answered with a challenge and a domain",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/0.2/spec.md (draft) Conformance witness 3 (a fresh, unpredictable challenge and its domain)",
+        "specs/witness/session/0.2/payload.schema.json (draft) Response (challenge minLength 16, domain minLength 1)"
+      ],
+      "source": {
+        "slug": "witness/session",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/0.2",
+        "pinnedDigest": "sha256:a5753fffd097d80cebc6da288a8de1bb8272dcacc29e7063b4d9c6197ffe0066",
+        "tfRef": {
+          "repoPath": "specs/witness/session/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d997f68d005c3372b0f2a850263bc62cfba6443e80a026e7c832898f7c7b2786",
+        "schemaHash": "sha256:d240a0e6e09b5787acba587c9be69925549f03954dd677c9289e4701e261a027"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "capture": {
+            "ch": "/payload/challenge",
+            "chDomain": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            }
+          }
+        }
+      ],
+      "mutants": [
+        "witnessShortChallenge"
+      ]
+    },
+    {
+      "id": "WSS-002",
+      "title": "the response to a session carries a proof (the response proof is REQUIRED)",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/0.2/spec.md (draft) front matter proofRequirement (response REQUIRED)",
+        "specs/witness/session/0.2/spec.md (draft) Conformance witness 3 (under the REQUIRED proof)"
+      ],
+      "source": {
+        "slug": "witness/session",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/0.2",
+        "pinnedDigest": "sha256:a5753fffd097d80cebc6da288a8de1bb8272dcacc29e7063b4d9c6197ffe0066",
+        "tfRef": {
+          "repoPath": "specs/witness/session/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d997f68d005c3372b0f2a850263bc62cfba6443e80a026e7c832898f7c7b2786",
+        "schemaHash": "sha256:d240a0e6e09b5787acba587c9be69925549f03954dd677c9289e4701e261a027"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "match": {
+              "/proof/type": "^.+$",
+              "/proof/proofValue": "^.+$"
+            }
+          }
+        }
+      ],
+      "mutants": [
+        "unsignedReplies"
+      ]
+    },
+    {
+      "id": "WSS-003",
+      "title": "two sessions never share a challenge",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/0.2/payload.schema.json (draft) Response challenge (\"A witness MUST NOT reuse a challenge across sessions\")",
+        "specs/witness/session/0.2/spec.md (draft) One session per participating party"
+      ],
+      "source": {
+        "slug": "witness/session",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/0.2",
+        "pinnedDigest": "sha256:a5753fffd097d80cebc6da288a8de1bb8272dcacc29e7063b4d9c6197ffe0066",
+        "tfRef": {
+          "repoPath": "specs/witness/session/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d997f68d005c3372b0f2a850263bc62cfba6443e80a026e7c832898f7c7b2786",
+        "schemaHash": "sha256:d240a0e6e09b5787acba587c9be69925549f03954dd677c9289e4701e261a027"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "capture": {
+            "ch": "/payload/challenge",
+            "chDomain": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            }
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(s2)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s2)"
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "notEqual": {
+              "/payload/challenge": [
+                "$cap(ch)"
+              ]
+            }
+          }
+        }
+      ],
+      "mutants": [
+        "witnessChallengeReuse"
+      ]
+    },
+    {
+      "id": "WSS-004",
+      "title": "the two parties of one exchange each open their own session, each with its own challenge",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/0.2/spec.md (draft) One session per participating party (\"the two sessions are separate exchanges, so each carries its own challenge\")"
+      ],
+      "source": {
+        "slug": "witness/session",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/0.2",
+        "pinnedDigest": "sha256:a5753fffd097d80cebc6da288a8de1bb8272dcacc29e7063b4d9c6197ffe0066",
+        "tfRef": {
+          "repoPath": "specs/witness/session/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d997f68d005c3372b0f2a850263bc62cfba6443e80a026e7c832898f7c7b2786",
+        "schemaHash": "sha256:d240a0e6e09b5787acba587c9be69925549f03954dd677c9289e4701e261a027"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "capture": {
+            "ch": "/payload/challenge",
+            "chDomain": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            }
+          }
+        },
+        {
+          "send": {
+            "document": {
+              "id": "$id(s2)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$X",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s2)"
+            },
+            "sign": null,
+            "from": "X"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            },
+            "notEqual": {
+              "/payload/challenge": [
+                "$cap(ch)"
+              ]
+            }
+          }
+        }
+      ],
+      "mutants": [
+        "witnessChallengeReuse"
+      ]
+    },
+    {
+      "id": "WSS-005",
+      "title": "a session opened by a party that is not named in parties is refused witness/session:refused",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/0.2/spec.md (draft) Conformance witness 2",
+        "specs/witness/session/0.2/spec.md (draft) errorCodes (witness/session:refused)"
+      ],
+      "source": {
+        "slug": "witness/session",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/0.2",
+        "pinnedDigest": "sha256:a5753fffd097d80cebc6da288a8de1bb8272dcacc29e7063b4d9c6197ffe0066",
+        "tfRef": {
+          "repoPath": "specs/witness/session/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d997f68d005c3372b0f2a850263bc62cfba6443e80a026e7c832898f7c7b2786",
+        "schemaHash": "sha256:d240a0e6e09b5787acba587c9be69925549f03954dd677c9289e4701e261a027"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$X",
+                  "$S"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "witness/session:refused"
+          }
+        }
+      ],
+      "mutants": [
+        "witnessSessionAnyIssuer"
+      ]
+    },
+    {
+      "id": "WSS-006",
+      "title": "parties with one entry are refused",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/0.2/payload.schema.json (draft) (parties minItems 2, maxItems 2)",
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target) 8.3 (malformedRequest)"
+      ],
+      "source": {
+        "slug": "witness/session",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/0.2",
+        "pinnedDigest": "sha256:a5753fffd097d80cebc6da288a8de1bb8272dcacc29e7063b4d9c6197ffe0066",
+        "tfRef": {
+          "repoPath": "specs/witness/session/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d997f68d005c3372b0f2a850263bc62cfba6443e80a026e7c832898f7c7b2786",
+        "schemaHash": "sha256:d240a0e6e09b5787acba587c9be69925549f03954dd677c9289e4701e261a027"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest"
+          }
+        }
+      ],
+      "mutants": [
+        "noPayloadValidation"
+      ]
+    },
+    {
+      "id": "WSS-007",
+      "title": "parties with three entries are refused",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/0.2/payload.schema.json (draft) (parties maxItems 2)",
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target) 8.3 (malformedRequest)"
+      ],
+      "source": {
+        "slug": "witness/session",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/0.2",
+        "pinnedDigest": "sha256:a5753fffd097d80cebc6da288a8de1bb8272dcacc29e7063b4d9c6197ffe0066",
+        "tfRef": {
+          "repoPath": "specs/witness/session/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d997f68d005c3372b0f2a850263bc62cfba6443e80a026e7c832898f7c7b2786",
+        "schemaHash": "sha256:d240a0e6e09b5787acba587c9be69925549f03954dd677c9289e4701e261a027"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X",
+                  "$S"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest"
+          }
+        }
+      ],
+      "mutants": [
+        "noPayloadValidation"
+      ]
+    },
+    {
+      "id": "WSS-008",
+      "title": "a party that is not a DID is refused",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/0.2/payload.schema.json (draft) (parties items pattern ^did:)",
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target) 8.3 (malformedRequest)"
+      ],
+      "source": {
+        "slug": "witness/session",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/0.2",
+        "pinnedDigest": "sha256:a5753fffd097d80cebc6da288a8de1bb8272dcacc29e7063b4d9c6197ffe0066",
+        "tfRef": {
+          "repoPath": "specs/witness/session/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d997f68d005c3372b0f2a850263bc62cfba6443e80a026e7c832898f7c7b2786",
+        "schemaHash": "sha256:d240a0e6e09b5787acba587c9be69925549f03954dd677c9289e4701e261a027"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "not-a-did"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest"
+          }
+        }
+      ],
+      "mutants": [
+        "noPayloadValidation"
+      ]
+    },
+    {
+      "id": "WSS-009",
+      "title": "a session with no issuedAt is not accepted",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/0.2/spec.md (draft) front matter issuedAtRequirement (REQUIRED)",
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target) 7.3 item 17 and 7.2 item 13 (a refusal; the code is not stated)"
+      ],
+      "source": {
+        "slug": "witness/session",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/0.2",
+        "pinnedDigest": "sha256:a5753fffd097d80cebc6da288a8de1bb8272dcacc29e7063b4d9c6197ffe0066",
+        "tfRef": {
+          "repoPath": "specs/witness/session/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d997f68d005c3372b0f2a850263bc62cfba6443e80a026e7c832898f7c7b2786",
+        "schemaHash": "sha256:d240a0e6e09b5787acba587c9be69925549f03954dd677c9289e4701e261a027"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "any-refusal"
+          }
+        }
+      ],
+      "mutants": [
+        "noFreshnessWindow"
+      ]
+    },
+    {
+      "id": "WSS-010",
+      "title": "a replay of the same session document does not open a second session",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/0.2/spec.md (draft) front matter issuedAtRequirement rationale (\"Replayed, it opens a second session against a witness who agreed to one\")",
+        "specs/witness/session/0.2/spec.md (draft):39-41 (sideEffects level: mutating)",
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target):92 (mutating is consequential)",
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target):1021 (7.2 item 11: a second receipt MUST NOT repeat the consequential effect)",
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target):1055 (return the prior result; never taskFailed)"
+      ],
+      "source": {
+        "slug": "witness/session",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/0.2",
+        "pinnedDigest": "sha256:a5753fffd097d80cebc6da288a8de1bb8272dcacc29e7063b4d9c6197ffe0066",
+        "tfRef": {
+          "repoPath": "specs/witness/session/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d997f68d005c3372b0f2a850263bc62cfba6443e80a026e7c832898f7c7b2786",
+        "schemaHash": "sha256:d240a0e6e09b5787acba587c9be69925549f03954dd677c9289e4701e261a027"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm",
+        "optional:authorised"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "recipient": "$iut",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "capture": {
+            "ch": "/payload/challenge",
+            "chDomain": "/payload/domain"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/witness/session/0.2#response",
+            "match": {
+              "/payload/challenge": "^.{16,}$",
+              "/payload/domain": "^.+$"
+            }
+          }
+        },
+        {
+          "send": {
+            "same": "previous"
+          },
+          "expect": {
+            "disposition": "duplicate"
+          }
+        }
+      ],
+      "mutants": [
+        "noReplayRecord"
+      ]
+    },
+    {
+      "id": "WSS-011",
+      "title": "a session request without a recipient is refused",
+      "tier": 1,
+      "spec": [
+        "specs/witness/session/0.2/spec.md (draft) front matter parties (witness: recipient REQUIRED)",
+        "SPEC.md (framework, draft; the target is 0.6.0, the snapshot prose is WD 0.7.0: docs/04 Framework target) 8.3 (malformedRequest)"
+      ],
+      "source": {
+        "slug": "witness/session",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/witness/session/0.2",
+        "pinnedDigest": "sha256:a5753fffd097d80cebc6da288a8de1bb8272dcacc29e7063b4d9c6197ffe0066",
+        "tfRef": {
+          "repoPath": "specs/witness/session/0.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d997f68d005c3372b0f2a850263bc62cfba6443e80a026e7c832898f7c7b2786",
+        "schemaHash": "sha256:d240a0e6e09b5787acba587c9be69925549f03954dd677c9289e4701e261a027"
+      },
+      "clarify": null,
+      "requires": [
+        "binding:didcomm"
+      ],
+      "steps": [
+        {
+          "send": {
+            "document": {
+              "id": "$id(s1)",
+              "type": "https://trusttasks.org/spec/witness/session/0.2",
+              "issuer": "$A",
+              "issuedAt": "$now+0s",
+              "payload": {
+                "parties": [
+                  "$A",
+                  "$X"
+                ]
+              },
+              "threadId": "$id(s1)"
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest"
+          }
+        }
+      ],
+      "mutants": [
+        "recipientOptional"
+      ]
+    }
+  ]
+}

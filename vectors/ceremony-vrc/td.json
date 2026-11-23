@@ -1,0 +1,525 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "TD",
+  "family": "vrc-witness-share",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "TD-001",
+      "title": "a cited document that carries a proof pairs with the digest computed without its top-level proof",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:545-557 (4.9.3 the top-level proof is removed before hashing)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "exercises the framework task-digest pairing rule (SPEC.md 4.9.3, tfRef) through the suite-local witness-share task (docs/10), which has no Trust Tasks home, so the vector is a candidate (decision 79 by the project owner / audit 2.A)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "digestIncludesProof"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "initiating": "signed"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1#response",
+            "state": {
+              "storedVwc": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TD-002",
+      "title": "a cited document that carries no proof pairs with the digest of the document unchanged (no placeholder)",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:545-557 (4.9.3 where the document carries no proof the input is the document unchanged; no placeholder is substituted)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "exercises the framework task-digest pairing rule (SPEC.md 4.9.3, tfRef) through the suite-local witness-share task (docs/10), which has no Trust Tasks home, so the vector is a candidate (decision 79 by the project owner / audit 2.A)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "digestPlaceholderProof"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "initiating": "unsigned"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1#response",
+            "state": {
+              "storedVwc": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TD-003",
+      "title": "a cited document signed again after the citation was made is the same document with the same task digest",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:545-557 (4.9.3 a document has one task digest whether or not, or how often, it was signed)",
+        "SPEC.md:559-561 (task digest versus step digest)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "exercises the framework task-digest pairing rule (SPEC.md 4.9.3, tfRef) through the suite-local witness-share task (docs/10), which has no Trust Tasks home, so the vector is a candidate (decision 79 by the project owner / audit 2.A)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "digestIncludesProof"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "initiating": "resigned"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1#response",
+            "state": {
+              "storedVwc": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TD-004",
+      "title": "a proof nested inside the payload is part of the content and stays in the digest input",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:545-557 (4.9.3 a proof within payload MUST NOT be removed)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "exercises the framework task-digest pairing rule (SPEC.md 4.9.3, tfRef) through the suite-local witness-share task (docs/10), which has no Trust Tasks home, so the vector is a candidate (decision 79 by the project owner / audit 2.A)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "digestStripsNestedProof"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "nestedProof": true
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1#response",
+            "state": {
+              "storedVwc": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TD-005",
+      "title": "the base64url spelling of a digest pairs: the decoded bytes are compared, not the encoded strings",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:553 (4.9.3 the result is a multibase-encoded multihash per DigestMultibase; the shared schema admits base58btc z and base64url u, SPEC.md:2195)",
+        "SPEC.md:557-558 (4.9.3 compare the decoded multihash bytes, not the encoded strings)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "exercises the framework task-digest pairing rule (SPEC.md 4.9.3, tfRef) through the suite-local witness-share task (docs/10), which has no Trust Tasks home, so the vector is a candidate (decision 79 by the project owner / audit 2.A)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "compareDigestStrings"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "digest": "u",
+              "name": "vwcU"
+            }
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1#response",
+            "state": {
+              "storedVwc": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TD-006",
+      "title": "a citation naming an unimplemented hash never pairs, and the id alone is never enough",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:557 (4.9.3 MUST NOT recompute under a different algorithm and MUST NOT fall back to id comparison alone)"
+      ],
+      "source": {
+        "slug": "vrc/relationships/witness-share",
+        "version": "0.1",
+        "channel": "candidate",
+        "ref": "suite:docs/10-witness-share-profile.md",
+        "pinnedDigest": "sha256:8fa0c5c1c8d5f51f8fe7c3d42784f06e94c4ed7dca05a40ba6f7c744a8363fd1",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "candidate": {
+          "implementedBy": [
+            "keyring-wallet",
+            "truststackers"
+          ],
+          "localText": "docs/10-witness-share-profile.md",
+          "adoptionNote": "No Trust Tasks task, branch, issue or pull request for witness-share exists (checked 2026-11-15); the nearest registry neighbours are vrc/relationships/{propose,issue} and witness/session. Not yet proposed to the task force."
+        },
+        "note": "exercises the framework task-digest pairing rule (SPEC.md 4.9.3, tfRef) through the suite-local witness-share task (docs/10), which has no Trust Tasks home, so the vector is a candidate (decision 79 by the project owner / audit 2.A)",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+        "https://trusttasks.org/spec/vrc/relationships/propose/0.1",
+        "optional:trigger.consent"
+      ],
+      "mutants": [
+        "unknownMultihashFallsBackToId",
+        "noCitationDigest"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "policy",
+            "args": {
+              "propose": "accept"
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "propose.request"
+          },
+          "capture": {
+            "ibr": "/payload/relationshipDid"
+          },
+          "expect": {
+            "disposition": "response",
+            "type": "https://trusttasks.org/spec/vrc/relationships/propose/0.1#response",
+            "match": {
+              "/payload/relationshipDid": "^did:"
+            },
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "witness-share.request",
+            "witness": {
+              "digest": "sha512",
+              "alterInitiating": true
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "vrc/relationships/witness-share:notAccepted",
+            "retryable": false,
+            "noSideEffect": true,
+            "state": {
+              "storedVwc": 0
+            },
+            "pointer": {
+              "/payload/inResponseTo/typeUri": "https://trusttasks.org/spec/vrc/relationships/witness-share/0.1",
+              "/payload/inResponseTo/id": "$id(wsh)"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

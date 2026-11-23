@@ -1,0 +1,126 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "GE-CNF",
+ "family": "gap",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "GE-CNF-001",
+   "title": "confirm/request 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/confirm/request/0.1 (Trust Tasks specification confirm/request 0.1 (status retired) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=false",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "confirm/request",
+    "version": "0.1",
+    "ref": "kit:specs/confirm/request/0.1",
+    "pinnedDigest": "sha256:70575ef3f660fce3eb53b212ec8484edf4e5f5b2610aed91840081910168bc6b",
+    "specHash": "sha256:a39b925a0515c9ea91bfbd0e551bbf08f03eefbbcdf298c16149bf3a9e3db31b",
+    "schemaHash": "sha256:6664afd4acf165e1b09b1379f3cab6df97af7579e412d3d31ff5cfc954d0bc28",
+    "note": "Spec maturity: retired (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/confirm/request/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "retired",
+     "supersededBy": "task-consent/request"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "retired"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/confirm/request/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/confirm/request/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/confirm/request/0.1"
+     }
+    }
+   ],
+   "excludedFromRun": {
+    "reason": "cites a retired TF spec (front matter status retired on main)",
+    "note": "confirm/request 0.1 is retired (superseded by task-consent/request); excluded from every run until the vector is re-sourced to the successor."
+   }
+  },
+  {
+   "id": "GE-CNF-002",
+   "title": "confirm/response 0.1: the document the implementation emits for this task conforms to its payload schema and declared policy",
+   "tier": 1,
+   "spec": [
+    "payload schema of https://trusttasks.org/spec/confirm/response/0.1 (Trust Tasks specification confirm/response 0.1 (status retired) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "declared policy: isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=false",
+    "SPEC.md:1015, 1017 and 1137 (7.2 items 5 and 7, 7.3 item 17: a document lacking a REQUIRED recipient, proof or issuedAt is not conforming); SPEC.md 7.2 item 8 (a proof with no recipient on a non-bearer task is malformed)",
+    "Mechanics only: the suite does not check what the document asks for or whether anyone is authorised to ask (docs/02 section 5)"
+   ],
+   "source": {
+    "slug": "confirm/response",
+    "version": "0.1",
+    "ref": "kit:specs/confirm/response/0.1",
+    "pinnedDigest": "sha256:eb231a17c122e61edd5630c4a9ac13801a6e0a5f3383e4b96d1fbf26efe49a20",
+    "specHash": "sha256:5f7d2a10e4c5685cd95f14be7240b57df6e10cb5b4f9cff5a15757ab50e3519d",
+    "schemaHash": "sha256:53fd21a33515cf1b3edf3007c79e64f7454bacf7b2df050cb90ac64ff1c39366",
+    "note": "Spec maturity: retired (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/confirm/response/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "retired",
+     "supersededBy": "task-consent/decision"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "retired"
+   },
+   "clarify": null,
+   "requires": [
+    "optional:emit",
+    "emit:https://trusttasks.org/spec/confirm/response/0.1"
+   ],
+   "mutants": [
+    "emitBadPayload",
+    "emitNoProof",
+    "emitNoRecipient"
+   ],
+   "steps": [
+    {
+     "emit": {
+      "type": "https://trusttasks.org/spec/confirm/response/0.1",
+      "args": {
+       "recipient": "$X"
+      }
+     },
+     "expect": {
+      "disposition": "emitted",
+      "plainType": "https://trusttasks.org/spec/confirm/response/0.1"
+     }
+    }
+   ],
+   "excludedFromRun": {
+    "reason": "cites a retired TF spec (front matter status retired on main)",
+    "note": "confirm/response 0.1 is retired (superseded by task-consent/decision); excluded from every run until the vector is re-sourced to the successor."
+   }
+  }
+ ]
+}

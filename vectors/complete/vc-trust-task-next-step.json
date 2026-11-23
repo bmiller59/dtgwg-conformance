@@ -1,0 +1,120 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "VC-TRUST-TASK-NEXT-STEP",
+ "family": "complete",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "VC-TRUST-TASK-NEXT-STEP-001",
+   "title": "trust-task-next-step 0.1: the payload is validated against the task's payload schema (missing required member expects; unknown member in a closed payload; wrong type for expects)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/trust-task-next-step/0.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft)): required [\"expects\"], additionalProperties false",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "source": {
+    "slug": "trust-task-next-step",
+    "version": "0.1",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/trust-task-next-step/0.1",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/trust-task-next-step/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:5ba10e5ee613705d3910f0cf64f96b36e8ca49c422db9e9982cc42cfcab0e482",
+    "schemaHash": "sha256:c8025d3e6ac372438efd3e7176a47df2d118e90f792033993efe320fd0621b46"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/trust-task-next-step/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation",
+    "openPayload"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/trust-task-next-step/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/trust-task-next-step/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "expects": [
+         {
+          "typeUri": "https://example.org/x"
+         }
+        ],
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p3)",
+       "type": "https://trusttasks.org/spec/trust-task-next-step/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "expects": "x"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ],
+   "effect": "read-only"
+  }
+ ]
+}

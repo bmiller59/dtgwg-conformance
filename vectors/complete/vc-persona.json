@@ -1,0 +1,2420 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "VC-PERSONA",
+ "family": "complete",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "VC-PERSONA-001",
+   "title": "persona/attribute/delete 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is destructive and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/attribute/delete/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/attribute/delete/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/attribute/delete",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/attribute/delete/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/attribute/delete/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:8a8a5b673846bab7ba9a8af7159e96b4fd90d9fcbf0c5a2cc8f845c48c9a8708",
+    "schemaHash": "sha256:51dc35302faeea6932a5645fe72db2f08909c0faaf0a000d89ed6195732271e6"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/attribute/delete/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/attribute/delete/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "attributeId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/attribute/delete/1.0"
+     }
+    }
+   ],
+   "effect": "destructive",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-002",
+   "title": "persona/attribute/get 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the specification names persona/attribute/get:notFound, which a conforming implementation may return for this request depending on state)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/attribute/get/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/attribute/get/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/attribute/get",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/attribute/get/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/attribute/get/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:31bcffa27eeada9360fb221a5b5c19e7bc5702e541016233021117e909bdf16a",
+    "schemaHash": "sha256:193b43d0c8564454d05a41fa462a8c97b2f2e61dd2d746f9a117a34be8089c82"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/attribute/get/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/attribute/get/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "attributeId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/attribute/get/1.0"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-003",
+   "title": "persona/attribute/list 1.0: a schema-valid, signed, addressed request is answered with the task's response, which conforms to the response schema (success asserted)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/attribute/list/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/attribute/list/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Success asserted: the specification defines the response, the task changes nothing, the request names no identifier or free text, and the vector requires optional:authorised (SPEC.md 7.2 item 10: authorisation is the deployment's, never the suite's)",
+    "Front-matter error code persona/attribute/list:cursorInvalid (spec.md line 37): not reachable here (needs request member `cursor`, which the vector does not send)"
+   ],
+   "source": {
+    "slug": "persona/attribute/list",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/attribute/list/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/attribute/list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:ef7057e9dc8b796a5c52e9e9143a1b87a75d7c713ac2020cc6dbdc3f54e37f51",
+    "schemaHash": "sha256:23e17392c3357918794036574f5fa88b0ebf7b73a7019c7ae79840438a59e9fb"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/attribute/list/1.0",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "plainBadResponse",
+    "plainInternalError"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/attribute/list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/attribute/list/1.0",
+      "success": true
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "asserted"
+  },
+  {
+   "id": "VC-PERSONA-004",
+   "title": "persona/attribute/promote 1.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/attribute/promote/1.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/attribute/promote/1.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/attribute/promote",
+    "version": "1.1",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/attribute/promote/1.1",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/attribute/promote/1.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:fdf81caaa989839044743e11552efccb2a6bb7889a4ef908c3c8feea3feb0b7f",
+    "schemaHash": "sha256:d2ae9ddbef233347600d9aad79e2c593bb0a8e1406f619c216ed8ad67812cde0"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/attribute/promote/1.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/attribute/promote/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "profileId": "00000000000000000000000000",
+        "entries": [
+         0
+        ],
+        "expectedVersion": 1
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/attribute/promote/1.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-005",
+   "title": "persona/attribute/purge-version 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is destructive and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/attribute/purge-version/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/attribute/purge-version/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/attribute/purge-version",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/attribute/purge-version/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/attribute/purge-version/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:8eceecbba57025dfd378e1784ddf89943fcf24d3c211cfe35dfafbe16f3a7453",
+    "schemaHash": "sha256:6506c6d62edb0613c26719f11a8c5815434f19dcecee580027fbecb1beb9df42"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/attribute/purge-version/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/attribute/purge-version/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "attributeId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/attribute/purge-version/1.0"
+     }
+    }
+   ],
+   "effect": "destructive",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-006",
+   "title": "persona/attribute/put 1.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/attribute/put/1.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/attribute/put/1.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/attribute/put",
+    "version": "1.1",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/attribute/put/1.1",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/attribute/put/1.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:3e3719d42f5aea2e9d8ffe2aa95e438fae031cebf21cd1ef7e8a9d0f7f1471b1",
+    "schemaHash": "sha256:3689fc1e8ae7905a5087f46ff1aec4973dccf48e930bed4adc1ef2d948560cc3"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/attribute/put/1.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/attribute/put/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "type": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+        "valueType": "string",
+        "value": "example",
+        "provenance": {
+         "kind": "selfAsserted"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/attribute/put/1.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-007",
+   "title": "persona/binding/get 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the request names an identifier or free text, so deployment state decides the answer)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/binding/get/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/binding/get/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/binding/get",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/binding/get/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/binding/get/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:92c20c75886cebde86a4d03814b244df213b62684074ef36baec296439586342",
+    "schemaHash": "sha256:840a9a54a8dfc2d12994c4bd46ec193d7e612d886211c337cf0301f0f555c33a"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/binding/get/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/binding/get/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "personaDid": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/binding/get/1.0"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-008",
+   "title": "persona/binding/list 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the request names an identifier or free text, so deployment state decides the answer)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/binding/list/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/binding/list/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/binding/list",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/binding/list/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/binding/list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:70570e4e7a33120e38d705af111d4b2923aa9706beccd12e2d27c3b3232f1405",
+    "schemaHash": "sha256:4671bf9970fbfb94a793b08689d5b3f788e0319499c37eccd626c3d6e2da63fe"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/binding/list/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/binding/list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/binding/list/1.0"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-009",
+   "title": "persona/binding/set 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/binding/set/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/binding/set/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/binding/set",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/binding/set/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/binding/set/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:6ea84f965b4055d0d18293e8b773cf006f07cab223f9b3fc162e5c26d295d2a2",
+    "schemaHash": "sha256:85c23bca8d192c83a1ddae6b4455acf05acdf1e149bc9841e8291b382d227ea0"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/binding/set/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/binding/set/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/binding/set/1.0"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-010",
+   "title": "persona/claim-types/list 1.0: a schema-valid, signed, addressed request is answered with the task's response, which conforms to the response schema (success asserted)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/claim-types/list/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/claim-types/list/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Success asserted: the specification defines the response, the task changes nothing, the request names no identifier or free text, and the vector requires optional:authorised (SPEC.md 7.2 item 10: authorisation is the deployment's, never the suite's)"
+   ],
+   "source": {
+    "slug": "persona/claim-types/list",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/claim-types/list/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/claim-types/list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:7a8be6239d6aa8591b2217e1d7719e0997f2d9f800b507e019b1256bccd264ee",
+    "schemaHash": "sha256:0851918eb495450f720255a2f887a7d9a9a11a96a0b24534444b2bd7e4b7ab84"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/claim-types/list/1.0",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "plainBadResponse",
+    "plainInternalError"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/claim-types/list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/claim-types/list/1.0",
+      "success": true
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "asserted"
+  },
+  {
+   "id": "VC-PERSONA-011",
+   "title": "persona/contact/delete 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is destructive and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/contact/delete/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/contact/delete/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/contact/delete",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/contact/delete/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/contact/delete/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:25237e4bb30e73d45931c6f77d4c782e657e3936527038a68705c629de50f125",
+    "schemaHash": "sha256:24ff873769ccb1d7514b423d96a41ce7dbeae7edfa0857eb43fd562b2d0450a0"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/contact/delete/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/contact/delete/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "contactId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/contact/delete/1.0"
+     }
+    }
+   ],
+   "effect": "destructive",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-012",
+   "title": "persona/contact/get 1.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the specification names persona/contact/get:notFound, persona/contact/get:revisionReaped, which a conforming implementation may return for this request depending on state)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/contact/get/1.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/contact/get/1.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/contact/get",
+    "version": "1.1",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/contact/get/1.1",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/contact/get/1.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:a0297bd998cf3c837a871dd284a499c28c4d1ac45cc6bd9cb1d0e1bdddb6f9e5",
+    "schemaHash": "sha256:cb6621e2ed3c108d9554c0baee08e5364ed0c6ccf2d8a5a3691a5c9e29665cd9"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/contact/get/1.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/contact/get/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "contactId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/contact/get/1.1"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-013",
+   "title": "persona/contact/list 1.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the request names an identifier or free text, so deployment state decides the answer)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/contact/list/1.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/contact/list/1.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/contact/list",
+    "version": "1.1",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/contact/list/1.1",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/contact/list/1.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:2bdff57816f2cc4e196f886eb69ab78b3cf386617290b5c117787f2910a49ad0",
+    "schemaHash": "sha256:91f415e63e3a5004ded55c62dd1b8537b580ca4a8c9a7d7b77e5a9dd14f052ac"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/contact/list/1.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/contact/list/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/contact/list/1.1"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-014",
+   "title": "persona/contact/lists/delete 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is destructive and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/contact/lists/delete/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/contact/lists/delete/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/contact/lists/delete",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/contact/lists/delete/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/contact/lists/delete/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:2cecec45ce7af1eb27c81e4a7e734c37e409bbc133f996438096c23736a7c4e7",
+    "schemaHash": "sha256:322ba2d5b42f741c5a187cc2c27fb1738e97f66cd60c42fceacb7090d64e42bf"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/contact/lists/delete/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/contact/lists/delete/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "listId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/contact/lists/delete/1.0"
+     }
+    }
+   ],
+   "effect": "destructive",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-015",
+   "title": "persona/contact/lists/list 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the request names an identifier or free text, so deployment state decides the answer)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/contact/lists/list/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/contact/lists/list/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/contact/lists/list",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/contact/lists/list/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/contact/lists/list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:6138830594955a0ef73f6d87723409eb452eb1b0d6b14b51e8a2929c42068a01",
+    "schemaHash": "sha256:a81de469d261bdf6a83771c1b561190866ba359c5133649e75edcb7f851654a6"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/contact/lists/list/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/contact/lists/list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/contact/lists/list/1.0"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-016",
+   "title": "persona/contact/lists/put 1.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/contact/lists/put/1.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/contact/lists/put/1.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/contact/lists/put",
+    "version": "1.1",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/contact/lists/put/1.1",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/contact/lists/put/1.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:adea4df45e7359d963d6c81167f589f8a828a97515d4b8d9954995668584536c",
+    "schemaHash": "sha256:87d7e653356990cb237d7b476c1aa08145820e43ae330608b6a9a9d733d505f0"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/contact/lists/put/1.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/contact/lists/put/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "name": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/contact/lists/put/1.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-017",
+   "title": "persona/contact/lists/show 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the specification names persona/contact/lists/show:notFound, which a conforming implementation may return for this request depending on state)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/contact/lists/show/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/contact/lists/show/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/contact/lists/show",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/contact/lists/show/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/contact/lists/show/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:9dfad39983269a9adcc42edb541652d83a796a74ac5d2fc96261b61f7cfa0714",
+    "schemaHash": "sha256:8de36d3fea9f1e692968beb0348897bea43b3cf02cd022d5740401ca4ff411a5"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/contact/lists/show/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/contact/lists/show/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "listId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/contact/lists/show/1.0"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-018",
+   "title": "persona/contact/put 1.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/contact/put/1.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/contact/put/1.2#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/contact/put",
+    "version": "1.2",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/contact/put/1.2",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/contact/put/1.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:32b5ec461d81dc8e07e7b00b2a0191bef214bebb80caa7b28bd5e2088156e2f6",
+    "schemaHash": "sha256:722cac3d7885fcbcbfae36cf85795f932533c442fb55d518fe531842af9bfbcb"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/contact/put/1.2"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/contact/put/1.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "subjectDid": "example",
+        "knownByPersona": "example",
+        "document": {
+         "claims": []
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/contact/put/1.2"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-019",
+   "title": "persona/correlation/analyze 1.2: a schema-valid, signed, addressed request is answered with the task's response, which conforms to the response schema (success asserted)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/correlation/analyze/1.2 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/correlation/analyze/1.2#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Success asserted: the specification defines the response, the task changes nothing, the request names no identifier or free text, and the vector requires optional:authorised (SPEC.md 7.2 item 10: authorisation is the deployment's, never the suite's)"
+   ],
+   "source": {
+    "slug": "persona/correlation/analyze",
+    "version": "1.2",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/correlation/analyze/1.2",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/correlation/analyze/1.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:e1816f6e35b5ba5db44b3686720f06ab15b854277c6564d73d3b84681198e2b4",
+    "schemaHash": "sha256:eeb1d4933828de8bded7020949bf88d3b29fa2aba5bf808b8b90cf961586a90b"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/correlation/analyze/1.2",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "plainBadResponse",
+    "plainInternalError"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/correlation/analyze/1.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/correlation/analyze/1.2",
+      "success": true
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "asserted"
+  },
+  {
+   "id": "VC-PERSONA-020",
+   "title": "persona/disclosure/history 1.0: a schema-valid, signed, addressed request is answered with the task's response, which conforms to the response schema (success asserted)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/disclosure/history/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/disclosure/history/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Success asserted: the specification defines the response, the task changes nothing, the request names no identifier or free text, and the vector requires optional:authorised (SPEC.md 7.2 item 10: authorisation is the deployment's, never the suite's)",
+    "Front-matter error code persona/disclosure/history:cursorInvalid (spec.md line 33): not reachable here (a cursor code, and the vector sends no cursor)"
+   ],
+   "source": {
+    "slug": "persona/disclosure/history",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/disclosure/history/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/disclosure/history/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:05acc0061919ae8e783ff178efc397de9df98776d9358e2e2c103b4244b4969d",
+    "schemaHash": "sha256:bbc971c8aab9f19d85f9f00122336bfd4c879e27d4e001ec78a2875fbe596ece"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/disclosure/history/1.0",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "plainBadResponse",
+    "plainInternalError"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/disclosure/history/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/disclosure/history/1.0",
+      "success": true
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "asserted"
+  },
+  {
+   "id": "VC-PERSONA-021",
+   "title": "persona/disclosure/present 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/disclosure/present/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/disclosure/present/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/disclosure/present",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/disclosure/present/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/disclosure/present/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:1a0ab40929db52ac3fc6d48e7c443c7748f052ec5763c16277ae1c224ce4a72c",
+    "schemaHash": "sha256:bbcb9dd8510d3f577b99b40bdda21d5c090020f147c59c3fdae8d55adb79ae43"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/disclosure/present/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/disclosure/present/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "previewId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/disclosure/present/1.0"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-022",
+   "title": "persona/disclosure/preview 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/disclosure/preview/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/disclosure/preview/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/disclosure/preview",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/disclosure/preview/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/disclosure/preview/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:c89f34185977a264602f681abe9a4ef2ba1d3fd63ffa22591a33c2cbe2859fb9",
+    "schemaHash": "sha256:f65fd700ef2568741a795afc8cb064dc4cc5e9f779d865666cdcba2b3e9278b3"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/disclosure/preview/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/disclosure/preview/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "personaDid": "example",
+        "verifierDid": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/disclosure/preview/1.0"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-023",
+   "title": "persona/local/binding/set 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/local/binding/set/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/local/binding/set/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/local/binding/set",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/local/binding/set/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/local/binding/set/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:06085939381e13314c576a42695dee86c4884b932fd9feb80ec0922a6af1fe76",
+    "schemaHash": "sha256:c864bc3ff6dce37894cb239d9bce7994db21d7c2e935742ec347abf5a7c6900f"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/local/binding/set/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/local/binding/set/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "personaDid": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/local/binding/set/1.0"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-024",
+   "title": "persona/local/profile/delete 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is destructive and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/local/profile/delete/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/local/profile/delete/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/local/profile/delete",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/local/profile/delete/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/local/profile/delete/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:6b94024106ebd44c3e05252afff655295ff4a41a6648aed84dfff4dbe3bd31bc",
+    "schemaHash": "sha256:9577a36bcd2416d4fa3394a34e4173178fdd9581e7ccca0153e0ea20b5d38b97"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/local/profile/delete/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/local/profile/delete/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "profileId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/local/profile/delete/1.0"
+     }
+    }
+   ],
+   "effect": "destructive",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-025",
+   "title": "persona/local/profile/get 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the request names an identifier or free text, so deployment state decides the answer)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/local/profile/get/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/local/profile/get/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/local/profile/get",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/local/profile/get/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/local/profile/get/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:97a122b104ca25e0bad34fc9ccbe0902f2f4af2f6d088815aef59f7fdbc20ca5",
+    "schemaHash": "sha256:8ae03cd322feceec6356210e695778a9187af04ff7cfc3d547d1e22598107268"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/local/profile/get/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/local/profile/get/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "profileId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/local/profile/get/1.0"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-026",
+   "title": "persona/local/profile/list 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the request names an identifier or free text, so deployment state decides the answer)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/local/profile/list/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/local/profile/list/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/local/profile/list",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/local/profile/list/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/local/profile/list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:432c43aebbead85086061b880b1a43ea0fff16095fb59bc92b8b5b6358f89acb",
+    "schemaHash": "sha256:4d189a2a8a4611d5e16329e2735b1ab2fde6efeaa958a3d99755a402a0124056"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/local/profile/list/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/local/profile/list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/local/profile/list/1.0"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-027",
+   "title": "persona/local/profile/put 1.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/local/profile/put/1.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/local/profile/put/1.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/local/profile/put",
+    "version": "1.1",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/local/profile/put/1.1",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/local/profile/put/1.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:af7db0ef57e8ead32d6a998257041751c6243d5d544c4754b780ca579ca09cc3",
+    "schemaHash": "sha256:8e10d3204191c24cca733af997760d1d0a23b017af1c08ab015eee723f08e6ed"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/local/profile/put/1.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/local/profile/put/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "name": "example",
+        "entries": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/local/profile/put/1.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-028",
+   "title": "persona/profile/compose 1.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/profile/compose/1.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/profile/compose/1.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/profile/compose",
+    "version": "1.1",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/profile/compose/1.1",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/profile/compose/1.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:22022807fb7a880b152a773de1996173f036fa60dccda14b76b02bfdfd7bbe74",
+    "schemaHash": "sha256:8d756f7d57d6fa09f9ba96bbdab6aaab2ff1f5cbc789594e475c2558bd1c950d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/profile/compose/1.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/profile/compose/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "contextId": "example",
+        "name": "example",
+        "claims": [
+         {
+          "type": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
+          "valueType": "string",
+          "value": "example"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/profile/compose/1.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-029",
+   "title": "persona/profile/delete 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is destructive and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/profile/delete/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/profile/delete/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/profile/delete",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/profile/delete/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/profile/delete/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:fc260248727908e2f6cb6ee4410fa162578e8773b915794ea833b7b38b391389",
+    "schemaHash": "sha256:ba59bd74f9808caaaa7e5d1f5da5b14691534318f61b6bbf0776549ef5df7d4b"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/profile/delete/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/profile/delete/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "profileId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/profile/delete/1.0"
+     }
+    }
+   ],
+   "effect": "destructive",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-030",
+   "title": "persona/profile/get 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the specification names persona/profile/get:notFound, which a conforming implementation may return for this request depending on state)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/profile/get/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/profile/get/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/profile/get",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/profile/get/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/profile/get/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:4bac4a29abeece9110762533a8bbe79d3c50a69569e39c8671165cb8800c9778",
+    "schemaHash": "sha256:a213dad5b1631176721d4ce4949b64f262175e36e3c5cd33281920495ebe50a2"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/profile/get/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/profile/get/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "profileId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/profile/get/1.0"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-031",
+   "title": "persona/profile/list 1.0: a schema-valid, signed, addressed request is answered with the task's response, which conforms to the response schema (success asserted)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/profile/list/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/profile/list/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Success asserted: the specification defines the response, the task changes nothing, the request names no identifier or free text, and the vector requires optional:authorised (SPEC.md 7.2 item 10: authorisation is the deployment's, never the suite's)",
+    "Front-matter error code persona/profile/list:cursorInvalid (spec.md line 33): not reachable here (a cursor code, and the vector sends no cursor)"
+   ],
+   "source": {
+    "slug": "persona/profile/list",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/profile/list/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/profile/list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:cef2a4ce0d0b1ab5e8ac335eac6d70fa4b963459483826e97423b8cb1d499b4a",
+    "schemaHash": "sha256:fe9f61efa364da24a2a60900bb507694a463cc72d9142931337061c7a4916d44"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/profile/list/1.0",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "plainBadResponse",
+    "plainInternalError"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/profile/list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/profile/list/1.0",
+      "success": true
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "asserted"
+  },
+  {
+   "id": "VC-PERSONA-032",
+   "title": "persona/profile/put 1.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/profile/put/1.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/profile/put/1.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/profile/put",
+    "version": "1.1",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/profile/put/1.1",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/profile/put/1.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:603335511d89232227892ffcf8d9298a7a164cdafded1660f9188bcbdc00e908",
+    "schemaHash": "sha256:6287303b86be1dfaf9c75a0b9f632eecd00fd193aade1474929f35ec67fa2c81"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/profile/put/1.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/profile/put/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "name": "example",
+        "entries": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/profile/put/1.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-033",
+   "title": "persona/profile/reinstate 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/profile/reinstate/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/profile/reinstate/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/profile/reinstate",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/profile/reinstate/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/profile/reinstate/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:ccbd2df5e2795444516f5b31b430f2db29464f64512242be16a4ed8b13e2c9b9",
+    "schemaHash": "sha256:be21d217b3db48587c1d8dc2f4723da23827f973aa9e8cba5fb775f8633859b3"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/profile/reinstate/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/profile/reinstate/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "profileId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/profile/reinstate/1.0"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-034",
+   "title": "persona/profile/retire 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/profile/retire/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/profile/retire/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/profile/retire",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/profile/retire/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/profile/retire/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:79ce4b9addd34ba772ab1e0065b07484aca5079dfe49c7cf4a460e5e77a21e73",
+    "schemaHash": "sha256:3a6444e1d5db08eb166fa3ad832f553b9a2caeafb5162cf8b8b12857bafbbe11"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/profile/retire/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/profile/retire/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "profileId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/profile/retire/1.0"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-035",
+   "title": "persona/profile/timeline 1.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the request names an identifier or free text, so deployment state decides the answer)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/profile/timeline/1.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/profile/timeline/1.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/profile/timeline",
+    "version": "1.1",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/profile/timeline/1.1",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/profile/timeline/1.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:d8750c926a3148d7fda97150b20ee55a0bd5dbf5e56a37f827302022e956e498",
+    "schemaHash": "sha256:e460f916c5d901d80ef9222433858d27abbfe7708bc9cca12f9906c696d12f2c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/profile/timeline/1.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/profile/timeline/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "profileId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/profile/timeline/1.1"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-036",
+   "title": "persona/profile/usage 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the request names an identifier or free text, so deployment state decides the answer)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/profile/usage/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/profile/usage/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/profile/usage",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/profile/usage/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/profile/usage/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:0b290f13bbdae4d0826cd678732ead371d55bec36dde56f6ff56153698f87a69",
+    "schemaHash": "sha256:c4ca234cf56b76ccdeec155e28fd56782c0d615c75797880b49a56f4c5232af3"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/profile/usage/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/profile/usage/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "profileId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/profile/usage/1.0"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-037",
+   "title": "persona/renderers/list 1.0: a schema-valid, signed, addressed request is answered with the task's response, which conforms to the response schema (success asserted)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/renderers/list/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/renderers/list/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Success asserted: the specification defines the response, the task changes nothing, the request names no identifier or free text, and the vector requires optional:authorised (SPEC.md 7.2 item 10: authorisation is the deployment's, never the suite's)"
+   ],
+   "source": {
+    "slug": "persona/renderers/list",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/renderers/list/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/renderers/list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:4c1e28728b42a2ebacf7f4aff4ae2b50122f6708c92c6591e56509c27ef2ebaf",
+    "schemaHash": "sha256:08309bff291219659722f0b31e01b72a79d34e205746c42ed4e69d8b0bcc1631"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/renderers/list/1.0",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "plainBadResponse",
+    "plainInternalError"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/renderers/list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/renderers/list/1.0",
+      "success": true
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "asserted"
+  },
+  {
+   "id": "VC-PERSONA-038",
+   "title": "persona/world/delete 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is destructive and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/world/delete/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/world/delete/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/world/delete",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/world/delete/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/world/delete/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:85438714d74adafe22cb19da82865163e5979f13a02eb42e778ba0f387dcacf2",
+    "schemaHash": "sha256:0951a6fbdd5a1ce5a38d1ffd6d6f45681901d2902e6592b491f27419e511a84e"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/world/delete/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/world/delete/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "worldId": "00000000000000000000000000"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/world/delete/1.0"
+     }
+    }
+   ],
+   "effect": "destructive",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-PERSONA-039",
+   "title": "persona/world/list 1.0: a schema-valid, signed, addressed request is answered with the task's response, which conforms to the response schema (success asserted)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/world/list/1.0 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/world/list/1.0#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Success asserted: the specification defines the response, the task changes nothing, the request names no identifier or free text, and the vector requires optional:authorised (SPEC.md 7.2 item 10: authorisation is the deployment's, never the suite's)",
+    "Front-matter error code persona/world/list:invalidCursor (spec.md line 48): not reachable here (a cursor code, and the vector sends no cursor)"
+   ],
+   "source": {
+    "slug": "persona/world/list",
+    "version": "1.0",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/world/list/1.0",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/world/list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:6dac5e2e07739b006007dfef376c64fa52d1f822d5ca5b9c0ab5e995ad9d7612",
+    "schemaHash": "sha256:668fdbd9d82bdeb96358f988ea87b416ba05fff9484b0dbc6e2875594213d83d"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/world/list/1.0",
+    "optional:authorised"
+   ],
+   "mutants": [
+    "plainBadResponse",
+    "plainInternalError"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/world/list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/world/list/1.0",
+      "success": true
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "asserted"
+  },
+  {
+   "id": "VC-PERSONA-040",
+   "title": "persona/world/put 1.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/persona/world/put/1.1 (@openvtc/trust-tasks 0.29.0 (registry package; the specification is status draft))",
+    "response type https://trusttasks.org/spec/persona/world/put/1.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "persona/world/put",
+    "version": "1.1",
+    "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/persona/world/put/1.1",
+    "pinnedDigest": null,
+    "tfRef": {
+     "repoPath": "specs/persona/world/put/1.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "specHash": "sha256:8a52d50549ec3f3cfaea33b68dd8abc1314f6c04638f365325a150edb63a9e7e",
+    "schemaHash": "sha256:edec77aab4feae5e5465dab18d78b2ae6b1304c2d19d6d30222923e1f18df945"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/persona/world/put/1.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/persona/world/put/1.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "name": "example",
+        "colour": "slate"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/persona/world/put/1.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  }
+ ]
+}

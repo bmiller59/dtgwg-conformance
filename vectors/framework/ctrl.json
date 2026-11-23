@@ -1,0 +1,280 @@
+{
+  "format": "tt-conformance-vectors/0.1",
+  "group": "CTRL",
+  "family": "framework",
+  "clock": {
+    "start": "2026-11-12T10:00:00Z"
+  },
+  "vectors": [
+    {
+      "id": "CTRL-001",
+      "title": "cancel of a task that was answered: unsupportedType, the task keeps its state",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1700 (11.8 a consumer that does not implement control rejects it with unsupportedType)",
+        "SPEC.md:1013 (7.2 item 3)",
+        "SPEC.md:1071 (the error reply is a SHOULD)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "skipIfOptional": [
+        "control"
+      ],
+      "mutants": [
+        "controlAccepted"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "carrier.request"
+          },
+          "expect": {
+            "disposition": "response",
+            "state": {
+              "handled": 1
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "control.cancel",
+            "params": {
+              "id": "$id(ctl)",
+              "payload": {
+                "operation": "cancel",
+                "target": {
+                  "id": "$id(req)"
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "unsupportedType",
+            "noSideEffect": true,
+            "errorReply": "should",
+            "state": {
+              "handled": 1,
+              "documentState": {
+                "$id(req)": "responded"
+              }
+            }
+          }
+        }
+      ],
+      "requires": [
+        "carrier:consequential"
+      ]
+    },
+    {
+      "id": "CTRL-002",
+      "title": "suspend and resume are refused like cancel",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1700 (11.8)",
+        "SPEC.md:1013 (7.2 item 3)",
+        "SPEC.md:1071 (the error reply is a SHOULD)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": null,
+      "skipIfOptional": [
+        "control"
+      ],
+      "mutants": [
+        "controlAccepted"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "control.cancel",
+            "params": {
+              "id": "$id(ctl1)",
+              "payload": {
+                "operation": "suspend",
+                "target": {
+                  "id": "$id(req)"
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "unsupportedType",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        },
+        {
+          "send": {
+            "template": "control.cancel",
+            "params": {
+              "id": "$id(ctl2)",
+              "payload": {
+                "operation": "resume",
+                "target": {
+                  "id": "$id(req)"
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "unsupportedType",
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "requires": [
+        "carrier:consequential"
+      ]
+    },
+    {
+      "id": "CTRL-003",
+      "title": "an unrecognised control operation is refused, not defaulted to a known one",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1700 (11.8)",
+        "SPEC.md:1013 (7.2 item 3)",
+        "SPEC.md:1071 (the error reply is a SHOULD)",
+        "specs/trust-task-control/0.1/payload.schema.json (operation: a consumer that does not recognise a value MUST reject the document; binds a consumer that implements control)"
+      ],
+      "source": {
+        "slug": "trust-task-control",
+        "version": "0.1",
+        "channel": "registry",
+        "ref": "kit:specs/trust-task-control/0.1",
+        "pinnedDigest": "sha256:2c636eca09417cbb3579fb4cea32a4c804e57f5f68533b1367ac4ca62569e8e6",
+        "tfRef": {
+          "repoPath": "specs/trust-task-control/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:74a08e91e934383e0107f3432c5d832b16044710034d6b82dd372bd30354e32d",
+        "schemaHash": "sha256:77054c89149da55714f816f207566716c8cc500efdf6cd90abdca06e10e566c2"
+      },
+      "clarify": null,
+      "skipIfOptional": [
+        "control"
+      ],
+      "mutants": [
+        "controlAccepted"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "control.cancel",
+            "params": {
+              "id": "$id(ctl)",
+              "payload": {
+                "operation": "freeze",
+                "target": {
+                  "id": "$id(req)"
+                }
+              }
+            }
+          },
+          "expect": {
+            "disposition": "error",
+            "code": [
+              "unsupportedType",
+              "malformedRequest"
+            ],
+            "noSideEffect": true,
+            "errorReply": "should"
+          }
+        }
+      ],
+      "requires": [
+        "carrier:consequential"
+      ]
+    },
+    {
+      "id": "CTRL-004",
+      "title": "an unsigned control document is refused unsupportedType: the type is checked before the proof",
+      "tier": 1,
+      "spec": [
+        "SPEC.md:1698 (11.8)",
+        "SPEC.md:1013 (7.2 item 3 type before item 7 proof)",
+        "SPEC.md:1641 (11.1 a control document MUST carry a proof, for a consumer that implements control)"
+      ],
+      "source": {
+        "slug": "trust-task-framework",
+        "version": "0.6.0",
+        "channel": "registry",
+        "ref": "kit:SPEC.md",
+        "pinnedDigest": "sha256:731a57fc324eea726393716adcddf28d7ca3fb7242335fe025428775b29fd292",
+        "tfRef": {
+          "repoPath": "SPEC.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "main"
+        },
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2bb5ae11da4dd6394499021b5ecda94ee38d61cf9668e2018e3dc809f3e66568"
+      },
+      "clarify": "SPEC.md 7.2 lists the checks (type at item 3, proof at item 7) but no sentence makes the order of the list normative. An implementation that refuses an unsigned document of a type it does not serve with proofRequired, before it routes the type, tells an unauthenticated caller nothing about what it serves (VTI does). The document is refused either way and never executed. Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "0.1.0-draft",
+      "clarifyQuestions": [],
+      "skipIfOptional": [
+        "control"
+      ],
+      "mutants": [
+        "controlProofFirst",
+        "controlAccepted"
+      ],
+      "steps": [
+        {
+          "send": {
+            "template": "control.cancel",
+            "params": {
+              "id": "$id(ctl)",
+              "payload": {
+                "operation": "cancel",
+                "target": {
+                  "id": "$id(req)"
+                }
+              }
+            },
+            "sign": null
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "unsupportedType",
+            "noSideEffect": true
+          }
+        }
+      ],
+      "requires": [
+        "carrier:consequential"
+      ]
+    }
+  ]
+}

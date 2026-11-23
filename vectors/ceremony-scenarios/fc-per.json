@@ -1,0 +1,762 @@
+{
+  "format": "tt-ceremony-scenarios/0.1",
+  "group": "FC-PER",
+  "family": "ceremony-scenarios",
+  "evidence": "complete-ceremony",
+  "ceremony": {
+    "name": "Persona and DID creation on the agent (phone and agent)",
+    "channel": "proposed",
+    "choreography": "docs/31-persona-rooms-elections-ceremonies.md section 4: contexts, hosting servers, a serverless persona mint, the context the persona lives in, a duplicate context, a key release over a carrier that is not confidential, and the version step-down (against a legacy profile only)."
+  },
+  "scenarios": [
+    {
+      "id": "FC-PER-001",
+      "title": "the phone asks the agent for its contexts and its hosting servers (none), then mints a serverless persona in the context it chose: the agent holds one new DID, the answer is a did:webvh and says it is serverless",
+      "spec": [
+        "TF specs/vta/contexts/list/1.0/spec.md (the caller's contexts)",
+        "TF specs/vta/webvh/servers/list/1.0/spec.md (the registered hosting servers; none here)",
+        "TF specs/vta/webvh/dids/create/1.2/spec.md (serverless: no serverId; the answer MUST carry serverless true and the first logEntry, MUST NOT carry serverId)",
+        "docs/31-persona-rooms-elections-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vta/webvh/dids/create",
+        "version": "1.2",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/webvh/dids/create/1.2",
+        "pinnedDigest": "sha256:723df6021aeb0d5f1bc38e3b7c619479bbe71934dc26b20479528f012914dc8c",
+        "tfRef": {
+          "repoPath": "specs/vta/webvh/dids/create/1.2/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:991f846761b7b77e60640ac86395598f0875e1aefd7907ec73559330fe16ae78",
+        "schemaHash": "sha256:d305a3fff77c103d9b4a5f1f244dbbb3bb57d28de25a157b4c9a21fe3c0b6ec3"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/vta/contexts/list/1.0",
+            "https://trusttasks.org/spec/vta/contexts/create/1.0",
+            "https://trusttasks.org/spec/vta/webvh/servers/list/1.0",
+            "https://trusttasks.org/spec/vta/dids/list/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "mint",
+          "source": {
+            "slug": "vta/webvh/dids/create",
+            "version": "1.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/webvh/dids/create/1.2",
+            "pinnedDigest": "sha256:723df6021aeb0d5f1bc38e3b7c619479bbe71934dc26b20479528f012914dc8c",
+            "tfRef": {
+              "repoPath": "specs/vta/webvh/dids/create/1.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:991f846761b7b77e60640ac86395598f0875e1aefd7907ec73559330fe16ae78",
+            "schemaHash": "sha256:d305a3fff77c103d9b4a5f1f244dbbb3bb57d28de25a157b4c9a21fe3c0b6ec3"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "persona-mint",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "persona:did-method:webvh",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "persona:serverless:true",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "dids",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "dids",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-PER-002",
+      "title": "the phone creates the context it keeps personas in, then mints a persona: the context exists and the new DID belongs to it",
+      "spec": [
+        "TF specs/vta/contexts/create/1.0/spec.md (a new top-level context)",
+        "TF specs/vta/webvh/dids/create/1.2/spec.md (contextId: the context the DID belongs to)",
+        "docs/31-persona-rooms-elections-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vta/contexts/create",
+        "version": "1.0",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/contexts/create/1.0",
+        "pinnedDigest": "sha256:ebc4d7bacb91cffd17aa2c3dc01cd85225403a4ed2bcac9d042dc9475dc82176",
+        "tfRef": {
+          "repoPath": "specs/vta/contexts/create/1.0/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5ff3fd1acb25806db351680cd0efb58604686da90e0b0f4fa61ca9616d24b113",
+        "schemaHash": "sha256:ac2318dd891019735f3bbf3da63bf6d38749a61f49b2b5405518928db6a5319d"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/vta/contexts/list/1.0",
+            "https://trusttasks.org/spec/vta/contexts/create/1.0",
+            "https://trusttasks.org/spec/vta/webvh/servers/list/1.0",
+            "https://trusttasks.org/spec/vta/dids/list/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "create-context",
+          "source": {
+            "slug": "vta/contexts/create",
+            "version": "1.0",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/contexts/create/1.0",
+            "pinnedDigest": "sha256:ebc4d7bacb91cffd17aa2c3dc01cd85225403a4ed2bcac9d042dc9475dc82176",
+            "tfRef": {
+              "repoPath": "specs/vta/contexts/create/1.0/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:5ff3fd1acb25806db351680cd0efb58604686da90e0b0f4fa61ca9616d24b113",
+            "schemaHash": "sha256:ac2318dd891019735f3bbf3da63bf6d38749a61f49b2b5405518928db6a5319d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "persona-context",
+              "capture": "thread",
+              "args": {
+                "id": "keyring",
+                "name": "Keyring"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "context:keyring",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "mint",
+          "source": {
+            "slug": "vta/webvh/dids/create",
+            "version": "1.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/webvh/dids/create/1.2",
+            "pinnedDigest": "sha256:723df6021aeb0d5f1bc38e3b7c619479bbe71934dc26b20479528f012914dc8c",
+            "tfRef": {
+              "repoPath": "specs/vta/webvh/dids/create/1.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:991f846761b7b77e60640ac86395598f0875e1aefd7907ec73559330fe16ae78",
+            "schemaHash": "sha256:d305a3fff77c103d9b4a5f1f244dbbb3bb57d28de25a157b4c9a21fe3c0b6ec3"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "persona-mint",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "persona:did-method:webvh",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "dids-in:keyring",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "dids-in:keyring",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-PER-003",
+      "title": "the phone creates a context that already exists: the agent refuses it with idConflict and does not treat the request as an update, and the context is unchanged",
+      "spec": [
+        "TF specs/vta/contexts/create/1.0/spec.md (consumer: refuse an id that already exists under the same parent with idConflict; MUST NOT treat the request as an update)",
+        "SPEC.md 8.3 (idConflict)",
+        "docs/31-persona-rooms-elections-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vta/contexts/create",
+        "version": "1.0",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/contexts/create/1.0",
+        "pinnedDigest": "sha256:ebc4d7bacb91cffd17aa2c3dc01cd85225403a4ed2bcac9d042dc9475dc82176",
+        "tfRef": {
+          "repoPath": "specs/vta/contexts/create/1.0/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:5ff3fd1acb25806db351680cd0efb58604686da90e0b0f4fa61ca9616d24b113",
+        "schemaHash": "sha256:ac2318dd891019735f3bbf3da63bf6d38749a61f49b2b5405518928db6a5319d"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/vta/contexts/list/1.0",
+            "https://trusttasks.org/spec/vta/contexts/create/1.0",
+            "https://trusttasks.org/spec/vta/webvh/servers/list/1.0",
+            "https://trusttasks.org/spec/vta/dids/list/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "create-context",
+          "source": {
+            "slug": "vta/contexts/create",
+            "version": "1.0",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/contexts/create/1.0",
+            "pinnedDigest": "sha256:ebc4d7bacb91cffd17aa2c3dc01cd85225403a4ed2bcac9d042dc9475dc82176",
+            "tfRef": {
+              "repoPath": "specs/vta/contexts/create/1.0/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:5ff3fd1acb25806db351680cd0efb58604686da90e0b0f4fa61ca9616d24b113",
+            "schemaHash": "sha256:ac2318dd891019735f3bbf3da63bf6d38749a61f49b2b5405518928db6a5319d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "persona-context",
+              "capture": "thread",
+              "args": {
+                "id": "keyring",
+                "name": "Keyring"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "create-again",
+          "source": {
+            "slug": "vta/contexts/create",
+            "version": "1.0",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/contexts/create/1.0",
+            "pinnedDigest": "sha256:ebc4d7bacb91cffd17aa2c3dc01cd85225403a4ed2bcac9d042dc9475dc82176",
+            "tfRef": {
+              "repoPath": "specs/vta/contexts/create/1.0/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:5ff3fd1acb25806db351680cd0efb58604686da90e0b0f4fa61ca9616d24b113",
+            "schemaHash": "sha256:ac2318dd891019735f3bbf3da63bf6d38749a61f49b2b5405518928db6a5319d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "persona-context",
+              "capture": "thread",
+              "args": {
+                "id": "keyring",
+                "name": "Renamed"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "idConflict",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "context:keyring",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-PER-004",
+      "title": "the phone asks the agent to release a persona key over the runner's carrier, which is not confidential to the two parties: the agent refuses and releases nothing (the wallet's key borrowing, which the app does over DIDComm, therefore does not run here)",
+      "spec": [
+        "TF specs/keys/export-secret/0.1/spec.md (the exchange MUST be carried over a channel confidential to the two parties)",
+        "docs/31-persona-rooms-elections-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "keys/export-secret",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/export-secret/0.1",
+        "pinnedDigest": "sha256:ee87abc6f361793822ad6078e4f323b8c52c91cf3873d19db0a4b3f29f43fc01",
+        "tfRef": {
+          "repoPath": "specs/keys/export-secret/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:ce7ab6d5db4be7caf3b4bf07cb0465a30d40a42924534236c02e6e6999f76e84",
+        "schemaHash": "sha256:628436e9db91b69ce1f29838640958c1e6d12bcb059330a4c9870b91c02b7ffb"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/vta/contexts/list/1.0",
+            "https://trusttasks.org/spec/vta/contexts/create/1.0",
+            "https://trusttasks.org/spec/vta/webvh/servers/list/1.0",
+            "https://trusttasks.org/spec/vta/dids/list/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "mint",
+          "source": {
+            "slug": "vta/webvh/dids/create",
+            "version": "1.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/webvh/dids/create/1.2",
+            "pinnedDigest": "sha256:723df6021aeb0d5f1bc38e3b7c619479bbe71934dc26b20479528f012914dc8c",
+            "tfRef": {
+              "repoPath": "specs/vta/webvh/dids/create/1.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:991f846761b7b77e60640ac86395598f0875e1aefd7907ec73559330fe16ae78",
+            "schemaHash": "sha256:d305a3fff77c103d9b4a5f1f244dbbb3bb57d28de25a157b4c9a21fe3c0b6ec3"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "persona-mint",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "dids",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "borrow-key",
+          "source": {
+            "slug": "keys/export-secret",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/keys/export-secret/0.1",
+            "pinnedDigest": "sha256:ee87abc6f361793822ad6078e4f323b8c52c91cf3873d19db0a4b3f29f43fc01",
+            "tfRef": {
+              "repoPath": "specs/keys/export-secret/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:ce7ab6d5db4be7caf3b4bf07cb0465a30d40a42924534236c02e6e6999f76e84",
+            "schemaHash": "sha256:628436e9db91b69ce1f29838640958c1e6d12bcb059330a4c9870b91c02b7ffb"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "persona-borrow-key",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "key-released",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "key-released",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-PER-005",
+      "title": "the version skew: the phone mints at 1.2 of an agent that serves 1.0 only: the agent names what it serves each time nothing was minted, the phone's own ladder goes down to 1.0, and exactly one persona is minted (a labelled step-down against a legacy profile)",
+      "spec": [
+        "TF specs/vta/webvh/dids/create/1.0/spec.md, 1.1 and 1.2 (one payload, three served versions)",
+        "SPEC.md 8.3 (unsupportedVersion: the request was not taken, so asking again in a served version is a first request)",
+        "docs/31-persona-rooms-elections-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vta/webvh/dids/create",
+        "version": "1.0",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/webvh/dids/create/1.0",
+        "pinnedDigest": "sha256:a8f60b3f42c9c15eec3198e7caddf20496891feb7373d395f7aa097adc7f5ed6",
+        "tfRef": {
+          "repoPath": "specs/vta/webvh/dids/create/1.0/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:c4808483b43c3436f06771aee594900b4819565c1a1663280cd8153e2232629e",
+        "schemaHash": "sha256:9253802e16523dfd7c882170d297debb0486807e204d780d55c8a662b0cd4aba"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "optional:trigger.serveVersions"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "serve-legacy",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "serveVersions",
+              "args": {
+                "profile": "legacy"
+              }
+            }
+          }
+        },
+        {
+          "id": "mint",
+          "source": {
+            "slug": "vta/webvh/dids/create",
+            "version": "1.2",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vta/webvh/dids/create/1.2",
+            "pinnedDigest": "sha256:723df6021aeb0d5f1bc38e3b7c619479bbe71934dc26b20479528f012914dc8c",
+            "tfRef": {
+              "repoPath": "specs/vta/webvh/dids/create/1.2/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:991f846761b7b77e60640ac86395598f0875e1aefd7907ec73559330fe16ae78",
+            "schemaHash": "sha256:d305a3fff77c103d9b4a5f1f244dbbb3bb57d28de25a157b4c9a21fe3c0b6ec3"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "persona-mint",
+              "capture": "thread",
+              "args": {}
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "received": {
+                "code": "unsupportedVersion",
+                "count": 2
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "dids",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "dids",
+              "count": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

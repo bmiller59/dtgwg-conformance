@@ -1,0 +1,987 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "GP-CNS",
+ "family": "gap",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "GP-CNS-001",
+   "title": "consent/approve-request 0.1: the payload is validated against the task's payload schema (missing required member subject; unknown member in a closed payload; wrong type for subject)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/consent/approve-request/0.1 (Trust Tasks specification consent/approve-request 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package): required [\"subject\",\"scope\",\"challenge\"], additionalProperties false",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "source": {
+    "slug": "consent/approve-request",
+    "version": "0.1",
+    "ref": "kit:specs/consent/approve-request/0.1",
+    "pinnedDigest": "sha256:23223389061f0be18c972a2131096eccee654b856cac4edeee1e4ae8993e5503",
+    "specHash": "sha256:9d54884d32d26f6e0d3fcab3c8700ae6643e5fe20f227ace4c11597283f973ae",
+    "schemaHash": "sha256:8a23a45dcac1131dbb36628e3a412a576cbb2b4920e181230b20bf00317e0f86",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/consent/approve-request/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/approve-request/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation",
+    "openPayload"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "scope": "receive",
+        "challenge": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": "receive",
+        "challenge": "example",
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p3)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "x",
+        "scope": "receive",
+        "challenge": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-CNS-002",
+   "title": "consent/approve-request 0.1: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+    "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+    "declared policy: https://trusttasks.org/spec/consent/approve-request/0.1 (Trust Tasks specification consent/approve-request 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=false"
+   ],
+   "source": {
+    "slug": "consent/approve-request",
+    "version": "0.1",
+    "ref": "kit:specs/consent/approve-request/0.1",
+    "pinnedDigest": "sha256:23223389061f0be18c972a2131096eccee654b856cac4edeee1e4ae8993e5503",
+    "specHash": "sha256:9d54884d32d26f6e0d3fcab3c8700ae6643e5fe20f227ace4c11597283f973ae",
+    "schemaHash": "sha256:8a23a45dcac1131dbb36628e3a412a576cbb2b4920e181230b20bf00317e0f86",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/consent/approve-request/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/approve-request/0.1"
+   ],
+   "mutants": [
+    "recipientOptional",
+    "proofOptional"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(e1)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": "receive",
+        "challenge": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "malformedRequest",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(e2)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": "receive",
+        "challenge": "example"
+       }
+      },
+      "sign": null
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "proofRequired",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-CNS-003",
+   "title": "consent/approve-request 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "payload and response schemas of https://trusttasks.org/spec/consent/approve-request/0.1 (Trust Tasks specification consent/approve-request 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "the version declares no response variant: silence is accepted",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+   ],
+   "source": {
+    "slug": "consent/approve-request",
+    "version": "0.1",
+    "ref": "kit:specs/consent/approve-request/0.1",
+    "pinnedDigest": "sha256:23223389061f0be18c972a2131096eccee654b856cac4edeee1e4ae8993e5503",
+    "specHash": "sha256:9d54884d32d26f6e0d3fcab3c8700ae6643e5fe20f227ace4c11597283f973ae",
+    "schemaHash": "sha256:8a23a45dcac1131dbb36628e3a412a576cbb2b4920e181230b20bf00317e0f86",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/consent/approve-request/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/approve-request/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": "receive",
+        "challenge": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/consent/approve-request/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-CNS-004",
+   "title": "consent/approve-request 0.1: a request missing any one required payload member is refused (subject, scope, challenge)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema of https://trusttasks.org/spec/consent/approve-request/0.1: required [\"subject\",\"scope\",\"challenge\"] (Trust Tasks specification consent/approve-request 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)"
+   ],
+   "source": {
+    "slug": "consent/approve-request",
+    "version": "0.1",
+    "ref": "kit:specs/consent/approve-request/0.1",
+    "pinnedDigest": "sha256:23223389061f0be18c972a2131096eccee654b856cac4edeee1e4ae8993e5503",
+    "specHash": "sha256:9d54884d32d26f6e0d3fcab3c8700ae6643e5fe20f227ace4c11597283f973ae",
+    "schemaHash": "sha256:8a23a45dcac1131dbb36628e3a412a576cbb2b4920e181230b20bf00317e0f86",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/consent/approve-request/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/approve-request/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(r1)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "scope": "receive",
+        "challenge": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(r2)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "challenge": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(r3)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": "receive"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-CNS-005",
+   "title": "consent/approve-request 0.1: a payload that breaks a constraint of its schema is refused (subject: wrong type (not object); scope: a value outside its enum; scope: wrong type (not string); challenge: shorter than minLength 1; challenge: wrong type (not string); displayHint: longer than maxLength 256; firstMessageDigest: shorter than minLength 1)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema constraints of https://trusttasks.org/spec/consent/approve-request/0.1 (Trust Tasks specification consent/approve-request 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)"
+   ],
+   "source": {
+    "slug": "consent/approve-request",
+    "version": "0.1",
+    "ref": "kit:specs/consent/approve-request/0.1",
+    "pinnedDigest": "sha256:23223389061f0be18c972a2131096eccee654b856cac4edeee1e4ae8993e5503",
+    "specHash": "sha256:9d54884d32d26f6e0d3fcab3c8700ae6643e5fe20f227ace4c11597283f973ae",
+    "schemaHash": "sha256:8a23a45dcac1131dbb36628e3a412a576cbb2b4920e181230b20bf00317e0f86",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/consent/approve-request/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/approve-request/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(c1)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "x",
+        "scope": "receive",
+        "challenge": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c2)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": "conformance-not-in-enum",
+        "challenge": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c3)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": 5,
+        "challenge": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c4)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": "receive",
+        "challenge": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c5)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": "receive",
+        "challenge": 5
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c6)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": "receive",
+        "challenge": "example",
+        "displayHint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c7)",
+       "type": "https://trusttasks.org/spec/consent/approve-request/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "example",
+         "conversationRef": "example",
+         "kind": "dm",
+         "agent": "did:web:alice.example"
+        },
+        "scope": "receive",
+        "challenge": "example",
+        "firstMessageDigest": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-CNS-006",
+   "title": "consent/list 1.0: the payload is validated against the task's payload schema (unknown member in a closed payload)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/consent/list/1.0 (Trust Tasks specification consent/list 1.0 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package): required [], additionalProperties false",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "source": {
+    "slug": "consent/list",
+    "version": "1.0",
+    "ref": "kit:specs/consent/list/1.0",
+    "pinnedDigest": "sha256:4da44c3fb269e7e26a80bc1478d01d80e4b7826649a5ae246ebf9013e8fee42b",
+    "specHash": "sha256:ca9163ea10970dfbec775c333d347329b713742c1f820462dcbf5f6187f4ca0b",
+    "schemaHash": "sha256:372bd1931225e696626572ec7027cda864e9bd52e0742d04c4c3d895b39b0058",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/consent/list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/list/1.0"
+   ],
+   "mutants": [
+    "openPayload"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/consent/list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/list:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-CNS-007",
+   "title": "consent/list 1.0: the policy the specification declares is enforced (recipient REQUIRED)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+    "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+    "declared policy: https://trusttasks.org/spec/consent/list/1.0 (Trust Tasks specification consent/list 1.0 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package), SPEC policy isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=false"
+   ],
+   "source": {
+    "slug": "consent/list",
+    "version": "1.0",
+    "ref": "kit:specs/consent/list/1.0",
+    "pinnedDigest": "sha256:4da44c3fb269e7e26a80bc1478d01d80e4b7826649a5ae246ebf9013e8fee42b",
+    "specHash": "sha256:ca9163ea10970dfbec775c333d347329b713742c1f820462dcbf5f6187f4ca0b",
+    "schemaHash": "sha256:372bd1931225e696626572ec7027cda864e9bd52e0742d04c4c3d895b39b0058",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/consent/list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/list/1.0"
+   ],
+   "mutants": [
+    "recipientOptional"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(e1)",
+       "type": "https://trusttasks.org/spec/consent/list/1.0",
+       "issuer": "$A",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "malformedRequest",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-CNS-008",
+   "title": "consent/list 1.0: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "payload and response schemas of https://trusttasks.org/spec/consent/list/1.0 (Trust Tasks specification consent/list 1.0 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/consent/list/1.0#response",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+   ],
+   "source": {
+    "slug": "consent/list",
+    "version": "1.0",
+    "ref": "kit:specs/consent/list/1.0",
+    "pinnedDigest": "sha256:4da44c3fb269e7e26a80bc1478d01d80e4b7826649a5ae246ebf9013e8fee42b",
+    "specHash": "sha256:ca9163ea10970dfbec775c333d347329b713742c1f820462dcbf5f6187f4ca0b",
+    "schemaHash": "sha256:372bd1931225e696626572ec7027cda864e9bd52e0742d04c4c3d895b39b0058",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/consent/list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/list/1.0"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/consent/list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/consent/list/1.0"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-CNS-009",
+   "title": "consent/list 1.0: a payload that breaks a constraint of its schema is refused (agent: shorter than minLength 1; platform: shorter than minLength 1)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema constraints of https://trusttasks.org/spec/consent/list/1.0 (Trust Tasks specification consent/list 1.0 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)"
+   ],
+   "source": {
+    "slug": "consent/list",
+    "version": "1.0",
+    "ref": "kit:specs/consent/list/1.0",
+    "pinnedDigest": "sha256:4da44c3fb269e7e26a80bc1478d01d80e4b7826649a5ae246ebf9013e8fee42b",
+    "specHash": "sha256:ca9163ea10970dfbec775c333d347329b713742c1f820462dcbf5f6187f4ca0b",
+    "schemaHash": "sha256:372bd1931225e696626572ec7027cda864e9bd52e0742d04c4c3d895b39b0058",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/consent/list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/list/1.0"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(c1)",
+       "type": "https://trusttasks.org/spec/consent/list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "agent": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/list:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c2)",
+       "type": "https://trusttasks.org/spec/consent/list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "platform": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/list:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-CNS-010",
+   "title": "consent/list 1.0: the payload examples the specification lists as invalid are refused (2)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/consent/list/1.0: (1) Unknown property. (2) Subject filter present but malformed (missing agent).",
+    "Trust Tasks specification consent/list 1.0 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
+   ],
+   "source": {
+    "slug": "consent/list",
+    "version": "1.0",
+    "ref": "kit:specs/consent/list/1.0",
+    "pinnedDigest": "sha256:4da44c3fb269e7e26a80bc1478d01d80e4b7826649a5ae246ebf9013e8fee42b",
+    "specHash": "sha256:ca9163ea10970dfbec775c333d347329b713742c1f820462dcbf5f6187f4ca0b",
+    "schemaHash": "sha256:372bd1931225e696626572ec7027cda864e9bd52e0742d04c4c3d895b39b0058",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: main at bd0c05013.",
+    "channel": "proposed",
+    "profile": "gap-families",
+    "tfRef": {
+     "repoPath": "specs/consent/list/1.0/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+    "versionRole": "older"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/consent/list/1.0"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/consent/list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "agent": "did:key:z6MkAgentExample",
+        "limit": 50
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/list:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i2)",
+       "type": "https://trusttasks.org/spec/consent/list/1.0",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": {
+         "platform": "signal",
+         "conversationRef": "sig-1a2b3c4d",
+         "kind": "group"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied",
+       "consent/list:notAuthorized"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  }
+ ]
+}

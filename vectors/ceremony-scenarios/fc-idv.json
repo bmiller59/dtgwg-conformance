@@ -1,0 +1,1353 @@
+{
+  "format": "tt-ceremony-scenarios/0.1",
+  "group": "FC-IDV",
+  "family": "ceremony-scenarios",
+  "evidence": "complete-ceremony",
+  "ceremony": {
+    "name": "Identity vetting, the community's directory and revocation (wallet and community)",
+    "channel": "proposed",
+    "choreography": "docs/30-onboarding-vetting-ceremonies.md section 4: the administrator grants the vetter role, the vetter publishes (and unlists) a profile, the listing and the grant's state, a withdrawn statement. The peer leg (request, session, attestation, decline) is served by no VTI service and stays on the reference scenarios (FC-VET)."
+  },
+  "scenarios": [
+    {
+      "id": "FC-IDV-001",
+      "title": "an administrator makes a member a vetter, the vetter publishes a listed profile with its wallet, and the community's vetter listing then names the vetter",
+      "spec": [
+        "TF specs/vtc/vetting/vetters/grant/0.1/spec.md (an administrator makes a member a vetter)",
+        "TF specs/vtc/vetting/vetters/profile/0.1/spec.md (a vetter publishes a profile; listed true appears in the listing)",
+        "TF specs/vtc/vetting/vetters/list/0.1/spec.md (only listed vetters with a live grant appear)",
+        "docs/30-onboarding-vetting-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vtc/vetting/vetters/profile",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+        "pinnedDigest": "sha256:059552b5ca570abd541c57bcb6385bca9879a9647df3b3d20c85abe42b83c832",
+        "tfRef": {
+          "repoPath": "specs/vtc/vetting/vetters/profile/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:8dac44f92b8f81d98ed80effab511cf12bfe29ea7f855f54812a85010a789ebe",
+        "schemaHash": "sha256:e8f4f9d2d5b32cb02f966deb89f745351175447a626ef0a350fa725fe68f5828"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "grant-vetter",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "grantVetter",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "publish",
+          "source": {
+            "slug": "vtc/vetting/vetters/profile",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "pinnedDigest": "sha256:059552b5ca570abd541c57bcb6385bca9879a9647df3b3d20c85abe42b83c832",
+            "tfRef": {
+              "repoPath": "specs/vtc/vetting/vetters/profile/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:8dac44f92b8f81d98ed80effab511cf12bfe29ea7f855f54812a85010a789ebe",
+            "schemaHash": "sha256:e8f4f9d2d5b32cb02f966deb89f745351175447a626ef0a350fa725fe68f5828"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vetter-profile",
+              "capture": "thread",
+              "args": {
+                "listed": true
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "vetter:$K",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "vetter:$K",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-IDV-002",
+      "title": "the vetter unlists its profile: the profile replaces the stored one as a whole and the vetter no longer appears in the listing",
+      "spec": [
+        "TF specs/vtc/vetting/vetters/profile/0.1/spec.md (the payload is the whole profile; listed false keeps the profile but removes it from the listing)",
+        "TF specs/vtc/vetting/vetters/list/0.1/spec.md",
+        "docs/30-onboarding-vetting-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vtc/vetting/vetters/profile",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+        "pinnedDigest": "sha256:059552b5ca570abd541c57bcb6385bca9879a9647df3b3d20c85abe42b83c832",
+        "tfRef": {
+          "repoPath": "specs/vtc/vetting/vetters/profile/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:8dac44f92b8f81d98ed80effab511cf12bfe29ea7f855f54812a85010a789ebe",
+        "schemaHash": "sha256:e8f4f9d2d5b32cb02f966deb89f745351175447a626ef0a350fa725fe68f5828"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "grant-vetter",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "grantVetter",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "publish",
+          "source": {
+            "slug": "vtc/vetting/vetters/profile",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "pinnedDigest": "sha256:059552b5ca570abd541c57bcb6385bca9879a9647df3b3d20c85abe42b83c832",
+            "tfRef": {
+              "repoPath": "specs/vtc/vetting/vetters/profile/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:8dac44f92b8f81d98ed80effab511cf12bfe29ea7f855f54812a85010a789ebe",
+            "schemaHash": "sha256:e8f4f9d2d5b32cb02f966deb89f745351175447a626ef0a350fa725fe68f5828"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vetter-profile",
+              "capture": "thread",
+              "args": {
+                "listed": true
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "vetter:$K",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "unlist",
+          "source": {
+            "slug": "vtc/vetting/vetters/profile",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "pinnedDigest": "sha256:059552b5ca570abd541c57bcb6385bca9879a9647df3b3d20c85abe42b83c832",
+            "tfRef": {
+              "repoPath": "specs/vtc/vetting/vetters/profile/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:8dac44f92b8f81d98ed80effab511cf12bfe29ea7f855f54812a85010a789ebe",
+            "schemaHash": "sha256:e8f4f9d2d5b32cb02f966deb89f745351175447a626ef0a350fa725fe68f5828"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vetter-profile",
+              "capture": "thread",
+              "args": {
+                "listed": false
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "vetter:$K",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "vetter:$K",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-IDV-003",
+      "title": "a member with no vetter grant publishes a profile: the community refuses it and the member is not listed",
+      "spec": [
+        "TF specs/vtc/vetting/vetters/profile/0.1/spec.md (the community stores a profile only for a member holding a live vetter grant)",
+        "TF specs/vtc/vetting/vetters/list/0.1/spec.md (only members with a live vetter grant appear)",
+        "docs/30-onboarding-vetting-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vtc/vetting/vetters/profile",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+        "pinnedDigest": "sha256:059552b5ca570abd541c57bcb6385bca9879a9647df3b3d20c85abe42b83c832",
+        "tfRef": {
+          "repoPath": "specs/vtc/vetting/vetters/profile/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:8dac44f92b8f81d98ed80effab511cf12bfe29ea7f855f54812a85010a789ebe",
+        "schemaHash": "sha256:e8f4f9d2d5b32cb02f966deb89f745351175447a626ef0a350fa725fe68f5828"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "publish-without-grant",
+          "source": {
+            "slug": "vtc/vetting/vetters/profile",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "pinnedDigest": "sha256:059552b5ca570abd541c57bcb6385bca9879a9647df3b3d20c85abe42b83c832",
+            "tfRef": {
+              "repoPath": "specs/vtc/vetting/vetters/profile/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:8dac44f92b8f81d98ed80effab511cf12bfe29ea7f855f54812a85010a789ebe",
+            "schemaHash": "sha256:e8f4f9d2d5b32cb02f966deb89f745351175447a626ef0a350fa725fe68f5828"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vetter-profile",
+              "capture": "thread",
+              "args": {
+                "listed": true
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "vetter:$K",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "vetter:$K",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-IDV-004",
+      "title": "the member asks the community about a vetter by DID: a granted vetter reads live and a DID that holds no grant reads none",
+      "spec": [
+        "TF specs/vtc/vetting/vetters/show/0.1/spec.md (the answer is the state of the vetter's grant: live, revoked, expired or none)",
+        "docs/30-onboarding-vetting-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vtc/vetting/vetters/show",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vtc/vetting/vetters/show/0.1",
+        "pinnedDigest": "sha256:18be20c035a04f76c00dc611a55baed21f6c61471736412a9cb82d938ba265f5",
+        "tfRef": {
+          "repoPath": "specs/vtc/vetting/vetters/show/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:d637f24d0f14f3b5fb32c7b17b6e785cf58813d62a90a0bb7ac852fee645924b",
+        "schemaHash": "sha256:d835666c26585eb1aaf02ee44fa772b1bb0eb6d03864fa1c811edb98663a6ed1"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received",
+            "optional:initiate.vetterDirectory"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "grant-vetter",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "grantVetter",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "show-live",
+          "source": {
+            "slug": "vtc/vetting/vetters/show",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/vetting/vetters/show/0.1",
+            "pinnedDigest": "sha256:18be20c035a04f76c00dc611a55baed21f6c61471736412a9cb82d938ba265f5",
+            "tfRef": {
+              "repoPath": "specs/vtc/vetting/vetters/show/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:d637f24d0f14f3b5fb32c7b17b6e785cf58813d62a90a0bb7ac852fee645924b",
+            "schemaHash": "sha256:d835666c26585eb1aaf02ee44fa772b1bb0eb6d03864fa1c811edb98663a6ed1"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vetters-show",
+              "capture": "thread",
+              "args": {
+                "vetterDid": "$K"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "show-status:live",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "show-none",
+          "source": {
+            "slug": "vtc/vetting/vetters/show",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "kit:specs/vtc/vetting/vetters/show/0.1",
+            "pinnedDigest": "sha256:18be20c035a04f76c00dc611a55baed21f6c61471736412a9cb82d938ba265f5",
+            "tfRef": {
+              "repoPath": "specs/vtc/vetting/vetters/show/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:d637f24d0f14f3b5fb32c7b17b6e785cf58813d62a90a0bb7ac852fee645924b",
+            "schemaHash": "sha256:d835666c26585eb1aaf02ee44fa772b1bb0eb6d03864fa1c811edb98663a6ed1"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vetters-show",
+              "capture": "thread",
+              "args": {
+                "vetterDid": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "show-status:none",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-IDV-005",
+      "title": "a vetter withdraws a statement it issued: the community records the notice and answers the time it recorded; the same notice sent again is answered with the original time",
+      "spec": [
+        "TF specs/vtc/vetting/revoke-statement/0.1/spec.md (the response is the time the community recorded the notice; repeating a notice returns the original time)",
+        "docs/30-onboarding-vetting-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vtc/vetting/revoke-statement",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/revoke-statement/0.1",
+        "pinnedDigest": "sha256:6bc14c81579192317bda21986567bc9f9931bf0ad9760fee241b8ef068bdbc07",
+        "tfRef": {
+          "repoPath": "specs/vtc/vetting/revoke-statement/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:74f3735237fb29a4ab365c228932f5fc47f7c3b4c5bdfaaa6d252b0031cf3e11",
+        "schemaHash": "sha256:5f36c2bdb93a411a4161e3337e30a2b6012a77745a882381af507f21ea87b763"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received",
+            "optional:initiate.vetterDirectory"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "grant-vetter",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "grantVetter",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "revoke",
+          "source": {
+            "slug": "vtc/vetting/revoke-statement",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/revoke-statement/0.1",
+            "pinnedDigest": "sha256:6bc14c81579192317bda21986567bc9f9931bf0ad9760fee241b8ef068bdbc07",
+            "tfRef": {
+              "repoPath": "specs/vtc/vetting/revoke-statement/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:74f3735237fb29a4ab365c228932f5fc47f7c3b4c5bdfaaa6d252b0031cf3e11",
+            "schemaHash": "sha256:5f36c2bdb93a411a4161e3337e30a2b6012a77745a882381af507f21ea87b763"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vetting-revoke-statement",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "revoke-again",
+          "source": {
+            "slug": "vtc/vetting/revoke-statement",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/revoke-statement/0.1",
+            "pinnedDigest": "sha256:6bc14c81579192317bda21986567bc9f9931bf0ad9760fee241b8ef068bdbc07",
+            "tfRef": {
+              "repoPath": "specs/vtc/vetting/revoke-statement/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:74f3735237fb29a4ab365c228932f5fc47f7c3b4c5bdfaaa6d252b0031cf3e11",
+            "schemaHash": "sha256:5f36c2bdb93a411a4161e3337e30a2b6012a77745a882381af507f21ea87b763"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vetting-revoke-statement",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "revoke-recorded-twice-same",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-IDV-006",
+      "title": "the administrator grants the vetter role to the same member twice: the second grant returns the live grant and the member is listed once",
+      "spec": [
+        "TF specs/vtc/vetting/vetters/grant/0.1/spec.md (a member who already holds a live grant gets that grant back unchanged)",
+        "docs/30-onboarding-vetting-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vtc/vetting/vetters/grant",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/vtc/vetting/vetters/grant/0.1",
+        "pinnedDigest": "sha256:e360b0239e36ad928ab91ab9c08de0b45ccd6bc45a2073baf864eacb2ef073a2",
+        "tfRef": {
+          "repoPath": "specs/vtc/vetting/vetters/grant/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:4683acebeb0739d71c49de7102e2d9452a1c5ca6e85864b1155d82cbfba154d5",
+        "schemaHash": "sha256:dd32a58ac119da6f3daaf4273891d1d510747b5487b364672e8996d4d065124a"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "grant-vetter",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "grantVetter",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "grant-vetter-again",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "grantVetter",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "publish",
+          "source": {
+            "slug": "vtc/vetting/vetters/profile",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "pinnedDigest": "sha256:059552b5ca570abd541c57bcb6385bca9879a9647df3b3d20c85abe42b83c832",
+            "tfRef": {
+              "repoPath": "specs/vtc/vetting/vetters/profile/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:8dac44f92b8f81d98ed80effab511cf12bfe29ea7f855f54812a85010a789ebe",
+            "schemaHash": "sha256:e8f4f9d2d5b32cb02f966deb89f745351175447a626ef0a350fa725fe68f5828"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vetter-profile",
+              "capture": "thread",
+              "args": {
+                "listed": true
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "vetter:$K",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "admin:grantVetter:ok",
+              "count": 2
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "vetter:$K",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-IDV-007",
+      "title": "a member asks the community for its listed vetters: a vetter with a live grant and a listed profile is named, and after the vetter unlists, the listing is empty",
+      "spec": [
+        "TF specs/vtc/vetting/vetters/list/0.1/spec.md (only active members with a live vetter grant and a profile stored with listed true appear)",
+        "TF specs/vtc/vetting/vetters/profile/0.1/spec.md (listed false removes the profile from the listing)",
+        "docs/30-onboarding-vetting-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vtc/vetting/vetters/list",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+        "pinnedDigest": "sha256:2e1629b7c0b57fdf435251922ecbb00b160f648475fa79364e747b2f0b179f22",
+        "tfRef": {
+          "repoPath": "specs/vtc/vetting/vetters/list/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:662a4a715dea5c423933d1c719da1e0673b9c838a94ff7c650014832cf06d01c",
+        "schemaHash": "sha256:e9e58032e460e724e3ce46ffe314b837f78e07e9381f02d334386b5187178c47"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received",
+            "optional:initiate.vetterDirectory"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "grant-vetter",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "grantVetter",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "publish",
+          "source": {
+            "slug": "vtc/vetting/vetters/profile",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "pinnedDigest": "sha256:059552b5ca570abd541c57bcb6385bca9879a9647df3b3d20c85abe42b83c832",
+            "tfRef": {
+              "repoPath": "specs/vtc/vetting/vetters/profile/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:8dac44f92b8f81d98ed80effab511cf12bfe29ea7f855f54812a85010a789ebe",
+            "schemaHash": "sha256:e8f4f9d2d5b32cb02f966deb89f745351175447a626ef0a350fa725fe68f5828"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vetter-profile",
+              "capture": "thread",
+              "args": {
+                "listed": true
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "vetter:$K",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "list",
+          "source": {
+            "slug": "vtc/vetting/vetters/list",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+            "pinnedDigest": "sha256:2e1629b7c0b57fdf435251922ecbb00b160f648475fa79364e747b2f0b179f22",
+            "tfRef": {
+              "repoPath": "specs/vtc/vetting/vetters/list/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:662a4a715dea5c423933d1c719da1e0673b9c838a94ff7c650014832cf06d01c",
+            "schemaHash": "sha256:e9e58032e460e724e3ce46ffe314b837f78e07e9381f02d334386b5187178c47"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vetters-list",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "list-count:1",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "unlist",
+          "source": {
+            "slug": "vtc/vetting/vetters/profile",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "pinnedDigest": "sha256:059552b5ca570abd541c57bcb6385bca9879a9647df3b3d20c85abe42b83c832",
+            "tfRef": {
+              "repoPath": "specs/vtc/vetting/vetters/profile/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:8dac44f92b8f81d98ed80effab511cf12bfe29ea7f855f54812a85010a789ebe",
+            "schemaHash": "sha256:e8f4f9d2d5b32cb02f966deb89f745351175447a626ef0a350fa725fe68f5828"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vetter-profile",
+              "capture": "thread",
+              "args": {
+                "listed": false
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "list-again",
+          "source": {
+            "slug": "vtc/vetting/vetters/list",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1",
+            "pinnedDigest": "sha256:2e1629b7c0b57fdf435251922ecbb00b160f648475fa79364e747b2f0b179f22",
+            "tfRef": {
+              "repoPath": "specs/vtc/vetting/vetters/list/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:662a4a715dea5c423933d1c719da1e0673b9c838a94ff7c650014832cf06d01c",
+            "schemaHash": "sha256:e9e58032e460e724e3ce46ffe314b837f78e07e9381f02d334386b5187178c47"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vetters-list",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "K",
+              "stored": {
+                "kind": "list-count:0",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "K",
+            "stored": {
+              "kind": "list-count:0",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-IDV-008",
+      "title": "a member sends the peer leg of identity vetting (vetting/request) to the community: the community is not a vetter and serves no vetting/request, so it refuses the type (unsupportedType) and holds nothing",
+      "spec": [
+        "TF ceremonies/vetting/identity-vetting/0.1/ceremony.json (request is applicant to vetter; the vetter is a member or an openvtc client, never the community)",
+        "TF specs/vetting/request/0.1/spec.md (parties: applicant, vetter)",
+        "SPEC.md 8.3 (unsupportedType: the consumer does not serve the task type)",
+        "docs/30-onboarding-vetting-ceremonies.md section 4"
+      ],
+      "source": {
+        "slug": "vetting/request",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vetting/request/0.1",
+        "pinnedDigest": "sha256:3c47cb7da6267b6657c5f7b836cbed9767e8d9c49369207a206108d35641464f",
+        "tfRef": {
+          "repoPath": "specs/vetting/request/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+        "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received",
+            "optional:initiate.vetterDirectory"
+          ]
+        },
+        "V": {
+          "role": "community",
+          "requires": [
+            "https://trusttasks.org/spec/vtc/vetting/vetters/profile/0.1",
+            "https://trusttasks.org/spec/vtc/vetting/vetters/list/0.1"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "seed-member",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "seedMember",
+              "args": {
+                "vid": "$K"
+              }
+            }
+          }
+        },
+        {
+          "id": "request-to-community",
+          "source": {
+            "slug": "vetting/request",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/vetting/request/0.1",
+            "pinnedDigest": "sha256:3c47cb7da6267b6657c5f7b836cbed9767e8d9c49369207a206108d35641464f",
+            "tfRef": {
+              "repoPath": "specs/vetting/request/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:bb583d0ff1163bf1672ad481a73862126f6bc585a0b1ca51216deb37cb5e78b0",
+            "schemaHash": "sha256:7266b8a9889735feea675edff60d78591b88064c4d9210fb8fb7dfe6c8ae657d"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "vetting-request",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "unsupportedType",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          }
+        ]
+      }
+    }
+  ]
+}

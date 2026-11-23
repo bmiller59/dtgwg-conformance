@@ -1,0 +1,2770 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "GP-UND",
+ "family": "gap",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "GP-UND-001",
+   "title": "understanding/exchange 0.1: the payload is validated against the task's payload schema (missing required member offerId; unknown member in a closed payload; wrong type for offerId)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/understanding/exchange/0.1 (Trust Tasks specification understanding/exchange 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version)): required [\"offerId\",\"answers\"], additionalProperties false",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "source": {
+    "slug": "understanding/exchange",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/exchange/0.1",
+    "pinnedDigest": "sha256:6c3567abce365eb86a40ac6e78956d492bc530ce3ffe47eb08a40e228aa9d80b",
+    "specHash": "sha256:5ecf68ce139c335195504a4aed8a25480d193a34d38ff3e8ce42a22865613011",
+    "schemaHash": "sha256:0a12f6687bddbd5e550bba2b89e31a8527e06422204846e3fb77f2d2145a8347",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/exchange/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation",
+    "openPayload"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "answers": [
+         {
+          "questionId": "example",
+          "answer": "example"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "example",
+        "answers": [
+         {
+          "questionId": "example",
+          "answer": "example"
+         }
+        ],
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p3)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": 5,
+        "answers": [
+         {
+          "questionId": "example",
+          "answer": "example"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-002",
+   "title": "understanding/exchange 0.1: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+    "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+    "declared policy: https://trusttasks.org/spec/understanding/exchange/0.1 (Trust Tasks specification understanding/exchange 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version)), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true"
+   ],
+   "source": {
+    "slug": "understanding/exchange",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/exchange/0.1",
+    "pinnedDigest": "sha256:6c3567abce365eb86a40ac6e78956d492bc530ce3ffe47eb08a40e228aa9d80b",
+    "specHash": "sha256:5ecf68ce139c335195504a4aed8a25480d193a34d38ff3e8ce42a22865613011",
+    "schemaHash": "sha256:0a12f6687bddbd5e550bba2b89e31a8527e06422204846e3fb77f2d2145a8347",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/exchange/0.1"
+   ],
+   "mutants": [
+    "recipientOptional",
+    "proofOptional"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(e1)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "example",
+        "answers": [
+         {
+          "questionId": "example",
+          "answer": "example"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "malformedRequest",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(e2)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "example",
+        "answers": [
+         {
+          "questionId": "example",
+          "answer": "example"
+         }
+        ]
+       }
+      },
+      "sign": null
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "proofRequired",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-003",
+   "title": "understanding/exchange 0.1: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+    "declared policy: https://trusttasks.org/spec/understanding/exchange/0.1 (Trust Tasks specification understanding/exchange 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version)), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true"
+   ],
+   "source": {
+    "slug": "understanding/exchange",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/exchange/0.1",
+    "pinnedDigest": "sha256:6c3567abce365eb86a40ac6e78956d492bc530ce3ffe47eb08a40e228aa9d80b",
+    "specHash": "sha256:5ecf68ce139c335195504a4aed8a25480d193a34d38ff3e8ce42a22865613011",
+    "schemaHash": "sha256:0a12f6687bddbd5e550bba2b89e31a8527e06422204846e3fb77f2d2145a8347",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+   "clarifyClass": "spec-silent",
+   "clarifySince": "2026-11-19",
+   "clarifyQuestions": [],
+   "requires": [
+    "https://trusttasks.org/spec/understanding/exchange/0.1"
+   ],
+   "mutants": [
+    "noFreshnessWindow"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "payload": {
+        "offerId": "example",
+        "answers": [
+         {
+          "questionId": "example",
+          "answer": "example"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "any-refusal",
+      "noSideEffect": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-004",
+   "title": "understanding/exchange 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "payload and response schemas of https://trusttasks.org/spec/understanding/exchange/0.1 (Trust Tasks specification understanding/exchange 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version))",
+    "response type https://trusttasks.org/spec/understanding/exchange/0.1#response",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+   ],
+   "source": {
+    "slug": "understanding/exchange",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/exchange/0.1",
+    "pinnedDigest": "sha256:6c3567abce365eb86a40ac6e78956d492bc530ce3ffe47eb08a40e228aa9d80b",
+    "specHash": "sha256:5ecf68ce139c335195504a4aed8a25480d193a34d38ff3e8ce42a22865613011",
+    "schemaHash": "sha256:0a12f6687bddbd5e550bba2b89e31a8527e06422204846e3fb77f2d2145a8347",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/exchange/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "example",
+        "answers": [
+         {
+          "questionId": "example",
+          "answer": "example"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/understanding/exchange/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-005",
+   "title": "understanding/exchange 0.1: a request missing any one required payload member is refused (offerId, answers)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema of https://trusttasks.org/spec/understanding/exchange/0.1: required [\"offerId\",\"answers\"] (Trust Tasks specification understanding/exchange 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version))"
+   ],
+   "source": {
+    "slug": "understanding/exchange",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/exchange/0.1",
+    "pinnedDigest": "sha256:6c3567abce365eb86a40ac6e78956d492bc530ce3ffe47eb08a40e228aa9d80b",
+    "specHash": "sha256:5ecf68ce139c335195504a4aed8a25480d193a34d38ff3e8ce42a22865613011",
+    "schemaHash": "sha256:0a12f6687bddbd5e550bba2b89e31a8527e06422204846e3fb77f2d2145a8347",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/exchange/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(r1)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "answers": [
+         {
+          "questionId": "example",
+          "answer": "example"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(r2)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-006",
+   "title": "understanding/exchange 0.1: a payload that breaks a constraint of its schema is refused (offerId: longer than maxLength 256; offerId: shorter than minLength 1; offerId: wrong type (not string); offerDigestMultibase: shorter than minLength 16; offerDigestMultibase: does not match its pattern; answers: fewer than minItems 1; answers: more than maxItems 64; answers: wrong type (not array))",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema constraints of https://trusttasks.org/spec/understanding/exchange/0.1 (Trust Tasks specification understanding/exchange 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version))"
+   ],
+   "source": {
+    "slug": "understanding/exchange",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/exchange/0.1",
+    "pinnedDigest": "sha256:6c3567abce365eb86a40ac6e78956d492bc530ce3ffe47eb08a40e228aa9d80b",
+    "specHash": "sha256:5ecf68ce139c335195504a4aed8a25480d193a34d38ff3e8ce42a22865613011",
+    "schemaHash": "sha256:0a12f6687bddbd5e550bba2b89e31a8527e06422204846e3fb77f2d2145a8347",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/exchange/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(c1)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "answers": [
+         {
+          "questionId": "example",
+          "answer": "example"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c2)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "",
+        "answers": [
+         {
+          "questionId": "example",
+          "answer": "example"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c3)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": 5,
+        "answers": [
+         {
+          "questionId": "example",
+          "answer": "example"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c4)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "example",
+        "answers": [
+         {
+          "questionId": "example",
+          "answer": "example"
+         }
+        ],
+        "offerDigestMultibase": "aaaaaaaaaaaaaaa"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c5)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "example",
+        "answers": [
+         {
+          "questionId": "example",
+          "answer": "example"
+         }
+        ],
+        "offerDigestMultibase": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c6)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "example",
+        "answers": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c7)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "example",
+        "answers": [
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x",
+         "x"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c8)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "example",
+        "answers": "x"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-007",
+   "title": "understanding/exchange 0.1: the payload examples the specification lists as invalid are refused (7)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/understanding/exchange/0.1: (1) Missing offerId — nothing names which terms version the answers are about. (2) Empty answers array — an exchange with no answers demonstrates nothing. (3) Answer missing questionId — SPEC requires both members of every Answer. (4) Unknown top-level payload member — additionalProperties: false catches `score`, which belongs only in the response. (5) offerDigestMultibase that is not a multibase multihash — a hex string hard-codes an algorithm into the wire contract and is non-conforming. (6) Response without taskContext and taskDigestMultibase — an unbound determination cannot serve as the d",
+    "Trust Tasks specification understanding/exchange 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version)"
+   ],
+   "source": {
+    "slug": "understanding/exchange",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/exchange/0.1",
+    "pinnedDigest": "sha256:6c3567abce365eb86a40ac6e78956d492bc530ce3ffe47eb08a40e228aa9d80b",
+    "specHash": "sha256:5ecf68ce139c335195504a4aed8a25480d193a34d38ff3e8ce42a22865613011",
+    "schemaHash": "sha256:0a12f6687bddbd5e550bba2b89e31a8527e06422204846e3fb77f2d2145a8347",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/exchange/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "answers": [
+         {
+          "questionId": "retention-period",
+          "answer": "12-months"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i2)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "urn:uuid:1a2b3c4d-0001-4000-8000-000000000002",
+        "answers": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i3)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "urn:uuid:1a2b3c4d-0001-4000-8000-000000000002",
+        "answers": [
+         {
+          "answer": "12-months"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i4)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "urn:uuid:1a2b3c4d-0001-4000-8000-000000000002",
+        "answers": [
+         {
+          "questionId": "retention-period",
+          "answer": "12-months"
+         }
+        ],
+        "score": 0.9
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i5)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "offerId": "urn:uuid:1a2b3c4d-0001-4000-8000-000000000002",
+        "offerDigestMultibase": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "answers": [
+         {
+          "questionId": "retention-period",
+          "answer": "12-months"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i6)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "outcome": "understood"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i7)",
+       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "outcome": "understood",
+        "taskContext": "urn:uuid:1a2b3c4d-0003-4000-8000-000000000001"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-008",
+   "title": "understanding/offer 0.1: the payload is validated against the task's payload schema (missing required member purpose; unknown member in a closed payload; wrong type for purpose)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/understanding/offer/0.1 (Trust Tasks specification understanding/offer 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version)): required [\"purpose\"], additionalProperties false",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "source": {
+    "slug": "understanding/offer",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/offer/0.1",
+    "pinnedDigest": "sha256:a43bbf7e9a921abb594bb4918617d26b0ab90c8c9b6f36ca55a0bde7a2c9213e",
+    "specHash": "sha256:e2fd6944727ba2e51dc88abbd55a27f242cc64a1a3b8ef99c8d8c7f40c1bbfa1",
+    "schemaHash": "sha256:46a23474a1195522cc9c3532120ee35985522ca33361c5b3c6554d33d5e37572",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/offer/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation",
+    "openPayload"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "purpose": "example",
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p3)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "purpose": 5
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-009",
+   "title": "understanding/offer 0.1: the policy the specification declares is enforced (recipient REQUIRED)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+    "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+    "declared policy: https://trusttasks.org/spec/understanding/offer/0.1 (Trust Tasks specification understanding/offer 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version)), SPEC policy isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=true"
+   ],
+   "source": {
+    "slug": "understanding/offer",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/offer/0.1",
+    "pinnedDigest": "sha256:a43bbf7e9a921abb594bb4918617d26b0ab90c8c9b6f36ca55a0bde7a2c9213e",
+    "specHash": "sha256:e2fd6944727ba2e51dc88abbd55a27f242cc64a1a3b8ef99c8d8c7f40c1bbfa1",
+    "schemaHash": "sha256:46a23474a1195522cc9c3532120ee35985522ca33361c5b3c6554d33d5e37572",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/offer/0.1"
+   ],
+   "mutants": [
+    "recipientOptional"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(e1)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "purpose": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "malformedRequest",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-010",
+   "title": "understanding/offer 0.1: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+    "declared policy: https://trusttasks.org/spec/understanding/offer/0.1 (Trust Tasks specification understanding/offer 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version)), SPEC policy isProofRequired=false, isRecipientRequired=true, isIssuedAtRequired=true"
+   ],
+   "source": {
+    "slug": "understanding/offer",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/offer/0.1",
+    "pinnedDigest": "sha256:a43bbf7e9a921abb594bb4918617d26b0ab90c8c9b6f36ca55a0bde7a2c9213e",
+    "specHash": "sha256:e2fd6944727ba2e51dc88abbd55a27f242cc64a1a3b8ef99c8d8c7f40c1bbfa1",
+    "schemaHash": "sha256:46a23474a1195522cc9c3532120ee35985522ca33361c5b3c6554d33d5e37572",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+   "clarifyClass": "spec-silent",
+   "clarifySince": "2026-11-19",
+   "clarifyQuestions": [],
+   "requires": [
+    "https://trusttasks.org/spec/understanding/offer/0.1"
+   ],
+   "mutants": [
+    "noFreshnessWindow"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "payload": {
+        "purpose": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "any-refusal",
+      "noSideEffect": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-011",
+   "title": "understanding/offer 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "payload and response schemas of https://trusttasks.org/spec/understanding/offer/0.1 (Trust Tasks specification understanding/offer 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version))",
+    "response type https://trusttasks.org/spec/understanding/offer/0.1#response",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+   ],
+   "source": {
+    "slug": "understanding/offer",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/offer/0.1",
+    "pinnedDigest": "sha256:a43bbf7e9a921abb594bb4918617d26b0ab90c8c9b6f36ca55a0bde7a2c9213e",
+    "specHash": "sha256:e2fd6944727ba2e51dc88abbd55a27f242cc64a1a3b8ef99c8d8c7f40c1bbfa1",
+    "schemaHash": "sha256:46a23474a1195522cc9c3532120ee35985522ca33361c5b3c6554d33d5e37572",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/offer/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "purpose": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/understanding/offer/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-012",
+   "title": "understanding/offer 0.1: a request missing any one required payload member is refused (purpose)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema of https://trusttasks.org/spec/understanding/offer/0.1: required [\"purpose\"] (Trust Tasks specification understanding/offer 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version))"
+   ],
+   "source": {
+    "slug": "understanding/offer",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/offer/0.1",
+    "pinnedDigest": "sha256:a43bbf7e9a921abb594bb4918617d26b0ab90c8c9b6f36ca55a0bde7a2c9213e",
+    "specHash": "sha256:e2fd6944727ba2e51dc88abbd55a27f242cc64a1a3b8ef99c8d8c7f40c1bbfa1",
+    "schemaHash": "sha256:46a23474a1195522cc9c3532120ee35985522ca33361c5b3c6554d33d5e37572",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/offer/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(r1)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-013",
+   "title": "understanding/offer 0.1: a payload that breaks a constraint of its schema is refused (purpose: longer than maxLength 128; purpose: shorter than minLength 1; purpose: wrong type (not string); proposedIdentifier: longer than maxLength 2048; proposedIdentifier: does not match its pattern)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema constraints of https://trusttasks.org/spec/understanding/offer/0.1 (Trust Tasks specification understanding/offer 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version))"
+   ],
+   "source": {
+    "slug": "understanding/offer",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/offer/0.1",
+    "pinnedDigest": "sha256:a43bbf7e9a921abb594bb4918617d26b0ab90c8c9b6f36ca55a0bde7a2c9213e",
+    "specHash": "sha256:e2fd6944727ba2e51dc88abbd55a27f242cc64a1a3b8ef99c8d8c7f40c1bbfa1",
+    "schemaHash": "sha256:46a23474a1195522cc9c3532120ee35985522ca33361c5b3c6554d33d5e37572",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/offer/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(c1)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "purpose": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c2)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "purpose": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c3)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "purpose": 5
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c4)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "purpose": "example",
+        "proposedIdentifier": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c5)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "purpose": "example",
+        "proposedIdentifier": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-014",
+   "title": "understanding/offer 0.1: the payload examples the specification lists as invalid are refused (5)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/understanding/offer/0.1: (1) Missing purpose — the only required request member. (2) Empty purpose string — the field names a category, not an empty answer. (3) Unknown top-level payload member — additionalProperties: false catches `note`. (4) proposedIdentifier as an empty string — a producer that has no identifier to propose omits the member entirely rather than sending an empty one. (5) proposedIdentifier that is not a DID — the identifier the engagement would continue under must be resolvable and verifiable, so the schema requires the `did:` scheme.",
+    "Trust Tasks specification understanding/offer 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version)"
+   ],
+   "source": {
+    "slug": "understanding/offer",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/offer/0.1",
+    "pinnedDigest": "sha256:a43bbf7e9a921abb594bb4918617d26b0ab90c8c9b6f36ca55a0bde7a2c9213e",
+    "specHash": "sha256:e2fd6944727ba2e51dc88abbd55a27f242cc64a1a3b8ef99c8d8c7f40c1bbfa1",
+    "schemaHash": "sha256:46a23474a1195522cc9c3532120ee35985522ca33361c5b3c6554d33d5e37572",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/offer/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i2)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "purpose": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i3)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "purpose": "membership",
+        "note": "please let me in"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i4)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "purpose": "conversation",
+        "proposedIdentifier": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i5)",
+       "type": "https://trusttasks.org/spec/understanding/offer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "purpose": "conversation",
+        "proposedIdentifier": "https://alice.example/me"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-015",
+   "title": "understanding/seal 0.1: the payload is validated against the task's payload schema (missing required member exchangeId; unknown member in a closed payload; wrong type for exchangeId)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, dtgwg-trust-tasks-spec e392d70, spec/body.md:758)",
+    "payload schema of https://trusttasks.org/spec/understanding/seal/0.1 (Trust Tasks specification understanding/seal 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version)): required [\"exchangeId\",\"agreement\"], additionalProperties false",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds."
+   ],
+   "source": {
+    "slug": "understanding/seal",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/seal/0.1",
+    "pinnedDigest": "sha256:56e4b337042f648f0b28be37c0599f29629e2e777ad9f97826d0f78937b068bc",
+    "specHash": "sha256:04d276d6cc1493e286a6478be28479a20554bdf6317d29d8282addc7feace647",
+    "schemaHash": "sha256:ceef82679c0e1a2e442bf895fc2992c24de863f7c6250b5cdfef95cf711f9995",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/seal/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation",
+    "openPayload"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(p1)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p2)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "example",
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        },
+        "conformanceUnknownMember": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(p3)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": 5,
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-016",
+   "title": "understanding/seal 0.1: the policy the specification declares is enforced (recipient REQUIRED, proof REQUIRED)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1015 (7.2 item 5: a document lacking an in-band recipient the specification declares REQUIRED is rejected with malformedRequest; spec/body.md:761)",
+    "SPEC.md:1017 (7.2 item 7: proof declared REQUIRED and absent is rejected with proofRequired; spec/body.md:763)",
+    "declared policy: https://trusttasks.org/spec/understanding/seal/0.1 (Trust Tasks specification understanding/seal 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version)), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true"
+   ],
+   "source": {
+    "slug": "understanding/seal",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/seal/0.1",
+    "pinnedDigest": "sha256:56e4b337042f648f0b28be37c0599f29629e2e777ad9f97826d0f78937b068bc",
+    "specHash": "sha256:04d276d6cc1493e286a6478be28479a20554bdf6317d29d8282addc7feace647",
+    "schemaHash": "sha256:ceef82679c0e1a2e442bf895fc2992c24de863f7c6250b5cdfef95cf711f9995",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/seal/0.1"
+   ],
+   "mutants": [
+    "recipientOptional",
+    "proofOptional"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(e1)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "example",
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "malformedRequest",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(e2)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "example",
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        }
+       }
+      },
+      "sign": null
+     },
+     "expect": {
+      "disposition": "error",
+      "code": "proofRequired",
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-017",
+   "title": "understanding/seal 0.1: a request without issuedAt is not executed (issuedAt REQUIRED by the specification)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1137 (7.3 item 17: a consequential task's specification MUST require issuedAt; spec/body.md:864)",
+    "declared policy: https://trusttasks.org/spec/understanding/seal/0.1 (Trust Tasks specification understanding/seal 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version)), SPEC policy isProofRequired=true, isRecipientRequired=true, isIssuedAtRequired=true"
+   ],
+   "source": {
+    "slug": "understanding/seal",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/seal/0.1",
+    "pinnedDigest": "sha256:56e4b337042f648f0b28be37c0599f29629e2e777ad9f97826d0f78937b068bc",
+    "specHash": "sha256:04d276d6cc1493e286a6478be28479a20554bdf6317d29d8282addc7feace647",
+    "schemaHash": "sha256:ceef82679c0e1a2e442bf895fc2992c24de863f7c6250b5cdfef95cf711f9995",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": "The text makes issuedAt a MUST of the specification but no consumer rule names the rejection or its code (inference: the pinned runtime enforceSpecPolicy rejects with malformedRequest). Any refusal or silence with no side effect is accepted. Not gating.",
+   "clarifyClass": "spec-silent",
+   "clarifySince": "2026-11-19",
+   "clarifyQuestions": [],
+   "requires": [
+    "https://trusttasks.org/spec/understanding/seal/0.1"
+   ],
+   "mutants": [
+    "noFreshnessWindow"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "payload": {
+        "exchangeId": "example",
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "any-refusal",
+      "noSideEffect": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-018",
+   "title": "understanding/seal 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "payload and response schemas of https://trusttasks.org/spec/understanding/seal/0.1 (Trust Tasks specification understanding/seal 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version))",
+    "response type https://trusttasks.org/spec/understanding/seal/0.1#response",
+    "Mechanics only: this vector does not assert that the request is authorised or what it does (that is the deployment's governance)"
+   ],
+   "source": {
+    "slug": "understanding/seal",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/seal/0.1",
+    "pinnedDigest": "sha256:56e4b337042f648f0b28be37c0599f29629e2e777ad9f97826d0f78937b068bc",
+    "specHash": "sha256:04d276d6cc1493e286a6478be28479a20554bdf6317d29d8282addc7feace647",
+    "schemaHash": "sha256:ceef82679c0e1a2e442bf895fc2992c24de863f7c6250b5cdfef95cf711f9995",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/seal/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "example",
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/understanding/seal/0.1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-019",
+   "title": "understanding/seal 0.1: a request missing any one required payload member is refused (exchangeId, agreement)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema of https://trusttasks.org/spec/understanding/seal/0.1: required [\"exchangeId\",\"agreement\"] (Trust Tasks specification understanding/seal 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version))"
+   ],
+   "source": {
+    "slug": "understanding/seal",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/seal/0.1",
+    "pinnedDigest": "sha256:56e4b337042f648f0b28be37c0599f29629e2e777ad9f97826d0f78937b068bc",
+    "specHash": "sha256:04d276d6cc1493e286a6478be28479a20554bdf6317d29d8282addc7feace647",
+    "schemaHash": "sha256:ceef82679c0e1a2e442bf895fc2992c24de863f7c6250b5cdfef95cf711f9995",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/seal/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(r1)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(r2)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-020",
+   "title": "understanding/seal 0.1: a payload that breaks a constraint of its schema is refused (exchangeId: longer than maxLength 256; exchangeId: shorter than minLength 1; exchangeId: wrong type (not string); exchangeDigestMultibase: shorter than minLength 16; exchangeDigestMultibase: does not match its pattern; agreement: wrong type (not object); respondsTo: longer than maxLength 256; respondsTo: shorter than minLength 1)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload schema constraints of https://trusttasks.org/spec/understanding/seal/0.1 (Trust Tasks specification understanding/seal 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version))"
+   ],
+   "source": {
+    "slug": "understanding/seal",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/seal/0.1",
+    "pinnedDigest": "sha256:56e4b337042f648f0b28be37c0599f29629e2e777ad9f97826d0f78937b068bc",
+    "specHash": "sha256:04d276d6cc1493e286a6478be28479a20554bdf6317d29d8282addc7feace647",
+    "schemaHash": "sha256:ceef82679c0e1a2e442bf895fc2992c24de863f7c6250b5cdfef95cf711f9995",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/seal/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(c1)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c2)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "",
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c3)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": 5,
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c4)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "example",
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        },
+        "exchangeDigestMultibase": "aaaaaaaaaaaaaaa"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c5)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "example",
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        },
+        "exchangeDigestMultibase": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c6)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "example",
+        "agreement": "x"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c7)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "example",
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        },
+        "respondsTo": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(c8)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "example",
+        "agreement": {
+         "name": "example",
+         "rosterItems": [
+          "example"
+         ],
+         "effectiveFrom": "2026-11-12T10:00:00Z"
+        },
+        "respondsTo": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  },
+  {
+   "id": "GP-UND-021",
+   "title": "understanding/seal 0.1: the payload examples the specification lists as invalid are refused (12)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
+    "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/understanding/seal/0.1: (1) Missing exchangeId — a seal MUST be grounded in a named understanding/exchange. (2) Agreement with an empty rosterItems array — an agreement over no terms is not an agreement. (3) Agreement missing effectiveFrom — an agreement with no start is not placeable in time. (4) Agreement missing name — IEEE 7012-2025 §4.3 requires a consistent, transparent name; rosterItems alone are opaque identifiers, not a name. (5) legalRef missing digestMultibase — a URI alone is not hash-pinned. (6) legalRef missing version — RegisterRef now requires the same {uri, version, digestMultibase} shape as understa",
+    "Trust Tasks specification understanding/seal 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version)"
+   ],
+   "source": {
+    "slug": "understanding/seal",
+    "version": "0.1",
+    "ref": "kit:specs/understanding/seal/0.1",
+    "pinnedDigest": "sha256:56e4b337042f648f0b28be37c0599f29629e2e777ad9f97826d0f78937b068bc",
+    "specHash": "sha256:04d276d6cc1493e286a6478be28479a20554bdf6317d29d8282addc7feace647",
+    "schemaHash": "sha256:ceef82679c0e1a2e442bf895fc2992c24de863f7c6250b5cdfef95cf711f9995",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Source: pr#904 (origin/understanding-rebased at 96b1d70ea); this version is not on main, so the vector is provisional and sits in the pr channel.",
+    "channel": "pr",
+    "pr": {
+     "number": 904,
+     "headSha": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfRef": {
+     "status": "pr",
+     "pr": 904,
+     "head": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+    },
+    "tfCommit": "96b1d70eafd225b027b5e2da98079ae1570be2fc"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/understanding/seal/0.1"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "agreement": {
+         "name": "Data retention (12 months)",
+         "rosterItems": [
+          "data-retention-12mo"
+         ],
+         "effectiveFrom": "2026-09-24T10:10:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i2)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "urn:uuid:1a2b3c4d-0003-4000-8000-000000000002",
+        "agreement": {
+         "name": "Data retention (12 months)",
+         "rosterItems": [],
+         "effectiveFrom": "2026-09-24T10:10:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i3)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "urn:uuid:1a2b3c4d-0003-4000-8000-000000000002",
+        "agreement": {
+         "name": "Data retention (12 months)",
+         "rosterItems": [
+          "data-retention-12mo"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i4)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "urn:uuid:1a2b3c4d-0003-4000-8000-000000000002",
+        "agreement": {
+         "rosterItems": [
+          "data-retention-12mo"
+         ],
+         "effectiveFrom": "2026-09-24T10:10:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i5)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "urn:uuid:1a2b3c4d-0003-4000-8000-000000000002",
+        "agreement": {
+         "name": "Data retention (12 months)",
+         "rosterItems": [
+          "data-retention-12mo"
+         ],
+         "legalRef": {
+          "uri": "https://mytermsregistry.example/terms/2026-3.2/legal"
+         },
+         "effectiveFrom": "2026-09-24T10:10:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i6)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "urn:uuid:1a2b3c4d-0003-4000-8000-000000000002",
+        "agreement": {
+         "name": "Data retention (12 months)",
+         "rosterItems": [
+          "data-retention-12mo"
+         ],
+         "legalRef": {
+          "uri": "https://mytermsregistry.example/terms/2026-3.2/legal",
+          "digestMultibase": "zQmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbd"
+         },
+         "effectiveFrom": "2026-09-24T10:10:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i7)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "taskContext": "urn:uuid:1a2b3c4d-0004-4000-8000-000000000001",
+        "taskDigestMultibase": "zQmP5zaRpCwYVSgS2rCdphU7PMhEJWygdsCkLQzrJg29MPV"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i8)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "decision": "negotiating",
+        "taskContext": "urn:uuid:1a2b3c4d-0004-4000-8000-000000000001",
+        "taskDigestMultibase": "zQmP5zaRpCwYVSgS2rCdphU7PMhEJWygdsCkLQzrJg29MPV"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i9)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "decision": "accepted",
+        "taskContext": "urn:uuid:1a2b3c4d-0004-4000-8000-000000000001",
+        "taskDigestMultibase": "zQmP5zaRpCwYVSgS2rCdphU7PMhEJWygdsCkLQzrJg29MPV",
+        "counterAgreement": {
+         "name": "Data retention (6 months)",
+         "rosterItems": [
+          "data-retention-6mo"
+         ],
+         "effectiveFrom": "2026-09-24T10:10:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i10)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "decision": "countered",
+        "taskContext": "urn:uuid:1a2b3c4d-0004-4000-8000-000000000001",
+        "taskDigestMultibase": "zQmP5zaRpCwYVSgS2rCdphU7PMhEJWygdsCkLQzrJg29MPV"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i11)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "urn:uuid:1a2b3c4d-0003-4000-8000-000000000002",
+        "exchangeDigestMultibase": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "agreement": {
+         "name": "Data retention (12 months)",
+         "rosterItems": [
+          "data-retention-12mo"
+         ],
+         "effectiveFrom": "2026-09-24T10:10:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i12)",
+       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "exchangeId": "urn:uuid:1a2b3c4d-0003-4000-8000-000000000002",
+        "agreement": {
+         "id": "SD-BASE",
+         "name": "Data retention (12 months)",
+         "rosterItems": [
+          "data-retention-12mo"
+         ],
+         "effectiveFrom": "2026-09-24T10:10:00Z"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
+  }
+ ]
+}

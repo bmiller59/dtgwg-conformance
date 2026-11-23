@@ -1,0 +1,1767 @@
+{
+  "format": "tt-ceremony-scenarios/0.1",
+  "group": "FC-ACL",
+  "family": "ceremony-scenarios",
+  "evidence": "complete-ceremony",
+  "ceremony": {
+    "name": "Access-list administration and key swap (wallet and agent)",
+    "channel": "proposed",
+    "choreography": "docs/26-paired-ceremonies.md section 3: list, grant, relabel and revoke by an admin manager, and the manager's key swap; negatives for a non-admin, an unknown subject, a repeated grant, a replay, a tampered or unsigned document, a wrong recipient and a stale clock"
+  },
+  "scenarios": [
+    {
+      "id": "FC-ACL-001",
+      "title": "the member's wallet, an admin manager of the agent, lists the access list, grants a second subject, relabels it and revokes it: the agent's list shows the row after the grant and the new label, and omits it after the revoke",
+      "spec": [
+        "TF specs/acl/grant/0.3/spec.md (the granting authority adds the subject; the response echoes the entry)",
+        "TF specs/acl/update/0.3/spec.md (label replaced on an existing entry)",
+        "TF specs/acl/revoke/0.3/spec.md (a removal; the subject loses its authority at its next decision)",
+        "TF specs/acl/list/0.4/spec.md (read-only enumeration)",
+        "docs/26-paired-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "acl/grant",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+        "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+        "tfRef": {
+          "repoPath": "specs/acl/grant/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+        "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/acl/list/0.4",
+            "https://trusttasks.org/spec/acl/grant/0.3",
+            "https://trusttasks.org/spec/acl/update/0.3",
+            "https://trusttasks.org/spec/acl/revoke/0.3"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "list-before",
+          "source": {
+            "slug": "acl/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/list/0.4",
+            "pinnedDigest": "sha256:0e06804292cb18574afc69bdf07eecd5b29784fef7c1d83955f531aade66cf09",
+            "tfRef": {
+              "repoPath": "specs/acl/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f42e63349922bdeea2279866430e0429ba9c3e2145ab4962a7ec6e8e04892ace",
+            "schemaHash": "sha256:66658579a77a6e9aafc5fbd679d74a23bcdf3217e55f101a370336f410090151"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-list",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "grant",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-grant",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "label": "Second device"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "list-after-grant",
+          "source": {
+            "slug": "acl/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/list/0.4",
+            "pinnedDigest": "sha256:0e06804292cb18574afc69bdf07eecd5b29784fef7c1d83955f531aade66cf09",
+            "tfRef": {
+              "repoPath": "specs/acl/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f42e63349922bdeea2279866430e0429ba9c3e2145ab4962a7ec6e8e04892ace",
+            "schemaHash": "sha256:66658579a77a6e9aafc5fbd679d74a23bcdf3217e55f101a370336f410090151"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-list",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "update",
+          "source": {
+            "slug": "acl/update",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/update/0.3",
+            "pinnedDigest": "sha256:2fd599907dd27dda9bf4d98988754a05d34a4e732e3907ddb01d81b74ed22f25",
+            "tfRef": {
+              "repoPath": "specs/acl/update/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:efa4e4cfab42c13a6a5f3ce67acfd80ae2335f8b248b88db06919681c383aee8",
+            "schemaHash": "sha256:3f1dc41fffbfad9c564e35f64a06b84b96a8b0c0580001ac29f8f8c55bcc6eda"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-update",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "label": "Renamed device"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-label:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz|Renamed device",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "revoke",
+          "source": {
+            "slug": "acl/revoke",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/revoke/0.3",
+            "pinnedDigest": "sha256:c139cf13610dd6781eba10f989097c99466c05912e64a0cc24483af9f2cad3bb",
+            "tfRef": {
+              "repoPath": "specs/acl/revoke/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:97c3dcbf0daa1705b41d972d6951aef24d561fdbc7f56e468148205ffdf89fdc",
+            "schemaHash": "sha256:789cf1d9994657800e78c99877d9181408c53671acf90d43712bd5faf70c394c"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-revoke",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "list-after-revoke",
+          "source": {
+            "slug": "acl/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/list/0.4",
+            "pinnedDigest": "sha256:0e06804292cb18574afc69bdf07eecd5b29784fef7c1d83955f531aade66cf09",
+            "tfRef": {
+              "repoPath": "specs/acl/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f42e63349922bdeea2279866430e0429ba9c3e2145ab4962a7ec6e8e04892ace",
+            "schemaHash": "sha256:66658579a77a6e9aafc5fbd679d74a23bcdf3217e55f101a370336f410090151"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-list",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-entry",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-ACL-002",
+      "title": "a manager whose role on the agent is not admin asks to grant a subject: the agent refuses it and the access list is unchanged",
+      "spec": [
+        "TF specs/acl/grant/0.3/spec.md (the granting authority must hold the authority it delegates; a grant past it is refused)",
+        "docs/26-paired-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "acl/grant",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+        "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+        "tfRef": {
+          "repoPath": "specs/acl/grant/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+        "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/acl/list/0.4",
+            "https://trusttasks.org/spec/acl/grant/0.3",
+            "https://trusttasks.org/spec/acl/update/0.3",
+            "https://trusttasks.org/spec/acl/revoke/0.3"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "demote",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "actorRole",
+              "args": {
+                "vid": "$K",
+                "role": "monitor"
+              }
+            }
+          }
+        },
+        {
+          "id": "grant-by-monitor",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-grant",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "label": "Should not exist"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+              "count": 0
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-entry",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-ACL-003",
+      "title": "revoking a subject that is not on the access list is refused with acl/revoke:subjectNotPresent and changes nothing",
+      "spec": [
+        "TF specs/acl/revoke/0.3/spec.md (errorCodes: acl/revoke:subjectNotPresent)",
+        "docs/26-paired-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "acl/revoke",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/revoke/0.3",
+        "pinnedDigest": "sha256:c139cf13610dd6781eba10f989097c99466c05912e64a0cc24483af9f2cad3bb",
+        "tfRef": {
+          "repoPath": "specs/acl/revoke/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:97c3dcbf0daa1705b41d972d6951aef24d561fdbc7f56e468148205ffdf89fdc",
+        "schemaHash": "sha256:789cf1d9994657800e78c99877d9181408c53671acf90d43712bd5faf70c394c"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/acl/list/0.4",
+            "https://trusttasks.org/spec/acl/grant/0.3",
+            "https://trusttasks.org/spec/acl/update/0.3",
+            "https://trusttasks.org/spec/acl/revoke/0.3"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "revoke-unknown",
+          "source": {
+            "slug": "acl/revoke",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/revoke/0.3",
+            "pinnedDigest": "sha256:c139cf13610dd6781eba10f989097c99466c05912e64a0cc24483af9f2cad3bb",
+            "tfRef": {
+              "repoPath": "specs/acl/revoke/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:97c3dcbf0daa1705b41d972d6951aef24d561fdbc7f56e468148205ffdf89fdc",
+            "schemaHash": "sha256:789cf1d9994657800e78c99877d9181408c53671acf90d43712bd5faf70c394c"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-revoke",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MksqMR3hRk6hLGgt1MX3qAAgxWDrTpBVbed5xKbkshXCBA"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "acl/revoke:subjectNotPresent",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-entry",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-ACL-004",
+      "title": "granting a subject that already holds the same entry again is an idempotent re-assertion: the agent answers it and there is still exactly one entry for the subject",
+      "spec": [
+        "TF specs/acl/grant/0.3/spec.md (consumer step 6: where the subject already exists with the same role, the grant is an idempotent re-assertion; the task is idempotent: an identical grant against an unchanged ACL produces no state change)",
+        "docs/26-paired-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "acl/grant",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+        "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+        "tfRef": {
+          "repoPath": "specs/acl/grant/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+        "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/acl/list/0.4",
+            "https://trusttasks.org/spec/acl/grant/0.3",
+            "https://trusttasks.org/spec/acl/update/0.3",
+            "https://trusttasks.org/spec/acl/revoke/0.3"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "grant",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-grant",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "label": "First"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "grant-again",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-grant",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "label": "First"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-entry",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-ACL-005",
+      "title": "the wallet's signed grant is delivered again unchanged after the subject was revoked: the agent does not re-admit the subject (the duplicate id is not executed twice)",
+      "spec": [
+        "TF specs/acl/grant/0.3/spec.md (issuedAt REQUIRED: a replayed grant re-admits a subject that has since been revoked; only the duplicate-execution record stops it)",
+        "SPEC.md 7.2 item 11 (a repeated id is not executed twice)",
+        "docs/26-paired-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "acl/grant",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+        "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+        "tfRef": {
+          "repoPath": "specs/acl/grant/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+        "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/acl/list/0.4",
+            "https://trusttasks.org/spec/acl/grant/0.3",
+            "https://trusttasks.org/spec/acl/update/0.3",
+            "https://trusttasks.org/spec/acl/revoke/0.3"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "grant",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-grant",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "label": "Once"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "revoke",
+          "source": {
+            "slug": "acl/revoke",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/revoke/0.3",
+            "pinnedDigest": "sha256:c139cf13610dd6781eba10f989097c99466c05912e64a0cc24483af9f2cad3bb",
+            "tfRef": {
+              "repoPath": "specs/acl/revoke/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:97c3dcbf0daa1705b41d972d6951aef24d561fdbc7f56e468148205ffdf89fdc",
+            "schemaHash": "sha256:789cf1d9994657800e78c99877d9181408c53671acf90d43712bd5faf70c394c"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-revoke",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "replay-grant",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "replay": {
+              "step": "grant",
+              "by": "K",
+              "to": "V",
+              "mode": "same"
+            }
+          },
+          "expect": [
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-ACL-006",
+      "title": "the wallet's signed grant with a payload value changed after signing (under a fresh id, and under its own id) and the same grant with its proof removed: the agent refuses all three and grants nothing",
+      "spec": [
+        "TF specs/acl/grant/0.3/spec.md (proofRequirement REQUIRED)",
+        "SPEC.md 7.2 (a document whose proof does not verify, or that carries none where one is REQUIRED, is refused)",
+        "docs/26-paired-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "acl/grant",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+        "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+        "tfRef": {
+          "repoPath": "specs/acl/grant/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+        "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/acl/list/0.4",
+            "https://trusttasks.org/spec/acl/grant/0.3",
+            "https://trusttasks.org/spec/acl/update/0.3",
+            "https://trusttasks.org/spec/acl/revoke/0.3"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "grant",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-grant",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "label": "Once"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        },
+        {
+          "id": "revoke",
+          "source": {
+            "slug": "acl/revoke",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/revoke/0.3",
+            "pinnedDigest": "sha256:c139cf13610dd6781eba10f989097c99466c05912e64a0cc24483af9f2cad3bb",
+            "tfRef": {
+              "repoPath": "specs/acl/revoke/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:97c3dcbf0daa1705b41d972d6951aef24d561fdbc7f56e468148205ffdf89fdc",
+            "schemaHash": "sha256:789cf1d9994657800e78c99877d9181408c53671acf90d43712bd5faf70c394c"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-revoke",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "tampered",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "replay": {
+              "step": "grant",
+              "by": "K",
+              "to": "V",
+              "mode": "tamper"
+            }
+          },
+          "expect": [
+            {
+              "reply": {
+                "code": "proofInvalid"
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "conflicting",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "replay": {
+              "step": "grant",
+              "by": "K",
+              "to": "V",
+              "mode": "conflict"
+            }
+          },
+          "expect": [
+            {
+              "reply": {
+                "code": "idConflict|proofInvalid"
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "no-proof",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "replay": {
+              "step": "grant",
+              "by": "K",
+              "to": "V",
+              "mode": "stripProof"
+            }
+          },
+          "expect": [
+            {
+              "reply": {
+                "code": "proofRequired"
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-ACL-007",
+      "title": "the wallet signs a grant addressed to a different agent: this agent refuses it (wrong recipient) and grants nothing",
+      "spec": [
+        "TF specs/acl/grant/0.3/spec.md (parties: the ACL maintainer is the recipient)",
+        "SPEC.md 8.3 (wrongRecipient: the document's recipient does not identify the receiving consumer)",
+        "docs/26-paired-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "acl/grant",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+        "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+        "tfRef": {
+          "repoPath": "specs/acl/grant/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+        "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/acl/list/0.4",
+            "https://trusttasks.org/spec/acl/grant/0.3",
+            "https://trusttasks.org/spec/acl/update/0.3",
+            "https://trusttasks.org/spec/acl/revoke/0.3"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "grant-to-other",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-grant",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "label": "Misaddressed",
+                "recipient": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "code": "wrongRecipient",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-ACL-008",
+      "title": "the wallet's clock is two hours behind when it signs a grant: the agent refuses the stale document and grants nothing; with the clock restored the same grant is accepted",
+      "spec": [
+        "TF specs/acl/grant/0.3/spec.md (issuedAtRequirement REQUIRED)",
+        "SPEC.md 7.2 (the receiver's acceptance window: a document issued outside it is refused)",
+        "docs/26-paired-ceremonies.md section 3"
+      ],
+      "source": {
+        "slug": "acl/grant",
+        "version": "0.3",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+        "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+        "tfRef": {
+          "repoPath": "specs/acl/grant/0.3/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+        "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/acl/list/0.4",
+            "https://trusttasks.org/spec/acl/grant/0.3",
+            "https://trusttasks.org/spec/acl/update/0.3",
+            "https://trusttasks.org/spec/acl/revoke/0.3"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "clock-back",
+          "do": {
+            "decide": {
+              "by": "K",
+              "action": "clockOffset",
+              "args": {
+                "seconds": -7200
+              }
+            }
+          }
+        },
+        {
+          "id": "grant-stale",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-grant",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "label": "Stale"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "refused"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "clock-restore",
+          "do": {
+            "decide": {
+              "by": "K",
+              "action": "clockOffset",
+              "args": {
+                "seconds": 0
+              }
+            }
+          }
+        },
+        {
+          "id": "grant-fresh",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-grant",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "label": "Fresh"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-ACL-009",
+      "title": "key swap: the wallet replaces the key bound to its own access-list entry with a successor and the agent closes the old key's access in the same step (the successor key is a class D stand-in)",
+      "spec": [
+        "TF specs/acl/swap-key/0.1/spec.md (an ACL holder replaces the VID bound to its own entry; the old VID's access closes in the same transaction)",
+        "docs/26-paired-ceremonies.md section 3 (the successor key and DID are made by a stand-in key creator: a fixed Ed25519 did:key, not a did:peer)"
+      ],
+      "source": {
+        "slug": "acl/swap-key",
+        "version": "0.1",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/swap-key/0.1",
+        "pinnedDigest": "sha256:23ee5ca8e94e85f057b0e2cee274b15b52e0c5414e5b37138cdfd85a485cefcb",
+        "tfRef": {
+          "repoPath": "specs/acl/swap-key/0.1/spec.md",
+          "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+        "specHash": "sha256:657c87461d4fc6c2c1336f291475c8ee0ddf54705eacc32740fa1066c50d002b",
+        "schemaHash": "sha256:d0c77eac39cea9aae54e25db4a6d7f5e2006fdd77a99f1332fa6804ee6b88f79"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/acl/swap-key/0.1",
+            "https://trusttasks.org/spec/acl/list/0.4"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "swap",
+          "source": {
+            "slug": "acl/swap-key",
+            "version": "0.1",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/swap-key/0.1",
+            "pinnedDigest": "sha256:23ee5ca8e94e85f057b0e2cee274b15b52e0c5414e5b37138cdfd85a485cefcb",
+            "tfRef": {
+              "repoPath": "specs/acl/swap-key/0.1/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:657c87461d4fc6c2c1336f291475c8ee0ddf54705eacc32740fa1066c50d002b",
+            "schemaHash": "sha256:d0c77eac39cea9aae54e25db4a6d7f5e2006fdd77a99f1332fa6804ee6b88f79"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-swap-key",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:$K",
+                "count": 0
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkeWjVE4oF2JdpkRkMUTbS6BFhvfUFXcXiMMjr9BZhfTne",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "old-key-after",
+          "source": {
+            "slug": "acl/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/list/0.4",
+            "pinnedDigest": "sha256:0e06804292cb18574afc69bdf07eecd5b29784fef7c1d83955f531aade66cf09",
+            "tfRef": {
+              "repoPath": "specs/acl/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f42e63349922bdeea2279866430e0429ba9c3e2145ab4962a7ec6e8e04892ace",
+            "schemaHash": "sha256:66658579a77a6e9aafc5fbd679d74a23bcdf3217e55f101a370336f410090151"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-list",
+              "capture": "thread"
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "refused"
+            }
+          ]
+        },
+        {
+          "id": "successor-after",
+          "source": {
+            "slug": "acl/list",
+            "version": "0.4",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/list/0.4",
+            "pinnedDigest": "sha256:0e06804292cb18574afc69bdf07eecd5b29784fef7c1d83955f531aade66cf09",
+            "tfRef": {
+              "repoPath": "specs/acl/list/0.4/spec.md",
+              "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+            "specHash": "sha256:f42e63349922bdeea2279866430e0429ba9c3e2145ab4962a7ec6e8e04892ace",
+            "schemaHash": "sha256:66658579a77a6e9aafc5fbd679d74a23bcdf3217e55f101a370336f410090151"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-list",
+              "capture": "thread",
+              "args": {
+                "as": "successor"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "ceremony": "completed"
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-subject:$K",
+              "count": 0
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-subject:did:key:z6MkeWjVE4oF2JdpkRkMUTbS6BFhvfUFXcXiMMjr9BZhfTne",
+              "count": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,2761 @@
+{
+ "format": "tt-conformance-vectors/0.1",
+ "group": "VC-ROOMS",
+ "family": "complete",
+ "clock": {
+  "start": "2026-11-12T10:00:00Z"
+ },
+ "vectors": [
+  {
+   "id": "VC-ROOMS-001",
+   "title": "rooms/epoch/chain 0.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the specification names rooms/epoch/chain:notFound, rooms/epoch/chain:forbidden, which a conforming implementation may return for this request depending on state)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/epoch/chain/0.2 (Trust Tasks specification rooms/epoch/chain 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/epoch/chain/0.2#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/epoch/chain",
+    "version": "0.2",
+    "ref": "kit:specs/rooms/epoch/chain/0.2",
+    "pinnedDigest": "sha256:e7b540a53fcdb43df5c342a9728f6b8304b58d0650a4a40947caa9ceff98e8cf",
+    "specHash": "sha256:4a2857a5f72eabf1b3499733e303fc399e482b16b4b3abfa78d570e3caa323fa",
+    "schemaHash": "sha256:41488d3329e37875a159f6266bf86e8eb82de4c016c31142b5b7148ac2f41de3",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/epoch/chain/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/epoch/chain/0.2"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/chain/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/epoch/chain/0.2"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-002",
+   "title": "rooms/epoch/chain 0.2: the request examples in the specification are not refused for an envelope reason (1; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/epoch/chain/0.2 (Trust Tasks specification rooms/epoch/chain 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/epoch/chain",
+    "version": "0.2",
+    "ref": "kit:specs/rooms/epoch/chain/0.2",
+    "pinnedDigest": "sha256:e7b540a53fcdb43df5c342a9728f6b8304b58d0650a4a40947caa9ceff98e8cf",
+    "specHash": "sha256:4a2857a5f72eabf1b3499733e303fc399e482b16b4b3abfa78d570e3caa323fa",
+    "schemaHash": "sha256:41488d3329e37875a159f6266bf86e8eb82de4c016c31142b5b7148ac2f41de3",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/epoch/chain/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/epoch/chain/0.2"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/chain/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.member-vmc",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.read-vac"
+         ]
+        },
+        "fromEpoch": 5
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/epoch/chain/0.2"
+     }
+    }
+   ],
+   "effect": "read-only"
+  },
+  {
+   "id": "VC-ROOMS-003",
+   "title": "rooms/epoch/commits 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the specification names rooms/epoch/commits:chainTooDeep, which a conforming implementation may return for this request depending on state)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/epoch/commits/0.1 (Trust Tasks specification rooms/epoch/commits 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/epoch/commits/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/epoch/commits",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/epoch/commits/0.1",
+    "pinnedDigest": "sha256:8e9d27438040fa3bbf579a8aca1cdfe6cc5a461154e2cbac90fdc3577870262e",
+    "specHash": "sha256:305e1d41c37765eeb62cfba0c23e8da479444032f81d3e21fb49be60dccb70c5",
+    "schemaHash": "sha256:df7371edd5430c30b1d7a2e7168b4c26e60fb548d5143f433a698781fde696cb",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/epoch/commits/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/epoch/commits/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/commits/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "sinceEpoch": 0,
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/epoch/commits/0.1"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-004",
+   "title": "rooms/epoch/commits 0.1: the request examples in the specification are not refused for an envelope reason (1; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/epoch/commits/0.1 (Trust Tasks specification rooms/epoch/commits 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/epoch/commits",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/epoch/commits/0.1",
+    "pinnedDigest": "sha256:8e9d27438040fa3bbf579a8aca1cdfe6cc5a461154e2cbac90fdc3577870262e",
+    "specHash": "sha256:305e1d41c37765eeb62cfba0c23e8da479444032f81d3e21fb49be60dccb70c5",
+    "schemaHash": "sha256:df7371edd5430c30b1d7a2e7168b4c26e60fb548d5143f433a698781fde696cb",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/epoch/commits/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/epoch/commits/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/commits/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "sinceEpoch": 5,
+        "presentation": {
+         "membership": "urn:uuid:11111111-1111-1111-1111-111111111111",
+         "authority": [
+          "urn:uuid:22222222-2222-2222-2222-222222222222",
+          "urn:uuid:33333333-3333-3333-3333-333333333333"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/epoch/commits/0.1"
+     }
+    }
+   ],
+   "effect": "read-only"
+  },
+  {
+   "id": "VC-ROOMS-005",
+   "title": "rooms/keys/chain 0.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/keys/chain/0.2 (Trust Tasks specification rooms/keys/chain 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/keys/chain/0.2#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/keys/chain",
+    "version": "0.2",
+    "ref": "kit:specs/rooms/keys/chain/0.2",
+    "pinnedDigest": "sha256:9894610022e909d4e4808f92805fc463aa843f16c6f2320e315e00e91da5cec5",
+    "specHash": "sha256:b60bfb945540d17856e5b8dd44dd9dabbddea867ba31219e419c00f906a2c50d",
+    "schemaHash": "sha256:0d3d615d887f63bf2a0d5d6b79d3fa90d21039279dd420a761a10114f9abfb70",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/chain/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/chain/0.2"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/chain/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "links": [
+         {
+          "epoch": 2,
+          "wrapped": "example",
+          "nonce": "example"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/keys/chain/0.2"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-006",
+   "title": "rooms/keys/chain 0.2: the request examples in the specification are not refused for an envelope reason (2; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/keys/chain/0.2 (Trust Tasks specification rooms/keys/chain 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/keys/chain",
+    "version": "0.2",
+    "ref": "kit:specs/rooms/keys/chain/0.2",
+    "pinnedDigest": "sha256:9894610022e909d4e4808f92805fc463aa843f16c6f2320e315e00e91da5cec5",
+    "specHash": "sha256:b60bfb945540d17856e5b8dd44dd9dabbddea867ba31219e419c00f906a2c50d",
+    "schemaHash": "sha256:0d3d615d887f63bf2a0d5d6b79d3fa90d21039279dd420a761a10114f9abfb70",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/chain/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/chain/0.2"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/chain/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "links": [
+         {
+          "epoch": 4,
+          "wrapped": "Lp3wXc9TgYw2mQnR4vBk8Q",
+          "nonce": "c1Au9Rn3Zr2tWwS1"
+         },
+         {
+          "epoch": 3,
+          "wrapped": "Tf6yNb2VhZx5pRoS7wCl9Q",
+          "nonce": "d2Bv0So4As3uXxT2"
+         },
+         {
+          "epoch": 2,
+          "wrapped": "Wq8zMd4XjBy7rTqU9yEn1Q",
+          "nonce": "e3Cw1Tp5Bt4vYyU3"
+         }
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/keys/chain/0.2"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/rooms/keys/chain/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "epochFloor": 3
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/keys/chain/0.2"
+     }
+    }
+   ],
+   "effect": "mutating"
+  },
+  {
+   "id": "VC-ROOMS-007",
+   "title": "rooms/keys/commit 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/keys/commit/0.1 (Trust Tasks specification rooms/keys/commit 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/keys/commit/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/keys/commit",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/keys/commit/0.1",
+    "pinnedDigest": "sha256:e540960c030bed32ffdabf02aae312558b572c04eaba19a584353f93bd39786e",
+    "specHash": "sha256:647206cc67e52c6a28a83ea389e040f7deef83039e0d2dfb35000062f74e0fe3",
+    "schemaHash": "sha256:2ddb7545b9a52f7f09a53a142572b61ac40d2b37f8d5d4269da7f91192605306",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/commit/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/commit/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/commit/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "commit": "example",
+        "epoch": 1
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/keys/commit/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-008",
+   "title": "rooms/keys/label 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/keys/label/0.1 (Trust Tasks specification rooms/keys/label 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/keys/label/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/keys/label",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/keys/label/0.1",
+    "pinnedDigest": "sha256:8d0253ddc646f466cabf79c1c03ebc2b23aa726706910ee15c6313b8a05d4416",
+    "specHash": "sha256:ed7386ca15e83469e7c858671e3e601ae06350addccfd9aabf4076361b33f141",
+    "schemaHash": "sha256:7d4f6476f144e727bd3b9c7ca371e62363fc13438934576e72cd8f45c2e46e64",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/label/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/label/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/label/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "member": "did:web:alice.example",
+        "label": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/keys/label/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-009",
+   "title": "rooms/keys/label 0.1: the request examples in the specification are not refused for an envelope reason (3; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/keys/label/0.1 (Trust Tasks specification rooms/keys/label 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/keys/label",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/keys/label/0.1",
+    "pinnedDigest": "sha256:8d0253ddc646f466cabf79c1c03ebc2b23aa726706910ee15c6313b8a05d4416",
+    "specHash": "sha256:ed7386ca15e83469e7c858671e3e601ae06350addccfd9aabf4076361b33f141",
+    "schemaHash": "sha256:7d4f6476f144e727bd3b9c7ca371e62363fc13438934576e72cd8f45c2e46e64",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/label/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/label/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/label/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "member": "did:example:alice-work",
+        "label": "Northwind tender",
+        "description": "Pricing working room for the Northwind bid. Dana invited me.",
+        "tags": [
+         "work",
+         "bids"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/keys/label/0.1"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/rooms/keys/label/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "member": "did:example:alice-work",
+        "notes": "Final numbers are in the March folder.\nAsk Dana before sharing outside the team.",
+        "removeDescription": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/keys/label/0.1"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x3)",
+       "type": "https://trusttasks.org/spec/rooms/keys/label/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "member": "did:example:alice-work",
+        "removeLabel": true,
+        "removeDescription": true,
+        "removeNotes": true,
+        "removeTags": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/keys/label/0.1"
+     }
+    }
+   ],
+   "effect": "mutating"
+  },
+  {
+   "id": "VC-ROOMS-010",
+   "title": "rooms/keys/profile/read 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the specification names rooms/keys/profile/read:hostUnreachable, rooms/keys/profile/read:hostRefused, which a conforming implementation may return for this request depending on state)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/keys/profile/read/0.1 (Trust Tasks specification rooms/keys/profile/read 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/keys/profile/read/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/keys/profile/read",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/keys/profile/read/0.1",
+    "pinnedDigest": "sha256:06c108184e5f172fd260fd1152d0d53e7269990c113fdb54981bcc1d2be99c6a",
+    "specHash": "sha256:28ecf0f4c50bd96cc1cb6df3b13f154e6aae988ce8cbf101644768a9a8d1003c",
+    "schemaHash": "sha256:4fc6e6b184ac0e4c3dc412ec1f242abc4b7016a8e325c46e8cfac1de0ef99435",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/profile/read/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/profile/read/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/profile/read/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "host": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/keys/profile/read/0.1"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-011",
+   "title": "rooms/keys/profile/read 0.1: the request examples in the specification are not refused for an envelope reason (1; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/keys/profile/read/0.1 (Trust Tasks specification rooms/keys/profile/read 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/keys/profile/read",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/keys/profile/read/0.1",
+    "pinnedDigest": "sha256:06c108184e5f172fd260fd1152d0d53e7269990c113fdb54981bcc1d2be99c6a",
+    "specHash": "sha256:28ecf0f4c50bd96cc1cb6df3b13f154e6aae988ce8cbf101644768a9a8d1003c",
+    "schemaHash": "sha256:4fc6e6b184ac0e4c3dc412ec1f242abc4b7016a8e325c46e8cfac1de0ef99435",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/profile/read/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/profile/read/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/profile/read/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:board",
+        "host": "did:webvh:example.com:community"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/keys/profile/read/0.1"
+     }
+    }
+   ],
+   "effect": "read-only"
+  },
+  {
+   "id": "VC-ROOMS-012",
+   "title": "rooms/keys/profile/write 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/keys/profile/write/0.1 (Trust Tasks specification rooms/keys/profile/write 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/keys/profile/write/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/keys/profile/write",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/keys/profile/write/0.1",
+    "pinnedDigest": "sha256:57a82dbb5de70c281380aef1b62fd0c8e7b81c3420b8968100b9d00c9421d409",
+    "specHash": "sha256:e6feba29e119b40bf6eb6e48b6bf309a9843981931a75e7bdfb00e1848d3979e",
+    "schemaHash": "sha256:5cdc8a5932a3351ee9d16e56229ba9245790d31a0af1ce159fe0c17e77f7d7ea",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/profile/write/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/profile/write/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/profile/write/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "host": "did:web:alice.example",
+        "profile": {
+         "name": "example"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/keys/profile/write/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-013",
+   "title": "rooms/keys/profile/write 0.1: the request examples in the specification are not refused for an envelope reason (2; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/keys/profile/write/0.1 (Trust Tasks specification rooms/keys/profile/write 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/keys/profile/write",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/keys/profile/write/0.1",
+    "pinnedDigest": "sha256:57a82dbb5de70c281380aef1b62fd0c8e7b81c3420b8968100b9d00c9421d409",
+    "specHash": "sha256:e6feba29e119b40bf6eb6e48b6bf309a9843981931a75e7bdfb00e1848d3979e",
+    "schemaHash": "sha256:5cdc8a5932a3351ee9d16e56229ba9245790d31a0af1ce159fe0c17e77f7d7ea",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/keys/profile/write/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/keys/profile/write/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/keys/profile/write/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "host": "did:webvh:example.com:community",
+        "profile": {
+         "name": "Northwind renewal",
+         "description": "Everything for the 2027 Northwind contract renewal: pricing, legal mark-ups and the call notes.",
+         "tags": [
+          "deal",
+          "renewal"
+         ],
+         "emoji": "🤝"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/keys/profile/write/0.1"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/rooms/keys/profile/write/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "host": "did:webvh:example.com:community",
+        "clear": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/keys/profile/write/0.1"
+     }
+    }
+   ],
+   "effect": "mutating"
+  },
+  {
+   "id": "VC-ROOMS-014",
+   "title": "rooms/owner/anchor 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/owner/anchor/0.1 (Trust Tasks specification rooms/owner/anchor 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/owner/anchor/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/owner/anchor",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/owner/anchor/0.1",
+    "pinnedDigest": "sha256:9b7e8c15278146e24b07978fdee6a81c4be61880ec34e077c7313bbe441aef8c",
+    "specHash": "sha256:5b742023fe582c978f6136ac86899af00b8f457eb14747ff87a02a5d7592e8f6",
+    "schemaHash": "sha256:0281cc55a18de89cb0c625e0230f2fd8906067825d1f7235226317a473454831",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/anchor/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/anchor/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/anchor/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "host": "example",
+        "signingKeyId": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/anchor/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-015",
+   "title": "rooms/owner/anchor 0.1: the request examples in the specification are not refused for an envelope reason (1; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/owner/anchor/0.1 (Trust Tasks specification rooms/owner/anchor 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/owner/anchor",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/owner/anchor/0.1",
+    "pinnedDigest": "sha256:9b7e8c15278146e24b07978fdee6a81c4be61880ec34e077c7313bbe441aef8c",
+    "specHash": "sha256:5b742023fe582c978f6136ac86899af00b8f457eb14747ff87a02a5d7592e8f6",
+    "schemaHash": "sha256:0281cc55a18de89cb0c625e0230f2fd8906067825d1f7235226317a473454831",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/anchor/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/anchor/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/anchor/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "host": "did:webvh:example.com:northwind-community",
+        "signingKeyId": "room-northwind-signing"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/anchor/0.1"
+     }
+    }
+   ],
+   "effect": "mutating"
+  },
+  {
+   "id": "VC-ROOMS-016",
+   "title": "rooms/owner/claim 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/owner/claim/0.1 (Trust Tasks specification rooms/owner/claim 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/owner/claim/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/owner/claim",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/owner/claim/0.1",
+    "pinnedDigest": "sha256:20ae234f4fa435204d1011de8b71e61f0790d0f5bb11d9a4b5f0d6f07a9a0760",
+    "specHash": "sha256:b99f8ade87c1feb28f9ce5bca7f0c83a3e075fdc5695e8b685a03bd516a36bec",
+    "schemaHash": "sha256:6b8b1148294c11f4e09015f41273e82e399dc61449fa8f72c61234e3f4264700",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/claim/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/claim/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/claim/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "nomination": "example",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/claim/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-017",
+   "title": "rooms/owner/group/add 0.3: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/owner/group/add/0.3 (Trust Tasks specification rooms/owner/group/add 0.3 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/owner/group/add/0.3#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/owner/group/add",
+    "version": "0.3",
+    "ref": "kit:specs/rooms/owner/group/add/0.3",
+    "pinnedDigest": "sha256:f4d9e3a212ca2d22788ba19d34d2c0e2c04f83f21e30832a79e6f9f10ecacd49",
+    "specHash": "sha256:e3088dc292e396839d0a58712a03cfef45f72e8f9c8d307f1f5ad912139f607a",
+    "schemaHash": "sha256:19fafb98b81fd2678a32b3cd030a138b8a623d7486b493dacdc3c702d2aa6f52",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/group/add/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/group/add/0.3"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/group/add/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "host": "did:web:alice.example",
+        "member": "did:web:alice.example",
+        "keyPackage": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/group/add/0.3"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-018",
+   "title": "rooms/owner/group/add 0.3: the request examples in the specification are not refused for an envelope reason (1; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/owner/group/add/0.3 (Trust Tasks specification rooms/owner/group/add 0.3 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/owner/group/add",
+    "version": "0.3",
+    "ref": "kit:specs/rooms/owner/group/add/0.3",
+    "pinnedDigest": "sha256:f4d9e3a212ca2d22788ba19d34d2c0e2c04f83f21e30832a79e6f9f10ecacd49",
+    "specHash": "sha256:e3088dc292e396839d0a58712a03cfef45f72e8f9c8d307f1f5ad912139f607a",
+    "schemaHash": "sha256:19fafb98b81fd2678a32b3cd030a138b8a623d7486b493dacdc3c702d2aa6f52",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/group/add/0.3/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/group/add/0.3"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/group/add/0.3",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "host": "did:webvh:example.com:northwind-community",
+        "member": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+        "keyPackage": "AAEAAgADAAQ"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/group/add/0.3"
+     }
+    }
+   ],
+   "effect": "mutating"
+  },
+  {
+   "id": "VC-ROOMS-019",
+   "title": "rooms/owner/group/create 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/owner/group/create/0.1 (Trust Tasks specification rooms/owner/group/create 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/owner/group/create/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/owner/group/create",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/owner/group/create/0.1",
+    "pinnedDigest": "sha256:136ae181e1c1593800238ef0cbfe05a9bb8bce8a06789ffc8b2383f16080e318",
+    "specHash": "sha256:4363192e24923c7da30d1fbcb8927a5144e226fcac512f89fa3a89df3041cad4",
+    "schemaHash": "sha256:a9d23fd27e3ae99d82bcabac399053b20897453062c44516feecff200e2122fc",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/group/create/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/group/create/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/group/create/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "signingKeyId": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/group/create/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-020",
+   "title": "rooms/owner/group/create 0.1: the request examples in the specification are not refused for an envelope reason (1; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/owner/group/create/0.1 (Trust Tasks specification rooms/owner/group/create 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/owner/group/create",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/owner/group/create/0.1",
+    "pinnedDigest": "sha256:136ae181e1c1593800238ef0cbfe05a9bb8bce8a06789ffc8b2383f16080e318",
+    "specHash": "sha256:4363192e24923c7da30d1fbcb8927a5144e226fcac512f89fa3a89df3041cad4",
+    "schemaHash": "sha256:a9d23fd27e3ae99d82bcabac399053b20897453062c44516feecff200e2122fc",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/group/create/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/group/create/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/group/create/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "signingKeyId": "room-northwind-signing"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/group/create/0.1"
+     }
+    }
+   ],
+   "effect": "mutating"
+  },
+  {
+   "id": "VC-ROOMS-021",
+   "title": "rooms/owner/group/remove 0.4: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/owner/group/remove/0.4 (Trust Tasks specification rooms/owner/group/remove 0.4 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/owner/group/remove/0.4#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/owner/group/remove",
+    "version": "0.4",
+    "ref": "kit:specs/rooms/owner/group/remove/0.4",
+    "pinnedDigest": "sha256:4e0b4c41fe0844c8e86803d7bb505293e9b2216f8fd56f022ece69ee1e003c7c",
+    "specHash": "sha256:f30994cb4c5378cedf77abacecf238fa2f71fed0488b90148fe2413c7efd5920",
+    "schemaHash": "sha256:39605270b284e4de4cc8693193d87121755e48b4c9534c2ecb2d730dd5d4aeff",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/group/remove/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/group/remove/0.4"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/group/remove/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "host": "did:web:alice.example",
+        "member": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/group/remove/0.4"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-022",
+   "title": "rooms/owner/group/remove 0.4: the request examples in the specification are not refused for an envelope reason (2; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/owner/group/remove/0.4 (Trust Tasks specification rooms/owner/group/remove 0.4 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/owner/group/remove",
+    "version": "0.4",
+    "ref": "kit:specs/rooms/owner/group/remove/0.4",
+    "pinnedDigest": "sha256:4e0b4c41fe0844c8e86803d7bb505293e9b2216f8fd56f022ece69ee1e003c7c",
+    "specHash": "sha256:f30994cb4c5378cedf77abacecf238fa2f71fed0488b90148fe2413c7efd5920",
+    "schemaHash": "sha256:39605270b284e4de4cc8693193d87121755e48b4c9534c2ecb2d730dd5d4aeff",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/group/remove/0.4/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/group/remove/0.4"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/group/remove/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "host": "did:webvh:example.com:northwind-community",
+        "member": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+        "signingKeyId": "room-northwind-signing",
+        "until": "2027-01-01T00:00:00Z",
+        "reason": "Left the deal team"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/group/remove/0.4"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(x2)",
+       "type": "https://trusttasks.org/spec/rooms/owner/group/remove/0.4",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:board-papers",
+        "host": "did:webvh:example.com:northwind-community",
+        "member": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+        "reason": "Term ended"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/group/remove/0.4"
+     }
+    }
+   ],
+   "effect": "mutating"
+  },
+  {
+   "id": "VC-ROOMS-023",
+   "title": "rooms/owner/group/renew 0.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/owner/group/renew/0.2 (Trust Tasks specification rooms/owner/group/renew 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/owner/group/renew/0.2#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/owner/group/renew",
+    "version": "0.2",
+    "ref": "kit:specs/rooms/owner/group/renew/0.2",
+    "pinnedDigest": "sha256:c6851ac4c8718df0099a4136fd4b77e7739e214b4c09fa8f13667f89985d9e27",
+    "specHash": "sha256:02dd7acdd52f5f11ef35b7d21ec14af28eb3c88fbd0979f61d008cb88eddc329",
+    "schemaHash": "sha256:d2329d561b520ba7383f998841ae8a1f569b0b6c14e16c1300f4e1d5756be53f",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/group/renew/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/group/renew/0.2"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/group/renew/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "host": "did:web:alice.example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/group/renew/0.2"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-024",
+   "title": "rooms/owner/group/renew 0.2: the request examples in the specification are not refused for an envelope reason (1; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/owner/group/renew/0.2 (Trust Tasks specification rooms/owner/group/renew 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/owner/group/renew",
+    "version": "0.2",
+    "ref": "kit:specs/rooms/owner/group/renew/0.2",
+    "pinnedDigest": "sha256:c6851ac4c8718df0099a4136fd4b77e7739e214b4c09fa8f13667f89985d9e27",
+    "specHash": "sha256:02dd7acdd52f5f11ef35b7d21ec14af28eb3c88fbd0979f61d008cb88eddc329",
+    "schemaHash": "sha256:d2329d561b520ba7383f998841ae8a1f569b0b6c14e16c1300f4e1d5756be53f",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/group/renew/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/group/renew/0.2"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/group/renew/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "host": "did:webvh:example.com:northwind-community",
+        "reason": "Quarterly renewal"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/group/renew/0.2"
+     }
+    }
+   ],
+   "effect": "mutating"
+  },
+  {
+   "id": "VC-ROOMS-025",
+   "title": "rooms/owner/invite 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/owner/invite/0.1 (Trust Tasks specification rooms/owner/invite 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/owner/invite/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/owner/invite",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/owner/invite/0.1",
+    "pinnedDigest": "sha256:c4967175895f4b962dbf3d6b7acd49e2b7c21619e130bccd782f74c5493a630b",
+    "specHash": "sha256:53110a7f9188b56e795ee3351ea6b6a21c5d25eafa42c0e06ef2747d2c5b8108",
+    "schemaHash": "sha256:884c9435c6e2f9bda354a4c7445c87ccc55285cf5e231a2135de3525769dbaeb",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/invite/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/invite/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/invite/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "signingKeyId": "example",
+        "subject": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/invite/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-026",
+   "title": "rooms/owner/invite 0.1: the request examples in the specification are not refused for an envelope reason (1; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/owner/invite/0.1 (Trust Tasks specification rooms/owner/invite 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/owner/invite",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/owner/invite/0.1",
+    "pinnedDigest": "sha256:c4967175895f4b962dbf3d6b7acd49e2b7c21619e130bccd782f74c5493a630b",
+    "specHash": "sha256:53110a7f9188b56e795ee3351ea6b6a21c5d25eafa42c0e06ef2747d2c5b8108",
+    "schemaHash": "sha256:884c9435c6e2f9bda354a4c7445c87ccc55285cf5e231a2135de3525769dbaeb",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/invite/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/invite/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/invite/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "signingKeyId": "room-northwind-signing",
+        "subject": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+        "validUntil": "2026-02-01T00:00:00Z"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/invite/0.1"
+     }
+    }
+   ],
+   "effect": "mutating"
+  },
+  {
+   "id": "VC-ROOMS-027",
+   "title": "rooms/owner/issue-membership 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/owner/issue-membership/0.1 (Trust Tasks specification rooms/owner/issue-membership 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/owner/issue-membership/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/owner/issue-membership",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/owner/issue-membership/0.1",
+    "pinnedDigest": "sha256:1a2bae4c5cb1a7074e4396cbd2bfd396c075d5d7f087b0cb11413fd17fa1ce99",
+    "specHash": "sha256:d738b7bab50f59b16bcfa8d0cf6adb39a7510f1f79b1f066f93bd3099a358ef8",
+    "schemaHash": "sha256:38b330dabcffa7ef995fa605679a112d78ad03df23122dc8dd6d5e5a111dd5f2",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/issue-membership/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/issue-membership/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/issue-membership/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "signingKeyId": "example",
+        "subject": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/issue-membership/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-028",
+   "title": "rooms/owner/issue-membership 0.1: the request examples in the specification are not refused for an envelope reason (1; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/owner/issue-membership/0.1 (Trust Tasks specification rooms/owner/issue-membership 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/owner/issue-membership",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/owner/issue-membership/0.1",
+    "pinnedDigest": "sha256:1a2bae4c5cb1a7074e4396cbd2bfd396c075d5d7f087b0cb11413fd17fa1ce99",
+    "specHash": "sha256:d738b7bab50f59b16bcfa8d0cf6adb39a7510f1f79b1f066f93bd3099a358ef8",
+    "schemaHash": "sha256:38b330dabcffa7ef995fa605679a112d78ad03df23122dc8dd6d5e5a111dd5f2",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/issue-membership/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/issue-membership/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/issue-membership/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "signingKeyId": "room-northwind-signing",
+        "subject": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/issue-membership/0.1"
+     }
+    }
+   ],
+   "effect": "mutating"
+  },
+  {
+   "id": "VC-ROOMS-029",
+   "title": "rooms/owner/revoke 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/owner/revoke/0.1 (Trust Tasks specification rooms/owner/revoke 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/owner/revoke/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/owner/revoke",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/owner/revoke/0.1",
+    "pinnedDigest": "sha256:1e7bad7474cb9728cff3112ab81364452701efdd928b63b56baec97ff5566968",
+    "specHash": "sha256:df0709b5fa6bd3d0d58e2e69ee7ba5f803bd5e1cc1dab70e09344f9f38960ec5",
+    "schemaHash": "sha256:060e89d323e1874a5c0f872eb2807b518c0ff89d7e82d0d34d0215c506991f5f",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/revoke/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/revoke/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/revoke/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "signingKeyId": "example",
+        "hosts": [
+         "did:web:alice.example"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/revoke/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-030",
+   "title": "rooms/owner/revoke 0.1: the request examples in the specification are not refused for an envelope reason (1; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/owner/revoke/0.1 (Trust Tasks specification rooms/owner/revoke 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/owner/revoke",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/owner/revoke/0.1",
+    "pinnedDigest": "sha256:1e7bad7474cb9728cff3112ab81364452701efdd928b63b56baec97ff5566968",
+    "specHash": "sha256:df0709b5fa6bd3d0d58e2e69ee7ba5f803bd5e1cc1dab70e09344f9f38960ec5",
+    "schemaHash": "sha256:060e89d323e1874a5c0f872eb2807b518c0ff89d7e82d0d34d0215c506991f5f",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/revoke/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/revoke/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/revoke/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:example.com:rooms:northwind",
+        "signingKeyId": "room-northwind-signing",
+        "hosts": [
+         "did:webvh:example.com:northwind-community",
+         "did:web:mirror.example"
+        ],
+        "withdraw": [
+         {
+          "kind": "subject",
+          "subject": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
+          "until": "2027-01-01T00:00:00Z"
+         }
+        ],
+        "reason": "Left the deal team"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/revoke/0.1"
+     }
+    }
+   ],
+   "effect": "mutating"
+  },
+  {
+   "id": "VC-ROOMS-031",
+   "title": "rooms/owner/transfer 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/owner/transfer/0.1 (Trust Tasks specification rooms/owner/transfer 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/owner/transfer/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/owner/transfer",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/owner/transfer/0.1",
+    "pinnedDigest": "sha256:2b4114a4508018e588ce7b3b53e41db142604f300f9045d3c0a4ed1e932409ea",
+    "specHash": "sha256:340a49fd161711d1fbb73f025f426f8961404e36008fccb32bb85b083c2eccde",
+    "schemaHash": "sha256:69107783060a88cd21cb847421329c95eca1f9f5b98904efab97580759465068",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/owner/transfer/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/owner/transfer/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/owner/transfer/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "newOwnerDid": "example",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/owner/transfer/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-032",
+   "title": "rooms/usage 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the specification names rooms/usage:chainTooDeep, rooms/usage:notAvailable, which a conforming implementation may return for this request depending on state)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/usage/0.1 (Trust Tasks specification rooms/usage 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/usage/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/usage",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/usage/0.1",
+    "pinnedDigest": "sha256:7bc81f5520841a49653a294e1f284b75a2dad7cbd927247460a92a6efe78c051",
+    "specHash": "sha256:da887d371e9168db7045ad1096c0134844c8b3d7d9d50445f61a80efefbc3142",
+    "schemaHash": "sha256:68b95ddd58e4ec796cfde88a7fa32db2adeed23800bc579bdd6f9871cf54b244",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/usage/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/usage/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/usage/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/usage/0.1"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-033",
+   "title": "rooms/usage 0.1: the request examples in the specification are not refused for an envelope reason (1; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/usage/0.1 (Trust Tasks specification rooms/usage 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/usage",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/usage/0.1",
+    "pinnedDigest": "sha256:7bc81f5520841a49653a294e1f284b75a2dad7cbd927247460a92a6efe78c051",
+    "specHash": "sha256:da887d371e9168db7045ad1096c0134844c8b3d7d9d50445f61a80efefbc3142",
+    "schemaHash": "sha256:68b95ddd58e4ec796cfde88a7fa32db2adeed23800bc579bdd6f9871cf54b244",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/usage/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/usage/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/usage/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.sig",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.owner-authority.sig"
+         ]
+        },
+        "limit": 50
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/usage/0.1"
+     }
+    }
+   ],
+   "effect": "read-only"
+  },
+  {
+   "id": "VC-ROOMS-034",
+   "title": "rooms/epoch/mint 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/epoch/mint/0.1 (Trust Tasks specification rooms/epoch/mint 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/epoch/mint/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/epoch/mint",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/epoch/mint/0.1",
+    "pinnedDigest": "sha256:5c5e57ebaee2d05f53c6a24845472b6d912e23b3d15160c823ff6d11578f9928",
+    "specHash": "sha256:82c713da19b08a107a75a3de9a38c22efc6895fdd42b371811596b7f29e9717c",
+    "schemaHash": "sha256:2e3a7e9d8cad680fc62137d2347fce890684e97d7c74500a7141a0d4f8dd5637",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/epoch/mint/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/epoch/mint/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/mint/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "epoch": 2,
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/epoch/mint/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-035",
+   "title": "rooms/epoch/prune 0.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is destructive and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/epoch/prune/0.2 (Trust Tasks specification rooms/epoch/prune 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/epoch/prune/0.2#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/epoch/prune",
+    "version": "0.2",
+    "ref": "kit:specs/rooms/epoch/prune/0.2",
+    "pinnedDigest": "sha256:8f4f4d34000bd3f88790edc3f9b2c9321f16859711c0087070dd11201039921e",
+    "specHash": "sha256:a00ceeba36f37b47ac78a2cb87d0e377617157f40a71f529af020a37f24bed4a",
+    "schemaHash": "sha256:579871677594be6efcb0a5bce3cd5b1d1bba0b7656b80d9db608efa9263c95ae",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/epoch/prune/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/epoch/prune/0.2"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/epoch/prune/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "beforeEpoch": 2,
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/epoch/prune/0.2"
+     }
+    }
+   ],
+   "effect": "destructive",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-036",
+   "title": "rooms/records/prune 0.2: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is destructive and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/records/prune/0.2 (Trust Tasks specification rooms/records/prune 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/records/prune/0.2#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/records/prune",
+    "version": "0.2",
+    "ref": "kit:specs/rooms/records/prune/0.2",
+    "pinnedDigest": "sha256:45a4a95c675b331ca21bced8a5708a9b64f387095149bdabfb46ab3188dfc919",
+    "specHash": "sha256:683a73f56b7b2ef268d8a73f114492f1215938237c0ae9d756098757e0aeeea4",
+    "schemaHash": "sha256:68dd6f23ae196662404075e070b748f6cdde35eb155983a1e522562d5024a55e",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/records/prune/0.2/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/records/prune/0.2"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/records/prune/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        },
+        "kinds": [
+         "retracted"
+        ],
+        "reason": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/records/prune/0.2"
+     }
+    }
+   ],
+   "effect": "destructive",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-037",
+   "title": "rooms/records/retention/set 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/records/retention/set/0.1 (Trust Tasks specification rooms/records/retention/set 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/records/retention/set/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/records/retention/set",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/records/retention/set/0.1",
+    "pinnedDigest": "sha256:67af2b8b7c7d0b919931c9918ab6e2b382a6bdc90368c057949a5ef0f283a7f4",
+    "specHash": "sha256:cfd04fe9972604a1cce0804fbca51dd17f5a4f0f7cf9edd37d90189fa7fc214c",
+    "schemaHash": "sha256:00e8b90e729c6eb644ea1f6c0b1a637bb7350e40028c11b8cd417d47817c400a",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/records/retention/set/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/records/retention/set/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/records/retention/set/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        },
+        "recordRetention": {},
+        "reason": "example"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/records/retention/set/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-038",
+   "title": "rooms/records/retention/set 0.1: the request examples in the specification are not refused for an envelope reason (1; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/records/retention/set/0.1 (Trust Tasks specification rooms/records/retention/set 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/records/retention/set",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/records/retention/set/0.1",
+    "pinnedDigest": "sha256:67af2b8b7c7d0b919931c9918ab6e2b382a6bdc90368c057949a5ef0f283a7f4",
+    "specHash": "sha256:cfd04fe9972604a1cce0804fbca51dd17f5a4f0f7cf9edd37d90189fa7fc214c",
+    "schemaHash": "sha256:00e8b90e729c6eb644ea1f6c0b1a637bb7350e40028c11b8cd417d47817c400a",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/records/retention/set/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/records/retention/set/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/records/retention/set/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.sig",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.admin-leaf.sig",
+          "eyJhbGciOiJFZERTQSJ9.authority-root.sig"
+         ]
+        },
+        "expectedRetention": {
+         "tombstoneDays": 30,
+         "recordDays": 730
+        },
+        "recordRetention": {
+         "tombstoneDays": 30,
+         "recordDays": 365
+        },
+        "reason": "The deal closed; working notes are kept one year under the agreed policy."
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/records/retention/set/0.1"
+     }
+    }
+   ],
+   "effect": "mutating"
+  },
+  {
+   "id": "VC-ROOMS-039",
+   "title": "rooms/revocations/get 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the request names an identifier or free text, so deployment state decides the answer)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/revocations/get/0.1 (Trust Tasks specification rooms/revocations/get 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/revocations/get/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/revocations/get",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/revocations/get/0.1",
+    "pinnedDigest": "sha256:d9e0890d01eb4259d35a8ad71b67d83fd9640f0a32362f9062e3c3402d4f5725",
+    "specHash": "sha256:db2cd69e20d9dff74d9465803c18d7a514a723985f1d0024c4143317558e8ec6",
+    "schemaHash": "sha256:3d305da9f4337e9f5cf08f8b18ced56c6866c7fd0dbaa284971680792b4e6caa",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/revocations/get/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/revocations/get/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/revocations/get/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/revocations/get/0.1"
+     }
+    }
+   ],
+   "effect": "read-only",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-040",
+   "title": "rooms/revocations/get 0.1: the request examples in the specification are not refused for an envelope reason (1; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/revocations/get/0.1 (Trust Tasks specification rooms/revocations/get 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/revocations/get",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/revocations/get/0.1",
+    "pinnedDigest": "sha256:d9e0890d01eb4259d35a8ad71b67d83fd9640f0a32362f9062e3c3402d4f5725",
+    "specHash": "sha256:db2cd69e20d9dff74d9465803c18d7a514a723985f1d0024c4143317558e8ec6",
+    "schemaHash": "sha256:3d305da9f4337e9f5cf08f8b18ced56c6866c7fd0dbaa284971680792b4e6caa",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/revocations/get/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/revocations/get/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/revocations/get/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.sig",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.authority-admin.sig"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/revocations/get/0.1"
+     }
+    }
+   ],
+   "effect": "read-only"
+  },
+  {
+   "id": "VC-ROOMS-041",
+   "title": "rooms/revocations/put 0.1: a schema-valid, signed, addressed request is not refused for an envelope reason, and any response conforms to the response schema (weak: the task is mutating and authorisation or state decides whether it succeeds)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "payload and response schemas of https://trusttasks.org/spec/rooms/revocations/put/0.1 (Trust Tasks specification rooms/revocations/put 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "response type https://trusttasks.org/spec/rooms/revocations/put/0.1#response",
+    "SPEC.md:246, :1069 (a consumer MAY require its own ext namespace and then rejects a document lacking it with malformedRequest) and SPEC.md:388 (MAY reject a non-canonical VID-typed member with malformedRequest): where the payload schema admits ext, a malformedRequest here is recorded as a note and is not escalated on the attested profile",
+    "Weak form: any non-envelope answer passes, and silence is an advisory (SPEC.md 7.2 closing paragraph: returning an error is a SHOULD; section 8: a MAY); the vector does not assert that the request succeeds"
+   ],
+   "source": {
+    "slug": "rooms/revocations/put",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/revocations/put/0.1",
+    "pinnedDigest": "sha256:13fc7b8a478325ecfdeba97a6bc24bfee2bb4e068eb54e91033c722919438e51",
+    "specHash": "sha256:9790c7a098177afa6c4b75d4784fe78b294109614a0e7997a473ec31a956d5b3",
+    "schemaHash": "sha256:f60c272836174699a0e1a1303ab38e7e52d41e4b30d963505f576f0f3ee9d2d9",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/revocations/put/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/revocations/put/0.1"
+   ],
+   "mutants": [
+    "plainBadResponse"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(a1)",
+       "type": "https://trusttasks.org/spec/rooms/revocations/put/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "example",
+        "presentation": {
+         "membership": "example",
+         "authority": [
+          "example"
+         ]
+        },
+        "list": {
+         "roomId": "example",
+         "sequence": 1,
+         "issuedAt": "2026-11-12T10:00:00Z",
+         "entries": [],
+         "proof": {}
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/revocations/put/0.1"
+     }
+    }
+   ],
+   "effect": "mutating",
+   "strength": "weak"
+  },
+  {
+   "id": "VC-ROOMS-042",
+   "title": "rooms/revocations/put 0.1: the request examples in the specification are not refused for an envelope reason (1; weak: the examples name state the deployment decides)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1011-1023 (7.2 consumer rules 1-13: none of the rejection grounds applies to this request, so a refusal must not carry their codes, section 8.3)",
+    "SPEC.md 4.4.1 (the reply dispositions) and 7.1 item 3 (a response payload validates against the schema of its type)",
+    "request examples in the specification of https://trusttasks.org/spec/rooms/revocations/put/0.1 (Trust Tasks specification rooms/revocations/put 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package)",
+    "Weak form: a non-envelope answer of any kind passes; the example's own content and the deployment's authorisation and state decide the outcome (SPEC.md 7.2 item 10)"
+   ],
+   "source": {
+    "slug": "rooms/revocations/put",
+    "version": "0.1",
+    "ref": "kit:specs/rooms/revocations/put/0.1",
+    "pinnedDigest": "sha256:13fc7b8a478325ecfdeba97a6bc24bfee2bb4e068eb54e91033c722919438e51",
+    "specHash": "sha256:9790c7a098177afa6c4b75d4784fe78b294109614a0e7997a473ec31a956d5b3",
+    "schemaHash": "sha256:f60c272836174699a0e1a1303ab38e7e52d41e4b30d963505f576f0f3ee9d2d9",
+    "note": "Spec maturity: draft (every current specification is draft or retired; none is candidate or standard). Advisory vector of the completion step (profile vectors-complete); it is not promoted (strength and effect are tagged on the vector).",
+    "channel": "proposed",
+    "profile": "vectors-complete",
+    "tfRef": {
+     "repoPath": "specs/rooms/revocations/put/0.1/spec.md",
+     "commit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
+     "status": "draft"
+    },
+    "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c"
+   },
+   "strength": "weak",
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/rooms/revocations/put/0.1"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(x1)",
+       "type": "https://trusttasks.org/spec/rooms/revocations/put/0.1",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal",
+        "presentation": {
+         "membership": "eyJhbGciOiJFZERTQSJ9.membership.sig",
+         "authority": [
+          "eyJhbGciOiJFZERTQSJ9.authority-admin.sig"
+         ]
+        },
+        "list": {
+         "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal",
+         "sequence": 3,
+         "issuedAt": "2026-10-16T09:29:58Z",
+         "entries": [
+          {
+           "kind": "credential",
+           "credentialId": "urn:uuid:44444444-4444-4444-8444-444444444444",
+           "revokedAt": "2026-09-02T14:00:00Z",
+           "until": "2026-12-01T00:00:00Z"
+          },
+          {
+           "kind": "subject",
+           "subject": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
+           "revokedAt": "2026-10-16T09:29:58Z"
+          }
+         ],
+         "proof": {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:webvh:QmRoom:rooms.northwind.example:deal#key-0",
+          "proofPurpose": "assertionMethod",
+          "created": "2026-10-16T09:29:58Z",
+          "proofValue": "z3FXQjecWufY46yg5abdVZsXqLhxhueuSoZgNSARiKBk9czhSePTFehP8c3PGfb6a22gkfUKcuiBNPvFaEb5PNoq9"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "answered",
+      "plainType": "https://trusttasks.org/spec/rooms/revocations/put/0.1"
+     }
+    }
+   ],
+   "effect": "mutating"
+  }
+ ]
+}
