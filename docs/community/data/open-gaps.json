@@ -315,7 +315,7 @@
         "FC-CEX-002",
         "FC-CEX-003"
       ],
-      "blocked": "These scenarios need the wallet to present a credential it holds and the VTI verifier to accept it. The held-credential and presentation format of the original platforms differs from what the scenario needs: the presentation is a bare Data-Integrity presentation, and the VTI verifier refused a held credential whose proof context has non-string entries. The only completed runs used a simplified test credential, which does not count here. The cause is not yet classified.",
+      "blocked": "These scenarios need the wallet to present a credential it holds and the VTI verifier to accept it. In these runs the presentation was signed by the suite's stand-in, not by the wallet (docs/27 section 2 item 6: \"the presentation signature is a stand-in of the existing shim\"); the stand-in produces a bare Data-Integrity presentation, which the VTI verifier did not accept. Whether the wallet's own presentation is accepted was not measured. The VTI verifier also refused a held credential whose proof context has non-string entries. The only completed runs used a simplified test credential, which does not count here. The cause is not yet classified.",
       "needs": "Classification first, then a platform change on either side, or a clarification from the specification editors on the presentation and credential format. The original may already be fixed upstream.",
       "start": [
         "docs/27-kw-vti-ceremonies.md",

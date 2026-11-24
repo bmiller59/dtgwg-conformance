@@ -27,7 +27,7 @@ npm run ceremony -- --participant 'K=stdio:<node> launcher.ts --role K' --partic
 
 ## 3. Stand-ins (class D, named in every run record)
 
-1. The mediator's DID is resolved by a `did:webvh` resolver over plain HTTP that does not verify the log, unless the run uses `KW_WIRE_RESOLVER=real`, which is the wallet's own resolver with only the scheme of its one fetch changed (https to http for a loopback host). The original wallet cannot read the mediator 0.48 DID document on that path (section 5).
+1. The mediator's DID is resolved by a `did:webvh` resolver over plain HTTP that does not verify the log, unless the run uses `KW_WIRE_RESOLVER=real`, which is the wallet's own resolver with only the scheme of its one fetch changed (https to http for a loopback host). On that path the wallet's resolver code, run from bifold's own Node install, cannot read the mediator 0.48 DID document (section 5).
 2. The VTA is a `did:key` and publishes no service, so the mediator is handed to the client (the default; with the loopback mediator image and `VTA_DID_KIND=webvh` the VTA is a `did:webvh` that publishes its own, and the mediator is still handed over, section 8).
 3. The wallet's DID is made an admin on the agent's access list by the operator, not by the enrolment ceremony.
 4. In-memory stores; the wallet's `Date.now` is the real clock.
@@ -43,7 +43,7 @@ npm run ceremony -- --participant 'K=stdio:<node> launcher.ts --role K' --partic
 
 ## 5. The mediator DID document
 
-Mediator 0.48 writes every service `type` as an array (`["DIDCommMessaging"]`). DID Core 1.0 section 5.4 says a service `type` is a string or a set of strings, so the document is valid. Credo's `DidDocumentService` validates it as a string only, so the wallet's real resolver path (`RetryingWebVhDidResolver`, then `resolveVtiMediator`) fails with `DidCommV2Service ... type must be a string` (`resolver-check.jest.ts` records it). The wallet row keeps the stand-in of section 3 item 1.
+Mediator 0.48 writes every service `type` as an array (`["DIDCommMessaging"]`). DID Core 1.0 section 5.4 says a service `type` is a string or a set of strings, so the document is valid. Credo's `DidDocumentService` validates `type` as a string only. The wallet repository's root Credo patch accepts a `type` given as an array (upstream commit `7c1aeb50b`, 2026-09-20, already in every measured wallet commit), so the app itself reads this document. Bifold's own copy of that patch file does not carry the change, and the harness runs the resolver through bifold's Node install, so the resolver path (`RetryingWebVhDidResolver`, then `resolveVtiMediator`) fails here with `DidCommV2Service ... type must be a string` (`resolver-check.jest.ts` records it). This is a difference between the two patch files in the wallet repository, not a gap in the shipped wallet. The wallet row keeps the stand-in of section 3 item 1.
 
 ## 6. Reading the outcomes
 
