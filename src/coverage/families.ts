@@ -91,7 +91,7 @@ export const COVERAGE_SKIP_CLASSES = {
   noCounterpart: "no counterpart: no implementation answers this task, so the receive check has no host",
 } as const;
 
-export interface InvalidExample { note: string; payload: unknown; /** The task's specification says it clamps this member (`limit`): serving the request is documented behaviour, so a response is accepted beside a refusal. */ clamped?: true }
+export interface InvalidExample { note: string; payload: unknown; /** Present (always "response") for an entry the task force checks against the response schema: never sent as a request. */ variant?: "response"; /** The task's specification says it clamps this member (`limit`): serving the request is documented behaviour, so a response is accepted beside a refusal. */ clamped?: true }
 export interface InvalidExamplesFile { format: "tt-coverage-invalid-examples/0.1"; kit: string; examples: Record<string, InvalidExample[]> }
 let invalid: InvalidExamplesFile | undefined;
 export function loadInvalidExamples(): InvalidExamplesFile {

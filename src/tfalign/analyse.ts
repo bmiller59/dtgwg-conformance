@@ -4,6 +4,8 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { variantOf, type Variant } from "../plain/invalid-examples.ts";
+import { formatOk } from "../plain/schema.ts";
 import { hashTfPath } from "../vectors/spec-hash.ts";
 import { git, gitOk, type TfSource } from "./source.ts";
 import { loadPins, loadSuiteFacts, TYPE_BASE, type DocUse, type J, type SuiteFacts } from "./suite.ts";
@@ -14,9 +16,10 @@ export const STATUS_LINE = "Draft proposal for discussion and review by the DTGW
 export const pct = (n: number, d: number): string => (d === 0 ? "n/a" : `${((100 * n) / d).toFixed(1)}%`);
 const sha = (b: Buffer | string): string => createHash("sha256").update(b).digest("hex");
 
-/** A vector payload matches an example when they are equal, except that a vector string beginning with `$` (a suite token: minted id, actor, clock) matches any value. */
+/** A vector payload matches an example when they are equal, except that a vector string beginning with `$` (a suite token: minted id, actor,
+ * clock) stands for a value of its own kind: a clock token (`$now...`) matches only an RFC 3339 date-time string, any other token only a string. */
 export function payloadMatches(vec: unknown, ex: unknown): boolean {
-  if (typeof vec === "string" && vec.startsWith("$")) return true;
+  if (typeof vec === "string" && vec.startsWith("$")) return typeof ex === "string" && (!vec.startsWith("$now") || formatOk("date-time", ex));
   if (Array.isArray(vec)) return Array.isArray(ex) && vec.length === ex.length && vec.every((v, i) => payloadMatches(v, ex[i]));
   if (isObj(vec)) {
     if (!isObj(ex)) return false;
@@ -27,7 +30,8 @@ export function payloadMatches(vec: unknown, ex: unknown): boolean {
 }
 
 export interface TaskInfo { typeUri: string; slug: string; version: string; path: string; status: string; invalidExamples: number; embeddedRequestExamples: number; embeddedResponseExamples: number }
-export interface Example { typeUri: string; index: number; note: string | null; payload: unknown }
+/** `variant` is the entry's own marker (an invalid example marked `"variant": "response"` is an invalid reply); a request example is always "request". */
+export interface Example { typeUri: string; index: number; note: string | null; payload: unknown; variant: Variant }
 
 function frontStatus(text: string): string {
   const fm = /^---\n([\s\S]*?)\n---/.exec(text);
@@ -59,13 +63,13 @@ export function loadTasks(tf: TfSource): Loaded {
     const dir = `specs/${m[1]}/${m[2]}`;
     const md = readFileSync(join(tf.root, f), "utf8");
     const emb = embeddedExamples(md);
-    emb.request.forEach((d, i) => request.push({ typeUri, index: i, note: null, payload: d["payload"] }));
+    emb.request.forEach((d, i) => request.push({ typeUri, index: i, note: null, payload: d["payload"], variant: "request" }));
     let ninv = 0;
     const invFile = join(tf.root, dir, "payload.invalid-examples.json");
     if (existsSync(invFile)) {
       invalidFiles++;
       const arr = JSON.parse(readFileSync(invFile, "utf8")) as unknown;
-      if (Array.isArray(arr)) arr.forEach((e, i) => { ninv++; invalid.push({ typeUri, index: i, note: isObj(e) && typeof e["note"] === "string" ? e["note"] : null, payload: isObj(e) ? e["payload"] : undefined }); });
+      if (Array.isArray(arr)) arr.forEach((e, i) => { ninv++; invalid.push({ typeUri, index: i, note: isObj(e) && typeof e["note"] === "string" ? e["note"] : null, payload: isObj(e) ? e["payload"] : undefined, variant: variantOf(isObj(e) ? e : {}) }); });
     }
     tasks.push({ typeUri, slug: m[1]!, version: m[2]!, path: f, status: frontStatus(md), invalidExamples: ninv, embeddedRequestExamples: emb.request.length, embeddedResponseExamples: emb.response.length });
   }
@@ -77,21 +81,28 @@ type Bucket = "exact" | "namedOnly" | "notMatched";
 const REASONS = ["taskRetired", "taskNotInSuite", "taskInSuiteNoVectorFromExamples", "taskVectorFromExamplesButThisOneNotMatched"] as const;
 export type Reason = (typeof REASONS)[number];
 
-export interface ExampleMapping { total: number; exact: number; /** of the exact matches, those whose vector expects a refusal (an error or any-refusal outcome) */ exactExpectingRefusal: number; namedOnly: number; notMatched: number; reasons: Record<Reason, number>; unmappedSample: { typeUri: string; index: number; reason: Reason }[] }
+export interface ExampleMapping { total: number; exact: number; /** of the exact matches, those sent in a step that expects a refusal (an error or any-refusal outcome; a ceremony scenario, which has no such step, is judged by its whole text) */ exactExpectingRefusal: number; namedOnly: number; notMatched: number; reasons: Record<Reason, number>; unmappedSample: { typeUri: string; index: number; reason: Reason }[];
+  /** entries by variant; `exact` counts an entry only when a document of ITS variant carries it (a response entry is never counted as used by a request send) */
+  requestEntries: number; responseEntries: number; exactRequestEntries: number; exactResponseEntries: number;
+  /** response entries whose payload equals a REQUEST some vector sends for the task (no generator sends a response entry as a request; what remains is a
+   * coincidence of payload, mostly an empty `{}` that is also a request negative): never counted in `exact` */
+  responseEntriesSentAsRequests: number }
 
 export function mapExamples(examples: Example[], docs: DocUse[], taskByType: Map<string, TaskInfo>, facts: SuiteFacts, kind: "invalid" | "request", receiptFile?: string): { mapping: ExampleMapping; unmapped: { typeUri: string; index: number; reason: Reason; note: string | null }[] } {
   const byType = new Map<string, DocUse[]>();
   for (const d of docs) { const l = byType.get(d.typeUri) ?? []; l.push(d); byType.set(d.typeUri, l); }
   const textByVec = new Map(facts.vectors.map((v) => [v.id, v.text]));
   const reasons = Object.fromEntries(REASONS.map((r) => [r, 0])) as Record<Reason, number>;
-  let exact = 0, named = 0, refusing = 0;
-  const refuses = (id: string): boolean => /"disposition":"(error|any-refusal)"/.test(textByVec.get(id) ?? "");
+  let exact = 0, named = 0, refusing = 0, exactReq = 0, exactResp = 0, respAsReq = 0;
+  const vectorRefuses = (id: string): boolean => /"disposition":"(error|any-refusal)"/.test(textByVec.get(id) ?? "");
+  const refuses = (d: DocUse): boolean => (d.refusing === null ? vectorRefuses(d.vectorId) : d.refusing);
   const unmapped: { typeUri: string; index: number; reason: Reason; note: string | null }[] = [];
   for (const e of examples) {
     const here = byType.get(e.typeUri) ?? [];
     let bucket: Bucket = "notMatched";
-    const hit = here.filter((d) => payloadMatches(d.payload, e.payload));
-    if (hit.length > 0) { bucket = "exact"; if (hit.some((d) => refuses(d.vectorId))) refusing++; }
+    const hit = here.filter((d) => d.variant === e.variant && payloadMatches(d.payload, e.payload));
+    if (e.variant === "response" && here.some((d) => d.variant === "request" && payloadMatches(d.payload, e.payload))) respAsReq++;
+    if (hit.length > 0) { bucket = "exact"; if (hit.some(refuses)) refusing++; if (e.variant === "response") exactResp++; else exactReq++; }
     else if (kind === "invalid" && receiptFile !== undefined && e.typeUri.endsWith("/trust-ceremony-receipt/0.1") && facts.payloadFrom.get(receiptFile)?.has(e.index)) bucket = "exact";
     else if (kind === "invalid" && here.some((d) => /invalid-examples|invalid payload example/.test(textByVec.get(d.vectorId) ?? ""))) bucket = "namedOnly";
     if (bucket === "exact") { exact++; continue; }
@@ -101,7 +112,8 @@ export function mapExamples(examples: Example[], docs: DocUse[], taskByType: Map
     reasons[reason]++;
     unmapped.push({ typeUri: e.typeUri, index: e.index, reason, note: e.note });
   }
-  return { mapping: { total: examples.length, exact, exactExpectingRefusal: refusing, namedOnly: named, notMatched: examples.length - exact - named, reasons, unmappedSample: unmapped.slice(0, 10).map(({ typeUri, index, reason }) => ({ typeUri, index, reason })) }, unmapped };
+  return { mapping: { total: examples.length, exact, exactExpectingRefusal: refusing, namedOnly: named, notMatched: examples.length - exact - named, reasons, unmappedSample: unmapped.slice(0, 10).map(({ typeUri, index, reason }) => ({ typeUri, index, reason })),
+    requestEntries: examples.filter((e) => e.variant === "request").length, responseEntries: examples.filter((e) => e.variant === "response").length, exactRequestEntries: exactReq, exactResponseEntries: exactResp, responseEntriesSentAsRequests: respAsReq }, unmapped };
 }
 
 export interface Options { suiteRoot: string; /** Name recorded for the checkout (never a path). */ label?: string }
@@ -237,7 +249,7 @@ export function analyse(tf: TfSource, opts: Options): Record<string, unknown> {
       libraryTestFiles: libTotals,
     },
     mapping: {
-      invalidExamples: { ...inv.mapping, exactPct: pct(inv.mapping.exact, inv.mapping.total), exactOrNamedPct: pct(inv.mapping.exact + inv.mapping.namedOnly, inv.mapping.total), exactWithoutAlignmentSet: firstShare.mapping.exact, exactWithoutAlignmentSetPct: pct(firstShare.mapping.exact, firstShare.mapping.total), tasksWithUnmapped: invByTask.size },
+      invalidExamples: { ...inv.mapping, exactPct: pct(inv.mapping.exact, inv.mapping.total), exactOrNamedPct: pct(inv.mapping.exact + inv.mapping.namedOnly, inv.mapping.total), exactWithoutAlignmentSet: firstShare.mapping.exact, exactWithoutAlignmentSetPct: pct(firstShare.mapping.exact, firstShare.mapping.total), exactRequestPct: pct(inv.mapping.exactRequestEntries, inv.mapping.requestEntries), exactWithoutAlignmentSetRequestPct: pct(firstShare.mapping.exactRequestEntries, firstShare.mapping.requestEntries), tasksWithUnmapped: invByTask.size },
       requestExamplesInSpecs: { ...req.mapping, exactPct: pct(req.mapping.exact, req.mapping.total) },
       responseExamplesInSpecs: { total: loaded.tasks.reduce((a, t) => a + t.embeddedResponseExamples, 0), note: "not mapped: a response is produced by the implementation under test and the suite checks it against the response schema, not against an example" },
       tasks: { total: loaded.tasks.length, active: activeTasks.length, withStep: withStep.length, mentionedOnly: mentionOnly.length, noVectors: noVectors.length, withStepPct: pct(withStep.length, loaded.tasks.length), noVectorsList: noVectors.map((t) => t.typeUri) },

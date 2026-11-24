@@ -19631,12 +19631,12 @@
   },
   {
    "id": "GP-DID-225",
-   "title": "did-management/registry/admin-register 0.2: the payload examples the specification lists as invalid are refused (3)",
+   "title": "did-management/registry/admin-register 0.2: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/did-management/registry/admin-register/0.2: (1) Missing publicUrl. (2) Missing did. (3) 0.1's `lastSeen` does not exist in 0.2; the entry's instant is `lastSeenAt` (did-management/_shared/0.3/registered-instance).",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/did-management/registry/admin-register/0.2: (1) Missing publicUrl. (2) Missing did.",
     "Trust Tasks specification did-management/registry/admin-register 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -19699,33 +19699,6 @@
        "payload": {
         "instanceId": "i",
         "publicUrl": "https://x"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/did-management/registry/admin-register/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "entry": {
-         "instanceId": "did_web_node2_example_com",
-         "did": "did:web:node2.example.com",
-         "lastSeen": "2026-06-23T09:00:01Z"
-        }
        }
       }
      },
@@ -20767,12 +20740,12 @@
   },
   {
    "id": "GP-DID-239",
-   "title": "did-management/registry/check 0.2: the payload examples the specification lists as invalid are refused (5)",
+   "title": "did-management/registry/check 0.2: the payload examples the specification lists as invalid are refused (3)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/did-management/registry/check/0.2: (1) Missing instanceId. (2) Empty instanceId. (3) Unknown member. (4) 0.1's `lastHealthCheck` does not exist in 0.2; it is `lastHealthCheckAt` (did-management/_shared/0.3). (5) 0.1's `TransportObservation.at` does not exist in 0.2; it is `observedAt` (did-management/_shared/0.3).",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/did-management/registry/check/0.2: (1) Missing instanceId. (2) Empty instanceId. (3) Unknown member.",
     "Trust Tasks specification did-management/registry/check 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -20855,71 +20828,6 @@
        "payload": {
         "instanceId": "did_webvh_node1_example_com",
         "ping": true
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/did-management/registry/check/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "instance": {
-         "instanceId": "did_webvh_node1_example_com",
-         "did": "did:webvh:QmNodeScid3:node1.example.com",
-         "serviceType": "server",
-         "status": "active",
-         "servedDomains": [],
-         "registeredAt": "2026-09-01T10:00:00Z",
-         "lastHealthCheck": "2026-09-27T08:54:10Z"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/did-management/registry/check/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "instance": {
-         "instanceId": "did_webvh_node1_example_com",
-         "did": "did:webvh:QmNodeScid3:node1.example.com",
-         "serviceType": "server",
-         "status": "active",
-         "servedDomains": [],
-         "registeredAt": "2026-09-01T10:00:00Z",
-         "lastInbound": {
-          "transport": "tsp",
-          "at": "2026-09-27T08:59:30Z"
-         }
-        }
        }
       }
      },
@@ -22364,12 +22272,12 @@
   },
   {
    "id": "GP-DID-258",
-   "title": "did-management/registry/get 0.2: the payload examples the specification lists as invalid are refused (5)",
+   "title": "did-management/registry/get 0.2: the payload examples the specification lists as invalid are refused (3)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/did-management/registry/get/0.2: (1) Missing instanceId. (2) Empty instanceId. (3) Unknown member — the read takes no filter. (4) 0.1's `lastHealthCheck` does not exist in 0.2; it is `lastHealthCheckAt` (did-management/_shared/0.3). (5) 0.1's `TransportObservation.at` does not exist in 0.2; it is `observedAt` (did-management/_shared/0.3).",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/did-management/registry/get/0.2: (1) Missing instanceId. (2) Empty instanceId. (3) Unknown member — the read takes no filter.",
     "Trust Tasks specification did-management/registry/get 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -22452,71 +22360,6 @@
        "payload": {
         "instanceId": "did_web_node1_example_com",
         "refresh": true
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/did-management/registry/get/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "instance": {
-         "instanceId": "did_webvh_node1_example_com",
-         "did": "did:webvh:QmNodeScid3:node1.example.com",
-         "serviceType": "server",
-         "status": "active",
-         "servedDomains": [],
-         "registeredAt": "2026-09-01T10:00:00Z",
-         "lastHealthCheck": "2026-09-27T08:54:10Z"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/did-management/registry/get/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "instance": {
-         "instanceId": "did_webvh_node1_example_com",
-         "did": "did:webvh:QmNodeScid3:node1.example.com",
-         "serviceType": "server",
-         "status": "active",
-         "servedDomains": [],
-         "registeredAt": "2026-09-01T10:00:00Z",
-         "lastOutbound": {
-          "transport": "tsp",
-          "at": "2026-09-27T08:59:29Z"
-         }
-        }
        }
       }
      },
@@ -23183,12 +23026,12 @@
   },
   {
    "id": "GP-DID-268",
-   "title": "did-management/registry/list 0.2: the payload examples the specification lists as invalid are refused (5)",
+   "title": "did-management/registry/list 0.2: the payload examples the specification lists as invalid are refused (3)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/did-management/registry/list/0.2: (1) Unknown service type. (2) Unknown status. (3) Paging is not offered — the registry is a small operator-scoped collection. (4) 0.1's `lastHealthCheck` does not exist in 0.2; it is `lastHealthCheckAt` (did-management/_shared/0.3). (5) 0.1's `TransportObservation.at` does not exist in 0.2; it is `observedAt` (did-management/_shared/0.3).",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/did-management/registry/list/0.2: (1) Unknown service type. (2) Unknown status. (3) Paging is not offered — the registry is a small operator-scoped collection.",
     "Trust Tasks specification did-management/registry/list 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -23272,75 +23115,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "limit": 10
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/did-management/registry/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "instances": [
-         {
-          "instanceId": "did_webvh_node1_example_com",
-          "did": "did:webvh:QmNodeScid3:node1.example.com",
-          "serviceType": "server",
-          "status": "active",
-          "servedDomains": [],
-          "registeredAt": "2026-09-01T10:00:00Z",
-          "lastHealthCheck": "2026-09-27T08:54:10Z"
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/did-management/registry/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "instances": [
-         {
-          "instanceId": "did_webvh_node1_example_com",
-          "did": "did:webvh:QmNodeScid3:node1.example.com",
-          "serviceType": "server",
-          "status": "active",
-          "servedDomains": [],
-          "registeredAt": "2026-09-01T10:00:00Z",
-          "lastInbound": {
-           "transport": "tsp",
-           "at": "2026-09-27T08:59:30Z"
-          }
-         }
-        ]
        }
       }
      },
@@ -28928,12 +28702,12 @@
   },
   {
    "id": "GP-DID-334",
-   "title": "did-management/server/register 0.2: the payload examples the specification lists as invalid are refused (3)",
+   "title": "did-management/server/register 0.2: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/did-management/server/register/0.2: (1) Missing publicUrl. (2) Missing servedDomains. (3) 0.1's `lastSeen` does not exist in 0.2; it is `lastSeenAt`.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/did-management/server/register/0.2: (1) Missing publicUrl. (2) Missing servedDomains.",
     "Trust Tasks specification did-management/server/register 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -28999,32 +28773,6 @@
         "instanceId": "i",
         "did": "d",
         "publicUrl": "https://x"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "did-management/server/register:forbidden"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/did-management/server/register/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "instanceId": "did_web_node1_example_com",
-        "accepted": true,
-        "lastSeen": "2026-06-20T09:00:01Z"
        }
       }
      },
@@ -30568,12 +30316,12 @@
   },
   {
    "id": "GP-DID-352",
-   "title": "did-management/stats/set-resolution 0.1: the payload examples the specification lists as invalid are refused (9)",
+   "title": "did-management/stats/set-resolution 0.1: the payload examples the specification lists as invalid are refused (7)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/did-management/stats/set-resolution/0.1: (1) Missing everything: a slot and a resolution are both required. (2) Missing resolution: the task is a set, never a read. (3) Missing mnemonic: the server-wide series is not settable by this task. (4) Resolution outside the enum (a bucket width is the service's choice, not the caller's). (5) Resolution in the wrong case: enumerated values are lowerCamelCase. (6) Empty mnemonic. (7) Unknown member: additionalProperties is false. (8) Response without tierReason: a caller cannot tell an override from the service's own choice. (9) Response tier `auto`: auto is a resolution, never a tier the serv",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/did-management/stats/set-resolution/0.1: (1) Missing everything: a slot and a resolution are both required. (2) Missing resolution: the task is a set, never a read. (3) Missing mnemonic: the server-wide series is not settable by this task. (4) Resolution outside the enum (a bucket width is the service's choice, not the caller's). (5) Resolution in the wrong case: enumerated values are lowerCamelCase. (6) Empty mnemonic. (7) Unknown member: additionalProperties is false.",
     "Trust Tasks specification did-management/stats/set-resolution 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -30752,61 +30500,6 @@
         "mnemonic": "alice",
         "resolution": "off",
         "bucketSeconds": 300
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i8)",
-       "type": "https://trusttasks.org/spec/did-management/stats/set-resolution/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "mnemonic": "alice",
-        "resolution": "auto",
-        "previousResolution": "off",
-        "changed": true,
-        "tier": "coarse"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i9)",
-       "type": "https://trusttasks.org/spec/did-management/stats/set-resolution/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "mnemonic": "alice",
-        "resolution": "auto",
-        "previousResolution": "auto",
-        "changed": false,
-        "tier": "auto",
-        "tierReason": "traffic"
        }
       }
      },
@@ -31885,12 +31578,12 @@
   },
   {
    "id": "GP-DID-364",
-   "title": "did-management/stats/timeseries 0.2: the payload examples the specification lists as invalid are refused (4)",
+   "title": "did-management/stats/timeseries 0.2: the payload examples the specification lists as invalid are refused (3)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/did-management/stats/timeseries/0.2: (1) Missing range. (2) Range outside the enumeration. (3) Empty domain. (4) 0.1's `points[].at` does not exist in 0.2; the bucket's start is `startsAt`.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/did-management/stats/timeseries/0.2: (1) Missing range. (2) Range outside the enumeration. (3) Empty domain.",
     "Trust Tasks specification did-management/stats/timeseries 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -31975,37 +31668,6 @@
        "payload": {
         "range": "lastDay",
         "domain": ""
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/did-management/stats/timeseries/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "range": "lastHour",
-        "bucketSeconds": 300,
-        "points": [
-         {
-          "at": "2026-09-27T08:00:00Z",
-          "resolves": 3,
-          "updates": 0
-         }
-        ]
        }
       }
      },

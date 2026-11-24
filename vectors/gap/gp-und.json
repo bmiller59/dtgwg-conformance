@@ -771,12 +771,12 @@
   },
   {
    "id": "GP-UND-007",
-   "title": "understanding/exchange 0.1: the payload examples the specification lists as invalid are refused (7)",
+   "title": "understanding/exchange 0.1: the payload examples the specification lists as invalid are refused (5)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/understanding/exchange/0.1: (1) Missing offerId — nothing names which terms version the answers are about. (2) Empty answers array — an exchange with no answers demonstrates nothing. (3) Answer missing questionId — SPEC requires both members of every Answer. (4) Unknown top-level payload member — additionalProperties: false catches `score`, which belongs only in the response. (5) offerDigestMultibase that is not a multibase multihash — a hex string hard-codes an algorithm into the wire contract and is non-conforming. (6) Response without taskContext and taskDigestMultibase — an unbound determination cannot serve as the d",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/understanding/exchange/0.1: (1) Missing offerId — nothing names which terms version the answers are about. (2) Empty answers array — an exchange with no answers demonstrates nothing. (3) Answer missing questionId — SPEC requires both members of every Answer. (4) Unknown top-level payload member — additionalProperties: false catches `score`, which belongs only in the response. (5) offerDigestMultibase that is not a multibase multihash — a hex string hard-codes an algorithm into the wire contract and is non-conforming.",
     "Trust Tasks specification understanding/exchange 0.1 (status draft) on pr#904 (open, unmerged; origin/understanding-rebased at 96b1d70ea; not on main); payload schema from payload.schema.json bundled by the gap snapshot (the pinned package predates this version)"
    ],
    "source": {
@@ -934,53 +934,6 @@
           "answer": "12-months"
          }
         ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "outcome": "understood"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i7)",
-       "type": "https://trusttasks.org/spec/understanding/exchange/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "outcome": "understood",
-        "taskContext": "urn:uuid:1a2b3c4d-0003-4000-8000-000000000001"
        }
       }
      },
@@ -2378,7 +2331,7 @@
   },
   {
    "id": "GP-UND-021",
-   "title": "understanding/seal 0.1: the payload examples the specification lists as invalid are refused (12)",
+   "title": "understanding/seal 0.1: the payload examples the specification lists as invalid are refused (8)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
@@ -2605,112 +2558,6 @@
        "recipient": "$iut",
        "issuedAt": "$now+0s",
        "payload": {
-        "taskContext": "urn:uuid:1a2b3c4d-0004-4000-8000-000000000001",
-        "taskDigestMultibase": "zQmP5zaRpCwYVSgS2rCdphU7PMhEJWygdsCkLQzrJg29MPV"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i8)",
-       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "decision": "negotiating",
-        "taskContext": "urn:uuid:1a2b3c4d-0004-4000-8000-000000000001",
-        "taskDigestMultibase": "zQmP5zaRpCwYVSgS2rCdphU7PMhEJWygdsCkLQzrJg29MPV"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i9)",
-       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "decision": "accepted",
-        "taskContext": "urn:uuid:1a2b3c4d-0004-4000-8000-000000000001",
-        "taskDigestMultibase": "zQmP5zaRpCwYVSgS2rCdphU7PMhEJWygdsCkLQzrJg29MPV",
-        "counterAgreement": {
-         "name": "Data retention (6 months)",
-         "rosterItems": [
-          "data-retention-6mo"
-         ],
-         "effectiveFrom": "2026-09-24T10:10:00Z"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i10)",
-       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "decision": "countered",
-        "taskContext": "urn:uuid:1a2b3c4d-0004-4000-8000-000000000001",
-        "taskDigestMultibase": "zQmP5zaRpCwYVSgS2rCdphU7PMhEJWygdsCkLQzrJg29MPV"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i11)",
-       "type": "https://trusttasks.org/spec/understanding/seal/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
         "exchangeId": "urn:uuid:1a2b3c4d-0003-4000-8000-000000000002",
         "exchangeDigestMultibase": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "agreement": {
@@ -2736,7 +2583,7 @@
     {
      "send": {
       "document": {
-       "id": "$id(i12)",
+       "id": "$id(i8)",
        "type": "https://trusttasks.org/spec/understanding/seal/0.1",
        "issuer": "$A",
        "recipient": "$iut",

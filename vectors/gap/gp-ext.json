@@ -6409,12 +6409,12 @@
   },
   {
    "id": "GP-EXT-061",
-   "title": "external/accounts/probe 0.1: the payload examples the specification lists as invalid are refused (2)",
+   "title": "external/accounts/probe 0.1: the payload examples the specification lists as invalid are refused (1)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/external/accounts/probe/0.1: (1) A caller-chosen canary key. The custodian names the canary itself, inside the narrowest bound prefix, so a probe cannot be used to write or overwrite an object of the caller's choosing. (2) A report without `complete`. Without it a probe that stopped after `exchange` reads as proof the account works end to end.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/external/accounts/probe/0.1: (1) A caller-chosen canary key. The custodian names the canary itself, inside the narrowest bound prefix, so a probe cannot be used to write or overwrite an object of the caller's choosing.",
     "Trust Tasks specification external/accounts/probe 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -6455,42 +6455,6 @@
         "context": "community",
         "id": "eu-s3-primary",
         "objectKey": "rooms/important/report.pdf"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i2)",
-       "type": "https://trusttasks.org/spec/external/accounts/probe/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "report": {
-         "at": "2026-10-10T10:00:03Z",
-         "ok": true,
-         "steps": [
-          {
-           "step": "sign",
-           "ok": true
-          },
-          {
-           "step": "exchange",
-           "ok": true
-          }
-         ]
-        }
        }
       }
      },
@@ -10347,12 +10311,12 @@
   },
   {
    "id": "GP-EXT-101",
-   "title": "external/credentials/issue 0.1: the payload examples the specification lists as invalid are refused (5)",
+   "title": "external/credentials/issue 0.1: the payload examples the specification lists as invalid are refused (4)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/external/credentials/issue/0.1: (1) A prefix carrying a quote, which could break out of a JSON session policy or a CEL condition (CVE-2026-42811 class). (2) A `..` segment, which would climb out of the prefix the binding allows. (3) A lifetime above one hour, the family ceiling. (4) A consumer DID in the payload. Who is asking is proven by the document, never claimed in it. (5) A credential in the clear in the response. Only the sealed bundle may carry it.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/external/credentials/issue/0.1: (1) A prefix carrying a quote, which could break out of a JSON session policy or a CEL condition (CVE-2026-42811 class). (2) A `..` segment, which would climb out of the prefix the binding allows. (3) A lifetime above one hour, the family ceiling. (4) A consumer DID in the payload. Who is asking is proven by the document, never claimed in it.",
     "Trust Tasks specification external/credentials/issue 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -10493,37 +10457,6 @@
          ]
         },
         "ttlSeconds": 900
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/external/credentials/issue/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "expiresAt": "2026-10-10T10:15:00Z",
-        "scope": {
-         "prefix": "rooms/a/",
-         "actions": [
-          "get"
-         ]
-        },
-        "sealedCredential": "-----BEGIN VTA SEALED BUNDLE-----\nBundle-Id: 2b7e…\nDigest-Algo: sha-256\nChunk: 0/1\n\nRXh0ZXJuYWxDcmVkZW50aWFsQ2lwaGVydGV4dEV4dGVybmFsQ3JlZGVudGlhbA\n=Q1JD\n-----END VTA SEALED BUNDLE-----",
-        "sessionToken": "FwoGZXIvYXdzEB"
        }
       }
      },
@@ -11386,7 +11319,7 @@
   },
   {
    "id": "GP-EXT-109",
-   "title": "external/credentials/issue 0.2: the payload examples the specification lists as invalid are refused (14)",
+   "title": "external/credentials/issue 0.2: the payload examples the specification lists as invalid are refused (12)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
@@ -12606,66 +12539,6 @@
          ]
         },
         "ttlSeconds": 43200
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i13)",
-       "type": "https://trusttasks.org/spec/external/credentials/issue/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "sealedCredential": "-----BEGIN VTA SEALED BUNDLE-----\nBundle-Id: 2b7e…\nDigest-Algo: sha-256\nChunk: 0/1\n\nRXh0ZXJuYWxDcmVkZW50aWFsQ2lwaGVydGV4dEV4dGVybmFsQ3JlZGVudGlhbA\n=Q1JD\n-----END VTA SEALED BUNDLE-----",
-        "expiresAt": "2026-10-10T10:05:00Z",
-        "presign": {
-         "prefix": "rooms/3f9a1c0e7b2d4a6f8e1c3b5d7a9f0e2c/",
-         "objectKey": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
-         "requests": [
-          {
-           "operation": "get"
-          }
-         ]
-        },
-        "urls": [
-         "https://storage.example/rooms/x?X-Amz-Signature=abc"
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i14)",
-       "type": "https://trusttasks.org/spec/external/credentials/issue/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "sealedCredential": "-----BEGIN VTA SEALED BUNDLE-----\nBundle-Id: 2b7e…\nDigest-Algo: sha-256\nChunk: 0/1\n\nRXh0ZXJuYWxDcmVkZW50aWFsQ2lwaGVydGV4dEV4dGVybmFsQ3JlZGVudGlhbA\n=Q1JD\n-----END VTA SEALED BUNDLE-----",
-        "expiresAt": "2026-10-10T10:05:00Z"
        }
       }
      },

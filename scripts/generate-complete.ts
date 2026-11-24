@@ -22,6 +22,8 @@ import { build, isObj, RATIONALE_GOV, tokenizeRoles, type J } from "../src/plain
 import { loadTask, type PlainTask } from "../src/plain/catalog.ts";
 import { gapTasks, type GapTask } from "../src/plain/gap.ts";
 import { rolesAreGovernance } from "../src/plain/gap-build.ts";
+import { classifyInvalidExample, variantOf } from "../src/plain/invalid-examples.ts";
+import { hasRoleMember } from "../src/plain/negatives.ts";
 import { exampleExtended, validate } from "../src/plain/schema.ts";
 import { stateCodes, type StateCode } from "../src/coverage/reachable.ts";
 import { loadSnapshot, type Snapshot } from "../src/plain/snapshot.ts";
@@ -254,7 +256,10 @@ for (const st of scope.tasks) {
     // (VTI serves it or the wallet serves it): an emit-only task has no send path, so it is recorded instead
     const receivable = st.vti.length > 0 || st.kw === "serves";
     const negMade = made.filter((v) => /the payload is validated against/.test(v.title));
-    const invalid = (g?.snap.invalidExamples ?? (extra.get(st.typeUri)?.invalidExamples ?? [])) as { note?: string; payload: unknown }[];
+    // only request entries the request schema refuses without `format` asserted, with no governance role member (src/plain/invalid-examples.ts): a response
+    // entry, an entry invalid only through `format` and one whose invalidity may rest on a role value are never sent as a request
+    const invalid = ((g?.snap.invalidExamples ?? (extra.get(st.typeUri)?.invalidExamples ?? [])) as { note?: string; payload: unknown; variant?: unknown }[])
+      .filter((e) => isObj(e.payload) && !hasRoleMember(e.payload) && classifyInvalidExample({ request: t.payloadSchema, response: t.responseSchema }, e).class === "refused" && variantOf(e) === "request");
     if (!receivable) negNotGenerated.push({ typeUri: st.typeUri, kind: "negative-emit-only", class: "D", note: `${t.slug} ${t.version}: no negative vector. VTI does not serve it and the wallet only emits it, so there is no receiving side to send an invalid request to; the emit vector's emitBadPayload mutant is the check that the producer-side payload rules bite` });
     else {
       for (const v0 of negMade) add(t.family, finishV(v0, "negative"), sourceOf(t, g));

@@ -310,12 +310,12 @@
    "spec": [
     "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
     "Re-asks CX-RM-004: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
-    "payload.invalid-examples.json of rooms/blobs/upload/begin 0.2 (task-force repository origin/main bd0c05013, specification status draft): 10 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of rooms/blobs/upload/begin 0.2 (task-force repository origin/main bd0c05013, specification status draft): 6 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/rooms/blobs/upload/begin/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
-    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 7, 8, 9, 10."
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 7, 7, 7, 7."
    ],
    "clarify": null,
    "requires": [
@@ -850,7 +850,7 @@
    "spec": [
     "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
     "Re-asks CX-RM-010: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
-    "payload.invalid-examples.json of rooms/epoch/prune 0.2 (task-force repository origin/main bd0c05013, specification status draft): 4 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of rooms/epoch/prune 0.2 (task-force repository origin/main bd0c05013, specification status draft): 2 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/rooms/epoch/prune/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
@@ -960,57 +960,6 @@
       "noSideEffect": true,
       "errorReply": "should"
      }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(px3)",
-       "type": "https://trusttasks.org/spec/rooms/epoch/prune/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "roomId": "did:webvh:example.com:rooms:northwind$mint(r7)",
-        "pruned": 3,
-        "earliestRung": 5
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(px4)",
-       "type": "https://trusttasks.org/spec/rooms/epoch/prune/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "roomId": "did:webvh:example.com:rooms:northwind$mint(r7)",
-        "pruned": 0,
-        "earliestRung": 2,
-        "epochFloor": 0
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
     }
    ]
   },
@@ -1021,12 +970,12 @@
    "spec": [
     "Seeded-state probe: the first step(s) create the object the later steps name, through the task the platform serves for it, so the later answers are not an object lookup failing. The probe asks only one thing: with the object present, is a schema-invalid payload refused with malformedRequest (or permissionDenied)? An answer of malformedRequest shows the platform looks the object up first and validates afterwards (an order SPEC.md 7.2 does not fix); an answer from the task itself or a success shows it does not validate that payload (7.2 item 2 is a MUST). Advisory.",
     "Re-asks CX-RM-034: the same payloads, kept only where the identifier they carry is itself valid, against an object the first step(s) created",
-    "payload.invalid-examples.json of rooms/records/prune 0.2 (task-force repository origin/main bd0c05013, specification status draft): 8 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of rooms/records/prune 0.2 (task-force repository origin/main bd0c05013, specification status draft): 5 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/rooms/records/prune/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
-    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: step 8."
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: step 6."
    ],
    "clarify": null,
    "requires": [
@@ -1233,91 +1182,6 @@
         "reason": "quarterly retention run",
         "recordRetention": {
          "recordDays": 1
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(px6)",
-       "type": "https://trusttasks.org/spec/rooms/records/prune/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r8)",
-        "dryRun": false,
-        "removed": 0,
-        "recordRetention": {
-         "tombstoneDays": 30
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(px7)",
-       "type": "https://trusttasks.org/spec/rooms/records/prune/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r8)",
-        "removed": 3
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(px8)",
-       "type": "https://trusttasks.org/spec/rooms/records/prune/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal$mint(r8)",
-        "removed": 14,
-        "recordRetention": {
-         "tombstoneDays": 30,
-         "recordDays": 730
-        },
-        "prune": {
-         "version": 413,
-         "at": "$now+1h",
-         "removed": 14
         }
        }
       }

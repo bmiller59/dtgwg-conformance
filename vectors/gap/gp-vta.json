@@ -4051,7 +4051,7 @@
   },
   {
    "id": "GP-VTA-038",
-   "title": "vta/attestation/mnemonic-export 1.1: the payload examples the specification lists as invalid are refused (7)",
+   "title": "vta/attestation/mnemonic-export 1.1: the payload examples the specification lists as invalid are refused (6)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
@@ -4215,31 +4215,6 @@
         "clientDid": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
         "nonce": "BwcHBwcHBwcHBwcHBwcHBw",
         "deliverTo": "did:example:elsewhere"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i7)",
-       "type": "https://trusttasks.org/spec/vta/attestation/mnemonic-export/1.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "bundle": "-----BEGIN VTA SEALED BUNDLE-----\n…\n-----END VTA SEALED BUNDLE-----",
-        "digest": "9f2c3a7e5d1b4c8a6e0f2d4b6a8c0e2f4a6c8e0b2d4f6a8c0e2b4d6f8a0c2e4b",
-        "windowRemainingSecs": 412
        }
       }
      },
@@ -4519,12 +4494,12 @@
   },
   {
    "id": "GP-VTA-043",
-   "title": "vta/attestation/mnemonic-status 0.1: the payload examples the specification lists as invalid are refused (4)",
+   "title": "vta/attestation/mnemonic-status 0.1: the payload examples the specification lists as invalid are refused (1)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vta/attestation/mnemonic-status/0.1: (1) The read takes no selector. Unknown top-level member is rejected. (2) All four members are required — a partial status leaves a caller unable to tell an expired window from one that was never active. (3) `windowRemainingSecs` must be a non-negative integer, not negative. (4) `windowRemainingSecs` must be an integer, not a fraction of a second.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vta/attestation/mnemonic-status/0.1: (1) The read takes no selector. Unknown top-level member is rejected.",
     "Trust Tasks specification vta/attestation/mnemonic-status 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -4563,82 +4538,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "vtaId": "did:webvh:QmVtaScid:vta.example"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i2)",
-       "type": "https://trusttasks.org/spec/vta/attestation/mnemonic-status/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "windowActive": false,
-        "alreadyExported": false
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vta/attestation/mnemonic-status/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "windowActive": false,
-        "alreadyExported": true,
-        "entropyAvailable": false,
-        "windowRemainingSecs": -1
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/vta/attestation/mnemonic-status/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "windowActive": true,
-        "alreadyExported": false,
-        "entropyAvailable": true,
-        "windowRemainingSecs": 12.5
        }
       }
      },
@@ -4843,12 +4742,12 @@
   },
   {
    "id": "GP-VTA-047",
-   "title": "vta/attestation/mnemonic-status 0.2: the payload examples the specification lists as invalid are refused (5)",
+   "title": "vta/attestation/mnemonic-status 0.2: the payload examples the specification lists as invalid are refused (1)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vta/attestation/mnemonic-status/0.2: (1) The read takes no selector. Unknown top-level member is rejected. (2) All four members are required — a partial status leaves a caller unable to tell an expired window from one that was never active. (3) `windowRemainingSeconds` must be a non-negative integer, not negative. (4) `windowRemainingSeconds` must be an integer, not a fraction of a second. (5) 0.1's member name `windowRemainingSecs` is rejected: 0.2 renames it `windowRemainingSeconds`, which is required, so an otherwise-valid 0.1 response fails rather than being read as one with the window missing.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vta/attestation/mnemonic-status/0.2: (1) The read takes no selector. Unknown top-level member is rejected.",
     "Trust Tasks specification vta/attestation/mnemonic-status 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -4886,108 +4785,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "vtaId": "did:webvh:QmVtaScid:vta.example"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i2)",
-       "type": "https://trusttasks.org/spec/vta/attestation/mnemonic-status/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "windowActive": false,
-        "alreadyExported": false
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vta/attestation/mnemonic-status/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "windowActive": false,
-        "alreadyExported": true,
-        "entropyAvailable": false,
-        "windowRemainingSeconds": -1
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/vta/attestation/mnemonic-status/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "windowActive": true,
-        "alreadyExported": false,
-        "entropyAvailable": true,
-        "windowRemainingSeconds": 12.5
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/vta/attestation/mnemonic-status/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "windowActive": true,
-        "alreadyExported": false,
-        "entropyAvailable": true,
-        "windowRemainingSecs": 180
        }
       }
      },
@@ -10546,12 +10343,12 @@
   },
   {
    "id": "GP-VTA-107",
-   "title": "vta/collection/settings/set 0.1: the payload examples the specification lists as invalid are refused (4)",
+   "title": "vta/collection/settings/set 0.1: the payload examples the specification lists as invalid are refused (3)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vta/collection/settings/set/0.1: (1) No `collectByDefault`: a change states the value it sets, so that a repeat sets the same state rather than toggling it. (2) `collectByDefault` as a string: the setting is a boolean, and a string `\"false\"` read as truthy would enable what was meant to be disabled. (3) Unknown member — applying the change to the context's descendants too — is refused: a setting applies to the context it names alone (VTI-NTF-094). (4) No `changed`: the caller learns whether its request changed the setting or found it already held.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vta/collection/settings/set/0.1: (1) No `collectByDefault`: a change states the value it sets, so that a repeat sets the same state rather than toggling it. (2) `collectByDefault` as a string: the setting is a boolean, and a string `\"false\"` read as truthy would enable what was meant to be disabled. (3) Unknown member — applying the change to the context's descendants too — is refused: a setting applies to the context it names alone (VTI-NTF-094).",
     "Trust Tasks specification vta/collection/settings/set 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -10638,35 +10435,6 @@
         "contextId": "personal",
         "collectByDefault": false,
         "includeDescendants": true
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/vta/collection/settings/set/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "setting": {
-         "contextId": "personal",
-         "collectByDefault": false,
-         "suspendedByOperator": false,
-         "changedBy": "did:key:z6MkWalletClient",
-         "changedAt": "2027-03-01T09:00:01Z"
-        }
        }
       }
      },
@@ -11063,12 +10831,12 @@
   },
   {
    "id": "GP-VTA-113",
-   "title": "vta/collection/settings/show 0.1: the payload examples the specification lists as invalid are refused (4)",
+   "title": "vta/collection/settings/show 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vta/collection/settings/show/0.1: (1) No `contextId`: the setting belongs to one trust context, and a VTA answers about no context the caller does not name (VTI-NTF-094, VTI-NTF-096). (2) Unknown member — asking for every context's setting at once — is refused: a party sees only the contexts it has standing in (VTI-NTF-096). (3) `changedBy` without `changedAt`: who last changed the setting and when are stated together or not at all. (4) No `suspendedByOperator`: a principal reading `disabled` in vta/collection/list must be able to tell its own context's setting from an operator's suspension (VTI-NTF-098).",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vta/collection/settings/show/0.1: (1) No `contextId`: the setting belongs to one trust context, and a VTA answers about no context the caller does not name (VTI-NTF-094, VTI-NTF-096). (2) Unknown member — asking for every context's setting at once — is refused: a party sees only the contexts it has standing in (VTI-NTF-096).",
     "Trust Tasks specification vta/collection/settings/show 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -11128,60 +10896,6 @@
        "payload": {
         "contextId": "personal",
         "allContexts": true
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vta/collection/settings/show/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "setting": {
-         "contextId": "personal",
-         "collectByDefault": false,
-         "suspendedByOperator": false,
-         "changedBy": "did:key:z6MkWalletClient"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/vta/collection/settings/show/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "setting": {
-         "contextId": "personal",
-         "collectByDefault": true
-        }
        }
       }
      },
@@ -67570,12 +67284,12 @@
   },
   {
    "id": "GP-VTA-516",
-   "title": "vta/pcs/voter/read 0.5: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vta/pcs/voter/read 0.5: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vta/pcs/voter/read/0.5: (1) A credential to present in a list. A list never carries a presentation (vtc/elections/list/0.5, VTI-VOT-015): presenting to find elections would show the community every membership the member holds. (2) An empty credential handle. (3) A signed read of the superseded show/0.4, which carries no presentation and under which an election put to a member party's members was shown to anyone.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vta/pcs/voter/read/0.5: (1) A credential to present in a list. A list never carries a presentation (vtc/elections/list/0.5, VTI-VOT-015): presenting to find elections would show the community every membership the member holds. (2) An empty credential handle.",
     "Trust Tasks specification vta/pcs/voter/read 0.5 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -67649,41 +67363,6 @@
          "electionId": "partner-charter-2026"
         },
         "membershipCredential": ""
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vta/pcs/voter/read/0.5",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "document": {
-         "id": "urn:uuid:0e2f9b1c-5d4a-4e3b-9a8c-7d6e5f4a3b2c",
-         "type": "https://trusttasks.org/spec/vtc/elections/show/0.4",
-         "issuer": "did:key:z6MkmMemberPersonaExampleKey22222222222222222222",
-         "recipient": "did:webvh:QmCommunity:vtc.example.org",
-         "issuedAt": "2026-11-02T09:00:01Z",
-         "payload": {
-          "electionId": "board-2026"
-         },
-         "proof": {
-          "type": "DataIntegrityProof"
-         }
-        }
        }
       }
      },
@@ -68745,7 +68424,7 @@
   },
   {
    "id": "GP-VTA-524",
-   "title": "vta/pcs/voter/read 0.7: the payload examples the specification lists as invalid are refused (7)",
+   "title": "vta/pcs/voter/read 0.7: the payload examples the specification lists as invalid are refused (6)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
@@ -68931,41 +68610,6 @@
      "send": {
       "document": {
        "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/vta/pcs/voter/read/0.7",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "document": {
-         "id": "urn:uuid:0e2f9b1c-5d4a-4e3b-9a8c-7d6e5f4a3b2c",
-         "type": "https://trusttasks.org/spec/vtc/elections/show/0.5",
-         "issuer": "did:key:z6MkmMemberPersonaExampleKey22222222222222222222",
-         "recipient": "did:webvh:QmCommunity:vtc.example.org",
-         "issuedAt": "2026-11-02T09:00:01Z",
-         "payload": {
-          "electionId": "board-2026"
-         },
-         "proof": {
-          "type": "DataIntegrityProof"
-         }
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i7)",
        "type": "https://trusttasks.org/spec/vta/pcs/voter/read/0.7",
        "issuer": "$A",
        "recipient": "$iut",
@@ -78223,7 +77867,7 @@
   },
   {
    "id": "GP-VTA-605",
-   "title": "vta/webs/dids/create 0.1: the payload examples the specification lists as invalid are refused (8)",
+   "title": "vta/webs/dids/create 0.1: the payload examples the specification lists as invalid are refused (7)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
@@ -78431,46 +78075,6 @@
           "serviceEndpoint": "https://files.example.com"
          }
         ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i8)",
-       "type": "https://trusttasks.org/spec/vta/webs/dids/create/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "did": "did:webs:example.com:people:alice:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-        "aid": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-        "contextId": "alice",
-        "serverId": "prod",
-        "domain": "example.com",
-        "slot": "people/alice/ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-        "keriCesrUrl": "https://example.com/people/alice/ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe/keri.cesr",
-        "didJsonUrl": "https://example.com/people/alice/ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe/did.json",
-        "signingKeyId": "webs-alice-sign-0",
-        "signingKey": "DKxy2sgzfplyr-tgwIxS19f2OchFHtLwPWD3v4oYimBx",
-        "keyAgreementKeyId": "webs-alice-ka-0",
-        "keyAgreementKey": "CBwO9bU8Qk3n2YQm0xTNu0R1tq2Hk7f1pWx0aJc3Kd5e",
-        "sequenceNumber": 1,
-        "versionId": "1:EHmLpA0OPWQbm6Ua2A8m2c4XUbJkfR7zTG4MBxwdXNbk",
-        "alsoKnownAs": [
-         "did:webs:example.com:people:alice:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
-        ],
-        "createdAt": "2026-11-11T10:00:02Z"
        }
       }
      },
@@ -79419,7 +79023,7 @@
   },
   {
    "id": "GP-VTA-612",
-   "title": "vta/webs/dids/create 0.2: the payload examples the specification lists as invalid are refused (12)",
+   "title": "vta/webs/dids/create 0.2: the payload examples the specification lists as invalid are refused (11)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
@@ -79737,47 +79341,6 @@
           "serviceEndpoint": "https://files.example.com"
          }
         ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i12)",
-       "type": "https://trusttasks.org/spec/vta/webs/dids/create/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "did": "did:webs:example.com:people:alice:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-        "aid": "ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-        "contextId": "alice",
-        "serverId": "prod",
-        "domain": "example.com",
-        "slot": "people/alice/ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe",
-        "keriCesrUrl": "https://example.com/people/alice/ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe/keri.cesr",
-        "didJsonUrl": "https://example.com/people/alice/ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe/did.json",
-        "signingKeyId": "webs-alice-sign-0",
-        "signingKey": "DKxy2sgzfplyr-tgwIxS19f2OchFHtLwPWD3v4oYimBx",
-        "nextKeyId": "webs-alice-sign-1",
-        "keyAgreementKeyId": "webs-alice-ka-0",
-        "keyAgreementKey": "CBwO9bU8Qk3n2YQm0xTNu0R1tq2Hk7f1pWx0aJc3Kd5e",
-        "sequenceNumber": 1,
-        "versionId": "1:EHmLpA0OPWQbm6Ua2A8m2c4XUbJkfR7zTG4MBxwdXNbk",
-        "alsoKnownAs": [
-         "did:webs:example.com:people:alice:ENro7uf0ePmiK3jdTo2YCdXLqW7z7xoP6qhhBou6gBLe"
-        ],
-        "createdAt": "2026-11-11T10:00:02Z"
        }
       }
      },
@@ -89592,12 +89155,12 @@
   },
   {
    "id": "GP-VTA-715",
-   "title": "vta/witness/list 0.2: the payload examples the specification lists as invalid are refused (6)",
+   "title": "vta/witness/list 0.2: the payload examples the specification lists as invalid are refused (4)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vta/witness/list/0.2: (1) A page is at most one hundred entries: each carries two whole Trust Task documents. (2) 0.1's `pageSize` does not exist in 0.2; it is `limit`. (3) The filters name DIDs: a relationship is filtered by the DID the VWC names, not by a vault handle. (4) A list reads the vault and changes nothing: there is no member to archive or delete what it finds. (5) `nextCursor` is absent on the last page, never `null`. (6) 0.1's `truncated` does not exist in 0.2; the presence of `nextCursor` says the VTA stopped early.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vta/witness/list/0.2: (1) A page is at most one hundred entries: each carries two whole Trust Task documents. (2) 0.1's `pageSize` does not exist in 0.2; it is `limit`. (3) The filters name DIDs: a relationship is filtered by the DID the VWC names, not by a vault handle. (4) A list reads the vault and changes nothing: there is no member to archive or delete what it finds.",
     "Trust Tasks specification vta/witness/list 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -89714,54 +89277,6 @@
        "payload": {
         "witness": "did:webvh:QmWitness:witness.example.org:a",
         "purge": true
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/vta/witness/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "witnessings": [],
-        "nextCursor": null
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/vta/witness/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "witnessings": [],
-        "truncated": false
        }
       }
      },

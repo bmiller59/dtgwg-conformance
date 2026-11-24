@@ -4,7 +4,8 @@
 // (docs/04), so the plain-task probe carries its own, limited to the keywords those schemas use: type, properties, required,
 // additionalProperties, items, minItems/maxItems/uniqueItems, minLength/maxLength, pattern, enum, const, minimum/maximum, oneOf,
 // anyOf, not, propertyNames, minProperties, dependentRequired, dependentSchemas, $ref ("#/..." pointers and "#anchor"), $defs.
-// `format` is an annotation here (not asserted), as it is by default in draft 2020-12.
+// `format` is an annotation here (not asserted), as it is by default in draft 2020-12, unless the caller passes `{ formats: true }`
+// (see "format assertion" below): the task-force invalid examples are classified with both settings (src/plain/invalid-examples.ts).
 
 import { stringForPattern } from "./pattern.ts";
 
@@ -68,10 +69,57 @@ function sortKeys(v: unknown): unknown {
   return v;
 }
 
-/** Errors (JSON pointer + message); empty when the value satisfies the schema. */
-export function validate(root: Schema, value: unknown): string[] {
+// ---------------------------------------------------------------- `format` assertion (opt-in)
+// The task force's own build asserts `format` (Ajv with ajv-formats, "full" mode) when it checks a task's invalid examples. With
+// `{ formats: true }` this validator asserts the three formats the task schemas use, by the same rules: `date` (RFC 3339 full-date, with
+// the days of the month), `date-time` (full-date, `T` or a space, full-time with a time zone; a leap second only at 23:59:60 UTC) and `uri`
+// (an absolute RFC 3986 URI). Any other format stays an annotation. Off by default: a consumer is not told by the framework to assert it.
+export interface ValidateOptions { /** Assert `date`, `date-time` and `uri` as the task force's build does. Default false. */ formats?: boolean }
+export const ASSERTED_FORMATS = ["date", "date-time", "uri"] as const;
+
+const DAYS = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const leap = (y: number): boolean => y % 4 === 0 && (y % 100 !== 0 || y % 400 === 0);
+function isDate(s: string): boolean {
+  const m = /^(\d\d\d\d)-(\d\d)-(\d\d)$/.exec(s);
+  if (m === null) return false;
+  const y = Number(m[1]), mo = Number(m[2]), d = Number(m[3]);
+  return mo >= 1 && mo <= 12 && d >= 1 && d <= (mo === 2 && leap(y) ? 29 : DAYS[mo]!);
+}
+function isTime(s: string): boolean {
+  const m = /^(\d\d):(\d\d):(\d\d(?:\.\d+)?)(z|([+-])(\d\d)(?::?(\d\d))?)$/i.exec(s);
+  if (m === null) return false;
+  const hr = Number(m[1]), min = Number(m[2]), sec = Number(m[3]);
+  const tzSign = m[5] === "-" ? -1 : 1, tzH = Number(m[6] ?? 0), tzM = Number(m[7] ?? 0);
+  if (tzH > 23 || tzM > 59) return false;
+  if (hr <= 23 && min <= 59 && sec < 60) return true;
+  // a leap second: 23:59:60 in UTC once the offset is taken off
+  const utcMin = min - tzM * tzSign, utcHr = hr - tzH * tzSign - (utcMin < 0 ? 1 : 0);
+  return (utcHr === 23 || utcHr === -1) && (utcMin === 59 || utcMin === -1) && sec < 61;
+}
+function isDateTime(s: string): boolean {
+  const parts = s.split(/t|\s/i);
+  return parts.length === 2 && isDate(parts[0]!) && isTime(parts[1]!);
+}
+const UNRES = "a-z0-9\\-._~", SUB = "!$&'()*+,;=", PCT = "%[0-9a-f]{2}";
+const PCHAR = `(?:[${UNRES}${SUB}:@]|${PCT})`;
+const HOST = `(?:\\[[0-9a-f:.]+\\]|\\[v[0-9a-f]+\\.[${UNRES}${SUB}:]+\\]|(?:[${UNRES}${SUB}]|${PCT})*)`;
+const URI_RE = new RegExp(`^[a-z][a-z0-9+\\-.]*:(?:\\/?\\/(?:(?:[${UNRES}${SUB}:]|${PCT})*@)?${HOST}(?::\\d*)?(?:\\/${PCHAR}*)*|\\/(?:${PCHAR}+(?:\\/${PCHAR}*)*)?|${PCHAR}+(?:\\/${PCHAR}*)*)(?:\\?(?:${PCHAR}|[/?])*)?(?:#(?:${PCHAR}|[/?])*)?$`, "i");
+const isUri = (s: string): boolean => /\/|:/.test(s) && URI_RE.test(s);
+const FORMAT_CHECKS: Record<(typeof ASSERTED_FORMATS)[number], (s: string) => boolean> = { date: isDate, "date-time": isDateTime, uri: isUri };
+/** Whether a string satisfies an asserted format (true for a format this validator does not assert). */
+export function formatOk(format: string, value: string): boolean {
+  const f = (FORMAT_CHECKS as Record<string, (s: string) => boolean>)[format];
+  return f === undefined || f(value);
+}
+
+let assertFormats = false;
+
+/** Errors (JSON pointer + message); empty when the value satisfies the schema. `format` is asserted only with `{ formats: true }`. */
+export function validate(root: Schema, value: unknown, opts: ValidateOptions = {}): string[] {
   const out: string[] = [];
-  check(root, root, value, "", out, 0);
+  const before = assertFormats;
+  assertFormats = opts.formats === true;
+  try { check(root, root, value, "", out, 0); } finally { assertFormats = before; }
   return out;
 }
 
@@ -90,6 +138,7 @@ function check(root: Schema, s: Schema, v: unknown, at: string, out: string[], d
     if (typeof s["minLength"] === "number" && [...v].length < s["minLength"]) out.push(`${here}: shorter than ${s["minLength"]}`);
     if (typeof s["maxLength"] === "number" && [...v].length > s["maxLength"]) out.push(`${here}: longer than ${s["maxLength"]}`);
     if (typeof s["pattern"] === "string" && !new RegExp(s["pattern"], "u").test(v)) out.push(`${here}: does not match ${s["pattern"]}`);
+    if (assertFormats && typeof s["format"] === "string" && !formatOk(s["format"], v)) out.push(`${here}: not a valid ${s["format"]}`);
   }
   if (typeof v === "number") {
     if (typeof s["minimum"] === "number" && v < s["minimum"]) out.push(`${here}: below ${s["minimum"]}`);

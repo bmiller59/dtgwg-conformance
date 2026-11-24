@@ -1143,12 +1143,12 @@
   },
   {
    "id": "GP-REG-012",
-   "title": "registry/authorization 0.2: the payload examples the specification lists as invalid are refused (5)",
+   "title": "registry/authorization 0.2: the payload examples the specification lists as invalid are refused (4)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/registry/authorization/0.2: (1) Empty payload omits the required members entityId, authorityId, action, resource. (2) Unknown top-level member is rejected (additionalProperties: false). (3) resource must be a string. (4) The pre-0.2 snake_case members `entity_id` and `authority_id` are rejected (additionalProperties: false); the members are `entityId` and `authorityId`. (5) The pre-0.2 snake_case `time_evaluated` is rejected and `evaluatedAt` is required.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/registry/authorization/0.2: (1) Empty payload omits the required members entityId, authorityId, action, resource. (2) Unknown top-level member is rejected (additionalProperties: false). (3) resource must be a string. (4) The pre-0.2 snake_case members `entity_id` and `authority_id` are rejected (additionalProperties: false); the members are `entityId` and `authorityId`.",
     "Trust Tasks specification registry/authorization 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -1263,34 +1263,6 @@
         "authority_id": "did:example:authority",
         "action": "issue",
         "resource": "vc"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/registry/authorization/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "entityId": "did:example:entity",
-        "authorityId": "did:example:authority",
-        "action": "issue",
-        "resource": "vc",
-        "authorized": true,
-        "time_evaluated": "2026-07-09T00:00:00Z"
        }
       }
      },
@@ -3351,12 +3323,12 @@
   },
   {
    "id": "GP-REG-036",
-   "title": "registry/recognition 0.2: the payload examples the specification lists as invalid are refused (5)",
+   "title": "registry/recognition 0.2: the payload examples the specification lists as invalid are refused (4)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/registry/recognition/0.2: (1) Empty payload omits the required members entityId, authorityId, action, resource. (2) Unknown top-level member is rejected (additionalProperties: false). (3) entityId must be a string. (4) The pre-0.2 snake_case members `entity_id` and `authority_id` are rejected (additionalProperties: false); the members are `entityId` and `authorityId`. (5) The pre-0.2 snake_case `time_evaluated` is rejected and `evaluatedAt` is required.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/registry/recognition/0.2: (1) Empty payload omits the required members entityId, authorityId, action, resource. (2) Unknown top-level member is rejected (additionalProperties: false). (3) entityId must be a string. (4) The pre-0.2 snake_case members `entity_id` and `authority_id` are rejected (additionalProperties: false); the members are `entityId` and `authorityId`.",
     "Trust Tasks specification registry/recognition 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -3471,34 +3443,6 @@
         "authority_id": "did:example:authority",
         "action": "issue",
         "resource": "vc"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/registry/recognition/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "entityId": "did:example:entity",
-        "authorityId": "did:example:authority",
-        "action": "issue",
-        "resource": "vc",
-        "recognized": true,
-        "time_evaluated": "2026-07-09T00:00:00Z"
        }
       }
      },
@@ -6735,12 +6679,12 @@
   },
   {
    "id": "GP-REG-074",
-   "title": "registry/record/put 0.2: the payload examples the specification lists as invalid are refused (5)",
+   "title": "registry/record/put 0.2: the payload examples the specification lists as invalid are refused (4)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/registry/record/put/0.2: (1) Empty payload omits the required member `record`. (2) record missing required members (record_type and the identifiers). (3) expectedExisting must be a boolean, not a string. (4) Unknown top-level member is rejected (additionalProperties: false). (5) Response carrying the pre-0.2 `created` flag — renamed `wasCreated`, since `created` is reserved for a timestamp; additionalProperties: false rejects the old name and `wasCreated` is required.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/registry/record/put/0.2: (1) Empty payload omits the required member `record`. (2) record missing required members (record_type and the identifiers). (3) expectedExisting must be a boolean, not a string. (4) Unknown top-level member is rejected (additionalProperties: false).",
     "Trust Tasks specification registry/record/put 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -6862,30 +6806,6 @@
          "record_type": "authorization"
         },
         "__notARealMember__": true
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/registry/record/put/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "ok": true,
-        "created": true
        }
       }
      },
@@ -7343,12 +7263,12 @@
   },
   {
    "id": "GP-REG-081",
-   "title": "registry/record/put 0.3: the payload examples the specification lists as invalid are refused (7)",
+   "title": "registry/record/put 0.3: the payload examples the specification lists as invalid are refused (6)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/registry/record/put/0.3: (1) Empty payload omits the required member `record`. (2) record missing required members (recordType and the identifiers). (3) expectedExisting must be a boolean, not a string. (4) Unknown top-level member is rejected (additionalProperties: false). (5) Response carrying the pre-0.2 `created` flag — renamed `wasCreated`, since `created` is reserved for a timestamp; additionalProperties: false rejects the old name and `wasCreated` is required. (6) The pre-0.3 snake_case record members are rejected (TrustRecord additionalProperties: false); the members are `entityId`, `authorityId` and `recordTy",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/registry/record/put/0.3: (1) Empty payload omits the required member `record`. (2) record missing required members (recordType and the identifiers). (3) expectedExisting must be a boolean, not a string. (4) Unknown top-level member is rejected (additionalProperties: false). (5) The pre-0.3 snake_case record members are rejected (TrustRecord additionalProperties: false); the members are `entityId`, `authorityId` and `recordType`. (6) validUntil must be a string, not Unix seconds.",
     "Trust Tasks specification registry/record/put 0.3 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -7491,30 +7411,6 @@
        "recipient": "$iut",
        "issuedAt": "$now+0s",
        "payload": {
-        "ok": true,
-        "created": true
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/registry/record/put/0.3",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
         "record": {
          "entity_id": "did:example:entity",
          "authority_id": "did:example:authority",
@@ -7538,7 +7434,7 @@
     {
      "send": {
       "document": {
-       "id": "$id(i7)",
+       "id": "$id(i6)",
        "type": "https://trusttasks.org/spec/registry/record/put/0.3",
        "issuer": "$A",
        "recipient": "$iut",
@@ -8205,12 +8101,12 @@
   },
   {
    "id": "GP-REG-091",
-   "title": "registry/record/query 0.2: the payload examples the specification lists as invalid are refused (5)",
+   "title": "registry/record/query 0.2: the payload examples the specification lists as invalid are refused (4)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/registry/record/query/0.2: (1) limit below the minimum of 1. (2) limit above the maximum of 200. (3) cursor must be a string, not a number. (4) Unknown top-level member is rejected (additionalProperties: false). (5) nextCursor must not be null — the last page omits it.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/registry/record/query/0.2: (1) limit below the minimum of 1. (2) limit above the maximum of 200. (3) cursor must be a string, not a number. (4) Unknown top-level member is rejected (additionalProperties: false).",
     "Trust Tasks specification registry/record/query 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -8318,30 +8214,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "entityId": "did:example:entity"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/registry/record/query/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "records": [],
-        "nextCursor": null
        }
       }
      },
@@ -8608,12 +8480,12 @@
   },
   {
    "id": "GP-REG-096",
-   "title": "registry/record/query 0.3: the payload examples the specification lists as invalid are refused (5)",
+   "title": "registry/record/query 0.3: the payload examples the specification lists as invalid are refused (4)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/registry/record/query/0.3: (1) limit below the minimum of 1. (2) limit above the maximum of 200. (3) cursor must be a string, not a number. (4) The pre-0.3 snake_case key `entity_id` is rejected (additionalProperties: false); the member is `entityId`. (5) nextCursor must not be null — the last page omits it.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/registry/record/query/0.3: (1) limit below the minimum of 1. (2) limit above the maximum of 200. (3) cursor must be a string, not a number. (4) The pre-0.3 snake_case key `entity_id` is rejected (additionalProperties: false); the member is `entityId`.",
     "Trust Tasks specification registry/record/query 0.3 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -8720,30 +8592,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "entity_id": "did:example:entity"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/registry/record/query/0.3",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "records": [],
-        "nextCursor": null
        }
       }
      },

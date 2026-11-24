@@ -323,12 +323,12 @@
   },
   {
    "id": "GP-VTN-005",
-   "title": "vtn/audit/list 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/audit/list 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/audit/list/0.1: (1) A `limit` of zero. (2) A `limit` above 1000. (3) An event that does not say who acted.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/audit/list/0.1: (1) A `limit` of zero. (2) A `limit` above 1000.",
     "Trust Tasks specification vtn/audit/list 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -389,36 +389,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "limit": 5000
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/audit/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "events": [
-         {
-          "occurredAt": "2026-11-01T08:15:00Z",
-          "did": "did:example:community",
-          "event": "suspend",
-          "to": "suspended"
-         }
-        ]
        }
       }
      },
@@ -1615,7 +1585,11 @@
       "errorReply": "should"
      }
     }
-   ]
+   ],
+   "retired": {
+    "reason": "no longer generated: every step it had sent a response entry (`variant: response`) of payload.invalid-examples.json as a request; a response entry is an invalid reply and is never sent as a request (src/plain/invalid-examples.ts)",
+    "since": "0.1.0-draft"
+   }
   },
   {
    "id": "GP-VTN-020",
@@ -2077,12 +2051,12 @@
   },
   {
    "id": "GP-VTN-026",
-   "title": "vtn/broadcasts/show 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/broadcasts/show 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/broadcasts/show/0.1: (1) Missing `id`. (2) An empty `id`. (3) A record without its receipts.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/broadcasts/show/0.1: (1) Missing `id`. (2) An empty `id`.",
     "Trust Tasks specification vtn/broadcasts/show 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -2141,36 +2115,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "id": ""
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/broadcasts/show/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "broadcast": {
-         "id": "urn:uuid:00000000-0000-4000-8000-0000000b0001",
-         "direction": "sent",
-         "role": "admins",
-         "message": {},
-         "recordedAt": "2026-11-03T16:00:01Z",
-         "reached": 0
-        }
        }
       }
      },
@@ -2535,12 +2479,12 @@
   },
   {
    "id": "GP-VTN-032",
-   "title": "vtn/directory/federated 0.1: the payload examples the specification lists as invalid are refused (4)",
+   "title": "vtn/directory/federated 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/directory/federated/0.1: (1) A `state` outside the entry lifecycle. (2) `membersOnly` given as a string. (3) Response without `unreachable`: a member network that could not be searched would be silently dropped (VTI-REG-012). (4) A federated result without its path.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/directory/federated/0.1: (1) A `state` outside the entry lifecycle. (2) `membersOnly` given as a string.",
     "Trust Tasks specification vtn/directory/federated 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -2601,63 +2545,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "membersOnly": "yes"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/directory/federated/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "determinedAt": "2026-11-03T10:00:02Z",
-        "results": []
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/vtn/directory/federated/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "determinedAt": "2026-11-03T10:00:02Z",
-        "results": [
-         {
-          "did": "did:example:community",
-          "kind": "community",
-          "state": "acknowledged",
-          "acknowledged": true,
-          "listedBy": "did:example:whn"
-         }
-        ],
-        "unreachable": []
        }
       }
      },
@@ -3023,12 +2910,12 @@
   },
   {
    "id": "GP-VTN-038",
-   "title": "vtn/directory/search 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/directory/search 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/directory/search/0.1: (1) A `kind` that is neither community nor network. (2) A membership credential given as a bare id rather than the credential. (3) A result without the acknowledgement state every published entry carries (VTI-VTN-013).",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/directory/search/0.1: (1) A `kind` that is neither community nor network. (2) A membership credential given as a bare id rather than the credential.",
     "Trust Tasks specification vtn/directory/search 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -3089,35 +2976,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "membership": "urn:uuid:00000000-0000-4000-8000-0000000c0031"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/directory/search/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "entries": [
-         {
-          "did": "did:example:community",
-          "kind": "community",
-          "state": "listed"
-         }
-        ]
        }
       }
      },
@@ -3377,12 +3235,12 @@
   },
   {
    "id": "GP-VTN-043",
-   "title": "vtn/directory/summary 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/directory/summary 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/directory/summary/0.1: (1) A membership credential given as a bare id. (2) An unknown member. (3) Counts without the members/non-members split (VTI-VTN-013).",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/directory/summary/0.1: (1) A membership credential given as a bare id. (2) An unknown member.",
     "Trust Tasks specification vtn/directory/summary 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -3443,32 +3301,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "includeCounts": true
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/directory/summary/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "summary": {
-         "communities": 40,
-         "networks": 3
-        }
        }
       }
      },
@@ -3915,12 +3747,12 @@
   },
   {
    "id": "GP-VTN-050",
-   "title": "vtn/entries/show 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/entries/show 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/entries/show/0.1: (1) Missing `did` — there is no entry to look up. (2) `did` that is not a DID. (3) An entry without the acknowledgement state every published entry carries (VTI-VTN-013).",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/entries/show/0.1: (1) Missing `did` — there is no entry to look up. (2) `did` that is not a DID.",
     "Trust Tasks specification vtn/entries/show 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -3979,35 +3811,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "did": "health-au"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/entries/show/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "entry": {
-         "did": "did:example:health-au",
-         "kind": "network",
-         "state": "listed",
-         "profile": {},
-         "listing": {}
-        }
        }
       }
      },
@@ -4484,12 +4287,12 @@
   },
   {
    "id": "GP-VTN-057",
-   "title": "vtn/graph/member 0.1: the payload examples the specification lists as invalid are refused (4)",
+   "title": "vtn/graph/member 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/graph/member/0.1: (1) Missing `did` — there is no member network to expand. (2) A `did` that is not a DID. (3) Response without `graph`. (4) An edge without its credential.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/graph/member/0.1: (1) Missing `did` — there is no member network to expand. (2) A `did` that is not a DID.",
     "Trust Tasks specification vtn/graph/member 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -4549,64 +4352,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "did": "https://whn.example"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "vtn/graph/member:notMember"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/graph/member/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {}
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "vtn/graph/member:notMember"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/vtn/graph/member/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "graph": {
-         "nodes": [],
-         "edges": [
-          {
-           "id": "urn:uuid:00000000-0000-4000-8000-0000000c0011",
-           "source": "did:example:whn",
-           "target": "did:example:community",
-           "role": "listing",
-           "credType": "StatementCredential",
-           "status": "unchecked"
-          }
-         ]
-        }
        }
       }
      },
@@ -4844,12 +4589,12 @@
   },
   {
    "id": "GP-VTN-062",
-   "title": "vtn/graph/show 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/graph/show 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/graph/show/0.1: (1) `includeExited` given as a string. (2) An unknown member. (3) A graph without edges.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/graph/show/0.1: (1) `includeExited` given as a string. (2) An unknown member.",
     "Trust Tasks specification vtn/graph/show 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -4910,37 +4655,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "depth": 2
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/graph/show/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "graph": {
-         "nodes": [
-          {
-           "id": "did:example:whn",
-           "kind": "network",
-           "root": true
-          }
-         ]
-        }
        }
       }
      },
@@ -5256,12 +4970,12 @@
   },
   {
    "id": "GP-VTN-068",
-   "title": "vtn/groups/list 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/groups/list 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/groups/list/0.1: (1) A role name that is not a lowercase identifier. (2) An unknown member. (3) A registration without the network's signed acceptance.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/groups/list/0.1: (1) A role name that is not a lowercase identifier. (2) An unknown member.",
     "Trust Tasks specification vtn/groups/list 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -5322,38 +5036,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "member": "did:example:community"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/groups/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "groups": [
-         {
-          "member": "did:example:community",
-          "role": "clinical-alerts",
-          "group": "did:example:community-alerts",
-          "endpoint": "https://stvincents.example/v1/trust-tasks",
-          "registration": {},
-          "registeredAt": "2026-10-21T14:00:00Z"
-         }
-        ]
        }
       }
      },
@@ -6768,12 +6450,12 @@
   },
   {
    "id": "GP-VTN-083",
-   "title": "vtn/listings/create 0.1: the payload examples the specification lists as invalid are refused (4)",
+   "title": "vtn/listings/create 0.1: the payload examples the specification lists as invalid are refused (3)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/listings/create/0.1: (1) Missing `kind` — the listing credential's `nodeType` cannot be chosen (VTI-VTN-031). (2) A `kind` outside community|network. (3) A `did` that is not a DID. (4) An entry without its listing credential.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/listings/create/0.1: (1) Missing `kind` — the listing credential's `nodeType` cannot be chosen (VTI-VTN-031). (2) A `kind` outside community|network. (3) A `did` that is not a DID.",
     "Trust Tasks specification vtn/listings/create 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -6859,37 +6541,6 @@
        "payload": {
         "did": "https://community.example",
         "kind": "community"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/vtn/listings/create/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "entry": {
-         "did": "did:example:community",
-         "kind": "community",
-         "profile": {},
-         "state": "listed",
-         "createdAt": "2026-11-03T10:00:00Z",
-         "updatedAt": "2026-11-03T10:00:00Z",
-         "history": []
-        }
        }
       }
      },
@@ -7213,12 +6864,12 @@
   },
   {
    "id": "GP-VTN-089",
-   "title": "vtn/listings/list 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/listings/list 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/listings/list/0.1: (1) A `state` outside the entry lifecycle. (2) An unknown member. (3) An entry without its history.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/listings/list/0.1: (1) A `state` outside the entry lifecycle. (2) An unknown member.",
     "Trust Tasks specification vtn/listings/list 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -7279,42 +6930,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "kind": "community"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/listings/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "entries": [
-         {
-          "did": "did:example:clinic",
-          "kind": "community",
-          "profile": {},
-          "state": "listed",
-          "createdAt": "2026-11-02T09:00:00Z",
-          "updatedAt": "2026-11-02T09:00:00Z",
-          "listing": {
-           "credential": {},
-           "statusIndex": 7
-          }
-         }
-        ]
        }
       }
      },
@@ -7864,12 +7479,12 @@
   },
   {
    "id": "GP-VTN-097",
-   "title": "vtn/listings/reinstate 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/listings/reinstate 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/listings/reinstate/0.1: (1) Missing `did` — there is no entry to act on. (2) A `reason` that is not a string. (3) Response without `entry`.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/listings/reinstate/0.1: (1) Missing `did` — there is no entry to act on. (2) A `reason` that is not a string.",
     "Trust Tasks specification vtn/listings/reinstate 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -7932,27 +7547,6 @@
         "did": "did:example:community",
         "reason": 7
        }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/listings/reinstate/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {}
       }
      },
      "expect": {
@@ -8502,12 +8096,12 @@
   },
   {
    "id": "GP-VTN-105",
-   "title": "vtn/listings/remove 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/listings/remove 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/listings/remove/0.1: (1) Missing `did` — there is no entry to act on. (2) A `reason` that is not a string. (3) Response without `entry`.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/listings/remove/0.1: (1) Missing `did` — there is no entry to act on. (2) A `reason` that is not a string.",
     "Trust Tasks specification vtn/listings/remove 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -8570,27 +8164,6 @@
         "did": "did:example:community",
         "reason": 7
        }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/listings/remove/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {}
       }
      },
      "expect": {
@@ -9061,12 +8634,12 @@
   },
   {
    "id": "GP-VTN-112",
-   "title": "vtn/listings/show 0.1: the payload examples the specification lists as invalid are refused (4)",
+   "title": "vtn/listings/show 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/listings/show/0.1: (1) Missing `did`. (2) A `did` that is not a DID. (3) Response without `entry`. (4) The published view in place of the admin view.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/listings/show/0.1: (1) Missing `did`. (2) A `did` that is not a DID.",
     "Trust Tasks specification vtn/listings/show 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -9125,57 +8698,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "did": "community"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/listings/show/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {}
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/vtn/listings/show/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "entry": {
-         "did": "did:example:community",
-         "kind": "community",
-         "state": "acknowledged",
-         "acknowledged": true,
-         "profile": {},
-         "listing": {}
-        }
        }
       }
      },
@@ -9725,12 +9247,12 @@
   },
   {
    "id": "GP-VTN-120",
-   "title": "vtn/listings/suspend 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/listings/suspend 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/listings/suspend/0.1: (1) Missing `did` — there is no entry to act on. (2) A `reason` that is not a string. (3) Response without `entry`.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/listings/suspend/0.1: (1) Missing `did` — there is no entry to act on. (2) A `reason` that is not a string.",
     "Trust Tasks specification vtn/listings/suspend 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -9793,27 +9315,6 @@
         "did": "did:example:community",
         "reason": 7
        }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/listings/suspend/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {}
       }
      },
      "expect": {
@@ -10493,12 +9994,12 @@
   },
   {
    "id": "GP-VTN-128",
-   "title": "vtn/listings/update 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/listings/update 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/listings/update/0.1: (1) Missing `did` — there is no entry to edit. (2) `kind` cannot be edited: it is in the listing credential, which this task does not reissue. (3) Response without `entry`.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/listings/update/0.1: (1) Missing `did` — there is no entry to edit. (2) `kind` cannot be edited: it is in the listing credential, which this task does not reissue.",
     "Trust Tasks specification vtn/listings/update 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -10561,27 +10062,6 @@
         "did": "did:example:community",
         "kind": "network"
        }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/listings/update/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {}
       }
      },
      "expect": {
@@ -11068,12 +10548,12 @@
   },
   {
    "id": "GP-VTN-136",
-   "title": "vtn/membership/acknowledge 0.1: the payload examples the specification lists as invalid are refused (4)",
+   "title": "vtn/membership/acknowledge 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/membership/acknowledge/0.1: (1) Missing `acknowledgement` — there is nothing to acknowledge the offer with. (2) An acknowledgement that is not an object. (3) Response without `entry`. (4) An entry without the acknowledgement state every published entry carries (VTI-VTN-013).",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/membership/acknowledge/0.1: (1) Missing `acknowledgement` — there is nothing to acknowledge the offer with. (2) An acknowledgement that is not an object.",
     "Trust Tasks specification vtn/membership/acknowledge 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -11132,56 +10612,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "acknowledgement": "urn:uuid:00000000-0000-4000-8000-0000000c0021"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/membership/acknowledge/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {}
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/vtn/membership/acknowledge/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "entry": {
-         "did": "did:example:community",
-         "kind": "community",
-         "state": "acknowledged",
-         "profile": {},
-         "listing": {}
-        }
        }
       }
      },
@@ -11463,12 +10893,12 @@
   },
   {
    "id": "GP-VTN-141",
-   "title": "vtn/membership/offer 0.1: the payload examples the specification lists as invalid are refused (2)",
+   "title": "vtn/membership/offer 0.1: the payload examples the specification lists as invalid are refused (1)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/membership/offer/0.1: (1) The request names a DID: a party may ask only for its own offer, which `issuer` already names. (2) An offer that is not a credential object.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/membership/offer/0.1: (1) The request names a DID: a party may ask only for its own offer, which `issuer` already names.",
     "Trust Tasks specification vtn/membership/offer 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -11506,29 +10936,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "did": "did:example:community"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i2)",
-       "type": "https://trusttasks.org/spec/vtn/membership/offer/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "offer": "urn:uuid:00000000-0000-4000-8000-0000000c0012"
        }
       }
      },
@@ -12006,12 +11413,12 @@
   },
   {
    "id": "GP-VTN-149",
-   "title": "vtn/membership/repudiate 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/membership/repudiate 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/membership/repudiate/0.1: (1) Missing `repudiation` — there is nothing to repudiate with. (2) A repudiation given as a digest string rather than the signed statement. (3) Response without `entry`.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/membership/repudiate/0.1: (1) Missing `repudiation` — there is nothing to repudiate with. (2) A repudiation given as a digest string rather than the signed statement.",
     "Trust Tasks specification vtn/membership/repudiate 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -12071,27 +11478,6 @@
        "payload": {
         "repudiation": "zQmGrantDigest"
        }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/membership/repudiate/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {}
       }
      },
      "expect": {
@@ -12829,12 +12215,12 @@
   },
   {
    "id": "GP-VTN-157",
-   "title": "vtn/memberships/groups/add 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/memberships/groups/add 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/memberships/groups/add/0.1: (1) Missing `localRole` — the parent's role must be served by one of this network's roles. (2) A role name with a space. (3) An upstream group without the parent's signed `acceptance` — a registration alone is not evidence.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/memberships/groups/add/0.1: (1) Missing `localRole` — the parent's role must be served by one of this network's roles. (2) A role name with a space.",
     "Trust Tasks specification vtn/memberships/groups/add 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -12899,44 +12285,6 @@
         "network": "did:example:whn",
         "parentRole": "site admins",
         "localRole": "admins"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "vtn/memberships/groups/add:notMember"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/memberships/groups/add/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "membership": {
-         "network": "did:example:whn",
-         "url": "https://whn.example.org",
-         "state": "acknowledged",
-         "listing": {},
-         "groups": [
-          {
-           "parentRole": "admins",
-           "localRole": "admins",
-           "group": "did:example:regional#role-admins",
-           "registration": {}
-          }
-         ],
-         "updatedAt": "2026-11-03T10:00:00Z"
-        }
        }
       }
      },
@@ -13671,12 +13019,12 @@
   },
   {
    "id": "GP-VTN-165",
-   "title": "vtn/memberships/join 0.1: the payload examples the specification lists as invalid are refused (4)",
+   "title": "vtn/memberships/join 0.1: the payload examples the specification lists as invalid are refused (3)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/memberships/join/0.1: (1) Missing `network` — the administrator must say which DID they expect at the URL, so a URL alone cannot point this network at an impostor. (2) A role mapping without `localRole`. (3) A role name with capitals — roles are lowercase identifiers. (4) Response without `membership`.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/memberships/join/0.1: (1) Missing `network` — the administrator must say which DID they expect at the URL, so a URL alone cannot point this network at an impostor. (2) A role mapping without `localRole`. (3) A role name with capitals — roles are lowercase identifiers.",
     "Trust Tasks specification vtn/memberships/join 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -13775,27 +13123,6 @@
          }
         ]
        }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/vtn/memberships/join/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {}
       }
      },
      "expect": {
@@ -14334,12 +13661,12 @@
   },
   {
    "id": "GP-VTN-173",
-   "title": "vtn/memberships/leave 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/memberships/leave 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/memberships/leave/0.1: (1) Missing `network`. (2) `network` that is not a DID. (3) Response without `membership`.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/memberships/leave/0.1: (1) Missing `network`. (2) `network` that is not a DID.",
     "Trust Tasks specification vtn/memberships/leave 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -14400,28 +13727,6 @@
        "payload": {
         "network": "https://whn.example.org"
        }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "vtn/memberships/leave:notMember"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/memberships/leave/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {}
       }
      },
      "expect": {
@@ -14678,12 +13983,12 @@
   },
   {
    "id": "GP-VTN-178",
-   "title": "vtn/memberships/list 0.1: the payload examples the specification lists as invalid are refused (2)",
+   "title": "vtn/memberships/list 0.1: the payload examples the specification lists as invalid are refused (1)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/memberships/list/0.1: (1) Unknown request member — the list takes no filter; every upstream membership is returned. (2) A membership in state `listed` — a parent merely listing this network is not a membership (VTI-VTN-013).",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/memberships/list/0.1: (1) Unknown request member — the list takes no filter; every upstream membership is returned.",
     "Trust Tasks specification vtn/memberships/list 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -14721,38 +14026,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "state": "acknowledged"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i2)",
-       "type": "https://trusttasks.org/spec/vtn/memberships/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "memberships": [
-         {
-          "network": "did:example:whn",
-          "url": "https://whn.example.org",
-          "state": "listed",
-          "listing": {},
-          "groups": [],
-          "updatedAt": "2026-11-03T10:00:00Z"
-         }
-        ]
        }
       }
      },
@@ -15360,12 +14633,12 @@
   },
   {
    "id": "GP-VTN-186",
-   "title": "vtn/memberships/repudiate 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/memberships/repudiate 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/memberships/repudiate/0.1: (1) Missing `url` — the listing is read from the parent before anything is signed. (2) Unknown member — a repudiation registers no roles. (3) A membership without the `listing` it repudiates.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/memberships/repudiate/0.1: (1) Missing `url` — the listing is read from the parent before anything is signed. (2) Unknown member — a repudiation registers no roles.",
     "Trust Tasks specification vtn/memberships/repudiate 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -15428,35 +14701,6 @@
         "url": "https://whn.example.org",
         "network": "did:example:whn",
         "roles": []
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/memberships/repudiate/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "membership": {
-         "network": "did:example:whn",
-         "url": "https://whn.example.org",
-         "state": "repudiated",
-         "groups": [],
-         "updatedAt": "2026-11-03T10:00:00Z"
-        }
        }
       }
      },
@@ -16064,12 +15308,12 @@
   },
   {
    "id": "GP-VTN-197",
-   "title": "vtn/outbox/retry 0.1: the payload examples the specification lists as invalid are refused (2)",
+   "title": "vtn/outbox/retry 0.1: the payload examples the specification lists as invalid are refused (1)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/outbox/retry/0.1: (1) A selector this task does not define: a retry covers every queued delivery. (2) A negative count.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/outbox/retry/0.1: (1) A selector this task does not define: a retry covers every queued delivery.",
     "Trust Tasks specification vtn/outbox/retry 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -16107,29 +15351,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "messageId": "urn:uuid:00000000-0000-4000-8000-0000000b0001"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i2)",
-       "type": "https://trusttasks.org/spec/vtn/outbox/retry/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "attempted": -1
        }
       }
      },
@@ -16576,12 +15797,12 @@
   },
   {
    "id": "GP-VTN-204",
-   "title": "vtn/registry/check 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/registry/check 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/registry/check/0.1: (1) Missing `did` — there is no party to ask about. (2) `did` that is not a DID. (3) An answer that does not say whether the registry was reached.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/registry/check/0.1: (1) Missing `did` — there is no party to ask about. (2) `did` that is not a DID.",
     "Trust Tasks specification vtn/registry/check 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -16640,37 +15861,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "did": "msf"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/registry/check/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "registry": "did:example:registry",
-        "authority": "did:example:whn",
-        "resource": "vtn",
-        "actions": {
-         "member": "member",
-         "listed": "lists"
-        },
-        "did": "did:example:msf",
-        "member": true
        }
       }
      },
@@ -16927,12 +16117,12 @@
   },
   {
    "id": "GP-VTN-209",
-   "title": "vtn/registry/status 0.1: the payload examples the specification lists as invalid are refused (2)",
+   "title": "vtn/registry/status 0.1: the payload examples the specification lists as invalid are refused (1)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/registry/status/0.1: (1) An unknown member: the request carries nothing but `ext`. (2) A record row with a result the task does not define.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/registry/status/0.1: (1) An unknown member: the request carries nothing but `ext`.",
     "Trust Tasks specification vtn/registry/status 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -16970,45 +16160,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "did": "did:example:msf"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i2)",
-       "type": "https://trusttasks.org/spec/vtn/registry/status/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "registry": "did:example:registry",
-        "authority": "did:example:whn",
-        "resource": "vtn",
-        "actions": {
-         "member": "member",
-         "listed": "lists"
-        },
-        "publishes": "members",
-        "writer": "none",
-        "connected": false,
-        "reachable": true,
-        "records": [
-         {
-          "did": "did:example:msf",
-          "result": "unknown"
-         }
-        ]
        }
       }
      },
@@ -17559,12 +16710,12 @@
   },
   {
    "id": "GP-VTN-217",
-   "title": "vtn/relay/deliver 0.1: the payload examples the specification lists as invalid are refused (2)",
+   "title": "vtn/relay/deliver 0.1: the payload examples the specification lists as invalid are refused (1)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/relay/deliver/0.1: (1) Missing `role` — the network cannot tell which of its groups is addressed. (2) A refusal is an error, not a status: `refused` is a receipt status for a downstream delivery only.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/relay/deliver/0.1: (1) Missing `role` — the network cannot tell which of its groups is addressed.",
     "Trust Tasks specification vtn/relay/deliver 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -17605,31 +16756,6 @@
          "message": {},
          "hops": []
         }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "vtn/relay/deliver:notMember"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i2)",
-       "type": "https://trusttasks.org/spec/vtn/relay/deliver/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "status": "refused",
-        "relayed": []
        }
       }
      },
@@ -17880,12 +17006,12 @@
   },
   {
    "id": "GP-VTN-222",
-   "title": "vtn/roles/list 0.1: the payload examples the specification lists as invalid are refused (2)",
+   "title": "vtn/roles/list 0.1: the payload examples the specification lists as invalid are refused (1)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/roles/list/0.1: (1) A membership credential given as a string rather than the credential. (2) A role that does not say whether it is required.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/roles/list/0.1: (1) A membership credential given as a string rather than the credential.",
     "Trust Tasks specification vtn/roles/list 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -17923,33 +17049,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "membership": "urn:uuid:00000000-0000-4000-8000-0000000c0031"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i2)",
-       "type": "https://trusttasks.org/spec/vtn/roles/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "roles": [
-         {
-          "name": "admins"
-         }
-        ]
        }
       }
      },
@@ -18184,12 +17283,12 @@
   },
   {
    "id": "GP-VTN-227",
-   "title": "vtn/rooms/list 0.1: the payload examples the specification lists as invalid are refused (2)",
+   "title": "vtn/rooms/list 0.1: the payload examples the specification lists as invalid are refused (1)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/rooms/list/0.1: (1) A membership credential given as a string rather than the credential. (2) A room that does not say which role may enter it.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/rooms/list/0.1: (1) A membership credential given as a string rather than the credential.",
     "Trust Tasks specification vtn/rooms/list 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -18227,35 +17326,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "membership": "urn:uuid:00000000-0000-4000-8000-0000000c0031"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i2)",
-       "type": "https://trusttasks.org/spec/vtn/rooms/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "rooms": [
-         {
-          "id": "pandemic-response",
-          "name": "Pandemic Response",
-          "passMinutes": 60
-         }
-        ]
        }
       }
      },
@@ -18922,12 +17992,12 @@
   },
   {
    "id": "GP-VTN-235",
-   "title": "vtn/rooms/pass 0.1: the payload examples the specification lists as invalid are refused (3)",
+   "title": "vtn/rooms/pass 0.1: the payload examples the specification lists as invalid are refused (2)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/rooms/pass/0.1: (1) Missing `membership` — there is no evidence the person belongs to a group. (2) A chain link with a registration but no acceptance. (3) A pass without the networks it was issued through.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/vtn/rooms/pass/0.1: (1) Missing `membership` — there is no evidence the person belongs to a group. (2) A chain link with a registration but no acceptance.",
     "Trust Tasks specification vtn/rooms/pass 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -18996,38 +18066,6 @@
           "registration": {}
          }
         ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "vtn/rooms/pass:notEligible"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i3)",
-       "type": "https://trusttasks.org/spec/vtn/rooms/pass/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "pass": {
-         "room": {
-          "id": "pandemic-response",
-          "name": "Pandemic Response",
-          "role": "admins",
-          "passMinutes": 60
-         },
-         "pass": {}
-        }
        }
       }
      },

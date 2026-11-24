@@ -404,12 +404,12 @@
   },
   {
    "id": "GP-GIT-005",
-   "title": "git-ns/account/list 0.1: the payload examples the specification lists as invalid are refused (7)",
+   "title": "git-ns/account/list 0.1: the payload examples the specification lists as invalid are refused (5)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/account/list/0.1: (1) `forge` carries a scheme and path, not a bare DNS host. (2) `member` is a DID URL (carries a fragment), not a bare DID. (3) `limit` above the declared maximum of 500. (4) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (5) Unknown top-level payload member — additionalProperties: false catches `resource`. (6) Response variant: an AccountRow with no `account` member. (7) Response variant: missing required `accounts` member.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/account/list/0.1: (1) `forge` carries a scheme and path, not a bare DNS host. (2) `member` is a DID URL (carries a fragment), not a bare DID. (3) `limit` above the declared maximum of 500. (4) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (5) Unknown top-level payload member — additionalProperties: false catches `resource`.",
     "Trust Tasks specification git-ns/account/list 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -548,59 +548,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "resource": "github.com/acme"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/account/list:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/git-ns/account/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "accounts": [
-         {
-          "member": "did:webvh:QmFrankScid12:acme-vtc.example:frank",
-          "memberCurrent": true
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/account/list:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i7)",
-       "type": "https://trusttasks.org/spec/git-ns/account/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "nextCursor": null
        }
       }
      },
@@ -943,12 +890,12 @@
   },
   {
    "id": "GP-GIT-010",
-   "title": "git-ns/activity/list 0.1: the payload examples the specification lists as invalid are refused (7)",
+   "title": "git-ns/activity/list 0.1: the payload examples the specification lists as invalid are refused (4)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/activity/list/0.1: (1) `limit` above the declared maximum of 500. (2) `namespace` empty string violates the shared NamespaceId's minLength. (3) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (4) Unknown top-level payload member — additionalProperties: false catches `resource`, which this task filters by `namespace`, not by an arbitrary resource. (5) Response variant: `action` fails the dot-separated identifier pattern (a bare hyphenated word, not camelCase segments). (6) Response variant: `source` is not one of the two declared values. (7) Response var",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/activity/list/0.1: (1) `limit` above the declared maximum of 500. (2) `namespace` empty string violates the shared NamespaceId's minLength. (3) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (4) Unknown top-level payload member — additionalProperties: false catches `resource`, which this task filters by `namespace`, not by an arbitrary resource.",
     "Trust Tasks specification git-ns/activity/list 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -1063,90 +1010,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "resource": "github.com/acme/widgets"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/activity/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/git-ns/activity/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "items": [
-         {
-          "at": "2026-09-26T08:30:00Z",
-          "action": "git-ns-job-bootstrap",
-          "source": "job"
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/activity/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/git-ns/activity/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "items": [
-         {
-          "at": "2026-09-26T08:30:00Z",
-          "action": "gitNs.job.bootstrap",
-          "source": "queue"
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/activity/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i7)",
-       "type": "https://trusttasks.org/spec/git-ns/activity/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "nextCursor": null
        }
       }
      },
@@ -1489,12 +1352,12 @@
   },
   {
    "id": "GP-GIT-015",
-   "title": "git-ns/activity/list 0.2: the payload examples the specification lists as invalid are refused (8)",
+   "title": "git-ns/activity/list 0.2: the payload examples the specification lists as invalid are refused (4)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/activity/list/0.2: (1) `limit` above the declared maximum of 500. (2) `namespace` empty string violates the shared NamespaceId's minLength. (3) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (4) Unknown top-level payload member — additionalProperties: false catches `resource`, which this task filters by `namespace`, not by an arbitrary resource. (5) Response variant: `action` fails the dot-separated identifier pattern (a bare hyphenated word, not camelCase segments). (6) Response variant: `source` is not one of the two declared values. (7) Response var",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/activity/list/0.2: (1) `limit` above the declared maximum of 500. (2) `namespace` empty string violates the shared NamespaceId's minLength. (3) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (4) Unknown top-level payload member — additionalProperties: false catches `resource`, which this task filters by `namespace`, not by an arbitrary resource.",
     "Trust Tasks specification git-ns/activity/list 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -1609,115 +1472,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "resource": "github.com/acme/widgets"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/activity/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/git-ns/activity/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "items": [
-         {
-          "at": "2026-09-26T08:30:00Z",
-          "action": "git-ns-job-bootstrap",
-          "source": "job"
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/activity/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/git-ns/activity/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "items": [
-         {
-          "at": "2026-09-26T08:30:00Z",
-          "action": "gitNs.job.bootstrap",
-          "source": "queue"
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/activity/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i7)",
-       "type": "https://trusttasks.org/spec/git-ns/activity/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "nextCursor": "c2VxPTEwMA"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/activity/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i8)",
-       "type": "https://trusttasks.org/spec/git-ns/activity/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "items": [],
-        "nextCursor": null
        }
       }
      },
@@ -16155,12 +15909,12 @@
   },
   {
    "id": "GP-GIT-104",
-   "title": "git-ns/bridge/job/list 0.1: the payload examples the specification lists as invalid are refused (6)",
+   "title": "git-ns/bridge/job/list 0.1: the payload examples the specification lists as invalid are refused (4)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/bridge/job/list/0.1: (1) `state` is not one of the six declared queue states. (2) `limit` above the declared maximum of 500. (3) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (4) Unknown top-level payload member — additionalProperties: false catches `resource`, which this task filters by `namespace`, not by an arbitrary resource. (5) Response variant: `kind` is not one of the seven job kinds git-ns/bridge/job/0.4 defines. (6) Response variant: missing required `jobs` member.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/bridge/job/list/0.1: (1) `state` is not one of the six declared queue states. (2) `limit` above the declared maximum of 500. (3) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (4) Unknown top-level payload member — additionalProperties: false catches `resource`, which this task filters by `namespace`, not by an arbitrary resource.",
     "Trust Tasks specification git-ns/bridge/job/list 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -16275,64 +16029,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "resource": "github.com/acme/widgets"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/bridge/job/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/git-ns/bridge/job/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "jobs": [
-         {
-          "jobId": "job_01J8Z8C3D4",
-          "namespace": "ns_01J8Z6Q4M2",
-          "bridgeDid": "did:webvh:QmBridgeScid9:bridge.acme.example",
-          "kind": "deleteRepo",
-          "state": "pending",
-          "attempts": 0,
-          "createdAt": "2026-09-26T08:30:00Z"
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/bridge/job/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/git-ns/bridge/job/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "nextCursor": null
        }
       }
      },
@@ -16699,12 +16395,12 @@
   },
   {
    "id": "GP-GIT-109",
-   "title": "git-ns/bridge/job/list 0.2: the payload examples the specification lists as invalid are refused (9)",
+   "title": "git-ns/bridge/job/list 0.2: the payload examples the specification lists as invalid are refused (4)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/bridge/job/list/0.2: (1) `state` is not one of the six declared queue states. (2) `limit` above the declared maximum of 500. (3) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (4) Unknown top-level payload member — additionalProperties: false catches `resource`, which this task filters by `namespace`, not by an arbitrary resource. (5) Response variant: `kind` is not one of the eight job kinds git-ns/bridge/job/0.5 defines. (6) Response variant: `number` below the declared minimum of 1 — a pull request number is a positive integer. (7) Response variant: `",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/bridge/job/list/0.2: (1) `state` is not one of the six declared queue states. (2) `limit` above the declared maximum of 500. (3) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (4) Unknown top-level payload member — additionalProperties: false catches `resource`, which this task filters by `namespace`, not by an arbitrary resource.",
     "Trust Tasks specification git-ns/bridge/job/list 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -16819,172 +16515,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "resource": "github.com/acme/widgets"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/bridge/job/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/git-ns/bridge/job/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "jobs": [
-         {
-          "jobId": "job_01J8Z8C3D4",
-          "namespace": "ns_01J8Z6Q4M2",
-          "bridgeDid": "did:webvh:QmBridgeScid9:bridge.acme.example",
-          "kind": "deleteRepo",
-          "state": "pending",
-          "attempts": 0,
-          "createdAt": "2026-09-26T08:30:00Z"
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/bridge/job/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/git-ns/bridge/job/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "jobs": [
-         {
-          "jobId": "job_01J8Z8C3D4",
-          "namespace": "ns_01J8Z6Q4M2",
-          "bridgeDid": "did:webvh:QmBridgeScid9:bridge.acme.example",
-          "kind": "closePullRequest",
-          "state": "succeeded",
-          "attempts": 1,
-          "createdAt": "2026-09-26T08:30:00Z",
-          "repo": "github.com/acme/widgets",
-          "number": 0
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/bridge/job/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i7)",
-       "type": "https://trusttasks.org/spec/git-ns/bridge/job/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "jobs": [
-         {
-          "jobId": "job_01J8Z8C3D4",
-          "namespace": "ns_01J8Z6Q4M2",
-          "bridgeDid": "did:webvh:QmBridgeScid9:bridge.acme.example",
-          "kind": "closePullRequest",
-          "state": "succeeded",
-          "attempts": 1,
-          "createdAt": "2026-09-26T08:30:00Z",
-          "number": 42
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/bridge/job/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i8)",
-       "type": "https://trusttasks.org/spec/git-ns/bridge/job/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "jobs": [
-         {
-          "jobId": "job_01J8Z8C3D4",
-          "namespace": "ns_01J8Z6Q4M2",
-          "bridgeDid": "did:webvh:QmBridgeScid9:bridge.acme.example",
-          "kind": "closePullRequest",
-          "state": "succeeded",
-          "attempts": 1,
-          "createdAt": "2026-09-26T08:30:00Z",
-          "repo": "github.com/acme/widgets",
-          "number": 42,
-          "message": "Closed: only members may open pull requests."
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/bridge/job/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i9)",
-       "type": "https://trusttasks.org/spec/git-ns/bridge/job/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "nextCursor": null
        }
       }
      },
@@ -17351,12 +16881,12 @@
   },
   {
    "id": "GP-GIT-114",
-   "title": "git-ns/bridge/job/list 0.3: the payload examples the specification lists as invalid are refused (10)",
+   "title": "git-ns/bridge/job/list 0.3: the payload examples the specification lists as invalid are refused (4)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/bridge/job/list/0.3: (1) `state` is not one of the six declared queue states. (2) `limit` above the declared maximum of 500. (3) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (4) Unknown top-level payload member — additionalProperties: false catches `resource`, which this task filters by `namespace`, not by an arbitrary resource. (5) Response variant: `kind` is not one of the eight job kinds git-ns/bridge/job/0.5 defines. (6) Response variant: `number` below the declared minimum of 1 — a pull request number is a positive integer. (7) Response variant: `",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/bridge/job/list/0.3: (1) `state` is not one of the six declared queue states. (2) `limit` above the declared maximum of 500. (3) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (4) Unknown top-level payload member — additionalProperties: false catches `resource`, which this task filters by `namespace`, not by an arbitrary resource.",
     "Trust Tasks specification git-ns/bridge/job/list 0.3 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -17471,197 +17001,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "resource": "github.com/acme/widgets"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/bridge/job/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/git-ns/bridge/job/list/0.3",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "jobs": [
-         {
-          "jobId": "job_01J8Z8C3D4",
-          "namespace": "ns_01J8Z6Q4M2",
-          "bridgeDid": "did:webvh:QmBridgeScid9:bridge.acme.example",
-          "kind": "deleteRepo",
-          "state": "pending",
-          "attempts": 0,
-          "createdAt": "2026-09-26T08:30:00Z"
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/bridge/job/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/git-ns/bridge/job/list/0.3",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "jobs": [
-         {
-          "jobId": "job_01J8Z8C3D4",
-          "namespace": "ns_01J8Z6Q4M2",
-          "bridgeDid": "did:webvh:QmBridgeScid9:bridge.acme.example",
-          "kind": "closePullRequest",
-          "state": "succeeded",
-          "attempts": 1,
-          "createdAt": "2026-09-26T08:30:00Z",
-          "repo": "github.com/acme/widgets",
-          "number": 0
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/bridge/job/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i7)",
-       "type": "https://trusttasks.org/spec/git-ns/bridge/job/list/0.3",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "jobs": [
-         {
-          "jobId": "job_01J8Z8C3D4",
-          "namespace": "ns_01J8Z6Q4M2",
-          "bridgeDid": "did:webvh:QmBridgeScid9:bridge.acme.example",
-          "kind": "closePullRequest",
-          "state": "succeeded",
-          "attempts": 1,
-          "createdAt": "2026-09-26T08:30:00Z",
-          "number": 42
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/bridge/job/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i8)",
-       "type": "https://trusttasks.org/spec/git-ns/bridge/job/list/0.3",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "jobs": [
-         {
-          "jobId": "job_01J8Z8C3D4",
-          "namespace": "ns_01J8Z6Q4M2",
-          "bridgeDid": "did:webvh:QmBridgeScid9:bridge.acme.example",
-          "kind": "closePullRequest",
-          "state": "succeeded",
-          "attempts": 1,
-          "createdAt": "2026-09-26T08:30:00Z",
-          "repo": "github.com/acme/widgets",
-          "number": 42,
-          "message": "Closed: only members may open pull requests."
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/bridge/job/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i9)",
-       "type": "https://trusttasks.org/spec/git-ns/bridge/job/list/0.3",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "nextCursor": "c2VxPTEwMA"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/bridge/job/list:notAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i10)",
-       "type": "https://trusttasks.org/spec/git-ns/bridge/job/list/0.3",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "jobs": [],
-        "nextCursor": null
        }
       }
      },
@@ -25597,12 +24936,12 @@
   },
   {
    "id": "GP-GIT-180",
-   "title": "git-ns/projection/show 0.1: the payload examples the specification lists as invalid are refused (6)",
+   "title": "git-ns/projection/show 0.1: the payload examples the specification lists as invalid are refused (4)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/projection/show/0.1: (1) `resource` is not forge-qualified — no forge host segment. (2) `limit` below the declared minimum of 1. (3) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (4) Unknown top-level payload member — additionalProperties: false catches `namespace`, which this task filters by `resource`, not by namespace id. (5) Response variant: `context` carries an unrecognised member — the shape is closed, unlike the projector's own internal representation. (6) Response variant: missing required `pendingChanges`.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/projection/show/0.1: (1) `resource` is not forge-qualified — no forge host segment. (2) `limit` below the declared minimum of 1. (3) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (4) Unknown top-level payload member — additionalProperties: false catches `namespace`, which this task filters by `resource`, not by namespace id.",
     "Trust Tasks specification git-ns/projection/show 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -25717,68 +25056,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "namespace": "ns_01J8Z6Q4M2"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/projection/show:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/git-ns/projection/show/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "registryConfigured": true,
-        "published": [
-         {
-          "entity": "did:webvh:QmCarolScid3:acme-vtc.example:carol",
-          "action": "git.repo.own",
-          "resource": "github.com/acme/widgets",
-          "context": {
-           "framework": "https://trusttasks.org/spec/git-ns/right/grant/0.3",
-           "repoId": "812736451"
-          },
-          "publishedAt": "2026-09-23T09:50:05Z"
-         }
-        ],
-        "pendingChanges": 0
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/projection/show:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/git-ns/projection/show/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "registryConfigured": true,
-        "published": []
        }
       }
      },
@@ -26121,12 +25398,12 @@
   },
   {
    "id": "GP-GIT-185",
-   "title": "git-ns/projection/show 0.2: the payload examples the specification lists as invalid are refused (7)",
+   "title": "git-ns/projection/show 0.2: the payload examples the specification lists as invalid are refused (4)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/projection/show/0.2: (1) `resource` is not forge-qualified — no forge host segment. (2) `limit` below the declared minimum of 1. (3) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (4) Unknown top-level payload member — additionalProperties: false catches `namespace`, which this task filters by `resource`, not by namespace id. (5) Response variant: `context` carries an unrecognised member — the shape is closed, unlike the projector's own internal representation. (6) Response variant: missing required `pendingChanges`. (7) Response variant: `nextCursor` is",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/projection/show/0.2: (1) `resource` is not forge-qualified — no forge host segment. (2) `limit` below the declared minimum of 1. (3) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (4) Unknown top-level payload member — additionalProperties: false catches `namespace`, which this task filters by `resource`, not by namespace id.",
     "Trust Tasks specification git-ns/projection/show 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -26241,95 +25518,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "namespace": "ns_01J8Z6Q4M2"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/projection/show:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/git-ns/projection/show/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "registryConfigured": true,
-        "published": [
-         {
-          "entity": "did:webvh:QmCarolScid3:acme-vtc.example:carol",
-          "action": "git.repo.own",
-          "resource": "github.com/acme/widgets",
-          "context": {
-           "framework": "https://trusttasks.org/spec/git-ns/right/grant/0.3",
-           "repoId": "812736451"
-          },
-          "publishedAt": "2026-09-23T09:50:05Z"
-         }
-        ],
-        "pendingChanges": 0
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/projection/show:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/git-ns/projection/show/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "registryConfigured": true,
-        "published": []
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/projection/show:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i7)",
-       "type": "https://trusttasks.org/spec/git-ns/projection/show/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "registryConfigured": true,
-        "published": [],
-        "pendingChanges": [],
-        "nextCursor": null
        }
       }
      },
@@ -40118,12 +39306,12 @@
   },
   {
    "id": "GP-GIT-300",
-   "title": "git-ns/right/issued-by-departed 0.1: the payload examples the specification lists as invalid are refused (5)",
+   "title": "git-ns/right/issued-by-departed 0.1: the payload examples the specification lists as invalid are refused (3)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/right/issued-by-departed/0.1: (1) `limit` below the declared minimum of 1. (2) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (3) Unknown top-level payload member — additionalProperties: false catches `resource`, which this task does not accept (it is not resource-scoped). (4) Response variant: missing required `cascadeOnDeparture`. (5) Response variant: a DepartedGranter entry with no `rights` array.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/right/issued-by-departed/0.1: (1) `limit` below the declared minimum of 1. (2) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (3) Unknown top-level payload member — additionalProperties: false catches `resource`, which this task does not accept (it is not resource-scoped).",
     "Trust Tasks specification git-ns/right/issued-by-departed 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -40214,59 +39402,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "resource": "github.com/acme"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/right/issued-by-departed:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/git-ns/right/issued-by-departed/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "granters": []
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/right/issued-by-departed:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/git-ns/right/issued-by-departed/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "cascadeOnDeparture": false,
-        "granters": [
-         {
-          "granter": "did:webvh:QmGraceScid13:acme-vtc.example:grace"
-         }
-        ]
        }
       }
      },
@@ -40561,12 +39696,12 @@
   },
   {
    "id": "GP-GIT-305",
-   "title": "git-ns/right/issued-by-departed 0.2: the payload examples the specification lists as invalid are refused (6)",
+   "title": "git-ns/right/issued-by-departed 0.2: the payload examples the specification lists as invalid are refused (3)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/right/issued-by-departed/0.2: (1) `limit` below the declared minimum of 1. (2) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (3) Unknown top-level payload member — additionalProperties: false catches `resource`, which this task does not accept (it is not resource-scoped). (4) Response variant: missing required `cascadeOnDeparture`. (5) Response variant: a DepartedGranter entry with no `rights` array. (6) Response variant: `nextCursor` is `null`. The last page omits `nextCursor`; it is never `null`.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/right/issued-by-departed/0.2: (1) `limit` below the declared minimum of 1. (2) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (3) Unknown top-level payload member — additionalProperties: false catches `resource`, which this task does not accept (it is not resource-scoped).",
     "Trust Tasks specification git-ns/right/issued-by-departed 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -40657,85 +39792,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "resource": "github.com/acme"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/right/issued-by-departed:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i4)",
-       "type": "https://trusttasks.org/spec/git-ns/right/issued-by-departed/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "granters": []
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/right/issued-by-departed:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i5)",
-       "type": "https://trusttasks.org/spec/git-ns/right/issued-by-departed/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "cascadeOnDeparture": false,
-        "granters": [
-         {
-          "granter": "did:webvh:QmGraceScid13:acme-vtc.example:grace"
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/right/issued-by-departed:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/git-ns/right/issued-by-departed/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "cascadeOnDeparture": false,
-        "granters": [],
-        "nextCursor": null
        }
       }
      },
@@ -41126,12 +40182,12 @@
   },
   {
    "id": "GP-GIT-310",
-   "title": "git-ns/right/list 0.1: the payload examples the specification lists as invalid are refused (7)",
+   "title": "git-ns/right/list 0.1: the payload examples the specification lists as invalid are refused (5)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/right/list/0.1: (1) `resource` is not forge-qualified — no forge host segment, just an owner/repo pair. (2) `subject` is a DID URL (carries a fragment), not a bare DID — SPEC's `Did` pattern refuses it. (3) `limit` above the declared maximum of 500. (4) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (5) Unknown top-level payload member — additionalProperties: false catches `namespaceId`. (6) Response variant: unrecognised `origin` — the enum is closed to `recorded` and `roleDerived`. (7) Response variant: missing required `rights` member.",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/right/list/0.1: (1) `resource` is not forge-qualified — no forge host segment, just an owner/repo pair. (2) `subject` is a DID URL (carries a fragment), not a bare DID — SPEC's `Did` pattern refuses it. (3) `limit` above the declared maximum of 500. (4) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (5) Unknown top-level payload member — additionalProperties: false catches `namespaceId`.",
     "Trust Tasks specification git-ns/right/list 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -41270,63 +40326,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "namespaceId": "ns_01J8Z6Q4M2"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/right/list:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/git-ns/right/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "rights": [
-         {
-          "subject": "did:webvh:QmCarolScid3:acme-vtc.example:carol",
-          "right": "git.repo.own",
-          "resource": "github.com/acme/widgets",
-          "origin": "inherited",
-          "subjectMember": true,
-          "granterDeparted": false
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/right/list:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i7)",
-       "type": "https://trusttasks.org/spec/git-ns/right/list/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "nextCursor": null
        }
       }
      },
@@ -41717,12 +40716,12 @@
   },
   {
    "id": "GP-GIT-315",
-   "title": "git-ns/right/list 0.2: the payload examples the specification lists as invalid are refused (8)",
+   "title": "git-ns/right/list 0.2: the payload examples the specification lists as invalid are refused (5)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/right/list/0.2: (1) `resource` is not forge-qualified — no forge host segment, just an owner/repo pair. (2) `subject` is a DID URL (carries a fragment), not a bare DID — SPEC's `Did` pattern refuses it. (3) `limit` above the declared maximum of 500. (4) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (5) Unknown top-level payload member — additionalProperties: false catches `namespaceId`. (6) Response variant: unrecognised `origin` — the enum is closed to `recorded` and `roleDerived`. (7) Response variant: missing required `rights` member. (8) Respon",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/git-ns/right/list/0.2: (1) `resource` is not forge-qualified — no forge host segment, just an owner/repo pair. (2) `subject` is a DID URL (carries a fragment), not a bare DID — SPEC's `Did` pattern refuses it. (3) `limit` above the declared maximum of 500. (4) Bare/unnamespaced ext key — SPEC §4.5.1 requires every immediate child of ext to be reverse-DNS namespaced. (5) Unknown top-level payload member — additionalProperties: false catches `namespaceId`.",
     "Trust Tasks specification git-ns/right/list 0.2 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -41861,88 +40860,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "namespaceId": "ns_01J8Z6Q4M2"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/right/list:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/git-ns/right/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "rights": [
-         {
-          "subject": "did:webvh:QmCarolScid3:acme-vtc.example:carol",
-          "right": "git.repo.own",
-          "resource": "github.com/acme/widgets",
-          "origin": "inherited",
-          "subjectMember": true,
-          "granterDeparted": false
-         }
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/right/list:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i7)",
-       "type": "https://trusttasks.org/spec/git-ns/right/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "nextCursor": "c2VxPTEwMA"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied",
-       "git-ns/right/list:notCommunityAdministrator"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i8)",
-       "type": "https://trusttasks.org/spec/git-ns/right/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "rights": [],
-        "nextCursor": null
        }
       }
      },

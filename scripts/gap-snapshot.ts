@@ -21,6 +21,7 @@ import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { packageHas, TYPE_BASE } from "../src/plain/catalog.ts";
+import { readInvalidExamples } from "../src/plain/invalid-examples.ts";
 import { digestPath } from "../src/vectors/source.ts";
 import { jsonHashOfText, specHashOfText } from "../src/vectors/spec-hash.ts";
 
@@ -181,7 +182,7 @@ try {
       requestPolicy: { isBearer: meta["bearer"] === true, isProofRequired: proof.request, isRecipientRequired: partyReq("recipient"), isIssuedAtRequired: issued.request },
       responsePolicy: hasResponse ? { isBearer: meta["bearer"] === true, isProofRequired: proof.response, isRecipientRequired: partyReq("issuer"), isIssuedAtRequired: issued.response } : null,
       errorCodes,
-      invalidExamples: invalid.filter((i) => isObj(i) && "payload" in i).map((i) => ({ note: String(i["note"] ?? ""), payload: i["payload"] })),
+      invalidExamples: readInvalidExamples(invalid),
       examples,
       ...(payloadSchema === undefined ? {} : { payloadSchema }),
       ...(responseSchema === undefined ? {} : { responseSchema }),

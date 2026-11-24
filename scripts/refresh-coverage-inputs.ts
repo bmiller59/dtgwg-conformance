@@ -8,6 +8,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { loadTfManifest } from "../src/vectors/tfref.ts";
 import { INVALID_EXAMPLES_FILE, loadCensus, type InvalidExample } from "../src/coverage/families.ts";
+import { readInvalidExamples } from "../src/plain/invalid-examples.ts";
 
 const argv = process.argv.slice(2);
 const kit = argv[argv.indexOf("--kit") + 1];
@@ -17,10 +18,11 @@ for (const r of loadCensus()) {
   const dir = join(kit, "specs", r.slug, r.version);
   const p = join(dir, "payload.invalid-examples.json");
   if (!existsSync(p)) continue;
-  const list = JSON.parse(readFileSync(p, "utf8")) as InvalidExample[];
+  // the shared reader keeps the `variant` marker: a response entry is never sent as a request (src/plain/invalid-examples.ts)
+  const list = readInvalidExamples(JSON.parse(readFileSync(p, "utf8"))) as InvalidExample[];
   // A list task whose specification says it clamps `limit` serves a `limit` above the maximum: the clamp is documented behaviour, not an error.
   const clamps = /\bclamped to\b/.test(readFileSync(join(dir, "spec.md"), "utf8"));
-  if (list.length > 0) examples[r.type] = list.map((e) => ({ note: e.note, payload: e.payload, ...(clamps && /^`limit`/.test(e.note) && /\b(above|capped)\b/.test(e.note) ? { clamped: true as const } : {}) }));
+  if (list.length > 0) examples[r.type] = list.map((e) => ({ note: e.note, payload: e.payload, ...(e.variant === "response" ? { variant: "response" as const } : {}), ...(clamps && /^`limit`/.test(e.note) && /\b(above|capped)\b/.test(e.note) ? { clamped: true as const } : {}) }));
 }
 const out = { format: "tt-coverage-invalid-examples/0.1", kit: `Trust Tasks task-force repository, origin/main ${loadTfManifest().main.commit} (status draft)`, examples };
 const text = JSON.stringify(out, null, 1) + "\n";

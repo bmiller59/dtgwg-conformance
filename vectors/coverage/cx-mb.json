@@ -422,7 +422,7 @@
    "title": "vtc/directory/disclosure 0.1: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/directory/disclosure 0.1 (task-force repository origin/main bd0c05013, specification status draft): 7 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/directory/disclosure 0.1 (task-force repository origin/main bd0c05013, specification status draft): 2 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/directory/disclosure/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
@@ -513,186 +513,6 @@
       "noSideEffect": true,
       "errorReply": "should"
      }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x3)",
-       "type": "https://trusttasks.org/spec/vtc/directory/disclosure/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "communityDid": "did:webvh:QmVtcScid:kernel-vtc.example",
-        "disclosure": {
-         "fields": [],
-         "newCard": {
-          "listing": "listed",
-          "search": "byName"
-         },
-         "membershipIdentifiers": "admins",
-         "adminNotes": false,
-         "externalCards": false
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x4)",
-       "type": "https://trusttasks.org/spec/vtc/directory/disclosure/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "communityDid": "did:webvh:QmVtcScid:kernel-vtc.example",
-        "disclosure": {
-         "fields": [],
-         "newCard": {
-          "listing": "listed",
-          "search": "byName"
-         },
-         "membershipIdentifiers": "admins",
-         "externalCards": false,
-         "statementDigest": "zQmVmw2GuXQsXe1yJf5xwU2TPvhP5mtwpQ5ACLwK76RAiEV"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x5)",
-       "type": "https://trusttasks.org/spec/vtc/directory/disclosure/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "communityDid": "did:webvh:QmVtcScid:kernel-vtc.example",
-        "disclosure": {
-         "fields": [
-          {
-           "key": "displayName",
-           "label": "Name",
-           "type": "text",
-           "source": "member",
-           "defaultVisibility": "members",
-           "searchable": true
-          }
-         ],
-         "newCard": {
-          "listing": "listed",
-          "search": "byName"
-         },
-         "membershipIdentifiers": "admins",
-         "adminNotes": false,
-         "externalCards": false,
-         "statementDigest": "zQmVmw2GuXQsXe1yJf5xwU2TPvhP5mtwpQ5ACLwK76RAiEV"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x6)",
-       "type": "https://trusttasks.org/spec/vtc/directory/disclosure/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "communityDid": "did:webvh:QmVtcScid:kernel-vtc.example",
-        "disclosure": {
-         "fields": [],
-         "newCard": {
-          "listing": "listed",
-          "search": "byName"
-         },
-         "membershipIdentifiers": "everyone",
-         "adminNotes": false,
-         "externalCards": false,
-         "statementDigest": "zQmVmw2GuXQsXe1yJf5xwU2TPvhP5mtwpQ5ACLwK76RAiEV"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x7)",
-       "type": "https://trusttasks.org/spec/vtc/directory/disclosure/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "communityDid": "did:webvh:QmVtcScid:kernel-vtc.example",
-        "disclosure": {
-         "fields": [],
-         "newCard": {
-          "listing": "listed",
-          "search": "byName"
-         },
-         "membershipIdentifiers": "admins",
-         "adminNotes": false,
-         "groups": {
-          "credentialValidity": "P1M"
-         },
-         "externalCards": false,
-         "statementDigest": "zQmVmw2GuXQsXe1yJf5xwU2TPvhP5mtwpQ5ACLwK76RAiEV"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
     }
    ]
   },
@@ -701,7 +521,7 @@
    "title": "vtc/directory/export 0.2: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/directory/export 0.2 (task-force repository origin/main bd0c05013, specification status draft): 3 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/directory/export 0.2 (task-force repository origin/main bd0c05013, specification status draft): 2 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/directory/export/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
@@ -776,31 +596,6 @@
        "payload": {
         "format": "vcard",
         "reason": "x"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x3)",
-       "type": "https://trusttasks.org/spec/vtc/directory/export/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "items": [],
-        "exportedAt": "$now+1h",
-        "nextCursor": null
        }
       }
      },
@@ -1356,7 +1151,7 @@
    "title": "vtc/directory/notes/list 0.2: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/directory/notes/list 0.2 (task-force repository origin/main bd0c05013, specification status draft): 2 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/directory/notes/list 0.2 (task-force repository origin/main bd0c05013, specification status draft): 1 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/directory/notes/list/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
@@ -1406,30 +1201,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "limit": 10
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x2)",
-       "type": "https://trusttasks.org/spec/vtc/directory/notes/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "items": [],
-        "nextCursor": null
        }
       }
      },
@@ -1543,7 +1314,7 @@
    "title": "vtc/endorsement-types/list 0.2: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/endorsement-types/list 0.2 (task-force repository origin/main bd0c05013, specification status draft): 3 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/endorsement-types/list 0.2 (task-force repository origin/main bd0c05013, specification status draft): 2 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/endorsement-types/list/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
@@ -1616,30 +1387,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "limit": 500
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x3)",
-       "type": "https://trusttasks.org/spec/vtc/endorsement-types/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "items": [],
-        "nextCursor": null
        }
       }
      },
@@ -1907,7 +1654,7 @@
    "title": "vtc/endorsements/list 0.2: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/endorsements/list 0.2 (task-force repository origin/main bd0c05013, specification status draft): 4 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/endorsements/list 0.2 (task-force repository origin/main bd0c05013, specification status draft): 3 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/endorsements/list/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
@@ -2003,30 +1750,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "__x__": true
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x4)",
-       "type": "https://trusttasks.org/spec/vtc/endorsements/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "items": [],
-        "nextCursor": null
        }
       }
      },
@@ -2374,7 +2097,7 @@
    "title": "vtc/join-requests/list 0.2: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/join-requests/list 0.2 (task-force repository origin/main bd0c05013, specification status draft): 4 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/join-requests/list 0.2 (task-force repository origin/main bd0c05013, specification status draft): 3 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/join-requests/list/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
@@ -2482,30 +2205,6 @@
       "noSideEffect": true,
       "errorReply": "should"
      }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x4)",
-       "type": "https://trusttasks.org/spec/vtc/join-requests/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "items": [],
-        "nextCursor": null
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
     }
    ]
   },
@@ -2514,7 +2213,7 @@
    "title": "vtc/join-requests/query 0.1: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/join-requests/query 0.1 (task-force repository origin/main bd0c05013, specification status draft): 5 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/join-requests/query 0.1 (task-force repository origin/main bd0c05013, specification status draft): 3 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/join-requests/query/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
@@ -2613,64 +2312,6 @@
        "payload": {
         "holderDid": "prospect@example.org",
         "criterionId": "membership"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x4)",
-       "type": "https://trusttasks.org/spec/vtc/join-requests/query/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "threadId": "urn:uuid:9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
-        "holderDid": "did:example:prospect",
-        "query": {
-         "dcql_query": {},
-         "nonce": "n",
-         "purpose": "p"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x5)",
-       "type": "https://trusttasks.org/spec/vtc/join-requests/query/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "threadId": "t",
-        "holderDid": "did:example:prospect",
-        "query": {
-         "dcql_query": {},
-         "nonce": "n"
-        },
-        "delivered": false
        }
       }
      },
@@ -2783,12 +2424,12 @@
    "title": "vtc/join-requests/vetting/show 0.1: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/join-requests/vetting/show 0.1 (task-force repository origin/main bd0c05013, specification status draft): 5 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/join-requests/vetting/show 0.1 (task-force repository origin/main bd0c05013, specification status draft): 2 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/join-requests/vetting/show/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
-    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 3, 4, 5."
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 3, 3, 3."
    ],
    "clarify": null,
    "requires": [
@@ -2867,193 +2508,6 @@
       "noSideEffect": true,
       "errorReply": "should"
      }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x3)",
-       "type": "https://trusttasks.org/spec/vtc/join-requests/vetting/show/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "requestId": "0f8e7d6c-5b4a-4938-8271-605f4e3d2c1b",
-        "vetting": {
-         "criterionId": "membership",
-         "requirementsDigest": "zQmNLei78zWmzUdbeRB3CiUfAizWUrbeeZh5K1rhAQKCh51",
-         "applicantDigestMatches": true,
-         "statements": [
-          {
-           "id": "urn:uuid:5e4d3c2b-1a09-4f8e-9d7c-6b5a4f3e2d1c",
-           "issuer": "did:example:vetter",
-           "verified": true,
-           "eligible": true,
-           "revoked": false,
-           "withdrawnNow": true,
-           "method": "phone",
-           "declaredRelationship": "none",
-           "counted": true,
-           "failures": []
-          }
-         ],
-         "distinctCountedVetters": 1,
-         "byMethod": {
-          "inPerson": 1
-         },
-         "commitmentsConsistent": true,
-         "independenceOk": true,
-         "invitationRequired": false,
-         "satisfied": false,
-         "needs": [
-          "vetting:minStatements"
-         ],
-         "recordedAt": "$now+1h"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x4)",
-       "type": "https://trusttasks.org/spec/vtc/join-requests/vetting/show/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "requestId": "0f8e7d6c-5b4a-4938-8271-605f4e3d2c1b",
-        "vetting": {
-         "criterionId": "membership",
-         "requirementsDigest": "zQmNLei78zWmzUdbeRB3CiUfAizWUrbeeZh5K1rhAQKCh51",
-         "applicantDigestMatches": true,
-         "statements": [
-          {
-           "id": "urn:uuid:5e4d3c2b-1a09-4f8e-9d7c-6b5a4f3e2d1c",
-           "issuer": "did:example:vetter",
-           "verified": true,
-           "eligible": true,
-           "revoked": false,
-           "withdrawnNow": true,
-           "method": "inPerson",
-           "declaredRelationship": "none",
-           "counted": true,
-           "failures": []
-          },
-          {
-           "id": "urn:uuid:6f5e4d3c-2b1a-4098-8e7d-7c6b5a4f3e2d",
-           "issuer": "did:example:vetter-2",
-           "verified": true,
-           "eligible": false,
-           "revoked": false,
-           "withdrawnNow": false,
-           "method": "video",
-           "counted": false,
-           "failures": [
-            "vetting:ineligibleVetter"
-           ]
-          }
-         ],
-         "distinctCountedVetters": 1,
-         "byMethod": {
-          "inPerson": 1
-         },
-         "commitmentsConsistent": true,
-         "independenceOk": true,
-         "invitationRequired": false,
-         "needs": [
-          "vetting:minStatements"
-         ],
-         "recordedAt": "$now+1h"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x5)",
-       "type": "https://trusttasks.org/spec/vtc/join-requests/vetting/show/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "requestId": "0f8e7d6c-5b4a-4938-8271-605f4e3d2c1b",
-        "vetting": {
-         "criterionId": "membership",
-         "requirementsDigest": "zQmNLei78zWmzUdbeRB3CiUfAizWUrbeeZh5K1rhAQKCh51",
-         "applicantDigestMatches": true,
-         "statements": [
-          {
-           "id": "urn:uuid:5e4d3c2b-1a09-4f8e-9d7c-6b5a4f3e2d1c",
-           "issuer": "did:example:vetter",
-           "verified": true,
-           "eligible": true,
-           "revoked": false,
-           "withdrawnNow": true,
-           "method": "inPerson",
-           "declaredRelationship": "none",
-           "counted": true,
-           "failures": []
-          },
-          {
-           "id": "urn:uuid:6f5e4d3c-2b1a-4098-8e7d-7c6b5a4f3e2d",
-           "issuer": "did:example:vetter-2",
-           "verified": true,
-           "eligible": false,
-           "revoked": false,
-           "withdrawnNow": false,
-           "method": "video",
-           "counted": false,
-           "failures": [
-            "vetting:ineligibleVetter"
-           ]
-          }
-         ],
-         "distinctCountedVetters": 1,
-         "byMethod": {
-          "postal": 1
-         },
-         "commitmentsConsistent": true,
-         "independenceOk": true,
-         "invitationRequired": false,
-         "satisfied": false,
-         "needs": [
-          "vetting:minStatements"
-         ],
-         "recordedAt": "$now+1h"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
     }
    ]
   },
@@ -3062,12 +2516,12 @@
    "title": "vtc/join-requests/wallet-session/start 0.1: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/join-requests/wallet-session/start 0.1 (task-force repository origin/main bd0c05013, specification status draft): 8 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/join-requests/wallet-session/start 0.1 (task-force repository origin/main bd0c05013, specification status draft): 5 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/join-requests/wallet-session/start/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
-    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 6, 7, 8."
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 6, 6, 6."
    ],
    "clarify": null,
    "requires": [
@@ -3220,90 +2674,6 @@
       "noSideEffect": true,
       "errorReply": "should"
      }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x6)",
-       "type": "https://trusttasks.org/spec/vtc/join-requests/wallet-session/start/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "sessionId": "q7Xw2LmN9pRt4VbK8sYc3Hd6",
-        "clientId": "x509_hash:abc",
-        "dcqlQuery": {
-         "credentials": []
-        },
-        "expiresAt": "$now+1h"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x7)",
-       "type": "https://trusttasks.org/spec/vtc/join-requests/wallet-session/start/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "sessionId": "abc",
-        "walletUri": "openid4vp://?client_id=x&request_uri=y",
-        "clientId": "x509_hash:abc",
-        "dcqlQuery": {
-         "credentials": []
-        },
-        "expiresAt": "$now+1h"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x8)",
-       "type": "https://trusttasks.org/spec/vtc/join-requests/wallet-session/start/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "sessionId": "q7Xw2LmN9pRt4VbK8sYc3Hd6",
-        "walletUri": "openid4vp://?client_id=x&request_uri=y",
-        "clientId": "x509_hash:abc",
-        "dcqlQuery": "residence",
-        "expiresAt": "$now+1h"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
     }
    ]
   },
@@ -3312,12 +2682,12 @@
    "title": "vtc/join-requests/wallet-session/status 0.1: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/join-requests/wallet-session/status 0.1 (task-force repository origin/main bd0c05013, specification status draft): 7 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/join-requests/wallet-session/status 0.1 (task-force repository origin/main bd0c05013, specification status draft): 2 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/join-requests/wallet-session/status/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
-    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 3, 4, 5, 6, 7."
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: steps 3, 3, 3, 3, 3."
    ],
    "clarify": null,
    "requires": [
@@ -3385,172 +2755,6 @@
        "payload": {
         "sessionId": "q7Xw2LmN9pRt4VbK8sYc3Hd6",
         "__x__": true
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x3)",
-       "type": "https://trusttasks.org/spec/vtc/join-requests/wallet-session/status/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "sessionId": "q7Xw2LmN9pRt4VbK8sYc3Hd6",
-        "state": "accepted",
-        "expiresAt": "$now+1h"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x4)",
-       "type": "https://trusttasks.org/spec/vtc/join-requests/wallet-session/status/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "sessionId": "q7Xw2LmN9pRt4VbK8sYc3Hd6",
-        "state": "presented",
-        "expiresAt": "$now+1h",
-        "evidence": {
-         "satisfied": true,
-         "holder": "did:key:zDnaerDaTF5BXEavCrfRZEk316dpbLsfPDZ3WJ5hRTPFU2169",
-         "credentials": [
-          {
-           "credentialQueryId": "residence",
-           "format": "dc+sd-jwt",
-           "issuer": "did:web:issuer.example"
-          }
-         ],
-         "claims": {
-          "address": {
-           "country": "CH"
-          }
-         }
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x5)",
-       "type": "https://trusttasks.org/spec/vtc/join-requests/wallet-session/status/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "sessionId": "q7Xw2LmN9pRt4VbK8sYc3Hd6",
-        "state": "presented",
-        "expiresAt": "$now+1h",
-        "evidence": {
-         "satisfied": true,
-         "holder": "did:key:zDnaerDaTF5BXEavCrfRZEk316dpbLsfPDZ3WJ5hRTPFU2169",
-         "credentials": [
-          {
-           "credentialQueryId": "residence",
-           "format": "dc+sd-jwt",
-           "issuer": "did:web:issuer.example",
-           "disclosures": [
-            "WyJzYWx0IiwiY291bnRyeSIsIkNIIl0"
-           ]
-          }
-         ]
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x6)",
-       "type": "https://trusttasks.org/spec/vtc/join-requests/wallet-session/status/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "sessionId": "q7Xw2LmN9pRt4VbK8sYc3Hd6",
-        "state": "presented",
-        "expiresAt": "$now+1h",
-        "evidence": {
-         "satisfied": true,
-         "credentials": [
-          {
-           "credentialQueryId": "residence",
-           "format": "dc+sd-jwt",
-           "issuer": "did:web:issuer.example"
-          }
-         ]
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x7)",
-       "type": "https://trusttasks.org/spec/vtc/join-requests/wallet-session/status/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "sessionId": "q7Xw2LmN9pRt4VbK8sYc3Hd6",
-        "state": "refused",
-        "expiresAt": "$now+1h",
-        "reason": "access_denied"
        }
       }
      },
@@ -3903,7 +3107,7 @@
    "title": "vtc/members/list 0.2: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/members/list 0.2 (task-force repository origin/main bd0c05013, specification status draft): 4 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/members/list 0.2 (task-force repository origin/main bd0c05013, specification status draft): 3 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/members/list/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
@@ -3999,30 +3203,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "limit": 0
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x4)",
-       "type": "https://trusttasks.org/spec/vtc/members/list/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "items": [],
-        "nextCursor": null
        }
       }
      },
@@ -5871,7 +5051,7 @@
    "title": "vtc/relationships/list 0.3: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/relationships/list 0.3 (task-force repository origin/main bd0c05013, specification status draft): 4 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/relationships/list 0.3 (task-force repository origin/main bd0c05013, specification status draft): 3 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/relationships/list/0.3/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
@@ -5982,30 +5162,6 @@
       ],
       "noSideEffect": true
      }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x4)",
-       "type": "https://trusttasks.org/spec/vtc/relationships/list/0.3",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "items": [],
-        "nextCursor": null
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
     }
    ]
   },
@@ -6106,12 +5262,12 @@
    "title": "vtc/relationships/restore 0.2: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/relationships/restore 0.2 (task-force repository origin/main bd0c05013, specification status draft): 4 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/relationships/restore 0.2 (task-force repository origin/main bd0c05013, specification status draft): 2 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/relationships/restore/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
-    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: step 4.",
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: step 3.",
     "Destructive task: only payloads that fail the schema are sent (nothing is sent that could be executed)."
    ],
    "clarify": null,
@@ -6179,60 +5335,6 @@
        "issuedAt": "$now+0s",
        "payload": {
         "id": "edge-1"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x3)",
-       "type": "https://trusttasks.org/spec/vtc/relationships/restore/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "id": "4f3e2d1c-0b9a-4887-9766-5544332211aa",
-        "state": {
-         "state": "yes",
-         "restoredBy": "did:example:administrator"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x4)",
-       "type": "https://trusttasks.org/spec/vtc/relationships/restore/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "id": "4f3e2d1c-0b9a-4887-9766-5544332211aa",
-        "state": {
-         "state": "withdrawn",
-         "at": "$now+1h"
-        }
        }
       }
      },
@@ -6489,12 +5591,12 @@
    "title": "vtc/relationships/suspend 0.2: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/relationships/suspend 0.2 (task-force repository origin/main bd0c05013, specification status draft): 6 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/relationships/suspend 0.2 (task-force repository origin/main bd0c05013, specification status draft): 4 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/relationships/suspend/0.2/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision, and 8.3 gives permissionDenied for a requester who is not authorised, so this vector accepts malformedRequest, permissionDenied or (where the task's front matter names one) the task's own standing code, and fixes no check order. An answer from an object lookup (taskFailed, a not-found code) is not accepted: it is what a consumer that never validated the payload gives (7.2 item 2 is a MUST). noSideEffect still holds.",
-    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: step 6."
+    "The example payloads are copied verbatim except their RFC 3339 timestamps, which are rewritten to offsets from the run clock ($now) so a fixed date is never stale at run time: step 5."
    ],
    "clarify": null,
    "requires": [
@@ -6624,59 +5726,6 @@
       "noSideEffect": true,
       "errorReply": "should"
      }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x5)",
-       "type": "https://trusttasks.org/spec/vtc/relationships/suspend/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "id": "4f3e2d1c-0b9a-4887-9766-5544332211aa",
-        "state": {
-         "state": "paused"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x7)",
-       "type": "https://trusttasks.org/spec/vtc/relationships/suspend/0.2",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "id": "4f3e2d1c-0b9a-4887-9766-5544332211aa",
-        "state": {
-         "state": "withdrawn",
-         "at": "$now+1h"
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
     }
    ]
   },
@@ -6685,7 +5734,7 @@
    "title": "vtc/roles/define 0.1: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/roles/define 0.1 (task-force repository origin/main bd0c05013, specification status draft): 8 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/roles/define 0.1 (task-force repository origin/main bd0c05013, specification status draft): 7 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/roles/define/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
@@ -6909,33 +5958,6 @@
       "noSideEffect": true,
       "errorReply": "should"
      }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x8)",
-       "type": "https://trusttasks.org/spec/vtc/roles/define/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "role": {
-         "name": "events-team",
-         "ceiling": [],
-         "approveScope": []
-        }
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
     }
    ]
   },
@@ -6944,7 +5966,7 @@
    "title": "vtc/roles/delete 0.1: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/roles/delete 0.1 (task-force repository origin/main bd0c05013, specification status draft): 4 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/roles/delete 0.1 (task-force repository origin/main bd0c05013, specification status draft): 3 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/roles/delete/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
@@ -7042,29 +6064,6 @@
        "payload": {
         "name": "events-team",
         "force": true
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x4)",
-       "type": "https://trusttasks.org/spec/vtc/roles/delete/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "deleted": true
        }
       }
      },
@@ -7180,7 +6179,7 @@
    "title": "vtc/roles/show 0.1: the payloads the task force lists as invalid for this task are refused",
    "tier": 1,
    "spec": [
-    "payload.invalid-examples.json of vtc/roles/show 0.1 (task-force repository origin/main bd0c05013, specification status draft): 5 example(s) that the payload schema also rejects",
+    "payload.invalid-examples.json of vtc/roles/show 0.1 (task-force repository origin/main bd0c05013, specification status draft): 3 example(s) that the payload schema also rejects",
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type)",
     "specs/vtc/roles/show/0.1/spec.md (task-force repository origin/main bd0c05013, specification status draft)",
     "The examples are the task force's own text, not derived from the registry schema",
@@ -7275,66 +6274,6 @@
        "payload": {
         "name": "moderator",
         "includeHolders": true
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x4)",
-       "type": "https://trusttasks.org/spec/vtc/roles/show/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "role": {
-         "name": "moderator",
-         "builtIn": true,
-         "ceiling": [],
-         "approveScope": []
-        },
-        "holders": [
-         "did:web:alice.example"
-        ]
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true,
-      "errorReply": "should"
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(x5)",
-       "type": "https://trusttasks.org/spec/vtc/roles/show/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "role": {
-         "name": "moderator",
-         "builtIn": true,
-         "ceiling": [],
-         "approveScope": []
-        },
-        "holders": -1
        }
       }
      },

@@ -8,6 +8,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { exampleExtended } from "./schema.ts";
 import type { PlainPolicy, PlainTask } from "./catalog.ts";
+import type { InvalidExampleEntry } from "./invalid-examples.ts";
 
 export interface SnapshotTask {
   typeUri: string; slug: string; version: string; family: string; title: string;
@@ -21,7 +22,8 @@ export interface SnapshotTask {
   /** Set only for a version that is not on main: the pull request (label `pr#<n>`) or branch revision the text was read from. */
   origin?: { label: string; rev: string; sha: string };
   errorCodes: string[];
-  invalidExamples: { note: string; payload: unknown }[];
+  /** Every entry of payload.invalid-examples.json, with its `variant` marker kept (src/plain/invalid-examples.ts). */
+  invalidExamples: InvalidExampleEntry[];
   examples: { payload: unknown }[];
   payloadSchema?: Record<string, unknown>;
   responseSchema?: Record<string, unknown>;

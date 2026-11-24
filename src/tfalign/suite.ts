@@ -12,7 +12,9 @@ const CER_MENTION = /\bceremonies\/([a-z0-9_/-]+\/\d+\.\d+)\/ceremony\.json(?: \
 export type J = Record<string, unknown>;
 const isObj = (v: unknown): v is J => typeof v === "object" && v !== null && !Array.isArray(v);
 
-export interface DocUse { vectorId: string; file: string; typeUri: string; payload: unknown }
+/** A document a vector or scenario carries. `variant` is "response" when its `type` carries `#response`. `refusing` is whether the step that sends it
+ * expects a refusal (disposition error or any-refusal); null when the document is not inside a step with such an expectation (a ceremony scenario). */
+export interface DocUse { vectorId: string; file: string; typeUri: string; payload: unknown; variant: "request" | "response"; refusing: boolean | null }
 export interface VectorRef { id: string; file: string; kind: "vector" | "scenario"; text: string; tfPaths: string[]; /** the file the vector itself cites (tfRef.repoPath), the one its recorded hash belongs to */ ownPath: string | null; /** set when the vector cites a pull request or branch (tfRef.status "pr"): the head commit it follows */ prHead: string | null; tfCommit: string | null; specHash: string | null; schemaHash: string | null; fixture: string | null }
 export interface SuiteFacts {
   files: string[];
@@ -39,11 +41,13 @@ function listJson(dir: string, base: string, out: string[]): void {
   }
 }
 
-function walkDocs(x: unknown, hit: (d: J) => void): void {
-  if (Array.isArray(x)) { for (const e of x) walkDocs(e, hit); return; }
+/** Visits every object; `step` is the nearest enclosing object whose `expect` is an object with a `disposition` (a vector step), or null. */
+function walkDocs(x: unknown, hit: (d: J, step: J | null) => void, step: J | null = null): void {
+  if (Array.isArray(x)) { for (const e of x) walkDocs(e, hit, step); return; }
   if (!isObj(x)) return;
-  hit(x);
-  for (const v of Object.values(x)) walkDocs(v, hit);
+  const here = isObj(x["expect"]) && typeof x["expect"]["disposition"] === "string" ? x : step;
+  hit(x, here);
+  for (const v of Object.values(x)) walkDocs(v, hit, here);
 }
 
 export function loadSuiteFacts(suiteRoot: string): SuiteFacts {
@@ -81,10 +85,11 @@ export function loadSuiteFacts(suiteRoot: string): SuiteFacts {
         e.scenarios.add(id); if (m[2] !== undefined) e.sha256.add(m[2]); f.ceremonyMentions.set(m[1]!, e);
       }
       if (typeof origin["fixture"] === "string") { const s = f.fixtureUse.get(origin["fixture"]) ?? new Set<string>(); s.add(id); f.fixtureUse.set(origin["fixture"], s); }
-      walkDocs(it, (o) => {
+      walkDocs(it, (o, step) => {
         if (typeof o["type"] === "string" && o["type"].startsWith(TYPE_BASE) && "payload" in o) {
           const t = o["type"].split("#")[0]!;
-          f.docs.push({ vectorId: id, file: r, typeUri: t, payload: o["payload"] }); f.stepTypes.add(t);
+          const disp = step === null ? null : String((step["expect"] as J)["disposition"]);
+          f.docs.push({ vectorId: id, file: r, typeUri: t, payload: o["payload"], variant: o["type"].endsWith("#response") ? "response" : "request", refusing: disp === null ? null : disp === "error" || disp === "any-refusal" }); f.stepTypes.add(t);
         }
         if (isObj(o["emit"]) && typeof o["emit"]["type"] === "string") f.stepTypes.add(o["emit"]["type"].split("#")[0]!);
         if (isObj(o["payloadFrom"]) && typeof o["payloadFrom"]["file"] === "string" && typeof o["payloadFrom"]["index"] === "number") {

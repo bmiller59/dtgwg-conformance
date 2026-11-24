@@ -58,8 +58,11 @@ const sha = (p: string): string => createHash("sha256").update(readFileSync(p)).
 function snapshot(dir: string, out: string[] = []): string[] { for (const n of readdirSync(dir).sort()) { const p = join(dir, n); if (statSync(p).isDirectory()) snapshot(p, out); else out.push(`${p}:${sha(p)}:${statSync(p).mtimeMs}`); } return out; }
 
 describe("tf-alignment: building blocks", () => {
-  it("a vector token matches any value; everything else must be equal", () => {
-    assert.ok(payloadMatches({ a: "$id(x)", b: [1, { c: "$now+0s" }] }, { a: "anything", b: [1, { c: 7 }] }));
+  it("a vector token matches a value of its own kind only; everything else must be equal", () => {
+    assert.ok(payloadMatches({ a: "$id(x)", b: [1, { c: "$now+0s" }] }, { a: "anything", b: [1, { c: "2026-11-12T10:00:00Z" }] }));
+    assert.ok(!payloadMatches({ c: "$now+1h" }, { c: "last Tuesday" }), "a clock token matches only an RFC 3339 date-time");
+    assert.ok(!payloadMatches({ c: "$now+0s" }, { c: 7 }), "a token matches only a string");
+    assert.ok(!payloadMatches({ a: "$id(x)" }, { a: { nested: 1 } }));
     assert.ok(!payloadMatches({ a: 1 }, { a: 1, b: 2 }), "a member the example lacks or has extra is a difference");
     assert.ok(!payloadMatches({ a: "x" }, { a: "y" }));
     assert.ok(!payloadMatches([1], [1, 2]));

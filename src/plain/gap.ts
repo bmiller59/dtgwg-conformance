@@ -3,6 +3,7 @@
 // snapshot (vectors-src/gap/tf-snapshot.json) where it does not, joined to the facts the specification states (policy, error codes,
 // its own invalid payload examples and request examples). Shared by scripts/generate-gap.ts and the reference oracle.
 import { loadTask, type PlainTask } from "./catalog.ts";
+import { classifyInvalidExample, FORMAT_ONLY_REASON, RESPONSE_ENTRY_REASON, SCHEMA_ACCEPTED_REASON } from "./invalid-examples.ts";
 import { exampleExtended, validate } from "./schema.ts";
 import { loadSnapshot, type SnapshotTask } from "./snapshot.ts";
 
@@ -60,11 +61,13 @@ export function gapTasks(families: readonly string[] = GAP_FAMILIES): GapTask[] 
       else dropped.push({ kind: "example", note: `request example ${i + 1}`, reason: `the task's own payload schema refuses it: ${errs[0]}` });
     }
     const invalid: GapTask["invalid"] = [];
+    // each entry is classified against the schema of its own variant (the `variant` marker, never the note text), with and without `format` asserted
     for (const e of snap.invalidExamples) {
-      if (validate(root, e.payload).length > 0) invalid.push(e);
-      else if (/\b(response|answers?)\b/i.test(e.note) && t.responseSchema !== undefined && validate(t.responseSchema, e.payload).length > 0) dropped.push({ kind: "response-example", note: e.note.slice(0, 160), reason: "the example is for the response payload (the response schema refuses it); the request schema accepts it, so it is not sent as a request" });
-      else if (/RFC 3339|date-time/i.test(e.note)) dropped.push({ kind: "format-only", note: e.note.slice(0, 160), reason: "invalid only by `format: date-time`, which JSON Schema 2020-12 treats as an annotation unless a consumer asserts it; the specification does not say whether a consumer must (a specification question)" });
-      else dropped.push({ kind: "invalid-example", note: e.note.slice(0, 160), reason: "the payload schema accepts it (the specification lists it as invalid)" });
+      const c = classifyInvalidExample({ request: root, response: t.responseSchema }, e);
+      if (c.variant === "response") dropped.push({ kind: "response-example", note: e.note.slice(0, 160), reason: `${RESPONSE_ENTRY_REASON}; ${c.class === "refused" ? "the response schema refuses it" : c.class === "format-only" ? "the response schema refuses it only with `format` asserted" : c.class === "no-schema" ? "no response schema is available for this version" : "the response schema accepts it"}` });
+      else if (c.class === "refused") invalid.push(e);
+      else if (c.class === "format-only") dropped.push({ kind: "format-only", note: e.note.slice(0, 160), reason: `${FORMAT_ONLY_REASON} (${c.error ?? ""})` });
+      else dropped.push({ kind: "invalid-example", note: e.note.slice(0, 160), reason: SCHEMA_ACCEPTED_REASON });
     }
     const built = t.validPayload ?? exampleExtended(root);
     const valid = built ?? examples[0]?.payload;

@@ -118,7 +118,8 @@ export function buildDrafts(t: PlainTask, opts: { withA: boolean }): Built {
     // O-15: an RFC 3339 literal of the example is rewritten to a `$now` offset (a fixed date would be stale at run time); the cite says where
     if (JSON.stringify(pl) !== JSON.stringify(tokenizeRoles(e.payload, { n: false }))) rewrittenSteps.push(xSteps.length + 1);
     // an example that carries a role value is left out: its invalidity may rest on that value, and no vector fixes a role value
-    if (local.n || validate(root, e.payload as J).length === 0) { dropped++; return; }
+    // a response entry (`variant: response`) is an invalid reply: it is never sent as a request (src/plain/invalid-examples.ts)
+    if (e.variant === "response" || local.n || validate(root, e.payload as J).length === 0) { dropped++; return; }
     if (!isObj(pl) && !Array.isArray(pl)) { dropped++; return; }
     const documented = (DOCUMENTED_REFUSALS[label] ?? []).filter((d) => e.note.startsWith(d.note));
     const codes = [...codesFor(pl), ...documented.map((d) => d.code)];

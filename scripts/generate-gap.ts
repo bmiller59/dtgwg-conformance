@@ -9,7 +9,8 @@
 // own request examples (src/plain/gap-build.ts). No role, role meaning or authority rule is fixed (docs/02 section 5).
 import { labelVersionRole } from "../src/vectors/version-role.ts";
 import { applyErrorReply } from "../src/vectors/error-reply.ts";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { assignStableIds, taskKindKey } from "../src/vectors/stable-ids.ts";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadVectors } from "../src/coverage/matrix/vectors.ts";
@@ -31,6 +32,10 @@ const snap = loadSnapshot();
 const held = new Set<string>();
 // the seeded probes (set "probe") name the tasks that seed their state (rooms/create at the version the probed task links, O-05): a seed is not coverage of that task, so it does not hold it back from the gap set
 for (const v of loadVectors(root).vectors) if (v.set !== "gap" && v.set !== "probe") for (const t of v.tasks) held.add(t);
+// Held back pending the owner's decision: until response entries stopped being sent as requests, these versions were named only inside such a
+// payload of a coverage vector, which kept them out of this set. Whether to add gap vectors for them (new ids, not yet run by any platform) is open.
+const PENDING_DECISION = ["https://trusttasks.org/spec/vtc/elections/show/0.5", "https://trusttasks.org/spec/vtc/operator/offline-write/0.2"];
+for (const t of PENDING_DECISION) held.add(t);
 
 function sourceOf(g: GapTask, id: string): { source: VectorSource; excluded?: { reason: string; note: string } } {
   const s = g.snap;
@@ -50,6 +55,11 @@ function sourceOf(g: GapTask, id: string): { source: VectorSource; excluded?: { 
   void id;
 }
 
+// Ids are never reused or deleted (docs/04 section 20.3): a vector keeps the id the committed file gives the vector of the same task and kind, a new
+// vector takes the next number after every id its group has issued, and a committed vector no longer generated stays as a tombstone (src/vectors/stable-ids.ts).
+const LEDGER = (JSON.parse(readFileSync(join(root, "vectors-src", "id-ledger.json"), "utf8")) as { ids: string[] }).ids;
+const RETIRE = { reason: "no longer generated: every step it had sent a response entry (`variant: response`) of payload.invalid-examples.json as a request; a response entry is an invalid reply and is never sent as a request (src/plain/invalid-examples.ts)", since: "0.1.0-draft" };
+const stable = (group: string, list: Vector[]): Vector[] => assignStableIds(list, { group, committedFile: join(root, "vectors", "gap", `${group.toLowerCase()}.json`), ledger: LEDGER, keyOf: taskKindKey, retire: RETIRE });
 const files: VectorFile[] = [];
 const notGenerated: Record<string, unknown>[] = [];
 const covered: Record<string, number> = {};
@@ -67,7 +77,7 @@ for (const fam of GAP_FAMILIES) {
     // class C: nothing in the text beyond the closed-payload and policy mechanics (no required member, no constraint, no example of its own)
     if (!responseOnly && !built.some((b) => /missing any one required|breaks a constraint|listed as invalid|request examples in the specification/.test(b.title))) notGenerated.push({ typeUri: g.snap.typeUri, kind: "thin-text", class: "C", note: `${g.snap.slug} ${g.snap.version}: the payload schema states no required member and no checkable constraint, and the specification carries no request or invalid example`, reason: "only the shared mechanics vectors (payload schema, declared policy, issuedAt, a valid request answered) are written; nothing more can be derived from the text without inventing behaviour" });
     for (const v of built) {
-      v.id = `${GAP_GROUPS[fam]}-${String(n++).padStart(3, "0")}`;
+      v.id = `${GAP_GROUPS[fam]}-new-${n++}`;
       if ((v.mutants ?? []).length === 0) delete v.mutants;
       const { source, excluded } = sourceOf(g, v.id);
       const out: Record<string, unknown> = {};
@@ -76,13 +86,14 @@ for (const fam of GAP_FAMILIES) {
       vectors.push(out as unknown as Vector);
     }
   }
-  if (vectors.length > 0) files.push({ format: "tt-conformance-vectors/0.1", group: GAP_GROUPS[fam]!, family: "gap", clock: { start: T0 }, vectors });
+  const kept = stable(GAP_GROUPS[fam]!, vectors);
+  if (kept.length > 0) files.push({ format: "tt-conformance-vectors/0.1", group: GAP_GROUPS[fam]!, family: "gap", clock: { start: T0 }, vectors: kept });
   // the producer class: one emit vector per task version
   const emits: Vector[] = [];
   let m = 1;
   for (const g of tasks) {
     const v = buildGapEmit(g, snap.tfCommit);
-    v.id = `${GAP_EMIT_GROUPS[fam]}-${String(m++).padStart(3, "0")}`;
+    v.id = `${GAP_EMIT_GROUPS[fam]}-new-${m++}`;
     if ((v.mutants ?? []).length === 0) delete v.mutants;
     const { source, excluded } = sourceOf(g, v.id);
     const out: Record<string, unknown> = {};
@@ -90,13 +101,13 @@ for (const fam of GAP_FAMILIES) {
     if (excluded !== undefined) out["excludedFromRun"] = excluded;
     emits.push(out as unknown as Vector);
   }
-  files.push({ format: "tt-conformance-vectors/0.1", group: GAP_EMIT_GROUPS[fam]!, family: "gap", clock: { start: T0 }, vectors: emits });
+  files.push({ format: "tt-conformance-vectors/0.1", group: GAP_EMIT_GROUPS[fam]!, family: "gap", clock: { start: T0 }, vectors: stable(GAP_EMIT_GROUPS[fam]!, emits) });
 }
 mkdirSync(outDir, { recursive: true });
 // every gap CLARIFY vector is the same one rule (issuedAt is REQUIRED; the text names neither the rejection nor its code): class spec-silent, no drafted question
 const meta = loadClarifyMeta(root, { coverage: false });
 const gapMeta: Record<string, { class: ClarifyClass; since: string; questions: string[] }> = {};
-for (const f of files) for (const v of f.vectors) if (v.clarify !== null) gapMeta[v.id] = { class: "spec-silent", since: "2026-11-19", questions: [] };
+for (const f of files) for (const v of f.vectors) if (v.clarify !== null && v.retired === undefined) gapMeta[v.id] = { class: "spec-silent", since: "2026-11-19", questions: [] };
 applyClarifyMeta(files, { ...meta, vectors: { ...meta.vectors, ...gapMeta } });
 applyErrorReply(files);
 labelVersionRole(files);
@@ -106,5 +117,5 @@ if (promoted.length > 0) console.log(`  ${promoted.length} vector(s) promoted to
 writeFileSync(join(outDir, "clarify-classes.json"), JSON.stringify({ format: "tt-conformance-clarify-classes/0.1", note: "Written by scripts/generate-gap.ts: every gap CLARIFY vector is the same one rule (issuedAt is REQUIRED; the text names neither the rejection nor its code), class spec-silent.", entries: gapMeta }, null, 1) + "\n");
 for (const f of files) writeFileSync(join(outDir, `${f.group.toLowerCase()}.json`), JSON.stringify(f, null, 1) + "\n");
 writeFileSync(join(outDir, "manifest.json"), JSON.stringify({ format: "tt-conformance-manifest/0.1", files: files.map((f) => `${f.group.toLowerCase()}.json`) }, null, 2) + "\n");
-writeFileSync(join(outDir, "not-generated.json"), JSON.stringify({ note: "Items of the gap families the specification states but the generator did not turn into a vector, with the reason. An example the task's own payload schema refuses, or an invalid example it accepts, is an inconsistency inside the specification (a spec question), not an implementation result.", tfCommit: snap.tfCommit, items: notGenerated }, null, 2) + "\n");
+writeFileSync(join(outDir, "not-generated.json"), JSON.stringify({ note: "Items of the gap families the specification states but the generator did not turn into a vector, with the reason. An example the task's own payload schema refuses, or an invalid example the schema of its own variant accepts even with `format` asserted, is an inconsistency inside the specification (a spec question); an invalid example that is invalid only through `format` is the open question whether a consumer asserts `format` (also a spec question); a response entry (`variant: response`) is never sent as a request. None is an implementation result.", tfCommit: snap.tfCommit, items: notGenerated }, null, 2) + "\n");
 console.log(`${files.reduce((a, f) => a + f.vectors.length, 0)} gap vectors for ${Object.entries(covered).map(([k, c]) => `${k} ${c}`).join(", ")} task versions; ${notGenerated.length} items not generated`);

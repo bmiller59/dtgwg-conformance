@@ -39,14 +39,16 @@
     "payload": {
      "entries": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.1's `truncated` does not exist in 0.2; the presence of `nextCursor` says more entries match.",
     "payload": {
      "entries": [],
      "truncated": false
-    }
+    },
+    "variant": "response"
    }
   ],
   "audit/verify/0.1": [
@@ -570,7 +572,8 @@
      "document": {
       "claims": []
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response with an empty `lists` — a contact on no list has no `lists` member.",
@@ -584,7 +587,8 @@
      },
      "starred": false,
      "lists": []
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response with a list name in `lists` — it carries ListIds; a name is resolved through persona/contact/lists/show, so renaming a list touches no contact.",
@@ -600,7 +604,8 @@
      "lists": [
       "Mentors"
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "persona/contact/list/1.1": [
@@ -643,7 +648,8 @@
        "receivedAt": "2026-10-18T09:00:00Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Summary carrying the private note — additionalProperties: false catches `notes`; a listing returns the annotations a client sorts and badges by, and the note only on persona/contact/get.",
@@ -659,7 +665,8 @@
        "notes": "Lent them my rope."
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "persona/contact/lists/delete/1.0": [
@@ -682,7 +689,8 @@
     "payload": {
      "listId": "01JA8Z5M2N3P4Q5R6S7T8V9W0X",
      "contactsUpdated": 0
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response echoing the list's name — additionalProperties: false; nothing deleted is echoed into logs that outlive it.",
@@ -691,7 +699,8 @@
      "existed": true,
      "contactsUpdated": 3,
      "name": "People I don't trust"
-    }
+    },
+    "variant": "response"
    }
   ],
   "persona/contact/lists/list/1.0": [
@@ -725,7 +734,8 @@
        "updatedAt": "2026-10-18T08:00:00Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A colour that is not six-digit lowercase hex — one way to write each colour.",
@@ -741,7 +751,8 @@
        "updatedAt": "2026-10-18T08:00:00Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "persona/contact/lists/put/1.1": [
@@ -821,7 +832,8 @@
       "updatedAt": "2026-10-18T08:00:00Z"
      },
      "wasCreated": true
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response carrying the pre-1.1 `created` flag — renamed `wasCreated`, since `created` is reserved for a timestamp; additionalProperties: false rejects the old name and `wasCreated` is required.",
@@ -836,7 +848,8 @@
      },
      "created": true,
      "changed": true
-    }
+    },
+    "variant": "response"
    }
   ],
   "persona/contact/lists/show/1.0": [
@@ -864,7 +877,8 @@
       "createdAt": "2026-10-18T08:00:00Z",
       "updatedAt": "2026-10-18T08:00:00Z"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response inlining the list's contacts — additionalProperties: false catches `contacts`; members are read with persona/contact/list and `listId`.",
@@ -880,7 +894,8 @@
        "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A"
       ]
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "persona/contact/put/1.2": [
@@ -1013,7 +1028,8 @@
      "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
      "rev": 3,
      "wasCreated": false
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response echoing the petname — additionalProperties: false; a response carries identifiers and flags, never annotation text that a log would then keep.",
@@ -1023,7 +1039,8 @@
      "wasCreated": false,
      "annotationsChanged": true,
      "petname": "Sam from the climbing gym"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Linking with a DID as well — a request naming `subjectDid` and a document is a filing, and one naming neither is a link; one that named a DID beside a bare directory link would leave the agent to guess which contact it means.",
@@ -1056,7 +1073,8 @@
      "rev": 1,
      "created": true,
      "annotationsChanged": false
-    }
+    },
+    "variant": "response"
    }
   ],
   "provision/integration/0.3": [
@@ -1446,7 +1464,8 @@
     "payload": {
      "handle": "q3Vn7Zk2Xo9Rt1LwPb4HdA",
      "operation": "provisionVta"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "operation is a closed lowerCamelCase list (SPEC §4.10); the snake_case spelling is rejected.",
@@ -1454,7 +1473,8 @@
      "handle": "q3Vn7Zk2Xo9Rt1LwPb4HdA",
      "vtaDid": "did:webvh:QmYyWfX2gJmZk9zNqV8pL3tRbH4sKc6dEa7uF1nG5oP2wQ:dids.firstperson.dev:alice-vta",
      "operation": "provision_vta"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "The hand-over carries no claim check — additionalProperties: false rejects one. The wallet computes the check from its own key (VTI-LNK-115), and by the time this document exists the check has already been confirmed on the page.",
@@ -1463,7 +1483,8 @@
      "vtaDid": "did:webvh:QmYyWfX2gJmZk9zNqV8pL3tRbH4sKc6dEa7uF1nG5oP2wQ:dids.firstperson.dev:alice-vta",
      "operation": "provisionVta",
      "claimCheck": "K7Q2ZM"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A DID log URL with userinfo is rejected; a credential belongs in neither a URL nor a log line.",
@@ -1472,7 +1493,8 @@
      "vtaDid": "did:webvh:QmYyWfX2gJmZk9zNqV8pL3tRbH4sKc6dEa7uF1nG5oP2wQ:dids.firstperson.dev:alice-vta",
      "operation": "provisionVta",
      "didLogUrl": "https://token@dids.firstperson.dev/alice-vta/did.jsonl"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vta/backup/abort/1.0": [
@@ -1962,14 +1984,16 @@
     "payload": {
      "credentials": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.1's `truncated` does not exist in 0.2; the presence of `nextCursor` says more credentials remain.",
     "payload": {
      "credentials": [],
      "truncated": false
-    }
+    },
+    "variant": "response"
    }
   ],
   "vta/health/details/0.1": [
@@ -2041,7 +2065,8 @@
    },
    {
     "note": "`snapshot` is required — the read always answers with a snapshot, never an acknowledgement alone.",
-    "payload": {}
+    "payload": {},
+    "variant": "response"
    },
    {
     "note": "`counters`, `gauges` and `histograms` are always present, even when the VTA exposes none of a kind — omitting one does not mean \"none\", it means the field was dropped.",
@@ -2051,7 +2076,8 @@
       "gauges": [],
       "histograms": []
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A counter's `value` must be a number, not a string.",
@@ -2067,7 +2093,8 @@
       "gauges": [],
       "histograms": []
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vta/notifications/deposit/0.1": [
@@ -2285,7 +2312,8 @@
       }
      ],
      "senders": []
-    }
+    },
+    "variant": "response"
    }
   ],
   "vta/services/rollback/1.2": [
@@ -2565,7 +2593,8 @@
        ]
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "external/accounts/bindings/grant/0.2": [
@@ -2682,7 +2711,8 @@
        ]
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "external/accounts/bindings/revoke/0.2": [
@@ -2747,7 +2777,8 @@
        ]
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "external/accounts/create/0.2": [
@@ -2843,7 +2874,8 @@
        ]
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "external/accounts/delete/0.1": [
@@ -2931,7 +2963,8 @@
        ]
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "external/accounts/keys/rotate/0.2": [
@@ -3057,7 +3090,8 @@
        }
       ]
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "external/accounts/list/0.2": [
@@ -3144,7 +3178,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "external/accounts/probe/0.2": [
@@ -3173,7 +3208,8 @@
        }
       ]
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A report carrying `0.1`'s `at` instead of `probedAt`; otherwise valid.",
@@ -3211,7 +3247,8 @@
        }
       ]
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "external/accounts/restore/0.2": [
@@ -3284,7 +3321,8 @@
        ]
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "external/accounts/resume/0.2": [
@@ -3357,7 +3395,8 @@
        ]
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "external/accounts/secret/set/0.1": [
@@ -3382,7 +3421,8 @@
     "payload": {
      "fingerprint": "zQmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
      "setAt": "2026-10-10T10:00:01Z"
-    }
+    },
+    "variant": "response"
    }
   ],
   "external/accounts/setup/0.1": [
@@ -3465,7 +3505,8 @@
        ]
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "external/accounts/update/0.2": [
@@ -3546,7 +3587,8 @@
        ]
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "external/credentials/issue/0.3": [
@@ -4178,14 +4220,16 @@
      "urls": [
       "https://storage.example/rooms/x?X-Amz-Signature=abc"
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A response that echoes no grant. It says which of `scope` or `presign` it answered.",
     "payload": {
      "sealedCredential": "-----BEGIN VTA SEALED BUNDLE-----\nBundle-Id: 2b7e…\nDigest-Algo: sha-256\nChunk: 0/1\n\nRXh0ZXJuYWxDcmVkZW50aWFsQ2lwaGVydGV4dEV4dGVybmFsQ3JlZGVudGlhbA\n=Q1JD\n-----END VTA SEALED BUNDLE-----",
      "expiresAt": "2026-10-10T10:05:00Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A response echoing 65 operations. The echo is the batch actually presigned, and no batch above 64 is presigned; a custodian whose sealed set would not fit refuses with responseTooLarge rather than answer with more.",
@@ -4589,7 +4633,8 @@
       ],
       "uploadId": "VXBsb2FkSWQtZXhhbXBsZQ"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "git-ns/account/link-status/0.1": [
@@ -4668,20 +4713,23 @@
        "memberCurrent": true
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: missing required `accounts` member.",
     "payload": {
      "nextCursor": "c2VxPTEwMA"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: `nextCursor` is `null`. The last page omits `nextCursor`; it is never `null`.",
     "payload": {
      "accounts": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "git-ns/account/unlink/0.1": [
@@ -4757,7 +4805,8 @@
        "source": "job"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: `source` is not one of the two declared values.",
@@ -4769,20 +4818,23 @@
        "source": "queue"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: missing required `items` member.",
     "payload": {
      "nextCursor": "c2VxPTEwMA"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: `nextCursor` is `null`. The last page omits `nextCursor`; it is never `null`.",
     "payload": {
      "items": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "git-ns/bridge/event/0.6": [
@@ -5302,7 +5354,8 @@
        "createdAt": "2026-09-26T08:30:00Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: `number` below the declared minimum of 1 — a pull request number is a positive integer.",
@@ -5320,7 +5373,8 @@
        "number": 0
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: `number` without `repo` — a pull request number means nothing without the repository it is in (dependentRequired).",
@@ -5337,7 +5391,8 @@
        "number": 42
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: unknown JobRow member — `message` is the job's comment text, which the queue view deliberately does not echo; additionalProperties: false catches it.",
@@ -5356,20 +5411,23 @@
        "message": "Closed: only members may open pull requests."
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: missing required `jobs` member.",
     "payload": {
      "nextCursor": "c2VxPTEwMA"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: `nextCursor` is `null`. The last page omits `nextCursor`; it is never `null`.",
     "payload": {
      "jobs": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "git-ns/bridge/result/0.2": [
@@ -5765,14 +5823,16 @@
       }
      ],
      "pendingChanges": 0
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: missing required `pendingChanges`.",
     "payload": {
      "registryConfigured": true,
      "published": []
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: `nextCursor` is `null`. The last page omits `nextCursor`; it is never `null`.",
@@ -5781,7 +5841,8 @@
      "published": [],
      "pendingChanges": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "git-ns/repo/adopt/0.3": [
@@ -6272,7 +6333,8 @@
     "note": "Response variant: missing required `cascadeOnDeparture`.",
     "payload": {
      "granters": []
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: a DepartedGranter entry with no `rights` array.",
@@ -6283,7 +6345,8 @@
        "granter": "did:webvh:QmGraceScid13:acme-vtc.example:grace"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: `nextCursor` is `null`. The last page omits `nextCursor`; it is never `null`.",
@@ -6291,7 +6354,8 @@
      "cascadeOnDeparture": false,
      "granters": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "git-ns/right/list/0.3": [
@@ -6343,20 +6407,23 @@
        "granterDeparted": false
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: missing required `rights` member.",
     "payload": {
      "nextCursor": "c2VxPTEwMA"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response variant: `nextCursor` is `null`. The last page omits `nextCursor`; it is never `null`.",
     "payload": {
      "rights": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "git-ns/right/ratify/0.2": [
@@ -6706,7 +6773,8 @@
       "payloadDigest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
       "callerRole": "requester"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response approval entry missing `decidedAt`.",
@@ -6758,7 +6826,8 @@
       "payloadDigest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
       "callerRole": "requester"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.2's `approvals[].at` does not exist in 0.3; when the decision was recorded is `decidedAt`.",
@@ -6816,7 +6885,8 @@
       "payloadDigest": "zQmbay7SyLLJyRieYo81yjde3YuF19D9h9kCNGwGBDxE5z1",
       "callerRole": "acknowledger"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/admin/actions/cancel/0.3": [
@@ -6887,7 +6957,8 @@
       "callerRole": "requester",
       "cancelledBy": "did:web:alice.example"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.2's `approvals[].at` does not exist in 0.3; when the decision was recorded is `decidedAt`.",
@@ -6950,7 +7021,8 @@
       "callerRole": "requester",
       "requesterOpenActions": 0
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/admin/actions/list/0.3": [
@@ -6991,7 +7063,8 @@
     "note": "Response without `counts` — the console badge would have nothing to show.",
     "payload": {
      "actions": []
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response action with a status outside the closed enum.",
@@ -7045,7 +7118,8 @@
       "waitingForMe": 0,
       "requestedByMe": 1
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response action missing `payload` — an approver could not verify the digest or re-derive the summary fields (VTI-APV-013).",
@@ -7081,7 +7155,8 @@
       "waitingForMe": 0,
       "requestedByMe": 1
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Summary field format outside the closed enum — a renderer must know how to display every field.",
@@ -7135,7 +7210,8 @@
       "waitingForMe": 0,
       "requestedByMe": 1
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Summary field pointer is not an RFC 6901 JSON Pointer (no leading slash).",
@@ -7189,7 +7265,8 @@
       "waitingForMe": 0,
       "requestedByMe": 1
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "`kind` must be dotted lowerCamelCase.",
@@ -7243,7 +7320,8 @@
       "waitingForMe": 0,
       "requestedByMe": 1
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "`closedReason` outside the closed enum.",
@@ -7299,7 +7377,8 @@
       "waitingForMe": 0,
       "requestedByMe": 0
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Cooling-off `cancellableBy` outside the closed enum — a subject who could cancel its own removal would make a compromised subject irremovable.",
@@ -7341,7 +7420,8 @@
       "waitingForMe": 0,
       "requestedByMe": 1
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Cooling-off `landsAt` must be an RFC 3339 date-time; a relative expression gives the requester no fixed deadline to cancel by.",
@@ -7383,7 +7463,8 @@
       "waitingForMe": 0,
       "requestedByMe": 1
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "`callerRole` outside the closed enum — the subject of a cooling-off action is `subject`, not `target`.",
@@ -7425,7 +7506,8 @@
       "waitingForMe": 0,
       "requestedByMe": 1
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.2's `approvals[].at` does not exist in 0.3; when the decision was recorded is `decidedAt`.",
@@ -7494,7 +7576,8 @@
       "waitingForMe": 1,
       "requestedByMe": 0
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/admin/actions/show/0.3": [
@@ -7523,7 +7606,8 @@
    },
    {
     "note": "Response without `action`.",
-    "payload": {}
+    "payload": {},
+    "variant": "response"
    },
    {
     "note": "Response action whose `callerRole` is outside the closed enum.",
@@ -7571,7 +7655,8 @@
       "payloadDigest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d",
       "callerRole": "admin"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response action whose `payloadDigest` is a bare hex string, not a DigestMultibase.",
@@ -7619,7 +7704,8 @@
       "payloadDigest": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
       "callerRole": "requester"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.2's `approvals[].at` does not exist in 0.3; when the decision was recorded is `decidedAt`.",
@@ -7681,7 +7767,8 @@
       "callerRole": "requester",
       "requesterOpenActions": 1
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/admin/bootstrap/0.1": [
@@ -7788,7 +7875,8 @@
      ],
      "heartbeatSeconds": 25,
      "resumeToken": "evt.000142"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response with no effective topics — a caller who may read none of the requested topics is refused with permissionDenied rather than given a stream that is silent by construction.",
@@ -7797,7 +7885,8 @@
      "heartbeatSeconds": 25,
      "resumed": false,
      "resumeToken": "evt.000142"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "`heartbeatSeconds` above 60 — a console waiting twice that long would show a dead stream as live for minutes.",
@@ -7808,7 +7897,8 @@
      "heartbeatSeconds": 300,
      "resumed": false,
      "resumeToken": "evt.000142"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "`since` carrying a resume token — the 0.4 name; from 0.5 the request member is `resumeToken`, and `since` is reserved registry-wide for an RFC 3339 time filter. additionalProperties: false catches it.",
@@ -7909,7 +7999,8 @@
     "payload": {
      "sessionId": "sess-7f3a",
      "expiresAt": 1792747800
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/auth/recognise/0.3": [
@@ -7941,7 +8032,8 @@
       "foreignIssuerDid": "did:web:other.example",
       "mappedRole": "guest"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/auth/recognise/challenge/0.2": [
@@ -7962,7 +8054,8 @@
     "payload": {
      "nonce": "n-4b1c9e",
      "expiresAt": 1792747800
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/backup/export/0.1": [
@@ -8016,7 +8109,8 @@
    },
    {
     "note": "Response without `branding` — no branding is `{}`, never an absent member.",
-    "payload": {}
+    "payload": {},
+    "variant": "response"
    },
    {
     "note": "accentColor that is not `#rrggbb`.",
@@ -8024,7 +8118,8 @@
      "branding": {
       "accentColor": "green"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A logoUrl that is not https — the manifest refuses it, so the stored branding cannot carry it.",
@@ -8032,7 +8127,8 @@
      "branding": {
       "logoUrl": "http://riverside.example/logo.svg"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/community/branding/update/0.1": [
@@ -8061,7 +8157,8 @@
       "displayName": "Riverside Makers",
       "tagline": "Make things"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/community/join-discovery/show/0.1": [
@@ -8075,7 +8172,8 @@
     "note": "Response without the setting — the default is reported as `public: true`, never left absent.",
     "payload": {
      "joinDiscovery": {}
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "`public` as a string.",
@@ -8083,7 +8181,8 @@
      "joinDiscovery": {
       "public": "yes"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/community/join-discovery/update/0.1": [
@@ -8106,7 +8205,8 @@
       "public": false,
       "allowList": []
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/community/profile/show/0.1": [
@@ -8151,7 +8251,8 @@
       "type": "address.country",
       "required": false
      }
-    ]
+    ],
+    "variant": "response"
    },
    {
     "note": "A claim type that is not a registry token.",
@@ -8161,7 +8262,8 @@
        "type": "Display Name"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "More than 32 entries.",
@@ -8267,7 +8369,8 @@
        "type": "x:a32"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/community/requested-attributes/update/0.1": [
@@ -8319,7 +8422,8 @@
        "value": "Alice"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/community/theme/show/0.1": [
@@ -8331,14 +8435,16 @@
    },
    {
     "note": "Response with no `stylesheet` — a community with no theme answers the empty string, never an omitted member.",
-    "payload": {}
+    "payload": {},
+    "variant": "response"
    },
    {
     "note": "Response carrying an unknown member.",
     "payload": {
      "stylesheet": "",
      "builtin": "forest"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/community/theme/update/0.1": [
@@ -8364,7 +8470,8 @@
     "note": "Response with no `stored` — a caller must be able to tell a dry run or no-op from a change.",
     "payload": {
      "stylesheet": ""
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/config/did-hosting/list/0.1": [
@@ -8667,7 +8774,8 @@
     "payload": {
      "items": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/groups/managers/add/0.1": [
@@ -8709,7 +8817,8 @@
     "payload": {
      "items": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/groups/members/remove/0.1": [
@@ -8747,7 +8856,8 @@
     "payload": {
      "items": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/groups/show/0.1": [
@@ -8818,7 +8928,8 @@
     "note": "Response without setupSessionToken — vtc/admin/bootstrap has nothing to consume.",
     "payload": {
      "adminDid": "did:webvh:QmAliceScid4:wallet.example:alice"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/install/claim/passkey/finish/0.1": [
@@ -8845,7 +8956,8 @@
     "payload": {
      "adminDid": "did:webvh:QmAliceScid4:wallet.example:alice",
      "setupSessionToken": "eyJhbGciOiJFZERTQSJ9.e30.c2ln"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "No assertion. A registration under the `none` attestation format signs nothing, so without an assertion over the community's challenge nothing proves the installer holds the private key the administrator's DID names.",
@@ -8875,7 +8987,8 @@
      "options": {
       "publicKey": {}
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/install/claim/start/0.3": [
@@ -8907,14 +9020,16 @@
      "adminDid": "did:webvh:QmAliceScid4:wallet.example:alice",
      "audience": "did:webvh:QmVtcScid7:acme-vtc.example",
      "expiresAt": "2026-10-01T09:05:01Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A 0.2-shaped response — WebAuthn creation options belong to the passkey claim, not this one.",
     "payload": {
      "registrationId": "8d1f2e3c-4b5a-6978-8a9b-0c1d2e3f4a5b",
      "options": {}
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/networks/evidence/0.1": [
@@ -8936,7 +9051,8 @@
        "registration": {}
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/networks/groups/register/0.1": [
@@ -8990,7 +9106,8 @@
    },
    {
     "note": "Response without `membership`.",
-    "payload": {}
+    "payload": {},
+    "variant": "response"
    }
   ],
   "vtc/networks/leave/0.1": [
@@ -9023,7 +9140,8 @@
    },
    {
     "note": "Response without `items`.",
-    "payload": {}
+    "payload": {},
+    "variant": "response"
    }
   ],
   "vtc/networks/repudiate/0.1": [
@@ -9134,7 +9252,8 @@
      "items": [],
      "source": "registry",
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/registry/sync-jobs/discard/0.1": [
@@ -9210,7 +9329,8 @@
     "payload": {
      "items": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/registry/sync-jobs/retry/0.2": [
@@ -9281,7 +9401,8 @@
    },
    {
     "note": "Response without the deleted id.",
-    "payload": {}
+    "payload": {},
+    "variant": "response"
    }
   ],
   "vtc/schemas/accepts/list/0.2": [
@@ -9307,7 +9428,8 @@
        "createdByDid": "did:example:administrator"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/schemas/accepts/register/0.2": [
@@ -9443,7 +9565,8 @@
       "admission": "automatic",
       "credentialIssuers": "community"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/schemas/accepts/show/0.2": [
@@ -9472,7 +9595,8 @@
      "createdByDid": "did:example:administrator",
      "admission": "automatic",
      "credentialIssuers": "recognised"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/schemas/delete/0.1": [
@@ -9488,7 +9612,8 @@
    },
    {
     "note": "Response without the deleted typeUri.",
-    "payload": {}
+    "payload": {},
+    "variant": "response"
    }
   ],
   "vtc/schemas/list/0.1": [
@@ -9517,7 +9642,8 @@
        "createdByDid": "did:example:administrator"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An item without hasCredentialSchema.",
@@ -9530,7 +9656,8 @@
        "createdByDid": "did:example:administrator"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/schemas/register/0.1": [
@@ -9577,7 +9704,8 @@
       "kind": "issues",
       "createdAt": "2026-09-28T10:00:01Z"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response with the entry at the top level.",
@@ -9586,7 +9714,8 @@
      "kind": "issues",
      "createdAt": "2026-09-28T10:00:01Z",
      "createdByDid": "did:example:administrator"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/schemas/show/0.1": [
@@ -9610,7 +9739,8 @@
       "createdAt": "2026-09-28T10:00:01Z",
       "createdByDid": "did:example:administrator"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/storage/configs/create/0.3": [
@@ -9834,7 +9964,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/storage/configs/probe/0.1": [
@@ -9860,7 +9991,8 @@
        "error": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/storage/configs/retire/0.3": [
@@ -9884,7 +10016,8 @@
      "configId": "local-default",
      "state": "active",
      "blobsRemaining": 0
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/storage/configs/update/0.3": [
@@ -9986,7 +10119,8 @@
       "fingerprint": "zQmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX"
      },
      "secretAccessKey": "wJalrXUtnFEMI"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/website/deploy/0.1": [
@@ -10012,7 +10146,8 @@
      "bundleSizeBytes": 1,
      "targetGeneration": 0,
      "prunedGenerations": 0
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response without the bundle's hash.",
@@ -10021,7 +10156,8 @@
      "bundleSizeBytes": 1,
      "targetGeneration": 0,
      "prunedGenerations": 0
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/website/files/delete/0.1": [
@@ -10055,7 +10191,8 @@
     "payload": {
      "items": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.2's `modifiedAt` does not exist in 0.3; when the file was last changed is `updatedAt`.",
@@ -10067,7 +10204,8 @@
        "modifiedAt": "2026-10-01T12:00:00Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/website/files/show/0.1": [
@@ -10108,7 +10246,8 @@
      "offset": 0,
      "data": "PGh0bWw+PC9odG1sPgo=",
      "complete": true
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response without `complete` — the caller must know whether to ask for the next range.",
@@ -10119,7 +10258,8 @@
      "contentType": "text/html",
      "offset": 0,
      "data": "PGh0bWw-PC9odG1sPgo"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/website/generations/list/0.1": [
@@ -10152,7 +10292,8 @@
     "note": "Response without `aborted`.",
     "payload": {
      "uploadId": "8c7b6a59-4837-4261-9f0e-1d2c3b4a5968"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/website/upload/begin/0.1": [
@@ -10263,13 +10404,15 @@
     "payload": {
      "uploadId": "upload-1",
      "expiresAt": "2026-09-28T11:00:00Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response without an expiry.",
     "payload": {
      "uploadId": "8c7b6a59-4837-4261-9f0e-1d2c3b4a5968"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/website/upload/chunk/0.1": [
@@ -10306,7 +10449,8 @@
      "index": 1,
      "remainingCount": 0,
      "expiresAt": "2026-09-28T11:05:00Z"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/website/upload/commit/0.1": [
@@ -10336,7 +10480,8 @@
       "etag": "\"abc\"",
       "sizeBytes": 10
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response without the verified hash.",
@@ -10347,7 +10492,8 @@
      },
      "sizeBytes": 10,
      "stagedUntil": "2026-09-28T11:06:00Z"
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/step-up/approve-request/0.1": [
@@ -11010,7 +11156,8 @@
      "subject": "did:webvh:QmAliceScid4:wallet.example:alice",
      "enrolledAt": "2026-10-02T11:00:21Z",
      "enrolledVia": "selfService"
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/step-up/approver/invite/0.2": [
@@ -11060,7 +11207,8 @@
      "inviteId": "sui_4f7a2c9e1b3d",
      "url": "https://acme-vtc.example/admin/enrol-approver?token=sua_9c2e1f7a6b3d4c8e9a1b2d3e4f5a6b7c8d9e0f1a",
      "expiresAt": "2026-10-01T15:15:01Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.1's `ttl` does not exist in 0.2; the invite's lifetime in seconds is `ttlSeconds`.",
@@ -11091,7 +11239,8 @@
    },
    {
     "note": "Response without approvers — an empty list is `[]`, never an absent member.",
-    "payload": {}
+    "payload": {},
+    "variant": "response"
    },
    {
     "note": "More than five approvers — a subject never holds more than five live approvers.",
@@ -11134,7 +11283,8 @@
        "enrolledVia": "selfService"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/step-up/approver/redeem/finish/0.1": [
@@ -11192,7 +11342,8 @@
       "subject": "did:webvh:QmAliceScid4:wallet.example:alice",
       "enrolledAt": "2026-10-01T15:04:06Z"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Stored binding with an unknown enrolledVia anchor.",
@@ -11203,7 +11354,8 @@
       "enrolledAt": "2026-10-01T15:04:06Z",
       "enrolledVia": "signingKey"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/step-up/approver/redeem/start/0.1": [
@@ -11240,7 +11392,8 @@
      "enrollmentId": "enr_5b0e3a2e6f4c4b8f9d2a1f0c2b7e4a01",
      "challenge": "RW5yb2xDaGFsbGVuZ2VOb25jZTAxMjM0NTY",
      "expiresAt": "2026-10-01T15:08:01Z"
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/step-up/approver/revoke/0.1": [
@@ -11280,7 +11433,8 @@
       "enrolledVia": "invite"
      },
      "revokedAt": "2026-10-02T12:00:01Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Negative remainingApprovers.",
@@ -11293,7 +11447,8 @@
      },
      "revokedAt": "2026-10-02T12:00:01Z",
      "remainingApprovers": -1
-    }
+    },
+    "variant": "response"
    }
   ],
   "consent/approver-list/1.0": [
@@ -11676,7 +11831,8 @@
     "payload": {
      "status": "executed",
      "payloadDigest": "zQmb1XVvHqbCe5nUPFxpJcRz3RtP4pQyKgTsWJgNBzVhE7d"
-    }
+    },
+    "variant": "response"
    }
   ],
   "task-consent/granted/0.1": [
@@ -11900,7 +12056,8 @@
      "acceptanceWindow": {
       "maxAgeSeconds": 600
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "acceptanceWindow with a zero maxAgeSeconds — a window no document can be accepted in is not a window, and a producer reading it would re-issue without end.",
@@ -11912,7 +12069,8 @@
       "maxAgeSeconds": 0,
       "clockSkewSeconds": 60
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Negative clockSkewSeconds — a tolerance is a width, never a shift, and a negative one would narrow the window below maxAgeSeconds without saying so.",
@@ -11924,7 +12082,8 @@
       "maxAgeSeconds": 600,
       "clockSkewSeconds": -60
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Fractional seconds — the window is carried in whole seconds; a fractional value is a different unit someone forgot to convert.",
@@ -11936,7 +12095,8 @@
       "maxAgeSeconds": 600.5,
       "clockSkewSeconds": 60
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A duration string instead of seconds — the members are integers, not ISO 8601 durations, so a discoverer does arithmetic rather than parsing.",
@@ -11948,7 +12108,8 @@
       "maxAgeSeconds": "PT10M",
       "clockSkewSeconds": 60
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Unknown member inside acceptanceWindow — the object is closed, so a misspelt member (maxAge for maxAgeSeconds) is refused rather than read as an absent one.",
@@ -11961,7 +12122,8 @@
       "clockSkewSeconds": 60,
       "maxAge": 600
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Entry-level acceptanceWindow missing maxAgeSeconds — the per-entry override has the same shape as the response-level member.",
@@ -11974,7 +12136,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "trust-task-error/0.1": [
@@ -12281,7 +12444,8 @@
       "adminNotes": false,
       "externalCards": false
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A statement that does not say whether administrators keep notes. Silence is not an answer: VTI-DIR-033 makes it part of every statement.",
@@ -12297,7 +12461,8 @@
       "externalCards": false,
       "statementDigest": "zQmVmw2GuXQsXe1yJf5xwU2TPvhP5mtwpQ5ACLwK76RAiEV"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A field without a ceiling: the widest audience a value can reach is the one thing the statement exists to say.",
@@ -12323,7 +12488,8 @@
       "externalCards": false,
       "statementDigest": "zQmVmw2GuXQsXe1yJf5xwU2TPvhP5mtwpQ5ACLwK76RAiEV"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An audience that is not one of admins, groups, connections, members or public.",
@@ -12340,7 +12506,8 @@
       "externalCards": false,
       "statementDigest": "zQmVmw2GuXQsXe1yJf5xwU2TPvhP5mtwpQ5ACLwK76RAiEV"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A group credential validity in months: a duration whose length depends on the calendar is refused.",
@@ -12360,7 +12527,8 @@
       "externalCards": false,
       "statementDigest": "zQmVmw2GuXQsXe1yJf5xwU2TPvhP5mtwpQ5ACLwK76RAiEV"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/directory/entries/list/0.1": [
@@ -12417,7 +12585,8 @@
     "payload": {
      "items": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/directory/entries/show/0.1": [
@@ -12453,7 +12622,8 @@
      "items": [],
      "exportedAt": "2026-10-23T09:30:00Z",
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/directory/fields/define/0.1": [
@@ -12614,7 +12784,8 @@
       "mediaType": "image/webp",
       "size": 1024
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/directory/notes/append/0.1": [
@@ -12652,7 +12823,8 @@
     "payload": {
      "items": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/directory/query/0.1": [
@@ -12707,7 +12879,8 @@
     "payload": {
      "items": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/endorsement-types/register/0.1": [
@@ -12789,7 +12962,8 @@
     "payload": {
      "items": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/endorsements/revoke/0.1": [
@@ -12962,7 +13136,8 @@
     "payload": {
      "items": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/join-requests/manifest/0.2": [
@@ -13022,7 +13197,8 @@
        "requirementsDigest": "zQmVmw2GuXQsXe1yJf5xwU2TPvhP5mtwpQ5ACLwK76RAiEV"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A criterion without `requirementsDigest` — 0.3 requires one on every criterion.",
@@ -13034,7 +13210,8 @@
        "admission": "automatic"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A presentationDefinition without credentialIssuers — whose credentials count must be stated.",
@@ -13062,7 +13239,8 @@
        "requirementsDigest": "zQmVmw2GuXQsXe1yJf5xwU2TPvhP5mtwpQ5ACLwK76RAiEV"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An admission that is neither automatic nor review.",
@@ -13075,7 +13253,8 @@
        "requirementsDigest": "zQmVmw2GuXQsXe1yJf5xwU2TPvhP5mtwpQ5ACLwK76RAiEV"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/join-requests/manifest/0.4": [
@@ -13111,7 +13290,8 @@
        "requirementsDigest": "zQmVmw2GuXQsXe1yJf5xwU2TPvhP5mtwpQ5ACLwK76RAiEV"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A criterion without `requirementsDigest` — every criterion carries one.",
@@ -13123,7 +13303,8 @@
        "admission": "automatic"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A presentationDefinition without credentialIssuers — whose credentials count must be stated.",
@@ -13151,7 +13332,8 @@
        "requirementsDigest": "zQmVmw2GuXQsXe1yJf5xwU2TPvhP5mtwpQ5ACLwK76RAiEV"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An admission that is neither automatic nor review.",
@@ -13164,7 +13346,8 @@
        "requirementsDigest": "zQmVmw2GuXQsXe1yJf5xwU2TPvhP5mtwpQ5ACLwK76RAiEV"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A directory disclosure without its `statementDigest` — the statement names itself so an applicant can record which one it was shown.",
@@ -13181,7 +13364,8 @@
       "adminNotes": false,
       "externalCards": false
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/join-requests/query/0.1": [
@@ -13216,7 +13400,8 @@
       "nonce": "n",
       "purpose": "p"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A query without a purpose — credential-exchange/query makes it mandatory.",
@@ -13228,7 +13413,8 @@
       "nonce": "n"
      },
      "delivered": false
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/join-requests/show/0.1": [
@@ -13421,7 +13607,8 @@
       ],
       "recordedAt": "2026-09-20T14:00:00Z"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Facts without `satisfied` — the verdict over the evidence is part of the record.",
@@ -13470,7 +13657,8 @@
       ],
       "recordedAt": "2026-09-20T14:00:00Z"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "byMethod keyed by something other than a vetting method.",
@@ -13520,7 +13708,8 @@
       ],
       "recordedAt": "2026-09-20T14:00:00Z"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/join-requests/wallet-session/start/0.1": [
@@ -13566,7 +13755,8 @@
       "credentials": []
      },
      "expiresAt": "2026-10-11T09:10:01Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response: a short `sessionId` cannot carry the 128 bits of entropy that make it unguessable.",
@@ -13578,7 +13768,8 @@
       "credentials": []
      },
      "expiresAt": "2026-10-11T09:10:01Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response: `dcqlQuery` is a DCQL object, not a string reference.",
@@ -13588,7 +13779,8 @@
      "clientId": "x509_hash:abc",
      "dcqlQuery": "residence",
      "expiresAt": "2026-10-11T09:10:01Z"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/join-requests/wallet-session/status/0.1": [
@@ -13609,7 +13801,8 @@
      "sessionId": "q7Xw2LmN9pRt4VbK8sYc3Hd6",
      "state": "accepted",
      "expiresAt": "2026-10-11T09:10:01Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response: `evidence` carries no claim values — a `claims` member must be rejected, not passed through.",
@@ -13633,7 +13826,8 @@
        }
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response: a presented credential entry carries no claim values either.",
@@ -13655,7 +13849,8 @@
        }
       ]
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response: `evidence.holder` is REQUIRED — the holder key is recorded beside the applicant, and omitting it would invite reading the applicant as the holder.",
@@ -13673,7 +13868,8 @@
        }
       ]
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response: `reason` uses the declared values only; OpenID4VP's own error code is folded into `walletDeclined`, not carried raw.",
@@ -13682,7 +13878,8 @@
      "state": "refused",
      "expiresAt": "2026-10-11T09:10:01Z",
      "reason": "access_denied"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/join-requests/withdraw/0.1": [
@@ -13813,7 +14010,8 @@
      "returning": false,
      "approval": "policyAllowed",
      "statusListIndex": 1
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An approval value outside the three ways an admission can execute.",
@@ -13826,7 +14024,8 @@
      "statusListIndex": 1,
      "vmc": {},
      "roleVac": {}
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A status other than `admitted`. A refusal is a trust-task-error and a referral is trust-task-next-step; neither is this response.",
@@ -13839,7 +14038,8 @@
      "statusListIndex": 1,
      "vmc": {},
      "roleVac": {}
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/members/credentials/0.1": [
@@ -13896,7 +14096,8 @@
     "payload": {
      "items": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/members/make-membership/0.1": [
@@ -13944,7 +14145,8 @@
      "statusListIndex": -1,
      "vmc": {},
      "roleVac": {}
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/members/personhood/assert/0.2": [
@@ -14305,7 +14507,8 @@
        "scope": "ceiling"
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Unknown approval value — the Approval enum is closed to policyAllowed, approved and waived.",
@@ -14328,7 +14531,8 @@
        "scope": "ceiling"
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/members/rotate-challenge/0.1": [
@@ -14592,7 +14796,8 @@
     "payload": {
      "items": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/relationships/publish/0.2": [
@@ -14627,7 +14832,8 @@
       "state": "yes",
       "restoredBy": "did:example:administrator"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.1's `at` does not exist in 0.2; when a superseded or withdrawn edge stopped being in force is `endedAt`.",
@@ -14637,7 +14843,8 @@
       "state": "withdrawn",
       "at": "2026-05-01T12:00:00Z"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/relationships/revoke/0.2": [
@@ -14746,13 +14953,15 @@
      "state": {
       "state": "paused"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response without the resolved state.",
     "payload": {
      "id": "4f3e2d1c-0b9a-4887-9766-5544332211aa"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.1's `at` does not exist in 0.2; when a superseded or withdrawn edge stopped being in force is `endedAt`.",
@@ -14762,7 +14971,8 @@
       "state": "withdrawn",
       "at": "2026-05-01T12:00:00Z"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/roles/define/0.1": [
@@ -14840,7 +15050,8 @@
       "ceiling": [],
       "approveScope": []
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/roles/delete/0.1": [
@@ -14867,7 +15078,8 @@
     "note": "Response `deleted` is the role name, not a boolean.",
     "payload": {
      "deleted": true
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/roles/list/0.1": [
@@ -14901,11 +15113,13 @@
        "approveScope": []
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "`roles` is REQUIRED; an empty vocabulary is `[]`.",
-    "payload": {}
+    "payload": {},
+    "variant": "response"
    }
   ],
   "vtc/roles/show/0.1": [
@@ -14938,7 +15152,8 @@
      "holders": [
       "did:web:alice.example"
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "`holders` cannot be negative.",
@@ -14950,7 +15165,8 @@
       "approveScope": []
      },
      "holders": -1
-    }
+    },
+    "variant": "response"
    }
   ],
   "vrc/relationships/issue/0.1": [
@@ -15069,14 +15285,16 @@
      "index": 0,
      "digestMultibase": "zQmRq2ZwqJ3vWJrK1v8R8oPqWXhD4nVb1JmT9pV6uYh3aBc",
      "data": "q83vASNFZ4k="
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response without its index — a reader fetching in parallel could not place the bytes.",
     "payload": {
      "digestMultibase": "zQmRq2ZwqJ3vWJrK1v8R8oPqWXhD4nVb1JmT9pV6uYh3aBc",
      "data": "q83vASNFZ4k"
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/blobs/get/0.2": [
@@ -15118,7 +15336,8 @@
      "downloadId": "7a1c2e4b-5d6f-4a8b-9c0d-1e2f3a4b5c6d",
      "expiresAt": "2026-10-10T12:10:00Z",
      "mode": "proxied"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response without `mode` — the reader could not tell whether to fetch from storage or through the host.",
@@ -15137,7 +15356,8 @@
      },
      "downloadId": "7a1c2e4b-5d6f-4a8b-9c0d-1e2f3a4b5c6d",
      "expiresAt": "2026-10-10T12:10:01Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "`direct` as a string — whether the reader accepts a storage URL, which shows its address to the provider, must be unambiguous.",
@@ -15169,7 +15389,8 @@
     "note": "Response without `aborted` — a retried abort and a first abort must be distinguishable.",
     "payload": {
      "uploadId": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a"
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/blobs/upload/begin/0.2": [
@@ -15314,7 +15535,8 @@
      "uploadId": "3e0f5a7c-9b21-4d8e-a6c4-2f1b0d9e8c7a",
      "expiresAt": "2026-10-10T11:00:01Z",
      "mode": "proxied"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response without `mode` — the producer could not tell whether to write to storage or send chunk documents.",
@@ -15324,7 +15546,8 @@
       0
      ],
      "expiresAt": "2026-10-10T11:00:01Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A plain-HTTP target — a presigned URL is a bearer credential and travels over HTTPS only.",
@@ -15343,7 +15566,8 @@
        "expiresAt": "2026-10-10T10:05:01Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A target with a method no transfer uses — a URL is issued for one method, and a write is a PUT.",
@@ -15362,7 +15586,8 @@
        "expiresAt": "2026-10-10T10:05:01Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/blobs/upload/chunk/0.2": [
@@ -15414,7 +15639,8 @@
      "index": 0,
      "remainingCount": 1,
      "expiresAt": "2026-10-10T11:05:00Z"
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/blobs/upload/commit/0.2": [
@@ -15439,7 +15665,8 @@
     "note": "Response without `blobRef` — the member could not name the blob in a record.",
     "payload": {
      "size": 300000
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/create/0.2": [
@@ -15545,7 +15772,8 @@
      "roomId": "did:webvh:example.com:rooms:northwind",
      "links": [],
      "epochFloor": "4"
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/epoch/mint/0.1": [
@@ -15662,7 +15890,8 @@
      "roomId": "did:webvh:example.com:rooms:northwind",
      "pruned": 3,
      "earliestRung": 5
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A floor of 0. Epochs start at 1; a floor below the first epoch is no floor, and absent is how a never-pruned room says so elsewhere — a prune always leaves one.",
@@ -15671,7 +15900,8 @@
      "pruned": 0,
      "earliestRung": 2,
      "epochFloor": 0
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/info/0.3": [
@@ -15704,7 +15934,8 @@
       "filesEnabled": true
      },
      "usage": {}
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A room-wide file size ceiling above 1 GiB, the transfer ceiling. No limit may promise more than the chunked transfer can carry.",
@@ -15725,7 +15956,8 @@
        "reservedBytes": 0
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A prune marker naming the records it removed. A host keeps that records were pruned, when and how many — never which; a list of keys on an `open` room, where keys may be descriptive, is content by another name.",
@@ -15778,7 +16010,8 @@
        }
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.2's `lastPrune.at` does not exist in 0.3; it is `prunedAt` (rooms/_shared/0.2).",
@@ -15828,7 +16061,8 @@
        }
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/keys/act/0.10": [
@@ -15975,7 +16209,8 @@
        "type": "DataIntegrityProof"
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response document without a proof — an unsigned document authenticates nobody at the host.",
@@ -15992,7 +16227,8 @@
       },
       "issuer": "did:webvh:example.com:people:alice"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/keys/act/0.5": [
@@ -16139,7 +16375,8 @@
        "type": "DataIntegrityProof"
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response document without a proof — an unsigned document authenticates nobody at the host.",
@@ -16156,7 +16393,8 @@
       },
       "issuer": "did:webvh:example.com:people:alice"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/keys/act/0.6": [
@@ -16303,7 +16541,8 @@
        "type": "DataIntegrityProof"
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response document without a proof — an unsigned document authenticates nobody at the host.",
@@ -16320,7 +16559,8 @@
       },
       "issuer": "did:webvh:example.com:people:alice"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/keys/act/0.8": [
@@ -16467,7 +16707,8 @@
        "type": "DataIntegrityProof"
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response document without a proof — an unsigned document authenticates nobody at the host.",
@@ -16484,7 +16725,8 @@
       },
       "issuer": "did:webvh:example.com:people:alice"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/keys/act/0.9": [
@@ -16631,7 +16873,8 @@
        "type": "DataIntegrityProof"
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response document without a proof — an unsigned document authenticates nobody at the host.",
@@ -16648,7 +16891,8 @@
       },
       "issuer": "did:webvh:example.com:people:alice"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/keys/backfill/0.2": [
@@ -16664,7 +16908,8 @@
      "roomId": "did:webvh:example.com:rooms:northwind",
      "earliestReadableEpoch": 1,
      "epochFloor": 0
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/keys/chain/0.2": [
@@ -16739,7 +16984,8 @@
      "keys": [
       "q83vEjRWeJq83vEjRWeJq83vEjRWeJq83vEjRWeJq81"
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/keys/key-package/0.2": [
@@ -16774,14 +17020,16 @@
     "payload": {
      "keyPackage": "AAEAAgADAAQ",
      "expiresAt": "2026-10-24T10:00:00Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "No `expiresAt`. 0.2 requires it: it bounds how long an acceptance begun elsewhere can be finished with this KeyPackage.",
     "payload": {
      "keyPackage": "AAEAAgADAAQ",
      "alreadyMinted": true
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/keys/label/0.1": [
@@ -16940,7 +17188,8 @@
       "updatedAt": "2026-10-16T09:00:00Z"
      },
      "changed": true
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "No `changed`. A caller retrying a request needs to know whether this one wrote anything.",
@@ -16951,7 +17200,8 @@
       "label": "Northwind tender",
       "updatedAt": "2026-10-16T09:00:00Z"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/keys/list/0.1": [
@@ -17031,7 +17281,8 @@
        "earliestReadableEpoch": 1
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An empty personal label. A member with no label has no `personal`; an object carrying only `updatedAt` would be a second way to say so.",
@@ -17047,7 +17298,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A personal label with no `updatedAt`. Every label says when it last changed, so a client showing it on several devices can tell which copy is current.",
@@ -17063,7 +17315,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/keys/profile/read/0.1": [
@@ -17105,7 +17358,8 @@
     "payload": {
      "roomId": "did:webvh:example.com:rooms:board",
      "status": "unknown"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A profile with no name. A room's profile always names it.",
@@ -17115,7 +17369,8 @@
      "profile": {
       "description": "Papers for the board."
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A rejection with a reason the specification does not define.",
@@ -17129,7 +17384,8 @@
        "reason": "looksWrong"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/keys/profile/write/0.1": [
@@ -17260,7 +17516,8 @@
      "outcome": "queued",
      "key": "Qm4c8XkR2pVt7sLw0aJbYg",
      "version": 214
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/keys/seal/0.2": [
@@ -17347,7 +17604,8 @@
    },
    {
     "note": "Response without `sealed` — the writer would have nothing to store.",
-    "payload": {}
+    "payload": {},
+    "variant": "response"
    }
   ],
   "rooms/owner/group/add/0.3": [
@@ -17505,7 +17763,8 @@
      "roomId": "did:webvh:example.com:rooms:board-papers",
      "member": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
      "epoch": 7
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A response with no epoch. Every removal, on either tier, advances the room, and the epoch is what the removed member holds no key for.",
@@ -17513,7 +17772,8 @@
      "roomId": "did:webvh:example.com:rooms:board-papers",
      "member": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
      "withdrawn": false
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/owner/group/renew/0.2": [
@@ -17569,7 +17829,8 @@
     "payload": {
      "roomId": "did:webvh:example.com:rooms:northwind",
      "epoch": 1
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/owner/invite/0.1": [
@@ -17825,7 +18086,8 @@
       "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
       "zQmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX"
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An empty blobs array — absence is how 'no file' is written; an empty array would give one record two spellings.",
@@ -17833,7 +18095,8 @@
      "key": "9f2c1a7e",
      "version": 3,
      "blobs": []
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A sealed-at version of 0 — `sealed.version` names the version a body was sealed at, and no record is ever at version 0.",
@@ -17847,7 +18110,8 @@
       "epoch": 1,
       "version": 0
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/records/list/0.5": [
@@ -17870,7 +18134,8 @@
        ]
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A prune marker that removed nothing. A prune that removed no record leaves no mark — `removed` is at least 1 — because a marker a reader must rebuild on is not something to send for nothing.",
@@ -17881,21 +18146,24 @@
       "prunedAt": "2026-10-01T00:00:05Z",
       "removed": 0
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A null nextCursor. The last page omits nextCursor; it is never null.",
     "payload": {
      "records": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "The response continuation token is nextCursor since 0.4; a response-side cursor is not a member.",
     "payload": {
      "records": [],
      "cursor": "c2VxPTUwMA"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.4's `lastPrune.at` does not exist in 0.5; it is `prunedAt` (rooms/_shared/0.2).",
@@ -17906,7 +18174,8 @@
       "at": "2026-10-01T00:00:05Z",
       "removed": 14
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/records/prune/0.2": [
@@ -18002,14 +18271,16 @@
      "recordRetention": {
       "tombstoneDays": 30
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A response that does not say which retention decided eligibility. A caller holding an earlier listing checks every disappearance against it; without it the removal cannot be checked by anybody.",
     "payload": {
      "roomId": "did:webvh:QmRoom:rooms.northwind.example:deal",
      "removed": 3
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.1's `prune.at` does not exist in 0.2; it is `prunedAt` (rooms/_shared/0.2).",
@@ -18025,7 +18296,8 @@
       "at": "2026-10-01T00:00:05Z",
       "removed": 14
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "rooms/records/put/0.3": [
@@ -18882,7 +19154,8 @@
        "limits": {}
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An entry carrying a file name. The host never learns file names — they are sealed — and a usage report must not imply otherwise.",
@@ -18900,7 +19173,8 @@
        "largestFile": "Northwind term sheet v3.pdf"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/rooms/community/archive/0.1": [
@@ -19019,7 +19293,8 @@
       "ownerAuthorityValidUntil": "2027-10-14T10:00:00Z",
       "createdBy": "did:example:administrator"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A host record whose createdAt is integer seconds — the 0.3 encoding; HostedRoom's instants are RFC 3339 date-time strings from 0.4 on.",
@@ -19049,7 +19324,8 @@
       "createdBy": "did:example:administrator"
      },
      "roomProfile": "written"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/rooms/community/get/0.3": [
@@ -19097,7 +19373,8 @@
       "detailsUpdatedAt": "2026-10-15T09:30:00Z",
       "detailsUpdatedBy": "did:example:secretary"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/rooms/community/get/0.4": [
@@ -19145,7 +19422,8 @@
       "detailsUpdatedAt": "2026-10-15T09:30:00Z",
       "detailsUpdatedBy": "did:example:secretary"
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/rooms/community/list/0.3": [
@@ -19197,7 +19475,8 @@
        "createdBy": "did:example:administrator"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/rooms/community/list/0.4": [
@@ -19249,7 +19528,8 @@
        "createdBy": "did:example:administrator"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/rooms/community/members/add/0.2": [
@@ -19600,7 +19880,8 @@
      },
      "changed": true,
      "roomProfile": "queued"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A host record whose createdAt is integer seconds — the 0.2 encoding; HostedRoom's instants are RFC 3339 date-time strings from 0.3 on.",
@@ -19634,7 +19915,8 @@
      },
      "changed": true,
      "roomProfile": "written"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/rooms/get/0.3": [
@@ -19688,7 +19970,8 @@
      "members": [
       "did:example:member"
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A migration without toConfig — after a reassignment during the migration, the assigned config is not where it moves blobs, so a reader cannot tell otherwise.",
@@ -19762,7 +20045,8 @@
       }
      ],
      "membersWithUsage": 9
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A migration state outside the shared MigrationState set.",
@@ -19837,7 +20121,8 @@
       }
      ],
      "membersWithUsage": 9
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A host record whose createdAt is integer seconds — the 0.2 encoding; an instant is an RFC 3339 date-time string from 0.3 on.",
@@ -19875,7 +20160,8 @@
        "bytes": 0
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/rooms/limits/set/0.1": [
@@ -19960,7 +20246,8 @@
        ]
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A room without its owner — the owner is visible at every tier.",
@@ -19978,7 +20265,8 @@
        "updatedAt": "2026-09-21T14:13:20Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An unknown visibility tier.",
@@ -19997,7 +20285,8 @@
        "updatedAt": "2026-09-21T14:13:20Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An epochExpiresAt in integer seconds — the 0.1 encoding; an instant is an RFC 3339 date-time string from 0.2 on.",
@@ -20016,7 +20305,8 @@
        "updatedAt": "2026-09-21T14:13:20Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A null nextCursor — on the last page nextCursor is absent, never null.",
@@ -20036,7 +20326,8 @@
       }
      ],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/rooms/memberships/list/0.1": [
@@ -20085,7 +20376,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A withdrawn offer. Withdrawal is not a state a member was ever in; the community does not list it.",
@@ -20104,7 +20396,8 @@
        "offeredAt": "2026-10-14T10:00:00Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Room tags in an entry. Tags are administrators' filing, never shown to members.",
@@ -20126,7 +20419,8 @@
        "offeredAt": "2026-10-14T10:00:00Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/rooms/memberships/list/0.2": [
@@ -20175,7 +20469,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A withdrawn offer. Withdrawal is not a state a member was ever in; the community does not list it.",
@@ -20194,7 +20489,8 @@
        "offeredAt": "2026-10-14T10:00:00Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Room tags in an entry. Tags are administrators' filing, never shown to members.",
@@ -20216,7 +20512,8 @@
        "offeredAt": "2026-10-14T10:00:00Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/rooms/offers/accept/0.1": [
@@ -20330,7 +20627,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/rooms/storage/assign/0.2": [
@@ -20399,7 +20697,8 @@
      "pausedCause": "network",
      "lastError": "put to eu-s3-primary: 503 SlowDown",
      "nextAttemptAt": "2026-10-10T14:30:00Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An unbounded lastError — it is a one-line summary, never a dump of the backend's response (which can carry a signed request).",
@@ -20418,7 +20717,8 @@
      "pausedCause": "destination",
      "lastError": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
      "nextAttemptAt": "2026-10-10T14:30:00Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An unknown response member — the response is closed.",
@@ -20438,7 +20738,8 @@
      "lastError": "put to eu-s3-primary: 503 SlowDown",
      "nextAttemptAt": "2026-10-10T14:30:00Z",
      "retryCount": 7
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/rooms/usage/0.1": [
@@ -20481,7 +20782,8 @@
        "name": "term-sheet.pdf"
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "acl/change-role/0.2": [
@@ -20546,7 +20848,8 @@
        "scope": "ceiling"
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response entry must state `capabilities` — the new role's full ceiling is spelt `{\"scope\": \"ceiling\"}`.",
@@ -20561,7 +20864,8 @@
        "scope": "none"
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "acl/grant/0.1": [
@@ -21011,7 +21315,8 @@
        "scope": "ceiling"
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response entry without `keys` — the realized entry must state its key scope too.",
@@ -21026,7 +21331,8 @@
        "scope": "ceiling"
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "acl/list/0.1": [
@@ -21126,7 +21432,8 @@
       }
      ],
      "truncated": false
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response entries must state `capabilities`; empty listed grants is not a capability scope.",
@@ -21148,7 +21455,8 @@
       }
      ],
      "truncated": false
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response entries must state `keys`.",
@@ -21166,13 +21474,15 @@
       }
      ],
      "truncated": false
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "`truncated` is REQUIRED so a consumer never mistakes a page for the complete set.",
     "payload": {
      "entries": []
-    }
+    },
+    "variant": "response"
    }
   ],
   "acl/list/0.3": [
@@ -21254,7 +21564,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response entries must state `capabilities`; empty listed grants is not a capability scope.",
@@ -21275,7 +21586,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response entries must state `keys`.",
@@ -21292,21 +21604,24 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "`nextCursor` is absent on the last page, never `null`.",
     "payload": {
      "entries": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.2's `truncated` does not exist in 0.3; the presence of `nextCursor` says more entries remain.",
     "payload": {
      "entries": [],
      "truncated": false
-    }
+    },
+    "variant": "response"
    }
   ],
   "acl/revoke/0.1": [
@@ -21430,7 +21745,8 @@
        "scope": "ceiling"
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "acl/show/0.2": [
@@ -21466,7 +21782,8 @@
        "scope": "ceiling"
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A returned entry without `keys` is malformed — no implicit \"every key\".",
@@ -21481,7 +21798,8 @@
        "scope": "ceiling"
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A returned entry without `capabilities` is malformed — the full ceiling is spelt `{\"scope\": \"ceiling\"}`.",
@@ -21496,7 +21814,8 @@
        "scope": "all"
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A returned entry with empty listed `keys` is invalid.",
@@ -21515,7 +21834,8 @@
        "scope": "ceiling"
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A returned entry with an empty `contexts` list is not a valid act scope.",
@@ -21534,11 +21854,13 @@
        "scope": "ceiling"
       }
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "`entry` is REQUIRED in the response — not-found is `entry: null`, not an absent member.",
-    "payload": {}
+    "payload": {},
+    "variant": "response"
    }
   ],
   "acl/swap-key/0.1": [
@@ -21825,7 +22147,8 @@
        "scope": "all"
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/authenticate/0.3": [
@@ -21939,7 +22262,8 @@
     "note": "status is `cancelled` only.",
     "payload": {
      "status": "approved"
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/oob/claim/0.1": [
@@ -21974,7 +22298,8 @@
      "requester": {
       "location": "Sydney, Australia"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An origin with a path is not an origin.",
@@ -21987,7 +22312,8 @@
      "origin": "https://members.community.example/login",
      "purpose": "login",
      "decisionDeadline": 1791626560
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/oob/claim/0.2": [
@@ -22022,7 +22348,8 @@
      "requester": {
       "location": "Sydney, Australia"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An origin with a path is not an origin.",
@@ -22035,7 +22362,8 @@
      "origin": "https://members.community.example/login",
      "purpose": "login",
      "decisionClosesAt": "2026-10-10T10:02:40Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "decisionClosesAt is an RFC 3339 date-time; an integer count of seconds (the 0.1 `decisionDeadline` form) is rejected.",
@@ -22048,7 +22376,8 @@
      "origin": "https://members.community.example",
      "purpose": "login",
      "decisionClosesAt": 1791626560
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/oob/grant/0.1": [
@@ -22405,7 +22734,8 @@
       "ip": "203.0.113.7"
      },
      "identifiedAs": "did:web:alice.example"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "sameNetwork is true, false or \"unknown\" — any other string is rejected.",
@@ -22427,7 +22757,8 @@
       "sameNetwork": "maybe"
      },
      "identifiedAs": "did:web:alice.example"
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/oob/prove/0.2": [
@@ -22469,7 +22800,8 @@
       "ip": "203.0.113.7"
      },
      "identifiedAs": "did:web:alice.example"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "sameNetwork is true, false or \"unknown\" — any other string is rejected.",
@@ -22491,7 +22823,8 @@
       "sameNetwork": "maybe"
      },
      "identifiedAs": "did:web:alice.example"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An empty signingScope is refused — an offer of nothing is expressed by leaving the member out, so a grant can never carry a scope that reads as unbounded.",
@@ -22514,7 +22847,8 @@
      },
      "identifiedAs": "did:web:alice.example",
      "signingScope": []
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A family is a slug prefix of whole lowercase segments — a trailing slash, an absolute Type URI or a wildcard is not a family, so no offer can be widened by a pattern a consumer might read as a glob.",
@@ -22541,7 +22875,8 @@
       "https://trusttasks.org/spec/vtc/groups",
       "vtc/*"
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A family is named once — duplicates are refused (uniqueItems), so the member is shown each family exactly once.",
@@ -22567,7 +22902,8 @@
       "vtc/directory",
       "vtc/directory"
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/oob/prove/0.3": [
@@ -22609,7 +22945,8 @@
       "ip": "203.0.113.7"
      },
      "identifiedAs": "did:web:alice.example"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "sameNetwork is true, false or \"unknown\" — any other string is rejected.",
@@ -22631,7 +22968,8 @@
       "sameNetwork": "maybe"
      },
      "identifiedAs": "did:web:alice.example"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An empty signingScope is refused — an offer of nothing is expressed by leaving the member out, so a grant can never carry a scope that reads as unbounded.",
@@ -22654,7 +22992,8 @@
      },
      "identifiedAs": "did:web:alice.example",
      "signingScope": []
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A family is a slug prefix of whole lowercase segments — a trailing slash, an absolute Type URI or a wildcard is not a family, so no offer can be widened by a pattern a consumer might read as a glob.",
@@ -22681,7 +23020,8 @@
       "https://trusttasks.org/spec/vtc/groups",
       "vtc/*"
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A family is named once — duplicates are refused (uniqueItems), so the member is shown each family exactly once.",
@@ -22707,7 +23047,8 @@
       "vtc/directory",
       "vtc/directory"
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "decisionClosesAt is an RFC 3339 date-time; an integer count of seconds (the 0.2 `decisionDeadline` form) is rejected.",
@@ -22729,7 +23070,8 @@
       "sameNetwork": true
      },
      "identifiedAs": "did:web:alice.example"
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/oob/redeem/0.2": [
@@ -22756,7 +23098,8 @@
       "uv"
      ],
      "accessToken": "eyJ…"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "sessionEndsAt is an RFC 3339 date-time; an integer count of seconds (the 0.1 form) is rejected.",
@@ -22769,7 +23112,8 @@
       "oob",
       "uv"
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "The 0.1 member name `notAfter` is gone — sessionEndsAt is required, and additionalProperties: false rejects notAfter.",
@@ -22782,7 +23126,8 @@
       "oob",
       "uv"
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/oob/request/0.2": [
@@ -22819,14 +23164,16 @@
     "payload": {
      "requestId": "tooShort",
      "claimClosesAt": "2026-10-10T10:02:00Z"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "claimClosesAt is an RFC 3339 date-time; an integer count of seconds (the 0.1 `claimDeadline` form, the trigger link's `_exp` unit) is rejected.",
     "payload": {
      "requestId": "q3Vt7mXo9LwA2bR5cJ8kNg",
      "claimClosesAt": 1791626520
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/oob/respond/0.1": [
@@ -22848,13 +23195,15 @@
      "session": {
       "id": "s1"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "status is approved or declined only.",
     "payload": {
      "status": "pending"
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/oob/respond/0.2": [
@@ -22876,13 +23225,15 @@
      "session": {
       "id": "s1"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "status is approved or declined only.",
     "payload": {
      "status": "pending"
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/oob/respond/0.3": [
@@ -22904,13 +23255,15 @@
      "session": {
       "id": "s1"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "status is approved or declined only.",
     "payload": {
      "status": "pending"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "`grant` must be a whole signed auth/oob/grant/0.3 document (an object), not a bare grant payload or id string.",
@@ -23397,7 +23750,8 @@
       "createdAt": "2026-09-28T10:00:31Z",
       "active": true
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Stored delegation without scope.",
@@ -23409,7 +23763,8 @@
       "expiresAt": "2026-10-28T10:00:31Z",
       "active": true
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response without `active` — the liveness predicate is the consumer's to compute, so a holder must never have to re-derive it.",
@@ -23421,7 +23776,8 @@
       "createdAt": "2026-09-28T10:00:31Z",
       "expiresAt": "2026-10-28T10:00:31Z"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response carrying the record at the top level instead of under `signingKey`.",
@@ -23432,7 +23788,8 @@
      "createdAt": "2026-09-28T10:00:31Z",
      "expiresAt": "2026-10-28T10:00:31Z",
      "active": true
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Unknown member on the stored record — a delegation carries no role-style scopes list.",
@@ -23448,7 +23805,8 @@
        "*"
       ]
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "replaces is a did:web — only a delegated did:key can be swapped out.",
@@ -23484,7 +23842,8 @@
    },
    {
     "note": "Response without `signingKeys` — an identity with no keys is answered with an empty array, never an absent member.",
-    "payload": {}
+    "payload": {},
+    "variant": "response"
    },
    {
     "note": "A listed key that is not a did:key.",
@@ -23499,7 +23858,8 @@
        "expiresAt": "2026-10-28T10:00:31Z"
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A listed delegation without expiresAt — every delegation has one, and a holder deciding what to revoke needs to see it.",
@@ -23513,7 +23873,8 @@
        "active": true
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/signing-key/revoke/0.1": [
@@ -23540,14 +23901,16 @@
      "signingKeyDid": "did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp",
      "revokedAt": "2026-09-28T12:00:01Z",
      "remainingActive": -1
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response without revokedAt — the instant the key stopped working is the one thing an operator needs from it.",
     "payload": {
      "signingKeyDid": "did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp",
      "remainingActive": 0
-    }
+    },
+    "variant": "response"
    }
   ],
   "auth/whoami/0.1": [
@@ -23875,14 +24238,16 @@
     "payload": {
      "devices": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.2's `truncated` does not exist in 0.3; the presence of `nextCursor` says more devices remain.",
     "payload": {
      "devices": [],
      "truncated": false
-    }
+    },
+    "variant": "response"
    }
   ],
   "device/register/0.2": [
@@ -24280,7 +24645,8 @@
     "payload": {
      "keyId": "eudi-access-p256",
      "csr": "-----BEGIN CERTIFICATE REQUEST-----\nMIIBjzCCATYCAQAw\n-----END CERTIFICATE REQUEST-----\n"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A bare base64 DER rather than PEM `CERTIFICATE REQUEST` armour.",
@@ -24288,7 +24654,8 @@
      "keyId": "eudi-access-p256",
      "csr": "MIIBjzCCATYCAQAweDELMAkGA1UEBhMCREUx",
      "publicKey": "zDnaezKfW1F36Bc3ranfFMiPJXexoqUeHSYLeQwGns4npGdh3"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response smuggling key material beside the request — additionalProperties: false on the response is what makes 'never the private key' checkable.",
@@ -24297,7 +24664,8 @@
      "csr": "-----BEGIN CERTIFICATE REQUEST-----\nMIIBjzCCATYCAQAw\n-----END CERTIFICATE REQUEST-----\n",
      "publicKey": "zDnaezKfW1F36Bc3ranfFMiPJXexoqUeHSYLeQwGns4npGdh3",
      "privateKey": "BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwc"
-    }
+    },
+    "variant": "response"
    }
   ],
   "keys/sign-document/0.1": [
@@ -24393,7 +24761,8 @@
       "issuer": "did:example:community",
       "proof": {}
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response whose proof names a cryptosuite this version does not define — a custodian never answers with a suite the producer did not get to see in the specification.",
@@ -24412,7 +24781,8 @@
       "proofPurpose": "assertionMethod",
       "proofValue": "z5e9cErCFXraDE8Cs3a46rSRaReyv68UtZz7JmzDUCcn"
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response smuggling key material beside the proof — additionalProperties: false on the response is what makes 'never the private key' checkable.",
@@ -24432,7 +24802,8 @@
       "proofValue": "z5e9cErCFXraDE8Cs3a46rSRaReyv68UtZz7JmzDUCcn"
      },
      "privateKey": "z3u2en7t5LR2WtQH5PfsqMvGfHYH9ezPV7gKDvnBRLbRhkRp"
-    }
+    },
+    "variant": "response"
    }
   ],
   "keys/sign-jws/0.1": [
@@ -24525,7 +24896,8 @@
     "payload": {
      "keyId": "verifier-p256",
      "alg": "ES256"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response `alg` outside the closed set — `none` is never a value a custodian chooses.",
@@ -24533,7 +24905,8 @@
      "keyId": "verifier-p256",
      "alg": "none",
      "jws": "eyJhbGciOiJub25lIn0.eyJub25jZSI6InE4dlR0M3lONW1RMGFXMmYifQ.c2ln"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A JWS with an empty signature segment — an unsigned token is not a response to a signing request, and the pattern requires three non-empty segments.",
@@ -24541,7 +24914,8 @@
      "keyId": "verifier-p256",
      "alg": "ES256",
      "jws": "eyJhbGciOiJFUzI1NiJ9.eyJub25jZSI6InE4dlR0M3lONW1RMGFXMmYifQ."
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response smuggling key material beside the JWS — additionalProperties: false on the response is what makes 'never the private key' checkable.",
@@ -24550,7 +24924,8 @@
      "alg": "ES256",
      "jws": "eyJhbGciOiJFUzI1NiJ9.eyJub25jZSI6InE4dlR0M3lONW1RMGFXMmYifQ.c2ln",
      "privateKey": "BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwc"
-    }
+    },
+    "variant": "response"
    }
   ],
   "keys/sign-sshsig/0.1": [
@@ -24652,7 +25027,8 @@
     "payload": {
      "keyId": "key-1",
      "algorithm": "EdDSA"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "Response smuggling key material beside the signature — additionalProperties: false on the response is what makes 'never the private key' checkable.",
@@ -24661,7 +25037,8 @@
      "algorithm": "EdDSA",
      "signature": "qQkWdYdoux5DnKSW0G1nIGQMrGC2L1RJkfuq9nrNuuAlU8hFazUPwKWlS3A68WWHs0DQxVbPl2GXjPUJdSIPBQ",
      "privateKey": "BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwc"
-    }
+    },
+    "variant": "response"
    }
   ],
   "keys/sign/0.1": [
@@ -24795,7 +25172,8 @@
      "notificationId": "n-1",
      "revision": 1,
      "disposition": "relayed"
-    }
+    },
+    "variant": "response"
    }
   ],
   "notifications/relay/0.1": [
@@ -24925,14 +25303,16 @@
     "payload": {
      "policies": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.2's `truncated` does not exist in 0.3; the presence of `nextCursor` says more policies remain.",
     "payload": {
      "policies": [],
      "truncated": false
-    }
+    },
+    "variant": "response"
    }
   ],
   "policy/upsert/0.2": [
@@ -24982,7 +25362,8 @@
       "updatedAt": "2026-10-23T09:30:00Z"
      },
      "created": true
-    }
+    },
+    "variant": "response"
    }
   ],
   "push/register/0.2": [
@@ -25515,14 +25896,16 @@
     "payload": {
      "entries": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.3's `truncated` does not exist in 0.4; the presence of `nextCursor` says more entries remain.",
     "payload": {
      "entries": [],
      "truncated": false
-    }
+    },
+    "variant": "response"
    }
   ],
   "vault/proxy-login/0.2": [
@@ -25687,7 +26070,8 @@
       "version": 1
      },
      "created": true
-    }
+    },
+    "variant": "response"
    }
   ],
   "vetting/decline/0.1": [
@@ -26026,7 +26410,8 @@
       "issuedAt": "2026-11-12T19:42:08Z"
      },
      "receiptToken": "zFz9q2Xh7bKcR4mT8vNwY3pD6sJgA5eU1kHnQtBxWr"
-    }
+    },
+    "variant": "response"
    }
   ],
   "vta/pcs/vote/0.2": [
@@ -26861,7 +27246,8 @@
        "type": "DataIntegrityProof"
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vta/pcs/voter/receipt/0.1": [
@@ -26938,14 +27324,16 @@
     "payload": {
      "witnessings": [],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "0.1's `truncated` does not exist in 0.2; the presence of `nextCursor` says the VTA stopped early.",
     "payload": {
      "witnessings": [],
      "truncated": false
-    }
+    },
+    "variant": "response"
    }
   ],
   "vta/witness/open/0.2": [
@@ -27026,7 +27414,8 @@
        "binding": true
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An item carrying a count of tickets issued. A list answers members, and counts are the administrators' (vtc/elections/show).",
@@ -27042,7 +27431,8 @@
        "ticketsIssued": 84
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "The continuation token as `next` — the 0.1 name; from 0.2 it is `nextCursor`.",
@@ -27058,7 +27448,8 @@
       }
      ],
      "next": "c2Vzc2lvbjoy"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A null `nextCursor`. On the last page it is absent, never null.",
@@ -27074,7 +27465,8 @@
       }
      ],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An item whose schedule is `votingOpens` / `votingCloses` — the 0.2 names; from 0.3 they are `votingOpensAt` / `votingClosesAt`.",
@@ -27090,7 +27482,8 @@
        "ticketHeld": true
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/elections/list/0.5": [
@@ -27124,7 +27517,8 @@
        "binding": true
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An item carrying a count of tickets issued. A list answers members, and counts are the administrators' (vtc/elections/show).",
@@ -27140,7 +27534,8 @@
        "ticketsIssued": 84
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "The continuation token as `next` — the 0.1 name; from 0.2 it is `nextCursor`.",
@@ -27156,7 +27551,8 @@
       }
      ],
      "next": "c2Vzc2lvbjoy"
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A null `nextCursor`. On the last page it is absent, never null.",
@@ -27172,7 +27568,8 @@
       }
      ],
      "nextCursor": null
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "An item whose schedule is `votingOpens` / `votingCloses` — the 0.2 names; from 0.3 they are `votingOpensAt` / `votingClosesAt`.",
@@ -27188,7 +27585,8 @@
        "ticketHeld": true
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/elections/show/0.2": [
@@ -27250,7 +27648,8 @@
       "votingKey": "z3Xef1JY2x1s2vY6yKWfLu8Ap2vKuoZGwaQLZ2tjq8QkEZbGeZyaNgtznZ8B7N1yf14"
      },
      "checkpoints": []
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A checkpoint that keeps the head without the ballot box's signed document. A bare head is the community's word; the document is the ballot box's.",
@@ -27318,7 +27717,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A manifest that names the start of ticket issuance `registrationOpens` — the 0.1 name; from 0.2 it is `registrationOpensAt`.",
@@ -27418,7 +27818,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/elections/show/0.3": [
@@ -27480,7 +27881,8 @@
       "votingKey": "z3Xef1JY2x1s2vY6yKWfLu8Ap2vKuoZGwaQLZ2tjq8QkEZbGeZyaNgtznZ8B7N1yf14"
      },
      "checkpoints": []
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A checkpoint that keeps the head without the ballot box's signed document. A bare head is the community's word; the document is the ballot box's.",
@@ -27548,7 +27950,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A manifest that names the start of ticket issuance `registrationOpens` — the 0.1 name; from 0.2 it is `registrationOpensAt`.",
@@ -27648,7 +28051,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/elections/show/0.6": [
@@ -27735,7 +28139,8 @@
       "votingKey": "z3Xef1JY2x1s2vY6yKWfLu8Ap2vKuoZGwaQLZ2tjq8QkEZbGeZyaNgtznZ8B7N1yf14"
      },
      "checkpoints": []
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A checkpoint that keeps the head without the ballot box's signed document. A bare head is the community's word; the document is the ballot box's.",
@@ -27803,7 +28208,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A manifest that names the start of ticket issuance `registrationOpens` — the 0.1 name; from 0.2 it is `registrationOpensAt`.",
@@ -27903,7 +28309,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/vetting/auto-grant/show/0.1": [
@@ -27920,7 +28327,8 @@
       "enabled": false,
       "sweepMinutes": 60
      }
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A sweep interval below five minutes.",
@@ -27930,7 +28338,8 @@
       "sweepMinutes": 1,
       "validitySeconds": 31536000
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/vetting/auto-grant/update/0.1": [
@@ -27975,7 +28384,8 @@
        "errors": 0
       }
      }
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/vetting/revocations/list/0.1": [
@@ -28010,7 +28420,8 @@
        ]
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A notice without affectedMembers — none is an empty list.",
@@ -28028,7 +28439,8 @@
        ]
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/vetting/revoke-statement/0.1": [
@@ -28189,7 +28601,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A grant without `live` — the predicate is the community's, never re-derived by the caller.",
@@ -28220,7 +28633,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    },
    {
     "note": "A profile listing an unknown vetting method.",
@@ -28251,7 +28665,8 @@
        }
       }
      ]
-    }
+    },
+    "variant": "response"
    }
   ],
   "vtc/vetting/vetters/list/0.1": [

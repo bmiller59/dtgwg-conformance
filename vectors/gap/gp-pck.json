@@ -647,12 +647,12 @@
   },
   {
    "id": "GP-PCK-007",
-   "title": "peer-check/ask 0.1: the payload examples the specification lists as invalid are refused (8)",
+   "title": "peer-check/ask 0.1: the payload examples the specification lists as invalid are refused (5)",
    "tier": 1,
    "spec": [
     "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; framework SPEC.md status draft, spec/body.md:758)",
     "SPEC.md 7.2 items 2 and 10 do not order payload validation against the authorisation decision (O-03): malformedRequest, permissionDenied and the task's own standing codes (front matter errorCodes that say the caller lacks standing) are accepted; an object lookup or state code is not, so a consumer that never validates is still caught",
-    "payload.invalid-examples.json of https://trusttasks.org/spec/peer-check/ask/0.1: (1) A challenge below 128 bits (16 bytes) is guessable; the pattern requires at least 22 base64url characters, which encode 132 bits. (2) expiresAt is required in the payload; without an answer deadline the pending question never lapses. (3) question is required; a request with only a challenge asks nothing. (4) question is capped at 200 characters so a prompt stays readable; a long one is refused rather than truncated. (5) Unknown top-level payload member — additionalProperties: false catches `urgency`. (6) decision must be confirmed or notConfirmed; `maybe` is not an answer. (7) requestDiges",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/peer-check/ask/0.1: (1) A challenge below 128 bits (16 bytes) is guessable; the pattern requires at least 22 base64url characters, which encode 132 bits. (2) expiresAt is required in the payload; without an answer deadline the pending question never lapses. (3) question is required; a request with only a challenge asks nothing. (4) question is capped at 200 characters so a prompt stays readable; a long one is refused rather than truncated. (5) Unknown top-level payload member — additionalProperties: false catches `urgency`.",
     "Trust Tasks specification peer-check/ask 0.1 (status draft) on main at bd0c05013; payload schema from the pinned @openvtc/trust-tasks 0.29.0 package"
    ],
    "source": {
@@ -787,81 +787,6 @@
         "question": "Did you just ask me for a code?",
         "expiresAt": "2026-10-28T14:03:00Z",
         "urgency": "high"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i6)",
-       "type": "https://trusttasks.org/spec/peer-check/ask/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "challenge": "q7Xk2mRt9LwB4vNf8ZpYhA",
-        "requestDigest": "zQmUx7yNt9vtv1PSxdf3BzoUYnejvfm2PfW5aqV6qaxbLUG",
-        "decision": "maybe",
-        "respondedAt": "2026-10-28T14:00:20Z"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i7)",
-       "type": "https://trusttasks.org/spec/peer-check/ask/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "challenge": "q7Xk2mRt9LwB4vNf8ZpYhA",
-        "decision": "confirmed",
-        "respondedAt": "2026-10-28T14:00:20Z"
-       }
-      }
-     },
-     "expect": {
-      "disposition": "error",
-      "code": [
-       "malformedRequest",
-       "permissionDenied"
-      ],
-      "noSideEffect": true
-     }
-    },
-    {
-     "send": {
-      "document": {
-       "id": "$id(i8)",
-       "type": "https://trusttasks.org/spec/peer-check/ask/0.1",
-       "issuer": "$A",
-       "recipient": "$iut",
-       "issuedAt": "$now+0s",
-       "payload": {
-        "challenge": "q7Xk2mRt9LwB4vNf8ZpYhA",
-        "requestDigest": "zQmUx7yNt9vtv1PSxdf3BzoUYnejvfm2PfW5aqV6qaxbLUG",
-        "decision": "confirmed",
-        "respondedAt": "2026-10-28T14:00:20Z",
-        "notConfirmedReason": "declined"
        }
       }
      },
