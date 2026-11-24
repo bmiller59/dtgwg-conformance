@@ -119,6 +119,7 @@ Their hand-written inputs, which hold no numbers: [../results/at-a-glance.config
 | [community/index.md](community/index.md) | The way in for contributors: how to contribute, the open gaps (generated), where everything sits. |
 | [16-roadmap-and-decisions.md](16-roadmap-and-decisions.md) | The roadmap: what is done and what remains, with the roadmap decisions. |
 | [maintainers/first-push-checklist.md](maintainers/first-push-checklist.md) | For maintainers: the order in which the suite is first put on a public host. |
+| [maintainers/checklist.md](maintainers/checklist.md) | For maintainers: checks before a finding, a figure or a statement about a platform is drafted or published. |
 | [07-status-and-open-questions.md](07-status-and-open-questions.md) | Settled, proposed or assumed, and open items. |
 | [CREDITS.md](CREDITS.md) | Credits. |
 
