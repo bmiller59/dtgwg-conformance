@@ -81,7 +81,7 @@ For the first row, VTI's choice is deliberate and VTI is the working reference, 
 | Silent hold | NS-001, 002, 003, 004, 005, VRC-ISS-005, VRC-PRO-008, 020, 021 | A held proposal is answered with a next step | 8.6: "A consumer holding a task MUST answer with a next step" | Holds silently until the person answers; five of these vectors are therefore not measured at all | A |
 | Proof fixtures accepted | PRF-010, 011, 018, 020, 022, 023, 024, 025, 026, 028, 029, 030, 032 | The task force's proof fixtures marked invalid | The fixture verdicts; Data Integrity datatypes; vc-di-eddsa 3.3.2; RFC 8032 5.1.3 | The verifier checks the signature only | A |
 | Proof fixtures, now CLARIFY | PRF-021, 027, 031, 033 | see above | see above | accepts | B |
-| No acceptance window | TIME-101, 105 | A document past the maximum age is `expired` | "The framework names no default maximum age"; a consumer must not accept a document older than the window over which it retains records | Declares only a 5 minute skew | C |
+| No acceptance window | TIME-101, 105 | A document past the maximum age is `expired` | "The framework names no default maximum age", but Bounding the record requires a consumer to apply a maximum age over `issuedAt` where `expiresAt` is absent (SPEC.md 7.2); the particular age is the suite's profile | Declares only a 5 minute skew, applies no maximum age | A |
 | Acceptance claims witnessing | VRC-PRO-007 | An acceptance does not claim `witnessed` unless it agrees | Propose 0.1: set `witnessed: true` "where it agrees"; silence means unwitnessed | Echoes the proposal's value; it cannot accept without agreeing | B |
 
 ## Questions for the task force
@@ -116,13 +116,13 @@ Entries in [exceptions/exceptions.json](../exceptions/exceptions.json) by implem
 
 | Implementation key | Entries | A | B | C | D | Not classed | Unacknowledged |
 |---|---|---|---|---|---|---|---|
-| `keyring-wallet` | 82 | 49 | 1 | 2 | 9 | 21 | 82 |
+| `keyring-wallet` | 82 | 51 | 1 | 0 | 9 | 21 | 82 |
 | `keyring-wallet-witness-server` | 9 | 9 | 0 | 0 | 0 | 0 | 9 |
-| `verifiable-trust-infrastructure` | 10 | 7 | 1 | 2 | 0 | 0 | 10 |
+| `verifiable-trust-infrastructure` | 10 | 8 | 1 | 1 | 0 | 0 | 10 |
 | `verifiable-trust-infrastructure-inprocess` | 29 | 21 | 6 | 0 | 0 | 2 | 29 |
-| `verifiable-trust-infrastructure-vtc-inprocess` | 25 | 20 | 1 | 0 | 0 | 4 | 25 |
+| `verifiable-trust-infrastructure-vtc-inprocess` | 25 | 22 | 1 | 0 | 0 | 2 | 25 |
 | `witness-server` | 4 | 3 | 0 | 0 | 0 | 1 | 4 |
-| All entries | 159 | 109 | 9 | 4 | 9 | 28 | 159 |
+| All entries | 159 | 114 | 9 | 1 | 9 | 26 | 159 |
 <!-- /generated:exception-classes -->
 
 The earlier hand-typed totals here (129 entries, A 89, B 28, C 3, D 9) were stale; the table above is generated (`npm run regen`). Where the earlier totals counted class D (stand-in carrier artefacts) and the entry's reason does not say "class D", the entry is shown as not classed until its reason or `class` field is updated.

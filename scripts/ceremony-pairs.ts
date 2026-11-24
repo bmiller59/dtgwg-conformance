@@ -346,11 +346,11 @@ const autStranger: Scenario = {
   reads: ["S"], allowedTerminals: ["refused"], completion: { thread: "stranger", assert: [{ at: "S", ceremony: "refused", thread: "stranger" }] },
 };
 const autAfterCancel: Scenario = {
-  id: "FC-AUT-007", title: "the approver cancels a claimed request and then tries to prove: the cancelled request is final, so the proof is refused (auth/oob:requestExpired or auth/oob:alreadyDecided; the specification names no code for a proof after a cancel) and no identity is established",
-  spec: ["TF specs/auth/oob/cancel/0.1/spec.md (a cancelled request is final)", `${OP} (service item 1: the request must be claimed and inside its decision window, else auth/oob:requestExpired)`, `${OV} (cancelled is a final state)`, "docs/26-paired-ceremonies.md section 4"],
+  id: "FC-AUT-007", title: "the approver cancels a claimed request and then tries to prove: the cancelled request is final and no longer claimed, so the proof is refused with auth/oob:requestExpired (prove 0.3 item 1: a request that is not claimed has ended; auth/oob:alreadyDecided is not a prove 0.3 code) and no identity is established",
+  spec: ["TF specs/auth/oob/cancel/0.1/spec.md (a cancelled request is final)", `${OP} (service item 1: "the request to be claimed and inside its decision window, else auth/oob:requestExpired"; error table: requestExpired, "The decision window has passed, or the request has otherwise ended.")`, `${OV} (cancelled is a final state)`, "docs/26-paired-ceremonies.md section 4"],
   source: oobSrc.cancel, ...autBase,
   steps: [seedMember, openRequest, claim, poll, kInit("cancel", oobSrc.cancel, "oob-cancel", "cancel", {}, [kdone("completed")]),
-    kInit("prove-after-cancel", oobSrc.prove, "oob-prove", "prove", { number: matchNumber, offset: 0 }, [{ at: "K", received: { code: "auth/oob:requestExpired|auth/oob:alreadyDecided", count: 1 }, thread: "prove" }])],
+    kInit("prove-after-cancel", oobSrc.prove, "oob-prove", "prove", { number: matchNumber, offset: 0 }, [{ at: "K", received: { code: "auth/oob:requestExpired", count: 1 }, thread: "prove" }])],
   reads: ["K"], allowedTerminals: ["refused"], completion: { thread: "prove", assert: [{ at: "K", ceremony: "refused", thread: "prove" }] },
 };
 const autWrongKey: Scenario = {

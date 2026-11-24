@@ -150,7 +150,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 
 - **Blocking class:** A.
 - **Scenarios (1 of 163):**
-  - `FC-AUT-007`: the approver cancels a claimed request and then tries to prove: the cancelled request is final, so the proof ...
+  - `FC-AUT-007`: the approver cancels a claimed request and then tries to prove: the cancelled request is final and no longer ...
 - **Blocked because:** After the approver cancels a claimed out-of-band request, the original VTI answers a later proof with notAuthorized. The draft proof task asks for the request to be claimed and inside its window, and declares requestExpired for a request that has ended. The platform therefore differs from the draft text.
 - **Needed:** A platform change so that a proof after a cancel is answered requestExpired, or a clarification from the specification editors on which code a cancelled request should give. The original may already be fixed upstream; it is older than current main.
 - **Where to start:** [`docs/27-kw-vti-ceremonies.md`](../../docs/27-kw-vti-ceremonies.md), [`vectors/ceremony-scenarios/fc-aut.json`](../../vectors/ceremony-scenarios/fc-aut.json).

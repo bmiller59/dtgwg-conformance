@@ -23,8 +23,8 @@
     {
       "impl": "verifiable-trust-infrastructure",
       "vector": "CEX-031",
-      "class": "C",
-      "reason": "[Unconfirmed: VTI payload parser or specification text; pending, docs/decisions/06-runs-and-results.md#d264] credential-exchange/request 0.1 on the live community container: a request whose credential_request names credential_configuration_id and proofs is answered malformedRequest, so it never reaches the unknownOffer / invalidProof decision the vector expects. Same answer as the community service in process (the entry for verifiable-trust-infrastructure-vtc-inprocess). Whether the specification means the container's reading (a `format` member is required) or the vector's is the open question; the vector is unchanged.",
+      "class": "A",
+      "reason": "[Differs from spec text] credential-exchange/request 0.1 on the live community container: a request whose credential_request names credential_configuration_id and proofs is answered malformedRequest (the same answer as the community service in process), so it never reaches the unknownOffer / invalidProof decision the vector expects. specs/credential-exchange/request/0.1/spec.md: \"The body is an [OID4VCI] Credential Request, carried verbatim and not re-specified here\"; the payload schema requires only `credential_request` and leaves its members to OpenID for Verifiable Credential Issuance 1.0, whose Credential Request (section 8.2) has `credential_identifier` or `credential_configuration_id` and `proofs`, and no `format` parameter (the vector's request has that shape). Requiring `format` is therefore the platform's difference from the specification text, class A (reclassified 2026-11-24 from an open specification question).",
       "expectFailure": {
         "failures": [
           "^step 1: expected code credential-exchange/request:unknownOffer\\|credential-exchange/request:invalidProof, got malformedRequest$"
@@ -698,8 +698,8 @@
     {
       "impl": "keyring-wallet",
       "vector": "TIME-101",
-      "class": "C",
-      "reason": "[KW deviation (no acceptance window)] The wallet applies no maximum age (TrustTasksService.ts:69-84), declaring only its 5 minute skew. SPEC.md ('Bounding the record', Which time limits belong to the protocol): 'The framework names no default maximum age'; each consumer chooses its own, and one 'MUST NOT accept for execution a document older than the window over which it retains records'. The vectors measure the suite's profile maximum age for an implementation that declares none. Vector review 2026-11-15: class C (the specification fixes no value and does not say whether a consumer with no window at all conforms for a consequential task); a question for the task force; the entry stays until it is answered.",
+      "class": "A",
+      "reason": "[KW deviation (no acceptance window)] The wallet applies no maximum age (TrustTasksService.ts:69-84), declaring only its 5 minute skew, so it accepts a document of any age. SPEC.md 7.2 'Which time limits belong to the protocol': acceptance windows include \"the maximum age over `issuedAt` that Bounding the record requires a consumer to apply where `expiresAt` is absent\", and 'Bounding the record': a consumer \"MUST NOT accept for execution a document older than the window over which it retains records\". Applying no maximum age at all differs from that text: class A (reclassified 2026-11-24 from an open specification question). The value is the consumer's own (\"The framework names no default maximum age\"): the particular age this vector uses (8 minutes) is the suite's profile, not the specification's: the difference from the text is having no maximum age at all, whatever value a consumer would choose.",
       "expectFailure": {
         "failures": [
           "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
@@ -714,8 +714,8 @@
     {
       "impl": "keyring-wallet",
       "vector": "TIME-105",
-      "class": "C",
-      "reason": "[KW deviation (no acceptance window)] The wallet applies no maximum age (TrustTasksService.ts:69-84), declaring only its 5 minute skew. SPEC.md ('Bounding the record', Which time limits belong to the protocol): 'The framework names no default maximum age'; each consumer chooses its own, and one 'MUST NOT accept for execution a document older than the window over which it retains records'. The vectors measure the suite's profile maximum age for an implementation that declares none. Vector review 2026-11-15: class C (the specification fixes no value and does not say whether a consumer with no window at all conforms for a consequential task); a question for the task force; the entry stays until it is answered.",
+      "class": "A",
+      "reason": "[KW deviation (no acceptance window)] The wallet applies no maximum age (TrustTasksService.ts:69-84), declaring only its 5 minute skew, so it accepts a document of any age. SPEC.md 7.2 'Which time limits belong to the protocol': acceptance windows include \"the maximum age over `issuedAt` that Bounding the record requires a consumer to apply where `expiresAt` is absent\", and 'Bounding the record': a consumer \"MUST NOT accept for execution a document older than the window over which it retains records\". Applying no maximum age at all differs from that text: class A (reclassified 2026-11-24 from an open specification question). The value is the consumer's own (\"The framework names no default maximum age\"): the particular age this vector uses (the profile maximum age plus skew plus 30 seconds) is the suite's profile, not the specification's: the difference from the text is having no maximum age at all, whatever value a consumer would choose.",
       "expectFailure": {
         "failures": [
           "^step 1: expected a trust-task-error, got https://trusttasks\\.org/spec/conformance/widget/0\\.1#response$",
@@ -1880,7 +1880,7 @@
     {
       "impl": "verifiable-trust-infrastructure-vtc-inprocess",
       "vector": "CEX-031",
-      "reason": "[Unconfirmed: VTI payload parser or specification text] credential-exchange/request 0.1 on the community service: a request whose credential_request names credential_configuration_id and proofs is answered malformedRequest, 'payload parse: missing field `format`' (the VTC's parser requires a `format` member of credential_request), so it never reaches the unknownOffer / invalidProof decision the vector expects. Observed through the in-process VTC host, 2026-11-15; not compared with the specification schema in this run.",
+      "reason": "[Differs from spec text] credential-exchange/request 0.1 on the community service: a request whose credential_request names credential_configuration_id and proofs is answered malformedRequest, 'payload parse: missing field `format`' (the VTC's parser requires a `format` member of credential_request), so it never reaches the unknownOffer / invalidProof decision the vector expects. Observed through the in-process VTC host, 2026-11-15. specs/credential-exchange/request/0.1/spec.md: \"The body is an [OID4VCI] Credential Request, carried verbatim and not re-specified here\"; the payload schema requires only `credential_request` and leaves its members to OpenID for Verifiable Credential Issuance 1.0, whose Credential Request (section 8.2) has `credential_identifier` or `credential_configuration_id` and `proofs`, and no `format` parameter (the vector's request has that shape). Requiring `format` is therefore the platform's difference from the specification text, class A (reclassified 2026-11-24 from an open specification question).",
       "expectFailure": {
         "failures": [
           "^step 1: expected code credential-exchange/request:unknownOffer\\|credential-exchange/request:invalidProof, got malformedRequest$"
@@ -1889,7 +1889,8 @@
       "owner": "unassigned",
       "expires": "2026-12-22",
       "ref": "results/runs/2026-11-15-vti-reach-vtc-inprocess-core/README.md",
-      "acknowledged": null
+      "acknowledged": null,
+      "class": "A"
     },
     {
       "impl": "verifiable-trust-infrastructure-inprocess",
@@ -1926,7 +1927,7 @@
     {
       "impl": "verifiable-trust-infrastructure-vtc-inprocess",
       "vector": "CEX-036",
-      "reason": "[Unconfirmed: VTI payload parser or specification text, same cause as CEX-031] The vector's request carries credential_configuration_id and a stub proof; the community service answers malformedRequest where the vector accepts unknownOffer or invalidProof (its parser requires `format`, see CEX-031). The pushed-document step (nothing pushed to the sender) is observed from the VTC's push-engine records and holds.",
+      "reason": "[Differs from spec text, same cause as CEX-031] The vector's request carries credential_configuration_id and a stub proof; the community service answers malformedRequest where the vector accepts unknownOffer or invalidProof (its parser requires `format`, see CEX-031). The pushed-document step (nothing pushed to the sender) is observed from the VTC's push-engine records and holds. specs/credential-exchange/request/0.1/spec.md: \"The body is an [OID4VCI] Credential Request, carried verbatim and not re-specified here\"; the payload schema requires only `credential_request` and leaves its members to OpenID for Verifiable Credential Issuance 1.0, whose Credential Request (section 8.2) has `credential_identifier` or `credential_configuration_id` and `proofs`, and no `format` parameter (the vector's request has that shape). Requiring `format` is therefore the platform's difference from the specification text, class A (reclassified 2026-11-24 from an open specification question).",
       "expectFailure": {
         "failures": [
           "^step 1: expected code credential-exchange/request:unknownOffer\\|credential-exchange/request:invalidProof, got malformedRequest$"
@@ -1935,7 +1936,8 @@
       "owner": "unassigned",
       "expires": "2026-12-22",
       "ref": "results/runs/2026-11-15-observe-adopt-vtc-inprocess/README.md",
-      "acknowledged": null
+      "acknowledged": null,
+      "class": "A"
     },
     {
       "impl": "witness-server",
