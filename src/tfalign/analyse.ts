@@ -102,10 +102,10 @@ export function mapExamples(examples: Example[], docs: DocUse[], taskByType: Map
     let bucket: Bucket = "notMatched";
     const hit = here.filter((d) => d.variant === e.variant && payloadMatches(d.payload, e.payload));
     if (e.variant === "response" && here.some((d) => d.variant === "request" && payloadMatches(d.payload, e.payload))) respAsReq++;
-    if (hit.length > 0) { bucket = "exact"; if (hit.some(refuses)) refusing++; if (e.variant === "response") exactResp++; else exactReq++; }
+    if (hit.length > 0) { bucket = "exact"; if (hit.some(refuses)) refusing++; }
     else if (kind === "invalid" && receiptFile !== undefined && e.typeUri.endsWith("/trust-ceremony-receipt/0.1") && facts.payloadFrom.get(receiptFile)?.has(e.index)) bucket = "exact";
     else if (kind === "invalid" && here.some((d) => /invalid-examples|invalid payload example/.test(textByVec.get(d.vectorId) ?? ""))) bucket = "namedOnly";
-    if (bucket === "exact") { exact++; continue; }
+    if (bucket === "exact") { exact++; if (e.variant === "response") exactResp++; else exactReq++; continue; }
     if (bucket === "namedOnly") named++;
     const t = taskByType.get(e.typeUri);
     const reason: Reason = t?.status === "retired" ? "taskRetired" : !facts.mentioned.has(e.typeUri) && here.length === 0 ? "taskNotInSuite" : bucket === "namedOnly" ? "taskVectorFromExamplesButThisOneNotMatched" : "taskInSuiteNoVectorFromExamples";

@@ -33,16 +33,19 @@ Task specifications in what was read but not in the suite's manifest: 0. In the 
 
 ## What the suite uses
 
-Used = a suite vector sends a payload equal to the example (suite tokens such as minted ids match anything). Named only = a vector for the task cites its invalid examples, but this one was not matched. These are reach figures: nothing here says a platform passes.
+Used = a suite vector carries a payload equal to the example, as a document of the example's own variant: a request entry in a request, a response entry (`variant: response`) in a response; a response entry sent as a request is never counted. Suite tokens match a value of their own kind (a clock token only an RFC 3339 date-time, any other token only a string). "Expects a refusal" is judged per step. Named only = a vector for the task cites its invalid examples, but this one was not matched. These are reach figures: nothing here says a platform passes.
 
 | Item | Count | Of | Share |
 |---|---|---|---|
-| Invalid examples used (all sets) | 5025 | 5252 | 95.7% |
-|   of those, without the advisory alignment set | 4109 | 5252 | 78.2% |
-|   of those, in a vector that expects a refusal | 5022 | 5252 | 95.6% |
-| Invalid examples named only | 165 | 5252 | 3.1% |
+| Invalid examples used (all sets) | 4235 | 5252 | 80.6% |
+|   of those, without the advisory alignment set | 3450 | 5252 | 65.7% |
+|   of those, in a step that expects a refusal | 4228 | 5252 | 80.5% |
+| Request entries (not marked `variant: response`) used | 4235 | 4401 | 96.2% |
+| Response entries (`variant: response`) used in a response | 0 | 851 | 0.0% |
+| Response entries whose payload equals a request a vector sends (a coincidence such as `{}`; not counted as used) | 43 | 851 | 5.1% |
+| Invalid examples named only | 955 | 5252 | 18.2% |
 | Invalid examples not mapped | 62 | 5252 | 1.2% |
-| Request examples used | 547 | 1853 | 29.5% |
+| Request examples used | 546 | 1853 | 29.5% |
 | Tasks with a vector step | 1416 | 1417 | 99.9% |
 | Tasks named only in text | 1 | 1417 | 0.1% |
 | Tasks with no vector at all | 0 | 1417 | 0.0% |
@@ -55,7 +58,7 @@ Why invalid examples were not matched:
 - taskRetired: 12
 - taskNotInSuite: 0
 - taskInSuiteNoVectorFromExamples: 50
-- taskVectorFromExamplesButThisOneNotMatched: 165
+- taskVectorFromExamplesButThisOneNotMatched: 955
 
 ## Citations
 
