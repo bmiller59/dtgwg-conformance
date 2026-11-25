@@ -113,6 +113,7 @@ export const OPTIONAL_CAPABILITIES = [
   "trigger.openElection",
   "trigger.presentationNonce",
   "trigger.queryDecision",
+  "trigger.requireBoundStepUp",
   "trigger.requireStepUp",
   "trigger.serveVersions",
   "trigger.twoPhase",

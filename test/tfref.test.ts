@@ -24,10 +24,11 @@ describe("every vector cites a Trust Tasks artifact or is a candidate (all famil
   it("covers every family: 1429 vectors in the shipped files", () => {
     // the coverage families (vectors/coverage, docs/22) are counted apart
     const coverage = loadSuite(join(ROOT, "vectors", "coverage")).files.reduce((n, f) => n + f.file.vectors.length, 0);
-    // the ceremony scenarios (vectors/ceremony-scenarios, docs/25 to 27) are found for the drift and tfRef checks, but are not vectors: 163 scenarios and their step sources (a step that sends two kinds counts each)
+    // the ceremony scenarios (vectors/ceremony-scenarios, docs/25 to 27) are found for the drift and tfRef checks, but are not vectors: 165 scenarios and their step sources (a step that sends two kinds counts each)
     const scenarios = all.filter((x) => x.file.startsWith("ceremony-scenarios/"));
-    assert.equal(scenarios.length, 618);
-    assert.equal(scenarios.filter((x) => x.step === true).length, 455);
+    // 618 to 623 and 455 to 458: FC-STU-006 and 007 (approve-request 0.6 inline delivery, a bound step-up held as a next step), two scenarios and three step sources
+    assert.equal(scenarios.length, 623);
+    assert.equal(scenarios.filter((x) => x.step === true).length, 458);
     // the seeded-state probe (vectors/probe, docs/22) is advisory and counted apart too
     const probe = loadSuite(join(ROOT, "vectors", "probe")).files.reduce((n, f) => n + f.file.vectors.length, 0);
     // the gap families (vectors/gap, tested in test/gap.test.ts) are counted apart as well

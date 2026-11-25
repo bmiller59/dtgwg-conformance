@@ -8,7 +8,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 
 ## Ceremony scenarios
 
-163 scenarios in 21 groups. Completed on the original platforms: 63.8% [104/163]. No completed run: 36.2% [59/163]. A scenario counts as completed only when one recorded result has VTI and the keyring-wallet both taking part (reference or stand-in parties do not count as either). Completion is not a pass rate: it says a ceremony ran to its specified end, not that either side agrees with the specifications.
+165 scenarios in 21 groups. Completed on the original platforms: 63.0% [104/165]. No completed run: 37.0% [61/165]. A scenario counts as completed only when one recorded result has VTI and the keyring-wallet both taking part (reference or stand-in parties do not count as either). Completion is not a pass rate: it says a ceremony ran to its specified end, not that either side agrees with the specifications.
 
 | Group | Scenarios | Completed | No completed run |
 |---|---|---|---|
@@ -26,7 +26,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 | FC-ONB | 8 | 100.0% [8/8] | 0 |
 | FC-PER | 5 | 0.0% [0/5] | 5 |
 | FC-RMS | 18 | 66.7% [12/18] | 6 |
-| FC-STU | 5 | 60.0% [3/5] | 2 |
+| FC-STU | 7 | 42.9% [3/7] | 4 |
 | FC-TCA | 3 | 0.0% [0/3] | 3 |
 | FC-VET | 6 | 0.0% [0/6] | 6 |
 | FC-VLT | 2 | 100.0% [2/2] | 0 |
@@ -36,12 +36,12 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 
 ### What blocks the open scenarios
 
-59 scenarios have no completed run. Each is named by exactly one blocker below, with its class (A the implementation differs from the specification, B the vector reads more than the text says, C the specification is open, D the harness or a stand-in).
+61 scenarios have no completed run. Each is named by exactly one blocker below, with its class (A the implementation differs from the specification, B the vector reads more than the text says, C the specification is open, D the harness or a stand-in).
 
 #### Issuer seat on the wallet (mutual attestation, request from the issuer)
 
 - **Blocking class:** D.
-- **Scenarios (4 of 163):**
+- **Scenarios (4 of 165):**
   - `FC-MAT-001`: mutual attestation: each person issues a credential about the other (attest-first, attest-second); both keep ...
   - `FC-MAT-002`: mutual attestation with no order: the second person attests before the first does, and the ceremony completes ...
   - `FC-MAT-003`: mutual attestation, simultaneous: both offers and both requests are exchanged before either credential is ...
@@ -53,7 +53,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Wallet-to-wallet runs (relationship credential and witness share)
 
 - **Blocking class:** D.
-- **Scenarios (6 of 163):**
+- **Scenarios (6 of 165):**
   - `FC-VRC-001`: propose accepted, each party delivers its credential, each delivery receipt matches, both parties read ...
   - `FC-VRC-002`: propose declined: the responder answers with propose:declined and both parties read declined
   - `FC-WSH-001`: witnessed exchange in the order session, submit, share, issue: each party's credential is minted by the ...
@@ -67,7 +67,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Older-release scenarios (a version selector)
 
 - **Blocking class:** D.
-- **Scenarios (6 of 163):**
+- **Scenarios (6 of 165):**
   - `FC-AUT-011`: version step-down: a community from before the 2026-10-24 renaming (claim 0.1, prove, grant and respond 0.1 ...
   - `FC-DIR-013`: the version skew: the wallet asks for the members list at 0.2 of a community that serves 0.1 only: the ...
   - `FC-PER-005`: the version skew: the phone mints at 1.2 of an agent that serves 1.0 only: the agent names what it serves ...
@@ -81,7 +81,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Task-consent approval ceremony (the begin document)
 
 - **Blocking class:** B.
-- **Scenarios (3 of 163):**
+- **Scenarios (3 of 165):**
   - `FC-TCA-001`: a ceremony held under the executor's declared governance: k-1 approvals from the declared approver set hold, ...
   - `FC-TCA-002`: a decision by a device outside the declared approver set is refused (notAnApprover) and is not counted: the ...
   - `FC-TCA-003`: an approver who decides twice is counted once: the repeated decision does not reach the quorum
@@ -92,7 +92,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Identity vetting (a vetter or applicant seat on VTI)
 
 - **Blocking class:** not classified A to D in the source.
-- **Scenarios (6 of 163):**
+- **Scenarios (6 of 165):**
   - `FC-VET-001`: request, session, the applicant's signed card bound to the session, then the vetter's statement citing that ...
   - `FC-VET-002`: request, session, the applicant's card, then the vetter declines: both read declined, the applicant holds no ...
   - `FC-VET-003`: the first session lapses unanswered, the vetter re-opens (round 2 of at most 3), the applicant answers the ...
@@ -106,7 +106,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Authentication ceremonies the wallet has no call site for
 
 - **Blocking class:** not classified A to D in the source.
-- **Scenarios (4 of 163):**
+- **Scenarios (4 of 165):**
   - `FC-AUT-008`: a respond signed with a key that is not the lock is refused with auth/oob:notClaimant and no session follows ...
   - `FC-AUT-009`: a grant whose contextDigest is not the digest of the step 2 the member was shown is refused with ...
   - `FC-AUT-010`: a member's identify with a broken signature is refused with the same generic auth/oob:notAuthorized as a ...
@@ -118,7 +118,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Identity-verification steps the wallet never sends
 
 - **Blocking class:** D.
-- **Scenarios (4 of 163):**
+- **Scenarios (4 of 165):**
   - `FC-IDV-004`: the member asks the community about a vetter by DID: a granted vetter reads live and a DID that holds no ...
   - `FC-IDV-005`: a vetter withdraws a statement it issued: the community records the notice and answers the time it recorded; ...
   - `FC-IDV-007`: a member asks the community for its listed vetters: a vetter with a live grant and a listed profile is named, ...
@@ -130,7 +130,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Latest-behaviour scenarios (one VTI release per host)
 
 - **Blocking class:** D.
-- **Scenarios (2 of 163):**
+- **Scenarios (2 of 165):**
   - `FC-KVC-013`: version skew: an executor that serves only task-consent/decision 0.1 refuses the wallet's 0.2 decision as ...
   - `FC-KVC-101`: decision leg only (the gate cannot be raised on this host): the approver's real decision is verified and ...
 - **Blocked because:** On the original pin VTI lacks the latest behaviour (class A for the platform). Both are also limited by the harness: one VTI release per host, and FC-KVC-101 also needs a host that cannot switch the gate on.
@@ -140,7 +140,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Sign-in ceremony where two specification texts disagree
 
 - **Blocking class:** C.
-- **Scenarios (1 of 163):**
+- **Scenarios (1 of 165):**
   - `FC-STU-002`: the hold is a next step: a gated task is answered with trust-task-next-step naming the step-up as what it ...
 - **Blocked because:** The framework text (section 8.6) and approve-request 0.5 do not agree about the step. The specification is open here, so the suite does not assert either reading.
 - **Needed:** A discussion with the task force. Do not assert one reading in a vector or an exception; record the question with both quotations.
@@ -149,7 +149,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Proof after a cancelled sign-in request
 
 - **Blocking class:** A.
-- **Scenarios (1 of 163):**
+- **Scenarios (1 of 165):**
   - `FC-AUT-007`: the approver cancels a claimed request and then tries to prove: the cancelled request is final and no longer ...
 - **Blocked because:** After the approver cancels a claimed out-of-band request, the original VTI answers a later proof with notAuthorized. The draft proof task asks for the request to be claimed and inside its window, and declares requestExpired for a request that has ended. The platform therefore differs from the draft text.
 - **Needed:** A platform change so that a proof after a cancel is answered requestExpired, or a clarification from the specification editors on which code a cancelled request should give. The original may already be fixed upstream; it is older than current main.
@@ -158,7 +158,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Second write of an existing room record (version conflict)
 
 - **Blocking class:** A.
-- **Scenarios (1 of 163):**
+- **Scenarios (1 of 165):**
   - `FC-RMS-006`: the member writes the same key again as a new record (a second document, expected version 0): the host ...
 - **Blocked because:** When a record is written with expected version 0 and the key already exists, the original VTI answers a generic taskFailed (reason conflict). The draft records/put task declares rooms/records/put:versionConflict, carrying the current version. The platform differs from the draft text.
 - **Needed:** A platform change to answer versionConflict with the current version, or a clarification from the specification editors. The original may already be fixed upstream.
@@ -167,7 +167,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Signed documents with a failing proof (proofInvalid)
 
 - **Blocking class:** A.
-- **Scenarios (4 of 163):**
+- **Scenarios (4 of 165):**
   - `FC-DIR-011`: the wallet's signed card update is delivered again unchanged, with a value changed after signing, and with ...
   - `FC-MBR-007`: the wallet's signed submission with a payload value changed after signing (fresh id, and its own id) and the ...
   - `FC-KVX-004`: a presentation document whose signature does not verify is refused by the verifier and keeps nothing; the ...
@@ -179,7 +179,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Task-consent decisions refused without the declared code
 
 - **Blocking class:** A.
-- **Scenarios (3 of 163):**
+- **Scenarios (3 of 165):**
   - `FC-KVC-003`: a device outside the approver set that holds a copy of the request cannot approve: its decision is refused ...
   - `FC-KVC-011`: a decision whose payloadDigest names no pending request is refused and not counted; the approver's real ...
   - `FC-KVC-012`: a decision whose challenge is not the one issued is refused and not counted; the approver's real decision ...
@@ -190,7 +190,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Device tasks refused without the declared code
 
 - **Blocking class:** A.
-- **Scenarios (4 of 163):**
+- **Scenarios (4 of 165):**
   - `FC-DEV-002`: registering the same phone twice: the second register is refused with device/register:alreadyRegistered and ...
   - `FC-DEV-003`: a heartbeat from a phone that never registered is refused with device/heartbeat:notRegistered and no binding ...
   - `FC-DEV-004`: a wake channel set by a phone that never registered is refused with device/set-wake:notRegistered
@@ -199,10 +199,20 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 - **Needed:** A platform change to answer each declared code, or a clarification from the specification editors. The original may already be fixed upstream.
 - **Where to start:** [`docs/27-kw-vti-ceremonies.md`](../../docs/27-kw-vti-ceremonies.md), [`vectors/ceremony-scenarios/fc-dev.json`](../../vectors/ceremony-scenarios/fc-dev.json).
 
+#### Step-up bound to one operation, delivered inline (approve-request 0.6)
+
+- **Blocking class:** not classified A to D in the source.
+- **Scenarios (2 of 165):**
+  - `FC-STU-006`: a step-up bound to one grant, delivered inline: the agent answers the held grant with trust-task-next-step ...
+  - `FC-STU-007`: a bound step-up elevates nothing: after an approval bound to one grant is recorded and that grant runs, a ...
+- **Blocked because:** Added on 2026-11-25, after the 2026-11-22 snapshot, so no recorded run includes them. The agent seat needs the optional capability trigger.requireBoundStepUp (hold one operation for a step-up bound to it), which only the suite's reference agent declares today; a platform that does not declare it is not run (SKIP, which is reach, not failure).
+- **Needed:** An agent adapter that can gate an operation on a step-up bound to it and declares trigger.requireBoundStepUp, and a wallet that answers the approve-request 0.6 inline hint; then a run with VTI and the wallet both taking part.
+- **Where to start:** [`vectors/ceremony-scenarios/fc-stu.json`](../../vectors/ceremony-scenarios/fc-stu.json), [`src/adapters/reference/pair-reference.ts`](../../src/adapters/reference/pair-reference.ts).
+
 #### Step-up approval with an unknown challenge
 
 - **Blocking class:** A.
-- **Scenarios (1 of 163):**
+- **Scenarios (1 of 165):**
   - `FC-STU-005`: an approval that echoes a challenge the agent never issued is refused with ...
 - **Blocked because:** An approval echoing a challenge the agent never issued is refused by the original VTI as taskFailed, with challengeUnknown only in the reason text. The draft approve-response task declares auth/step-up/approve-response:challengeUnknown. The platform differs from the draft text.
 - **Needed:** A platform change to answer the declared code, or a clarification from the specification editors. The original may already be fixed upstream.
@@ -211,7 +221,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Creating a context that already exists
 
 - **Blocking class:** A.
-- **Scenarios (1 of 163):**
+- **Scenarios (1 of 165):**
   - `FC-PER-003`: the phone creates a context that already exists: the agent refuses it with idConflict and does not treat the ...
 - **Blocked because:** Creating a context that already exists is refused by the original VTI as taskFailed (reason conflict). The draft contexts/create text asks for idConflict and says the request must not be treated as an update. The platform differs from the draft text.
 - **Needed:** A platform change to answer idConflict, or a clarification from the specification editors. The original may already be fixed upstream.
@@ -220,7 +230,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Key package against an invitation that does not verify
 
 - **Blocking class:** A.
-- **Scenarios (2 of 163):**
+- **Scenarios (2 of 165):**
   - `FC-RMS-014`: the member asks its agent for a KeyPackage against a well-formed invitation credential that no room issued ...
   - `FC-RMS-018`: the member asks its agent for a KeyPackage against text that is not a credential at all: the specification ...
 - **Blocked because:** For an invitation no room issued, and for text that is not a credential, the original VTI refuses with malformedRequest. The draft key-package text asks for notInvited whenever the invitation does not verify, and declares that code. The platform differs from the draft text.
@@ -230,7 +240,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Persona scenarios need newer task versions than VTI offers
 
 - **Blocking class:** A.
-- **Scenarios (3 of 163):**
+- **Scenarios (3 of 165):**
   - `FC-PER-001`: the phone asks the agent for its contexts and its hosting servers (none), then mints a serverless persona in ...
   - `FC-PER-002`: the phone creates the context it keeps personas in, then mints a persona: the context exists and the new DID ...
   - `FC-PER-004`: the phone asks the agent to release a persona key over the runner's carrier, which is not confidential to the ...
@@ -241,7 +251,7 @@ Snapshot of 2026-11-23. Every task specification involved is draft. Ceremony fig
 #### Presenting a held credential (format differs from what the scenario needs)
 
 - **Blocking class:** not classified A to D in the source.
-- **Scenarios (3 of 163):**
+- **Scenarios (3 of 165):**
   - `FC-KVX-001`: the verifier's query is deferred by the wallet until its person approves; the wallet's presentation is ...
   - `FC-CEX-002`: a query to a holder is answered by a presentation bound to the query's nonce on its thread, at once when the ...
   - `FC-CEX-003`: a query to a holder that does not pre-trust the verifier is deferred; once the holder's human approves, the ...

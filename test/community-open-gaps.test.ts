@@ -31,7 +31,8 @@ describe("community open gaps", () => {
     const scenarios = loadScenarios(SUITE_ROOT);
     assert.equal(scenarios.length, Object.keys(completion.completion).length);
     const entries = Object.values(completion.completion);
-    assert.equal(scenarios.length, 163);
+    // 163 to 165: FC-STU-006 and 007 (approve-request 0.6 inline delivery) were added after the 2026-11-22 snapshot; their entries are false (no run yet)
+    assert.equal(scenarios.length, 165);
     assert.equal(entries.filter((v) => v).length, 104);
   });
 

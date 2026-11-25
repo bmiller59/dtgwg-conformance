@@ -446,10 +446,51 @@ const stuUnknownChallenge: Scenario = {
     init("grant-still-held", stuSrc.grant, "acl-grant", { subject: SUBJECT, label: "Still held", stepUp: "deny" }, [{ at: "K", received: { type: HELD } }, subjectIs(SUBJECT, 0)])],
   allowedTerminals: ["refused"], completion: aclRefused([subjectIs(SUBJECT, 0)]),
 };
+// approve-request 0.6: a step-up bound to one operation, delivered inline. The relying party (V) has no push channel to the approver, so the hold travels in its answer to
+// the operation: a next step whose expects entry names approve-response/0.7 and carries the request payload as its hint, never an error response. The member phone (K)
+// is the producer: it validates the hint (boundTo present, sessionId absent, subject its own), answers, and on `recorded` sends the same operation again.
+const SQ6 = "TF specs/auth/step-up/approve-request/0.6/spec.md";
+const stuQ6 = src("auth/step-up/approve-request", "0.6");
+const stuBoundBase = { ...base, participants: kv("agent", [`${S}auth/step-up/approve-response/0.7`, `${S}acl/grant/0.3`, "optional:trigger.requireBoundStepUp"]) };
+const gateBound = decideV("gate-grants-bound", "requireBoundStepUp", { type: "acl/grant/0.3" });
+const stuInline: Scenario = {
+  id: "FC-STU-006", title: "a step-up bound to one grant, delivered inline: the agent answers the held grant with trust-task-next-step whose expects entry names approve-response/0.7 and carries the approve-request payload as its hint, never with an error response (not taskFailed, not permissionDenied with details.stepUpRequest as 0.5 did); after the approval is recorded the same grant, sent again, runs once",
+  spec: [
+    `${SQ6}:83 (Changes from 0.5: "Inline delivery is a next step, not an error response." ... "the relying party answers the operation with a trust-task-next-step whose expects entry names approve-response/0.7 and carries this task's payload as its hint")`,
+    `${SQ6}:123-126 (Inline delivery: "A held operation is not refused ... so the answer is a next step" whose continuation is resubmit (or absent) and whose expects entry names approve-response/0.7 and carries as its hint a payload valid against this specification's schema, with boundTo present and sessionId absent)`,
+    `${SQ6}:128 ("The relying party MUST NOT carry the request in an error response — not as permissionDenied, taskFailed or a task-specific code, and not in details.")`,
+    `${SQ6}:130 (the producer returns an approve-response/0.7 in the same thread and "on a recorded acknowledgement re-sends the same operation, as continuation: resubmit directs")`,
+    `${SQ6}:132 (the producer MUST validate the hint against this specification's schema and check that its subject is the party it acts for)`,
+    "SPEC.md:1533 (8.6: \"A hold is a next step.\" A consumer holding a task MUST answer with a next step, and MUST NOT answer with taskFailed, permissionDenied or any other error response whose extended code or details says the task is held)",
+    `${SR} (consumer step 5a: a bound approval is acknowledged recorded, with boundTo and no session)`,
+  ],
+  source: stuQ6, ...stuBoundBase,
+  steps: [
+    gateBound,
+    init("grant-bound", stuSrc.grant, "acl-grant", { subject: SUBJECT, label: "After bound step-up" }, [{ at: "K", received: { type: NEXT, count: 1 } }, { at: "K", received: { code: "taskFailed|permissionDenied", count: 0 } }, { at: "K", received: { type: `${S}auth/step-up/approve-response/0.7#response`, count: 1 } }, { at: "K", received: { type: `${S}acl/grant/0.3#response`, count: 1 } }, kdone("completed"), subjectIs(SUBJECT, 1)]),
+  ],
+  allowedTerminals: ["completed"], completion: aclDone([subjectIs(SUBJECT, 1)]),
+};
+const stuBoundOnce: Scenario = {
+  id: "FC-STU-007", title: "a bound step-up elevates nothing: after an approval bound to one grant is recorded and that grant runs, a second, different grant is held again with a next step, and once its step-up is declined it does not run",
+  spec: [
+    `${SQ6}:319 ("A bound step-up elevates nothing. Its approval authorizes the one operation boundTo names and is consumed by it. A relying party MUST NOT treat the approval as raising any session")`,
+    `${SQ6}:123 (a held operation is answered with a next step)`,
+    `${SQ6}:135 ("A step-up the human declines ends the hold. The relying party answers the operation as refused (permissionDenied) when the producer next sends it, not with a further next step")`,
+    "SPEC.md:1533 (8.6: a hold is a next step)",
+  ],
+  source: stuQ6, ...stuBoundBase,
+  steps: [
+    gateBound,
+    init("grant-bound", stuSrc.grant, "acl-grant", { subject: SUBJECT, label: "After bound step-up" }, [{ at: "K", received: { type: `${S}acl/grant/0.3#response`, count: 1 } }, subjectIs(SUBJECT, 1)]),
+    init("grant-second", stuSrc.grant, "acl-grant", { subject: SUBJECT_2, label: "Second grant", stepUp: "deny" }, [{ at: "K", received: { type: NEXT, count: 1 } }, subjectIs(SUBJECT_2, 0)]),
+  ],
+  allowedTerminals: ["refused"], completion: aclRefused([subjectIs(SUBJECT, 1), subjectIs(SUBJECT_2, 0)]),
+};
 export const stuFile: ScenarioFile = {
   format: SCENARIO_FORMAT, group: "FC-STU", family: "ceremony-scenarios", evidence: "complete-ceremony",
-  ceremony: { name: "Step-up of a gated task (wallet and agent)", channel: "proposed", choreography: "docs/26-paired-ceremonies.md section 4: a gated task is held, the phone answers the approve-request, the retried task runs once; the hold as a next step (SPEC 8.6) beside the deployed error shape; negatives for a declined step-up, a changed approval and an unknown challenge" },
-  scenarios: [stuAsDeployed, stuStrict, stuDeny, stuBadProof, stuUnknownChallenge],
+  ceremony: { name: "Step-up of a gated task (wallet and agent)", channel: "proposed", choreography: "docs/26-paired-ceremonies.md section 4: a gated task is held, the phone answers the approve-request, the retried task runs once; the hold as a next step (SPEC 8.6) beside the deployed error shape; negatives for a declined step-up, a changed approval and an unknown challenge; a step-up bound to one operation, delivered inline as a next step (approve-request 0.6), which elevates nothing" },
+  scenarios: [stuAsDeployed, stuStrict, stuDeny, stuBadProof, stuUnknownChallenge, stuInline, stuBoundOnce],
 };
 
 export const pairFiles: { file: string; data: ScenarioFile }[] = [{ file: "fc-acl.json", data: aclFile }, { file: "fc-dev.json", data: devFile }, { file: "fc-vlt.json", data: vltFile }, { file: "fc-aut.json", data: autFile }, { file: "fc-stu.json", data: stuFile }];

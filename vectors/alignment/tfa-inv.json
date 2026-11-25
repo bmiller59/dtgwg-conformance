@@ -28383,6 +28383,278 @@
      }
     }
    ]
+  },
+  {
+   "id": "TFA-INV-221",
+   "title": "auth/step-up/approve-request 0.6: the payload examples the specification lists as invalid and no other set sends are refused (8)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; a payload that fails is rejected with malformedRequest, 8.3)",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/auth/step-up/approve-request/0.6 (entries 1, 2, 3, 4, 5, 6, 7, 8): accepts missing — in 0.4 the relying party always states what it will take, so an approver never has to guess. | Empty accepts — an offer of no evidence kind is a step-up nobody can answer. | Unknown evidence kind in accepts. | 0.3's acceptableEvidence is replaced by accepts in 0.4 and is now an unknown member. | An approver that is a did:web — a step-up approver is always an Ed25519 did:key, resolvable without a network fetch. | Empty approvers — when present it names at least one approver the ",
+    "Each payload was checked against the task's payload schema when this vector was generated, and the schema refuses it",
+    "malformedRequest, permissionDenied and the task's own standing codes are accepted: SPEC.md 7.2 items 2 and 10 do not order validation against the authorisation decision (O-03)"
+   ],
+   "source": {
+    "slug": "auth/step-up/approve-request",
+    "version": "0.6",
+    "channel": "proposed",
+    "profile": "tf-alignment",
+    "ref": "kit:specs/auth/step-up/approve-request/0.6",
+    "pinnedDigest": "sha256:8a9480d76161f82c33b7f6948363ca2d29987f688e3e77a969c9534f215389f9",
+    "note": "Advisory, outside every first-share figure. Spec maturity: draft (a draft). Written from the examples the task force lists as invalid that no other vector set sends (decision D920).",
+    "tfRef": {
+     "repoPath": "specs/auth/step-up/approve-request/0.6/spec.md",
+     "commit": "98dda36f854ba028205923866450dbc1753c3bf6",
+     "status": "draft"
+    }
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/auth/step-up/approve-request/0.6"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approve-request/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:alice.example",
+        "sessionId": "ec5d3c89",
+        "challenge": "Q2hhbExlbmdlVmFsdWVCYXNlNjQ",
+        "reason": "Confirm transfer"
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i2)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approve-request/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:alice.example",
+        "challenge": "Q2hhbExlbmdlVmFsdWVCYXNlNjQ",
+        "reason": "Grant the administrator role",
+        "boundTo": "uEiD3n4bE1QbQ8nY2l0cGhYc2FsdGVkZGlnZXN0",
+        "accepts": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i3)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approve-request/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:alice.example",
+        "challenge": "Q2hhbExlbmdlVmFsdWVCYXNlNjQ",
+        "reason": "Grant the administrator role",
+        "boundTo": "uEiD3n4bE1QbQ8nY2l0cGhYc2FsdGVkZGlnZXN0",
+        "accepts": [
+         "totp"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i4)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approve-request/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:alice.example",
+        "challenge": "Q2hhbExlbmdlVmFsdWVCYXNlNjQ",
+        "reason": "Grant the administrator role",
+        "boundTo": "uEiD3n4bE1QbQ8nY2l0cGhYc2FsdGVkZGlnZXN0",
+        "accepts": [
+         "webauthn"
+        ],
+        "acceptableEvidence": [
+         "webauthn"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i5)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approve-request/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:alice.example",
+        "challenge": "Q2hhbExlbmdlVmFsdWVCYXNlNjQ",
+        "reason": "Grant the administrator role",
+        "boundTo": "uEiD3n4bE1QbQ8nY2l0cGhYc2FsdGVkZGlnZXN0",
+        "accepts": [
+         "approverSigned"
+        ],
+        "approvers": [
+         "did:web:plugin.example"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i6)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approve-request/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:alice.example",
+        "challenge": "Q2hhbExlbmdlVmFsdWVCYXNlNjQ",
+        "reason": "Grant the administrator role",
+        "boundTo": "uEiD3n4bE1QbQ8nY2l0cGhYc2FsdGVkZGlnZXN0",
+        "accepts": [
+         "approverSigned"
+        ],
+        "approvers": []
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i7)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approve-request/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:alice.example",
+        "sessionId": "ec5d3c89",
+        "challenge": "short",
+        "reason": "Confirm transfer",
+        "accepts": [
+         "didSigned"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i8)",
+       "type": "https://trusttasks.org/spec/auth/step-up/approve-request/0.6",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "subject": "did:web:alice.example",
+        "challenge": "Q2hhbExlbmdlVmFsdWVCYXNlNjQ",
+        "reason": "Grant the administrator role",
+        "boundTo": "uEiD3n4bE1QbQ8nY2l0cGhYc2FsdGVkZGlnZXN0",
+        "accepts": [
+         "approverSigned"
+        ],
+        "approvers": [
+         "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH"
+        ],
+        "ttl": 120
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
   }
  ]
 }

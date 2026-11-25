@@ -6,7 +6,7 @@
   "ceremony": {
     "name": "Step-up of a gated task (wallet and agent)",
     "channel": "proposed",
-    "choreography": "docs/26-paired-ceremonies.md section 4: a gated task is held, the phone answers the approve-request, the retried task runs once; the hold as a next step (SPEC 8.6) beside the deployed error shape; negatives for a declined step-up, a changed approval and an unknown challenge"
+    "choreography": "docs/26-paired-ceremonies.md section 4: a gated task is held, the phone answers the approve-request, the retried task runs once; the hold as a next step (SPEC 8.6) beside the deployed error shape; negatives for a declined step-up, a changed approval and an unknown challenge; a step-up bound to one operation, delivered inline as a next step (approve-request 0.6), which elevates nothing"
   },
   "scenarios": [
     {
@@ -782,6 +782,360 @@
             "at": "V",
             "stored": {
               "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+              "count": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-STU-006",
+      "title": "a step-up bound to one grant, delivered inline: the agent answers the held grant with trust-task-next-step whose expects entry names approve-response/0.7 and carries the approve-request payload as its hint, never with an error response (not taskFailed, not permissionDenied with details.stepUpRequest as 0.5 did); after the approval is recorded the same grant, sent again, runs once",
+      "spec": [
+        "TF specs/auth/step-up/approve-request/0.6/spec.md:83 (Changes from 0.5: \"Inline delivery is a next step, not an error response.\" ... \"the relying party answers the operation with a trust-task-next-step whose expects entry names approve-response/0.7 and carries this task's payload as its hint\")",
+        "TF specs/auth/step-up/approve-request/0.6/spec.md:123-126 (Inline delivery: \"A held operation is not refused ... so the answer is a next step\" whose continuation is resubmit (or absent) and whose expects entry names approve-response/0.7 and carries as its hint a payload valid against this specification's schema, with boundTo present and sessionId absent)",
+        "TF specs/auth/step-up/approve-request/0.6/spec.md:128 (\"The relying party MUST NOT carry the request in an error response — not as permissionDenied, taskFailed or a task-specific code, and not in details.\")",
+        "TF specs/auth/step-up/approve-request/0.6/spec.md:130 (the producer returns an approve-response/0.7 in the same thread and \"on a recorded acknowledgement re-sends the same operation, as continuation: resubmit directs\")",
+        "TF specs/auth/step-up/approve-request/0.6/spec.md:132 (the producer MUST validate the hint against this specification's schema and check that its subject is the party it acts for)",
+        "SPEC.md:1533 (8.6: \"A hold is a next step.\" A consumer holding a task MUST answer with a next step, and MUST NOT answer with taskFailed, permissionDenied or any other error response whose extended code or details says the task is held)",
+        "TF specs/auth/step-up/approve-response/0.7/spec.md (consumer step 5a: a bound approval is acknowledged recorded, with boundTo and no session)"
+      ],
+      "source": {
+        "slug": "auth/step-up/approve-request",
+        "version": "0.6",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/auth/step-up/approve-request/0.6",
+        "pinnedDigest": "sha256:8a9480d76161f82c33b7f6948363ca2d29987f688e3e77a969c9534f215389f9",
+        "tfRef": {
+          "repoPath": "specs/auth/step-up/approve-request/0.6/spec.md",
+          "commit": "98dda36f854ba028205923866450dbc1753c3bf6",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "98dda36f854ba028205923866450dbc1753c3bf6",
+        "specHash": "sha256:eacfac4bac70348e41a4608b5846771b478a1f63a66758f287c512e683fc3ed3",
+        "schemaHash": "sha256:f2ff7c3c4187fb3ebc253718f1251706fcdc5c96adfe6cbd46b23dc49d57747d"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/auth/step-up/approve-response/0.7",
+            "https://trusttasks.org/spec/acl/grant/0.3",
+            "optional:trigger.requireBoundStepUp"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "gate-grants-bound",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "requireBoundStepUp",
+              "args": {
+                "type": "acl/grant/0.3"
+              }
+            }
+          }
+        },
+        {
+          "id": "grant-bound",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "98dda36f854ba028205923866450dbc1753c3bf6",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "98dda36f854ba028205923866450dbc1753c3bf6",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-grant",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "label": "After bound step-up"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "type": "https://trusttasks.org/spec/trust-task-next-step/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "received": {
+                "code": "taskFailed|permissionDenied",
+                "count": 0
+              }
+            },
+            {
+              "at": "K",
+              "received": {
+                "type": "https://trusttasks.org/spec/auth/step-up/approve-response/0.7#response",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "received": {
+                "type": "https://trusttasks.org/spec/acl/grant/0.3#response",
+                "count": 1
+              }
+            },
+            {
+              "at": "K",
+              "ceremony": "completed"
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "completed"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "completed"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+              "count": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "FC-STU-007",
+      "title": "a bound step-up elevates nothing: after an approval bound to one grant is recorded and that grant runs, a second, different grant is held again with a next step, and once its step-up is declined it does not run",
+      "spec": [
+        "TF specs/auth/step-up/approve-request/0.6/spec.md:319 (\"A bound step-up elevates nothing. Its approval authorizes the one operation boundTo names and is consumed by it. A relying party MUST NOT treat the approval as raising any session\")",
+        "TF specs/auth/step-up/approve-request/0.6/spec.md:123 (a held operation is answered with a next step)",
+        "TF specs/auth/step-up/approve-request/0.6/spec.md:135 (\"A step-up the human declines ends the hold. The relying party answers the operation as refused (permissionDenied) when the producer next sends it, not with a further next step\")",
+        "SPEC.md:1533 (8.6: a hold is a next step)"
+      ],
+      "source": {
+        "slug": "auth/step-up/approve-request",
+        "version": "0.6",
+        "channel": "proposed",
+        "profile": "ceremony-scenarios",
+        "ref": "kit:specs/auth/step-up/approve-request/0.6",
+        "pinnedDigest": "sha256:8a9480d76161f82c33b7f6948363ca2d29987f688e3e77a969c9534f215389f9",
+        "tfRef": {
+          "repoPath": "specs/auth/step-up/approve-request/0.6/spec.md",
+          "commit": "98dda36f854ba028205923866450dbc1753c3bf6",
+          "status": "draft"
+        },
+        "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+        "tfCommit": "98dda36f854ba028205923866450dbc1753c3bf6",
+        "specHash": "sha256:eacfac4bac70348e41a4608b5846771b478a1f63a66758f287c512e683fc3ed3",
+        "schemaHash": "sha256:f2ff7c3c4187fb3ebc253718f1251706fcdc5c96adfe6cbd46b23dc49d57747d"
+      },
+      "carrier": {
+        "modes": [
+          "runner-carried"
+        ]
+      },
+      "deadlineMs": 120000,
+      "reads": [
+        "K"
+      ],
+      "participants": {
+        "K": {
+          "role": "member-phone",
+          "requires": [
+            "optional:initiate",
+            "optional:observe.ceremony",
+            "optional:observe.received"
+          ]
+        },
+        "V": {
+          "role": "agent",
+          "requires": [
+            "https://trusttasks.org/spec/auth/step-up/approve-response/0.7",
+            "https://trusttasks.org/spec/acl/grant/0.3",
+            "optional:trigger.requireBoundStepUp"
+          ]
+        }
+      },
+      "steps": [
+        {
+          "id": "gate-grants-bound",
+          "do": {
+            "decide": {
+              "by": "V",
+              "action": "requireBoundStepUp",
+              "args": {
+                "type": "acl/grant/0.3"
+              }
+            }
+          }
+        },
+        {
+          "id": "grant-bound",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "98dda36f854ba028205923866450dbc1753c3bf6",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "98dda36f854ba028205923866450dbc1753c3bf6",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-grant",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "label": "After bound step-up"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "type": "https://trusttasks.org/spec/acl/grant/0.3#response",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "grant-second",
+          "source": {
+            "slug": "acl/grant",
+            "version": "0.3",
+            "channel": "proposed",
+            "profile": "ceremony-scenarios",
+            "ref": "pkg:@openvtc/trust-tasks@0.29.0#https://trusttasks.org/spec/acl/grant/0.3",
+            "pinnedDigest": "sha256:a61cabef403453d76d823317970d4d2c305379322911595d9ccdec9540754542",
+            "tfRef": {
+              "repoPath": "specs/acl/grant/0.3/spec.md",
+              "commit": "98dda36f854ba028205923866450dbc1753c3bf6",
+              "status": "draft"
+            },
+            "note": "Ceremony scenario step (docs/26): the task is a Trust Tasks specification (tfRef, status draft); the choreography around it is a suite proposal and advisory. The result of running it is evidence of kind complete-ceremony, never a conformance result.",
+            "tfCommit": "98dda36f854ba028205923866450dbc1753c3bf6",
+            "specHash": "sha256:2fc11a57885671c4d19b7a1673ba93190621a9249539221351b3ab5d6f671e22",
+            "schemaHash": "sha256:9c0438f72f411014d9fac9b5f754ed42528804a8a25aa222bfd4e4c944e38824"
+          },
+          "do": {
+            "initiate": {
+              "by": "K",
+              "to": "V",
+              "kind": "acl-grant",
+              "capture": "thread",
+              "args": {
+                "subject": "did:key:z6MksqMR3hRk6hLGgt1MX3qAAgxWDrTpBVbed5xKbkshXCBA",
+                "label": "Second grant",
+                "stepUp": "deny"
+              }
+            }
+          },
+          "expect": [
+            {
+              "at": "K",
+              "received": {
+                "type": "https://trusttasks.org/spec/trust-task-next-step/0.1",
+                "count": 1
+              }
+            },
+            {
+              "at": "V",
+              "stored": {
+                "kind": "acl-subject:did:key:z6MksqMR3hRk6hLGgt1MX3qAAgxWDrTpBVbed5xKbkshXCBA",
+                "count": 0
+              }
+            }
+          ]
+        }
+      ],
+      "allowedTerminals": [
+        "refused"
+      ],
+      "completion": {
+        "thread": "thread",
+        "assert": [
+          {
+            "at": "K",
+            "ceremony": "refused"
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-subject:did:key:z6MkovJ72De5cDPYw4vLs6FpFRfdh18Lkyx46PKH9j7QekKz",
+              "count": 1
+            }
+          },
+          {
+            "at": "V",
+            "stored": {
+              "kind": "acl-subject:did:key:z6MksqMR3hRk6hLGgt1MX3qAAgxWDrTpBVbed5xKbkshXCBA",
               "count": 0
             }
           }

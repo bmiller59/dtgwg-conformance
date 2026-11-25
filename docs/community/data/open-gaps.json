@@ -248,6 +248,21 @@
       ]
     },
     {
+      "id": "step-up-bound-not-run",
+      "title": "Step-up bound to one operation, delivered inline (approve-request 0.6)",
+      "class": null,
+      "scenarios": [
+        "FC-STU-006",
+        "FC-STU-007"
+      ],
+      "blocked": "Added on 2026-11-25, after the 2026-11-22 snapshot, so no recorded run includes them. The agent seat needs the optional capability trigger.requireBoundStepUp (hold one operation for a step-up bound to it), which only the suite's reference agent declares today; a platform that does not declare it is not run (SKIP, which is reach, not failure).",
+      "needs": "An agent adapter that can gate an operation on a step-up bound to it and declares trigger.requireBoundStepUp, and a wallet that answers the approve-request 0.6 inline hint; then a run with VTI and the wallet both taking part.",
+      "start": [
+        "vectors/ceremony-scenarios/fc-stu.json",
+        "src/adapters/reference/pair-reference.ts"
+      ]
+    },
+    {
       "id": "step-up-challenge-code",
       "title": "Step-up approval with an unknown challenge",
       "class": "A",

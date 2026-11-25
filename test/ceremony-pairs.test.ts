@@ -26,7 +26,7 @@ describe("paired ceremonies: the oracle pair", () => {
     for (const g of ["FC-ACL", "FC-DEV", "FC-VLT", "FC-STU"]) assert.ok(f.some((x) => x.group === g && x.ceremony.channel === "proposed" && x.evidence === "complete-ceremony"), g);
     assert.ok(mine().length >= 15);
   });
-  for (const s of ["FC-ACL-001", "FC-ACL-002", "FC-ACL-003", "FC-ACL-004", "FC-ACL-005", "FC-ACL-006", "FC-ACL-007", "FC-ACL-008", "FC-ACL-009", "FC-DEV-001", "FC-DEV-002", "FC-DEV-003", "FC-DEV-004", "FC-DEV-005", "FC-DEV-006", "FC-DEV-007", "FC-STU-001", "FC-STU-002", "FC-STU-003", "FC-STU-004", "FC-STU-005", "FC-VLT-001", "FC-VLT-002"]) {
+  for (const s of ["FC-ACL-001", "FC-ACL-002", "FC-ACL-003", "FC-ACL-004", "FC-ACL-005", "FC-ACL-006", "FC-ACL-007", "FC-ACL-008", "FC-ACL-009", "FC-DEV-001", "FC-DEV-002", "FC-DEV-003", "FC-DEV-004", "FC-DEV-005", "FC-DEV-006", "FC-DEV-007", "FC-STU-001", "FC-STU-002", "FC-STU-003", "FC-STU-004", "FC-STU-005", "FC-STU-006", "FC-STU-007", "FC-VLT-001", "FC-VLT-002"]) {
     it(`${s} ends as specified on the oracle pair, never a conformance count`, async () => {
       const r = await run(s);
       assert.ok(r.status === "completed" || r.status === "ended-as-specified", `${r.status}: ${r.reason} (${r.failedStep})`);
@@ -40,6 +40,7 @@ describe("paired ceremonies: mutants of the agent end the scenario that watches 
   const WATCH: Record<(typeof AGENT_MUTANTS)[number], string[]> = {
     aclRevokeKeepsEntry: ["FC-ACL-001"], aclAnyoneMayGrant: ["FC-ACL-002"], aclReplayExecutes: ["FC-ACL-005"], aclNoProofCheck: ["FC-ACL-006"], aclNoRecipientCheck: ["FC-ACL-007"], aclNoWindow: ["FC-ACL-008"],
     aclSwapKeepsOld: ["FC-ACL-009"], deviceRegisterTwice: ["FC-DEV-002"], deviceWipeDeletes: ["FC-DEV-007"], deviceHeartbeatUnregistered: ["FC-DEV-003"], vaultFilesNothing: ["FC-VLT-001"], vaultQueryError: ["FC-VLT-001"], stepUpNoGate: ["FC-STU-001"], stepUpAnyChallenge: ["FC-STU-005"], stepUpDeniedElevates: ["FC-STU-003"],
+    stepUpHoldAsError: ["FC-STU-006"], stepUpBoundElevates: ["FC-STU-007"],
   };
   for (const m of AGENT_MUTANTS) for (const id of WATCH[m]) {
     it(`${m} is caught by ${id}`, async () => {

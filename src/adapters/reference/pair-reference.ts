@@ -4,7 +4,7 @@
 // `failed`, so no scenario passes vacuously), and (2) they separate a platform's difference from the specification from a scenario that over-reads it. They model only what
 // a scenario observes: no key custody, no real access policy, no push gateway. The agent keeps an access list, device bindings and a credential vault; the member signs its own
 // requests and sends the version the specification names. Mutants are in AGENT_MUTANTS.
-import { randomUUID } from "node:crypto";
+import { randomBytes, randomUUID } from "node:crypto";
 import type { Adapter, Capabilities, InitiateParams, InitiateResult, ObserveQuery, ObserveResult, ProofVerifyResult, ProvisionedRole, SendParams, SendResult } from "../../adapter/contract.ts";
 import { digestMultibase } from "../../crypto/digest.ts";
 import { ed25519Signer, seedOf } from "../../crypto/didkey.ts";
@@ -14,7 +14,7 @@ import { isObject } from "../../util/json.ts";
 type Doc = Record<string, unknown>;
 const S = "https://trusttasks.org/spec/";
 const AGENT_SEED = 0xa7, MEMBER_SEED = 0x4b;
-export const AGENT_MUTANTS = ["aclRevokeKeepsEntry", "aclAnyoneMayGrant", "aclReplayExecutes", "aclNoProofCheck", "aclNoRecipientCheck", "aclNoWindow", "aclSwapKeepsOld", "deviceRegisterTwice", "deviceWipeDeletes", "deviceHeartbeatUnregistered", "vaultFilesNothing", "vaultQueryError", "stepUpNoGate", "stepUpAnyChallenge", "stepUpDeniedElevates"] as const;
+export const AGENT_MUTANTS = ["aclRevokeKeepsEntry", "aclAnyoneMayGrant", "aclReplayExecutes", "aclNoProofCheck", "aclNoRecipientCheck", "aclNoWindow", "aclSwapKeepsOld", "deviceRegisterTwice", "deviceWipeDeletes", "deviceHeartbeatUnregistered", "vaultFilesNothing", "vaultQueryError", "stepUpNoGate", "stepUpAnyChallenge", "stepUpDeniedElevates", "stepUpHoldAsError", "stepUpBoundElevates"] as const;
 export type AgentMutant = (typeof AGENT_MUTANTS)[number];
 export const MEMBER_KINDS = ["acl-list", "acl-grant", "acl-update", "acl-revoke", "acl-swap-key", "device-register", "device-heartbeat", "device-list", "device-set-wake", "device-remove-other", "device-wipe-other", "device-wipe", "step-up-unprompted", "vault-keep-card", "vault-restore"];
 const GROUPS = ["FC-ACL", "FC-DEV", "FC-VLT", "FC-STU"];
@@ -40,6 +40,11 @@ export class PairAgent implements Adapter {
   private pending = new Map<string, { challenge: string; sessionId: string }>();
   private elevated = new Set<string>();
   private denied = new Set<string>();
+  /** Bound step-up (approve-request 0.6, Inline delivery): gated task types whose hold is bound to the one operation, the bound step-up pending per caller, and the
+   *  operations an approval authorized (read from the agent's own state, never from the approve-response; each is consumed by the operation it names). */
+  private boundGated = new Set<string>();
+  private boundPending = new Map<string, { challenge: string; boundTo: string; op: string }>();
+  private authorized = new Map<string, Set<string>>();
   /** `legacyStepUp`: hold a gated task the way deployed agents do today (`taskFailed` with details.reason auth:step_up_required) instead of the next step SPEC 8.6 requires. */
   private readonly legacyStepUp: boolean;
   /** Callers whose key was swapped away: their old key no longer authorizes. */
@@ -51,7 +56,7 @@ export class PairAgent implements Adapter {
     const types = ["auth/step-up/approve-response/0.7", "acl/list/0.4", "acl/grant/0.3", "acl/update/0.3", "acl/revoke/0.3", "acl/swap-key/0.1", "device/register/0.2", "device/heartbeat/0.3", "device/list/0.3", "device/set-wake/0.2", "device/wipe/0.2", "vault/credentials/receive/0.1", "vault/credentials/query/0.1", "vault/credentials/get/0.2"].map((t) => `${S}${t}`);
     return {
       name: this.mutants.size === 0 ? "reference-agent" : `reference-agent+${[...this.mutants].join("+")}`, implementation: "reference-agent", version: "suite reference, agent (ACL, device, vault)", tierMax: 1, bindings: ["in-process"],
-      supportedTypes: types, carriers: [], cryptosuites: ["eddsa-jcs-2022"], optional: ["clockFree", "observe.ceremony", "trigger.requireStepUp"], ceremonyRoles: GROUPS.map((ceremony) => ({ ceremony, roles: ["agent"] })),
+      supportedTypes: types, carriers: [], cryptosuites: ["eddsa-jcs-2022"], optional: ["clockFree", "observe.ceremony", "trigger.requireStepUp", "trigger.requireBoundStepUp"], ceremonyRoles: GROUPS.map((ceremony) => ({ ceremony, roles: ["agent"] })),
       pins: { framework: "0.6.0", error: "0.6", binding: "none" },
     };
   }
@@ -65,11 +70,12 @@ export class PairAgent implements Adapter {
   async snapshot(): Promise<string> { return `${this.acl.size}:${this.devices.size}:${this.vault.length}`; }
   async diff(id: string): Promise<{ changed: boolean }> { return { changed: id !== (await this.snapshot()) }; }
   async verifyProof(p: { bytes: string }): Promise<ProofVerifyResult> { try { return { valid: verifyDocumentProof(JSON.parse(p.bytes) as Doc, { nowMs: Date.now() }).valid }; } catch { return { valid: false }; } }
-  async reset(): Promise<void> { this.retired.clear(); this.gated.clear(); this.pending.clear(); this.elevated.clear(); this.denied.clear(); this.actors.clear(); this.acl.clear(); this.devices.clear(); this.vault = []; this.roles.clear(); this.seen.clear(); }
+  async reset(): Promise<void> { this.retired.clear(); this.gated.clear(); this.pending.clear(); this.elevated.clear(); this.denied.clear(); this.boundGated.clear(); this.boundPending.clear(); this.authorized.clear(); this.actors.clear(); this.acl.clear(); this.devices.clear(); this.vault = []; this.roles.clear(); this.seen.clear(); }
 
   async trigger(action: string, args: Record<string, unknown>): Promise<{ documents: string[] }> {
     if (action === "actorRole") this.roles.set(String(args.vid), String(args.role));
     else if (action === "requireStepUp") this.gated.add(`${S}${String(args.type)}`);
+    else if (action === "requireBoundStepUp") this.boundGated.add(`${S}${String(args.type)}`);
     else if (action === "seedDevice") {
       const other = ed25519Signer(seedOf(Number(args.seed ?? 0x2b)));
       this.acl.set(other.did, { role: "admin" });
@@ -112,6 +118,7 @@ export class PairAgent implements Adapter {
     const isAdmin = role === "admin" || this.m("aclAnyoneMayGrant");
     let result: Doc;
     if (type === `${S}auth/step-up/approve-response/0.7`) result = this.approveResponse(doc, payload, who, now);
+    else if (this.boundGated.has(type)) result = this.boundHold(doc, type, payload, who, isAdmin, now);
     else if (this.gated.has(type) && !this.elevated.has(who) && !this.m("stepUpNoGate")) result = this.hold(doc, who, now);
     else if (this.gated.has(type) && this.denied.has(who)) result = this.refuse(doc, "permissionDenied", "the step-up was declined");
     else result = this.dispatch(doc, type.replace(S, ""), payload, who, isAdmin, now);
@@ -129,7 +136,42 @@ export class PairAgent implements Adapter {
     if (this.legacyStepUp) return this.reply(doc, `${S}trust-task-error/0.6`, { code: "taskFailed", message: "auth:step_up_required", retryable: true, details: { reason: "auth:step_up_required", approveRequest }, inResponseTo: { id: doc.id, typeUri: doc.type } });
     return this.reply(doc, `${S}trust-task-next-step/0.1`, { expects: [{ typeUri: `${S}auth/step-up/approve-response/0.7`, reason: "step-up required", hint: { approveRequest } }], continuation: "resubmit" });
   }
+  /**
+   * A task gated by a step-up bound to that one operation (approve-request 0.6 Inline delivery): the relying party has no push channel to the approver, so the hold
+   * is a trust-task-next-step whose `expects` entry names approve-response/0.7 and carries the approve-request payload as its `hint` (`boundTo` present, `sessionId`
+   * absent), never an error response. The operation runs when it is sent again after an approval recorded for it; a declined step-up ends the hold (permissionDenied).
+   */
+  private boundHold(doc: Doc, type: string, payload: Doc, who: string, isAdmin: boolean, now: number): Doc {
+    const op = dig({ type, payload });
+    const authorized = this.authorized.get(who);
+    if (authorized?.has(op) || (this.m("stepUpBoundElevates") && this.elevated.has(who))) { authorized?.delete(op); return this.dispatch(doc, type.replace(S, ""), payload, who, isAdmin, now); }
+    if (this.denied.has(who)) return this.refuse(doc, "permissionDenied", "the step-up bound to this operation was declined");
+    const challenge = randomBytes(24).toString("base64url");
+    // salted with the challenge (approve-request 0.6 producer rule 5): a digest of the operation's type and payload
+    const boundTo = dig({ salt: challenge, type, payload });
+    this.boundPending.set(who, { challenge, boundTo, op });
+    const hint = { subject: who, challenge, boundTo, reason: "Approve this change", accepts: ["didSigned"], ttlSeconds: 300 };
+    const inResponseTo = { typeUri: doc.type, id: doc.id };
+    // the 0.5 shape: the request carried in an error response, as details.stepUpRequest
+    if (this.m("stepUpHoldAsError")) return this.reply(doc, `${S}trust-task-error/0.6`, { code: "permissionDenied", message: "a step-up bound to this operation is required", retryable: true, details: { stepUpRequest: hint }, inResponseTo });
+    return this.reply(doc, `${S}trust-task-next-step/0.1`, { expects: [{ typeUri: `${S}auth/step-up/approve-response/0.7`, reason: "a step-up bound to this operation is required", hint }], continuation: "resubmit", inResponseTo, message: "held for a step-up bound to this operation" });
+  }
+  /** The approve-response to a bound step-up (approve-response 0.7 consumer step 5a): the operation is read from the agent's own state; no session is elevated. */
+  private approveBound(doc: Doc, p: Doc, who: string, bp: { challenge: string; boundTo: string; op: string }): Doc {
+    if (p.subject !== who || p.sessionId !== undefined) return this.refuse(doc, "auth/step-up/approve-response:subjectMismatch", "the subject is not the signer, or a sessionId was echoed for a step-up with no session");
+    const proofPurpose = isObject(doc.proof) ? String((doc.proof as Doc).proofPurpose) : "";
+    if (proofPurpose !== "assertionMethod") return this.refuse(doc, "proofInvalid", "the approval must be signed for assertionMethod");
+    this.boundPending.delete(who);
+    if (p.decision === "denied") { this.denied.add(who); return this.reply(doc, `${S}auth/step-up/approve-response/0.7#response`, { status: "rejected", reason: "the step-up was declined" }); }
+    const set = this.authorized.get(who) ?? new Set<string>();
+    set.add(bp.op);
+    this.authorized.set(who, set);
+    if (this.m("stepUpBoundElevates")) this.elevated.add(who);
+    return this.reply(doc, `${S}auth/step-up/approve-response/0.7#response`, { status: "recorded", boundTo: bp.boundTo });
+  }
   private approveResponse(doc: Doc, p: Doc, who: string, now: number): Doc {
+    const bp = this.boundPending.get(who);
+    if (bp !== undefined && bp.challenge === p.challenge) return this.approveBound(doc, p, who, bp);
     const pend = this.pending.get(who);
     if (!this.m("stepUpAnyChallenge") && (pend === undefined || pend.challenge !== p.challenge)) return this.refuse(doc, "auth/step-up/approve-response:challengeUnknown", "no pending challenge matches");
     if (p.subject !== who) return this.refuse(doc, "auth/step-up/approve-response:subjectMismatch", "the subject is not the signer");
@@ -276,19 +318,29 @@ export class PairMember implements Adapter {
     // a held task (SPEC 8.6 next step, or the deployed taskFailed shape) is answered with the step-up approval; once recorded, the task is sent again
     const heldBy = f.received.at(-1);
     const hp = isObject(heldBy?.payload) ? (heldBy!.payload as Doc) : {};
+    // approve-request 0.6 Inline delivery: the hint of an expects entry naming approve-response/0.7 is the request payload itself; 0.5 carried it as an error's
+    // details.stepUpRequest (a producer MAY accept both, 0.6 "Changes from 0.5"). The producer validates it and checks the subject is the party it acts for.
+    const inline = (): Doc | undefined => {
+      const fromNext = Array.isArray(hp.expects) ? (hp.expects as Doc[]).find((e) => e.typeUri === `${S}auth/step-up/approve-response/0.7` && isObject(e.hint) && (e.hint as Doc).approveRequest === undefined)?.hint : undefined;
+      const r = (fromNext ?? (isObject(hp.details) ? (hp.details as Doc).stepUpRequest : undefined)) as Doc | undefined;
+      if (!isObject(r)) return undefined;
+      const str = (v: unknown, min = 1) => typeof v === "string" && v.length >= min;
+      const valid = str(r.subject) && str(r.challenge, 16) && str(r.reason) && str(r.boundTo) && r.sessionId === undefined && Array.isArray(r.accepts) && r.accepts.includes("didSigned");
+      return valid && r.subject === this.signer.did ? r : undefined;
+    };
     const approveReq = (): Doc | undefined => {
       const fromNext = Array.isArray(hp.expects) ? (hp.expects as Doc[]).map((e) => (isObject(e.hint) ? (e.hint as Doc).approveRequest : undefined)).find(isObject) : undefined;
       const fromError = isObject(hp.details) ? (hp.details as Doc).approveRequest : undefined;
       return (fromNext ?? fromError) as Doc | undefined;
     };
-    const held = String(heldBy?.type ?? "").endsWith("trust-task-next-step/0.1") || (isObject(hp.details) && (hp.details as Doc).reason === "auth:step_up_required");
+    const held = String(heldBy?.type ?? "").endsWith("trust-task-next-step/0.1") || (isObject(hp.details) && ((hp.details as Doc).reason === "auth:step_up_required" || isObject((hp.details as Doc).stepUpRequest)));
     if (held && f.scratch.stepUp === undefined) {
       const req = approveReq();
-      if (req === undefined || !isObject(req.payload)) return undefined;
-      const rp = req.payload as Doc;
+      const rp = (isObject(req?.payload) ? req!.payload : inline()) as Doc | undefined;
+      if (rp === undefined) return undefined;
       f.scratch.stepUp = "answered";
       const decision = a.stepUp === "deny" ? "denied" : "approved";
-      return this.doc(String(a.recipient ?? f.to), "auth/step-up/approve-response/0.7", { subject: String(rp.subject), sessionId: String(rp.sessionId), challenge: String(rp.challenge), decision, ...(decision === "denied" ? { deniedReason: "Declined on this phone" } : {}), evidence: { kind: "didSigned" } }, f.thread, "assertionMethod");
+      return this.doc(String(a.recipient ?? f.to), "auth/step-up/approve-response/0.7", { subject: String(rp.subject), ...(rp.sessionId === undefined ? {} : { sessionId: String(rp.sessionId) }), challenge: String(rp.challenge), decision, ...(decision === "denied" ? { deniedReason: "Declined on this phone" } : {}), evidence: { kind: "didSigned" } }, f.thread, "assertionMethod");
     }
     if (f.scratch.stepUp === "answered" && String(heldBy?.type).endsWith("approve-response/0.7#response")) {
       f.scratch.stepUp = "resubmitted";
