@@ -36,6 +36,38 @@ describe("paired ceremonies: the oracle pair", () => {
   }
 });
 
+describe("paired ceremonies: the oracle agent answers approve-response with the 0.7 statuses", () => {
+  // approve-response 0.7 response schema: status is one of elevated, recorded, rejected; `session` (a Session: id, subject, issuedAt, expiresAt) only with
+  // elevated (consumer step 5), `boundTo` and no session with recorded (step 5a), `reason` with rejected.
+  const acks = async (id: string) => {
+    const specs = specsFor();
+    const out = await runScenarios(files(), { make: (s) => makeAdapter(specs[s as "K" | "V"]), specs, today: "2026-11-19", only: [id] });
+    return out.transcript.filter((t) => t.kind === "reply").flatMap((t) => { try { return [JSON.parse(t.bytes) as { type?: string; payload?: Record<string, unknown> }]; } catch { return []; } })
+      .filter((d) => String(d.type).endsWith("/auth/step-up/approve-response/0.7#response")).map((d) => d.payload ?? {});
+  };
+  it("a session elevation (FC-STU-001) is acknowledged elevated, with a session snapshot", async () => {
+    const a = await acks("FC-STU-001");
+    assert.equal(a.length, 1);
+    assert.equal(a[0]!.status, "elevated");
+    const s = a[0]!.session as Record<string, unknown>;
+    for (const k of ["id", "subject", "issuedAt", "expiresAt"]) assert.equal(typeof s[k], "string", k);
+    assert.equal(a[0]!.boundTo, undefined);
+  });
+  it("a declined session step-up (FC-STU-003) is acknowledged rejected, with a reason and no session", async () => {
+    const a = await acks("FC-STU-003");
+    assert.equal(a.length, 1);
+    assert.deepEqual([a[0]!.status, typeof a[0]!.reason, a[0]!.session], ["rejected", "string", undefined]);
+  });
+  it("a bound approval (FC-STU-006) is acknowledged recorded, with boundTo and no session", async () => {
+    const a = await acks("FC-STU-006");
+    assert.equal(a.length, 1);
+    assert.deepEqual([a[0]!.status, typeof a[0]!.boundTo, a[0]!.session], ["recorded", "string", undefined]);
+  });
+  it("no acknowledgement in the step-up group carries a status outside the 0.7 enum", async () => {
+    for (const id of ["FC-STU-001", "FC-STU-002", "FC-STU-003", "FC-STU-004", "FC-STU-005", "FC-STU-006", "FC-STU-007"]) for (const p of await acks(id)) assert.ok(["elevated", "recorded", "rejected"].includes(String(p.status)), `${id}: ${String(p.status)}`);
+  });
+});
+
 describe("paired ceremonies: mutants of the agent end the scenario that watches for them `failed`", () => {
   const WATCH: Record<(typeof AGENT_MUTANTS)[number], string[]> = {
     aclRevokeKeepsEntry: ["FC-ACL-001"], aclAnyoneMayGrant: ["FC-ACL-002"], aclReplayExecutes: ["FC-ACL-005"], aclNoProofCheck: ["FC-ACL-006"], aclNoRecipientCheck: ["FC-ACL-007"], aclNoWindow: ["FC-ACL-008"],

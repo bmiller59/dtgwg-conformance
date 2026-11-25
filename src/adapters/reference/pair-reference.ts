@@ -177,10 +177,13 @@ export class PairAgent implements Adapter {
     if (p.subject !== who) return this.refuse(doc, "auth/step-up/approve-response:subjectMismatch", "the subject is not the signer");
     const proofPurpose = isObject(doc.proof) ? String((doc.proof as Doc).proofPurpose) : "";
     if (proofPurpose !== "assertionMethod") return this.refuse(doc, "proofInvalid", "the approval must be signed for assertionMethod");
-    if (p.decision === "denied") { if (!this.m("stepUpDeniedElevates")) this.denied.add(who); if (!this.m("stepUpDeniedElevates")) { this.pending.delete(who); return this.reply(doc, `${S}auth/step-up/approve-response/0.7#response`, { status: "denied" }); } }
+    // approve-response 0.7 response schema: status is elevated, recorded or rejected; a denial is not applied, so it is acknowledged `rejected` with a reason (consumer step 6)
+    if (p.decision === "denied" && !this.m("stepUpDeniedElevates")) { this.denied.add(who); this.pending.delete(who); return this.reply(doc, `${S}auth/step-up/approve-response/0.7#response`, { status: "rejected", reason: "the step-up was declined" }); }
     this.pending.delete(who);
     this.elevated.add(who);
-    return this.reply(doc, `${S}auth/step-up/approve-response/0.7#response`, { status: "recorded", session: { acr: "aal2" } });
+    // consumer step 5 (not bound to an operation): acknowledged `elevated` with the session snapshot (a Session: id, subject, issuedAt, expiresAt; amr "did" for a did-signed gate)
+    const session = { id: pend?.sessionId ?? `sess-${randomUUID().slice(0, 8)}`, subject: who, issuedAt: stamp(now), expiresAt: stamp(now + 1_800_000), amr: ["did"], acr: "aal2" };
+    return this.reply(doc, `${S}auth/step-up/approve-response/0.7#response`, { status: "elevated", session });
   }
 
   private dispatch(doc: Doc, t: string, p: Doc, who: string, isAdmin: boolean, now: number): Doc {
@@ -345,6 +348,8 @@ export class PairMember implements Adapter {
     if (f.scratch.stepUp === "answered" && String(heldBy?.type).endsWith("approve-response/0.7#response")) {
       f.scratch.stepUp = "resubmitted";
       f.step = 0; // send the task again
+      // `denied` is no approve-response status (0.5 to 0.7 define elevated, recorded, rejected); kept only as tolerance for an agent that answers it. On `rejected`
+      // the task is sent again and the agent refuses it (permissionDenied), as approve-request 0.6 describes for a declined step-up.
       if (hp.status === "denied") { f.scratch.declined = true; return undefined; }
     }
     const to = String(a.recipient ?? f.to);
