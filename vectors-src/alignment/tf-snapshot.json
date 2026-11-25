@@ -12773,6 +12773,202 @@
    "examples": []
   },
   {
+   "typeUri": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+   "slug": "credential-exchange/present",
+   "version": "0.2",
+   "family": "credential-exchange",
+   "title": "Credential Exchange — Present",
+   "status": "draft",
+   "tfPath": "specs/credential-exchange/present/0.2/spec.md",
+   "dirDigest": "sha256:4eb0f8a4c0c5a31cf9f9ff187b2a45778a49a5f37a0da16cf9409eabce1b4fe2",
+   "specHash": "sha256:ba75c4d996330db81428d529f6056a9073e9d190b57bd19ce8d9d9236ac658ae",
+   "schemaHash": "sha256:6e689fa9aa23da2d9881cb6c67a38e3b2152921d5dac26bd45c50e5a21bc1307",
+   "inPackage": false,
+   "hasPayloadSchema": true,
+   "hasResponse": false,
+   "requestPolicy": {
+    "isBearer": false,
+    "isProofRequired": true,
+    "isRecipientRequired": true,
+    "isIssuedAtRequired": true
+   },
+   "responsePolicy": null,
+   "errorCodes": [
+    "credential-exchange/present:staleNonce",
+    "credential-exchange/present:audienceMismatch"
+   ],
+   "invalidExamples": [
+    {
+     "note": "`vp_token` is required.",
+     "payload": {}
+    },
+    {
+     "note": "`vp_token` must be a keyed object or a string, not a bare array.",
+     "payload": {
+      "vp_token": [
+       "a",
+       "b"
+      ]
+     }
+    },
+    {
+     "note": "`vp_token` must not be a number.",
+     "payload": {
+      "vp_token": 42
+     }
+    },
+    {
+     "note": "A bare Data Integrity presentation object is not a keyed vp_token: its members are not arrays of presentations.",
+     "payload": {
+      "vp_token": {
+       "@context": [
+        "https://www.w3.org/ns/credentials/v2"
+       ],
+       "type": [
+        "VerifiablePresentation"
+       ],
+       "proof": {
+        "type": "DataIntegrityProof"
+       }
+      }
+     }
+    },
+    {
+     "note": "Each keyed value is an array of presentations, not a single presentation.",
+     "payload": {
+      "vp_token": {
+       "pid": "<jws>~<disclosure>~<kb-jwt>"
+      }
+     }
+    },
+    {
+     "note": "Each keyed value carries at least one presentation.",
+     "payload": {
+      "vp_token": {
+       "pid": []
+      }
+     }
+    },
+    {
+     "note": "A keyed vp_token answers at least one credential query.",
+     "payload": {
+      "vp_token": {}
+     }
+    },
+    {
+     "note": "A credential query id uses only alphanumerics, underscore and hyphen.",
+     "payload": {
+      "vp_token": {
+       "p id": [
+        "<jws>~<kb-jwt>"
+       ]
+      }
+     }
+    },
+    {
+     "note": "A presentation is a string or an object, not a number.",
+     "payload": {
+      "vp_token": {
+       "pid": [
+        42
+       ]
+      }
+     }
+    },
+    {
+     "note": "The bare compatibility string is not empty.",
+     "payload": {
+      "vp_token": ""
+     }
+    },
+    {
+     "note": "Unknown top-level member is rejected (additionalProperties: false).",
+     "payload": {
+      "vp_token": {
+       "pid": [
+        "<jws>~<disclosure>~<kb-jwt>"
+       ]
+      },
+      "__notARealMember__": true
+     }
+    }
+   ],
+   "examples": [],
+   "payloadSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+    "title": "Credential Exchange Present — payload",
+    "description": "Holder to verifier: an OID4VP vp_token keyed by credential query id, each value an array of selectively-disclosed, holder-bound presentations. Replies on the query thread.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "vp_token"
+    ],
+    "properties": {
+     "vp_token": {
+      "description": "The OID4VP `vp_token`. Canonically the DCQL response object of OID4VP 1.0 §8.1: keyed by credential query `id`, each value an array of one or more presentations. A bare SD-JWT-VC presentation string, the shape credential-exchange/present/0.1 producers send, is still accepted for compatibility. snake_case is OID4VP's own name for this field.",
+      "oneOf": [
+       {
+        "$ref": "#/$defs/KeyedVpToken"
+       },
+       {
+        "type": "string",
+        "minLength": 1,
+        "description": "Compatibility: a single SD-JWT-VC presentation, answering the query's only credential query. A producer MUST NOT send this shape; a consumer SHOULD accept it."
+       }
+      ]
+     },
+     "ext": {
+      "$ref": "#/$defs/Ext"
+     }
+    },
+    "$defs": {
+     "KeyedVpToken": {
+      "type": "object",
+      "minProperties": 1,
+      "description": "OID4VP 1.0 §8.1: each member name is the `id` of a credential query in the query's `dcql_query`, and its value the presentations answering it.",
+      "propertyNames": {
+       "pattern": "^[A-Za-z0-9_-]+$",
+       "maxLength": 128
+      },
+      "additionalProperties": {
+       "type": "array",
+       "minItems": 1,
+       "items": {
+        "$ref": "#/$defs/Presentation"
+       },
+       "maxItems": 16
+      },
+      "maxProperties": 16
+     },
+     "Presentation": {
+      "description": "One presentation; the consumer selects the verification path from the value's type, so a new credential format needs no new member here.",
+      "anyOf": [
+       {
+        "type": "string",
+        "minLength": 1,
+        "description": "An SD-JWT-VC presentation: the consented disclosures plus a mandatory key-binding JWT whose `nonce` is the verifier's nonce and whose `aud` is the verifier's identifier."
+       },
+       {
+        "type": "object",
+        "description": "A W3C Verifiable Presentation secured by its holder's Data Integrity proof, binding the verifier's nonce and audience as the proof's `challenge` and `domain` (preferred, OID4VP §14.1.2) or as the presentation's own signed `nonce` and `domain`; where both are stated they agree."
+       }
+      ]
+     },
+     "Ext": {
+      "title": "Ext",
+      "description": "Vendor-namespaced extension object per SPEC.md §4.5.1. Each immediate key MUST be a reverse-DNS namespace; structure under each namespace is opaque to the framework.",
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": true,
+      "propertyNames": {
+       "pattern": "^[a-z][a-z0-9-]*(\\.[a-z0-9-]+)+$"
+      }
+     }
+    }
+   }
+  },
+  {
    "typeUri": "https://trusttasks.org/spec/credential-exchange/query/0.1",
    "slug": "credential-exchange/query",
    "version": "0.1",

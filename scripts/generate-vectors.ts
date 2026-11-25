@@ -1131,6 +1131,9 @@ const TCR_S = "specs/task-consent/request/0.1/spec.md";
 const TCD_S = "specs/task-consent/decision/0.2/spec.md";
 const CXI_S = "specs/credential-exchange/issue/0.1/spec.md";
 const CXP_S = "specs/credential-exchange/present/0.1/spec.md";
+const CXP2_S = "specs/credential-exchange/present/0.2/spec.md";
+const CXP2_P = "specs/credential-exchange/present/0.2/payload.schema.json";
+const CEX_PRE2_T = "https://trusttasks.org/spec/credential-exchange/present/0.2";
 const TC_FAMILY = "dtg-task-consent";
 const CEX_FAMILY = "dtg-credential-exchange";
 
@@ -1284,7 +1287,16 @@ const cxp = (pres: NonNullable<Step["send"]>["presentation"] | null = {}, extra:
 });
 const PRES_ERR = (code: string): NonNullable<Step["expect"]> => ({ disposition: "error", code: `credential-exchange/present:${code}`, retryable: false, noSideEffect: true, state: { storedPresentation: 0 } });
 const PRES_REFUSED: NonNullable<Step["expect"]> = { disposition: "any-refusal", noSideEffect: true, state: { storedPresentation: 0 } };
-
+// present 0.2: the helper also names the thread's credential query id, the key of a keyed vp_token (OpenID4VP 1.0 section 8.1)
+const PRES2_REQ = [CEX_PRE2_T, "optional:trigger.presentationNonce"];
+const nonceStep2: Step = { trigger: { action: "presentationNonce" }, capture: { presNonce: "/nonce", presThread: "/threadId", presQuery: "/credentialQueryId" } };
+const cxp2 = (pres: NonNullable<Step["send"]>["presentation"] | null = {}, extra: Record<string, unknown> = {}, more: CerSend = {}): NonNullable<Step["send"]> =>
+  cxp(pres === null ? null : { keyed: "$cap(presQuery)", ...pres }, { type: CEX_PRE2_T, ...extra }, more);
+const PRES2_KEPT = (n: number): NonNullable<Step["expect"]> => ({ disposition: "silence", state: { storedPresentation: n } });
+// The 0.2 text (spec.md:94) requires the refusal of a disagreeing or missing value but names no code for it; any refusal is accepted
+// (an open question on the code: trustoverip/dtgwg-trust-tasks-tf#1358).
+const PRES2_HOLDER = `${CXP2_S}:94 ("A consumer **MUST** accept either placement, for each of the two values independently. Where a value is stated in both places, the two **MUST** agree, and a consumer **MUST** refuse the presentation when they do not. A consumer **MUST** refuse a presentation that states the value in neither place.")`;
+const PRES2_PLACES = `${CXP2_S}:90-92 ("**Data Integrity.** The nonce and the audience have two accepted placements: the holder proof's \`challenge\` (the nonce) and \`domain\` (the audience) ... or \`nonce\` and \`domain\` members of the presentation itself, which the holder proof signs.")`;
 
 const QRY_REQ = [CEX_QRY_T0, "optional:trigger.holdCredential", "optional:observe.deferred"];
 const holdStep: Step = { trigger: { action: "holdCredential", args: { type: QRY_CRED } } };
@@ -1426,6 +1438,31 @@ const cexFile = file("CEX", [
   tcv("CEX-032", "a request without a document proof is refused with proofRequired and nothing is issued", [`${CXR_S} (proofRequirement REQUIRED: The document proof is required because execution acts with the subject's authority to obtain a credential in their name)`],
     [{ send: cxrq({}, { sign: null }), expect: { disposition: "error", code: "proofRequired", noSideEffect: true } }],
     { requires: [CEX_RQ_T], mutants: ["proofOptional"] }),
+  // ---- present 0.2 (the IUT is the verifier); the 0.1 vectors above stay as written
+  tcv("CEX-040", "present 0.2: a keyed vp_token (credential query id to an array of presentations) whose Data Integrity presentation binds the verifier's nonce and audience as the holder proof's challenge and domain is accepted: no reply document, and the presentation is kept", [`${CXP2_S}:73 ("**Keyed (canonical).** A JSON object whose every member name is the \`id\` of a credential query in the query's \`dcql_query\`, and whose value is an array of one or more presentations answering that credential query")`, PRES2_PLACES, `${CXP2_S}:106 ("Consumer: accept the keyed shape, and the bare SD-JWT-VC string for compatibility.")`, `${CXP2_P} (vp_token oneOf KeyedVpToken or string)`],
+    [nonceStep2, { at: "+1s", send: cxp2(), expect: { disposition: "silence", state: { storedPresentation: 1, handled: 1 } } }],
+    { requires: PRES2_REQ, mutants: ["cex2PresentationPlacementOnly", "cexNeverStores"] }),
+  tcv("CEX-041", "present 0.2: a bare SD-JWT-VC presentation string, the shape 0.1 producers send, with a key-binding JWT over the verifier's nonce and audience, is accepted for compatibility", [`${CXP2_S}:74 ("**Bare string (compatibility).** A JSON string holding a single SD-JWT-VC presentation, the shape \`0.1\` producers send. A consumer **SHOULD** accept it, as an answer to the query's only credential query; a producer **MUST NOT** send it.")`, `${CXP2_S}:64 ("A bare SD-JWT-VC string is still accepted, for compatibility with \`0.1\` producers")`, `${CXP2_S}:89 ("**SD-JWT-VC.** The key-binding JWT carries \`nonce\` equal to the verifier's nonce and \`aud\` equal to the audience.")`],
+    [nonceStep2, { at: "+1s", send: cxp({ format: "sd-jwt" }, { type: CEX_PRE2_T }), expect: PRES2_KEPT(1) }],
+    { requires: PRES2_REQ, clarify: "The text says a consumer SHOULD accept the compatibility string; a verifier that refuses it is within the text. Not gating.", mutants: ["cex2NoCompatString"] }),
+  tcv("CEX-042", "present 0.2: a bare Data Integrity presentation object as the vp_token (the 0.1 shape) is malformedRequest, and nothing is kept", [`${CXP2_S}:64 ("\`0.1\` defined a bare string or a bare Data Integrity presentation object ... A bare SD-JWT-VC string is still accepted, for compatibility with \`0.1\` producers; a bare Data Integrity presentation object is not.")`, `${CXP2_P} (vp_token oneOf: a KeyedVpToken, whose member names match ^[A-Za-z0-9_-]+$ and whose values are arrays, or a string)`, "SPEC.md:1131 (7.2 item 2: \"Validate the document's payload member against the JSON Schema\")"],
+    [nonceStep2, { at: "+1s", send: cxp({}, { type: CEX_PRE2_T }), expect: { disposition: "error", code: "malformedRequest", noSideEffect: true, state: { storedPresentation: 0 } } }],
+    { requires: PRES2_REQ, mutants: ["cex2BareObjectAccepted"] }),
+  tcv("CEX-043", "present 0.2: a Data Integrity presentation that states the nonce and the audience as its own signed nonce and domain members is accepted, and so is one that states the nonce in the proof and the audience on the presentation", [PRES2_PLACES, PRES2_HOLDER],
+    [nonceStep2, { at: "+1s", send: cxp2({ nonceAt: "presentation", audienceAt: "presentation" }), expect: PRES2_KEPT(1) },
+     nonceStep2, { at: "+2s", send: cxp2({ nonceAt: "proof", audienceAt: "presentation" }, { id: "$id(cxp2)" }), expect: PRES2_KEPT(2) }],
+    { requires: PRES2_REQ, mutants: ["cex2ProofPlacementOnly"] }),
+  tcv("CEX-044", "present 0.2: a Data Integrity presentation that states the same nonce and audience both in the holder proof and on the presentation is accepted", [PRES2_HOLDER, `${CXP2_S}:94 ("during the transition it **MAY** state the same values on the presentation as well")`, `${CXP2_S}:213 ("A presentation that also states \`"nonce": "n-0S6_WzA2Mj"\` and \`"domain": "did:example:verifier"\` beside \`holder\` is accepted too")`],
+    [nonceStep2, { at: "+1s", send: cxp2({ nonceAt: "both", audienceAt: "both" }), expect: PRES2_KEPT(1) }],
+    { requires: PRES2_REQ, mutants: ["cexNeverStores"] }),
+  tcv("CEX-045", "present 0.2: a Data Integrity presentation whose own nonce, or own domain, disagrees with the holder proof's challenge or domain is refused, and nothing is kept (the refusal's code is not asserted)", [PRES2_HOLDER, `${CXP2_S}:213 ("one whose members disagree with the proof's \`challenge\` or \`domain\` is refused")`, `${CXP2_S}:106 ("Verify holder binding, freshness and audience — in either Data Integrity placement, refusing values that disagree — before reading any claim.")`],
+    [nonceStep2, { at: "+1s", send: cxp2({ nonceAt: "both", presentationNonce: "zNotTheVerifiersNonce" }), expect: PRES_REFUSED },
+     { at: "+2s", send: cxp2({ audienceAt: "both", presentationAudience: "$Q" }, { id: "$id(cxp2)" }), expect: PRES_REFUSED }],
+    { requires: PRES2_REQ, mutants: ["cex2NoAgreementCheck"] }),
+  tcv("CEX-046", "present 0.2: a Data Integrity presentation that states the nonce in neither place, or the audience in neither place, is refused, and nothing is kept (the refusal's code is not asserted)", [PRES2_HOLDER, `${CXP2_S}:98 ("A consumer MUST verify both, for every presentation in the \`vp_token\`")`],
+    [nonceStep2, { at: "+1s", send: cxp2({ nonceAt: "neither" }), expect: PRES_REFUSED },
+     { at: "+2s", send: cxp2({ audienceAt: "neither" }, { id: "$id(cxp2)" }), expect: PRES_REFUSED }],
+    { requires: PRES2_REQ, mutants: ["cex2NeitherSkipsCheck"] }),
 ], CEX_FAMILY);
 
 // The 3b-DTG vectors need no clock control: every step runs at the vector's clock start, so a peer whose clock cannot be set (rebase mode) measures them.

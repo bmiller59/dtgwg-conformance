@@ -39,10 +39,11 @@ describe("every vector cites a Trust Tasks artifact or is a candidate (all famil
     // the advisory alignment set (vectors/alignment, docs/tf-alignment.md) is counted apart as well
     const alignment = all.filter((x) => x.file.startsWith("alignment/")).length;
     assert.ok(alignment > 0);
-    assert.equal(all.length - coverage - probe - scenarios.length - gap - complete - alignment, 1429);
+    assert.equal(all.length - coverage - probe - scenarios.length - gap - complete - alignment, 1436); // re-pin 98dda36f8, second commit: + 7, CEX-040..046 (credential-exchange/present 0.2)
     const fam = new Map<string, number>();
     for (const v of all.filter((x) => !x.file.startsWith("coverage/") && !x.file.startsWith("probe/") && !x.file.startsWith("ceremony-scenarios/") && !x.file.startsWith("gap/") && !x.file.startsWith("complete/") && !x.file.startsWith("alignment/"))) fam.set(v.file.split("/")[0]!, (fam.get(v.file.split("/")[0]!) ?? 0) + 1);
-    assert.deepEqual(Object.fromEntries([...fam].sort()), { "2l": 158, "ceremony-doc": 19, "ceremony-receipt": 70, "ceremony-vrc": 88, dtg: 63, emit: 183, "emit-more": 75, framework: 154, governance: 5, plain: 543, witness: 28, "ceremony-witness": 43 });
+    // dtg 63 to 70: CEX-040..046 (re-pin 98dda36f8, second commit)
+    assert.deepEqual(Object.fromEntries([...fam].sort()), { "2l": 158, "ceremony-doc": 19, "ceremony-receipt": 70, "ceremony-vrc": 88, dtg: 70, emit: 183, "emit-more": 75, framework: 154, governance: 5, plain: 543, witness: 28, "ceremony-witness": 43 });
   });
   it("each non-candidate vector has a valid tfRef; each candidate is a complete candidate", () => {
     for (const v of all) {

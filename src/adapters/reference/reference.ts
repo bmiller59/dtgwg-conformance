@@ -52,6 +52,7 @@ import type {
 import { CONTRACT_VERSION } from "../../adapter/contract.ts";
 import { ed25519Signer, seedOf } from "../../crypto/didkey.ts";
 import { signDocument, verifyDocumentProof } from "../../crypto/proof.ts";
+import { verifySdJwtPresentation } from "../../crypto/sdjwt.ts";
 import { specifiedProofPurpose } from "../../crypto/proof-purpose.ts";
 import { isTamperMode, tamperDecision } from "../../ceremony/tamper.ts";
 import { digestMultibase } from "../../crypto/digest.ts";
@@ -103,6 +104,9 @@ export const CONSENT_REQUEST_TYPE = "https://trusttasks.org/spec/task-consent/re
 export const CONSENT_DECISION_TYPE = "https://trusttasks.org/spec/task-consent/decision/0.2";
 export const CEX_ISSUE_TYPE = "https://trusttasks.org/spec/credential-exchange/issue/0.1";
 export const CEX_PRESENT_TYPE = "https://trusttasks.org/spec/credential-exchange/present/0.1";
+export const CEX_PRESENT_02_TYPE = "https://trusttasks.org/spec/credential-exchange/present/0.2";
+/** The credential query id the verifier names for the thread `trigger presentationNonce` opens (a keyed present 0.2 `vp_token` answers it). */
+export const PRESENTATION_QUERY_ID = "conformance";
 export const CEX_QUERY_TYPE = "https://trusttasks.org/spec/credential-exchange/query/0.1";
 export const CEX_OFFER_TYPE = "https://trusttasks.org/spec/credential-exchange/offer/0.1";
 export const CEX_REQUEST_TYPE = "https://trusttasks.org/spec/credential-exchange/request/0.1";
@@ -502,7 +506,7 @@ export class ReferenceAdapter implements Adapter {
   }
 
   private dtgTypes(): string[] {
-    return this.dtg ? [CONSENT_REQUEST_TYPE, ...(this.ceremony ? [...(this.consentDecisionVersions.includes("0.2") ? [CONSENT_DECISION_TYPE] : []), ...(this.consentDecisionVersions.includes("0.1") ? [CONSENT_DECISION_01_TYPE] : [])] : []), CONSENT_GRANTED_TYPE, CEX_ISSUE_TYPE, CEX_PRESENT_TYPE, CEX_QUERY_TYPE, CEX_OFFER_TYPE, CEX_REQUEST_TYPE] : [];
+    return this.dtg ? [CONSENT_REQUEST_TYPE, ...(this.ceremony ? [...(this.consentDecisionVersions.includes("0.2") ? [CONSENT_DECISION_TYPE] : []), ...(this.consentDecisionVersions.includes("0.1") ? [CONSENT_DECISION_01_TYPE] : [])] : []), CONSENT_GRANTED_TYPE, CEX_ISSUE_TYPE, CEX_PRESENT_TYPE, CEX_PRESENT_02_TYPE, CEX_QUERY_TYPE, CEX_OFFER_TYPE, CEX_REQUEST_TYPE] : [];
   }
 
   private cerTypes(): string[] {
@@ -649,7 +653,7 @@ export class ReferenceAdapter implements Adapter {
       const threadId = this.newId();
       const nonce = digestMultibase({ n: this.nonceCounter++, verifier: this.signer.did });
       this.nonces.set(threadId, { nonce, used: false });
-      return { documents: [JSON.stringify({ nonce, threadId })] };
+      return { documents: [JSON.stringify({ nonce, threadId, credentialQueryId: PRESENTATION_QUERY_ID })] };
     }
     if (action === "ceremonyDeadline") {
       // `ceremonyDeadline {seconds}`: the approval window of ceremonies begun from now on (until reset); the default is seven days.
@@ -910,6 +914,11 @@ export class ReferenceAdapter implements Adapter {
           additionalProperties: this.m("openPayload"),
         },
         [CEX_PRESENT_TYPE]: {
+          type: "object", required: ["vp_token"], properties: { vp_token: { type: "any" }, ext: { type: "object" } },
+          additionalProperties: this.m("openPayload"),
+        },
+        // present 0.2: the vp_token's shape (keyed object or compatibility string) is checked by the handler, as for 0.1
+        [CEX_PRESENT_02_TYPE]: {
           type: "object", required: ["vp_token"], properties: { vp_token: { type: "any" }, ext: { type: "object" } },
           additionalProperties: this.m("openPayload"),
         },
@@ -1306,6 +1315,8 @@ export class ReferenceAdapter implements Adapter {
         // task-consent/granted consumer 3: a notice for an unknown or already-resolved digest is dropped, not an error (this implementation has no pending task).
         this.handled++;
         return this.m("grantedUnknownIsError") ? this.refuse(doc, "taskFailed", "no pending task has this digest") : undefined;
+      case CEX_PRESENT_02_TYPE:
+        return this.onCredentialPresent02(doc, myVid);
       default:
         return this.onCredentialPresent(doc, myVid);
     }
@@ -1507,6 +1518,72 @@ export class ReferenceAdapter implements Adapter {
     }
     if (issued !== undefined && !this.m("cexNonceReusable")) issued.used = true;
     if (!this.m("cexNeverStores")) this.presentations.push(digestMultibase(token));
+    this.handled++;
+    return undefined;
+  }
+
+  /**
+   * credential-exchange/present 0.2 (the verifier): a keyed vp_token (OpenID4VP 1.0 section 8.1) answering the thread's credential query,
+   * or a bare SD-JWT-VC string (compatibility); a bare Data Integrity object is not a keyed token and fails the schema. A Data Integrity
+   * presentation states the nonce and the audience as the proof's challenge/domain or as its own signed nonce/domain; where both are
+   * stated they must agree, and a value stated in neither place is refused (spec.md "Holder binding is mandatory").
+   */
+  private onCredentialPresent02(doc: TrustTaskDocument<unknown>, myVid: string): TrustTaskDocument<unknown> | ErrorResponse | undefined {
+    const token = (doc.payload as { vp_token: unknown }).vp_token;
+    const thread = String(doc.threadId ?? doc.id);
+    const issued = this.nonces.get(thread);
+    let entries: unknown[];
+    if (typeof token === "string" && token.length > 0) {
+      if (this.m("cex2NoCompatString")) return this.refuse(doc, "malformedRequest", "vp_token must be keyed by credential query id");
+      entries = [token];
+    } else if (isObject(token) && this.m("cex2BareObjectAccepted") && Object.prototype.hasOwnProperty.call(token, "proof")) {
+      entries = [token];
+    } else {
+      const keys = isObject(token) ? Object.keys(token) : [];
+      const keyed = isObject(token) && keys.length >= 1 && keys.length <= 16 && keys.every((k) => /^[A-Za-z0-9_-]{1,128}$/.test(k))
+        && Object.values(token).every((a) => Array.isArray(a) && a.length >= 1 && a.length <= 16 && a.every((p) => (typeof p === "string" && p.length > 0) || isObject(p)));
+      if (!keyed) return this.refuse(doc, "malformedRequest", "vp_token must be keyed by credential query id or a single SD-JWT-VC string");
+      if (keys.some((k) => k !== PRESENTATION_QUERY_ID)) return this.refuse(doc, "taskFailed", "a vp_token key names no credential query of the query answered");
+      entries = Object.values(token).flat();
+    }
+    const stale = (n: unknown): boolean => issued === undefined || issued.used || issued.nonce !== n;
+    for (const p of entries) {
+      let nonce: unknown;
+      let audience: unknown;
+      if (typeof p === "string") {
+        const sd = verifySdJwtPresentation(p);
+        if (!sd.valid) return this.refuse(doc, "taskFailed", `the SD-JWT-VC presentation does not verify: ${sd.reason ?? ""}`);
+        if (sd.holder !== doc.issuer && this.attested && !this.m("cexHolderNotSender")) return this.refuse(doc, "permissionDenied", "the presenter is not the sender");
+        nonce = sd.nonce;
+        audience = sd.audience;
+      } else {
+        const vp = p as Record<string, unknown>;
+        if (!verifyDocumentProof(vp, { nowMs: this.now(), controllerMember: "holder" }).valid) return this.refuse(doc, "taskFailed", "the presentation proof does not verify");
+        const proof = isObject(vp.proof) ? vp.proof : {};
+        const pick = (inProof: unknown, inVp: unknown, what: string): { value?: unknown; problem?: string } => {
+          const fromProof = this.m("cex2PresentationPlacementOnly") ? undefined : inProof;
+          const fromVp = this.m("cex2ProofPlacementOnly") ? undefined : inVp;
+          if (fromProof !== undefined && fromVp !== undefined && fromProof !== fromVp && !this.m("cex2NoAgreementCheck")) return { problem: `the ${what} in the proof and in the presentation disagree` };
+          if (fromProof === undefined && fromVp === undefined) return this.m("cex2NeitherSkipsCheck") ? { value: null } : { problem: `the presentation states no ${what}` };
+          return { value: fromProof ?? fromVp };
+        };
+        const n = pick(proof.challenge, vp.nonce, "nonce");
+        const a = pick(proof.domain, vp.domain, "audience");
+        if (n.problem !== undefined) return this.refuse(doc, "taskFailed", n.problem);
+        if (a.problem !== undefined) return this.refuse(doc, "taskFailed", a.problem);
+        if (vp.holder !== doc.issuer && this.attested && !this.m("cexHolderNotSender")) return this.refuse(doc, "permissionDenied", "the presenter is not the sender");
+        const creds = Array.isArray(vp.verifiableCredential) ? vp.verifiableCredential : [];
+        if (creds.length === 0 || !creds.every(isObject)) return this.refuse(doc, "taskFailed", "the presentation carries no credential");
+        if (!this.m("cexNoPresentedCredentialCheck") && !(creds as Record<string, unknown>[]).every((cr) => verifyDocumentProof(cr, { nowMs: this.now() }).valid)) return this.refuse(doc, "taskFailed", "a presented credential's issuer signature does not verify");
+        if (n.value === null) continue;
+        nonce = n.value;
+        audience = a.value;
+      }
+      if (stale(nonce) && !this.m("cexNoNonceCheck")) return this.refuse(doc, CEX_STALE_NONCE, "the presentation is not bound to a fresh nonce");
+      if (audience !== myVid && audience !== null && !this.m("cexNoAudienceCheck")) return this.refuse(doc, CEX_AUDIENCE, "the presentation is bound to another audience");
+    }
+    if (issued !== undefined && !this.m("cexNonceReusable")) issued.used = true;
+    if (!this.m("cexNeverStores")) this.presentations.push(digestMultibase(token as never));
     this.handled++;
     return undefined;
   }

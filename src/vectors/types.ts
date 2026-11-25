@@ -153,6 +153,22 @@ export interface PresentationSpec {
   purpose?: string;
   /** The carried credential. Default: issued by `X`, about the holder. */
   credential?: CredentialSpec;
+  /**
+   * present 0.2 (keyed, OpenID4VP 1.0 section 8.1): wrap the presentation as `{ <key>: [presentation] }`; the key is a token, normally
+   * `$cap(presQuery)`. Absent: the bare presentation (the 0.1 shape, and the 0.2 compatibility string).
+   */
+  keyed?: string;
+  /** `sd-jwt`: an SD-JWT-VC presentation string (key-binding JWT `nonce` and `aud`) instead of a Data Integrity VP. Default `di`. */
+  format?: "di" | "sd-jwt";
+  /**
+   * Data Integrity placement of the nonce and of the audience (present 0.2): the proof's `challenge` /
+   * `domain` (`proof`, the default), the presentation's own signed `nonce` / `domain` (`presentation`), both, or neither.
+   */
+  nonceAt?: "proof" | "presentation" | "both" | "neither";
+  audienceAt?: "proof" | "presentation" | "both" | "neither";
+  /** The presentation's own `nonce` / `domain` where it differs from the proof's (a disagreement). Default: the same value. */
+  presentationNonce?: string;
+  presentationAudience?: string;
 }
 
 /** The HTTP request line of a send on the HTTPS binding (see `HttpRequestLine`); `{}` is the default `POST /trust-tasks`. */

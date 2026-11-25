@@ -32,9 +32,10 @@ after(() => {
 describe("3b-DTG groups TC and CEX", () => {
   it("the groups have the planned vectors; the ones that depend on an unsettled point are CLARIFY", () => {
     assert.equal(dtgVectors.filter((v) => v.id.startsWith("TC-")).length, 24);
-    assert.equal(dtgVectors.filter((v) => v.id.startsWith("CEX-")).length, 39);
+    // CEX-040..046 (credential-exchange/present 0.2, re-pin to 98dda36f8) are 7 new vectors: 39 + 7; CEX-041 (a SHOULD) is CLARIFY
+    assert.equal(dtgVectors.filter((v) => v.id.startsWith("CEX-")).length, 46);
     const clarify = dtgVectors.filter((v) => v.clarify !== null).map((v) => v.id).sort();
-    assert.deepEqual(clarify, ["CEX-008", "CEX-009", "CEX-011", "CEX-012", "CEX-013", "CEX-014", "CEX-023", "CEX-024", "CEX-025", "CEX-026", "CEX-029", "CEX-033", "CEX-034", "CEX-035", "CEX-037", "CEX-039", "TC-011", "TC-012", "TC-015", "TC-018"]);
+    assert.deepEqual(clarify, ["CEX-008", "CEX-009", "CEX-011", "CEX-012", "CEX-013", "CEX-014", "CEX-023", "CEX-024", "CEX-025", "CEX-026", "CEX-029", "CEX-033", "CEX-034", "CEX-035", "CEX-037", "CEX-039", "CEX-041", "TC-011", "TC-012", "TC-015", "TC-018"]);
     // the vectors that assert a task specification's MUST are Tier 1 and gating; the ones the specification does not state are Tier 2
     assert.deepEqual(dtgVectors.filter((v) => v.tier === 2).map((v) => v.id), ["CEX-010", "CEX-017", "CEX-018"]);
     for (const v of dtgVectors) assert.ok(v.spec.some((s) => /^specs\/(task-consent|credential-exchange)\//.test(s)), `${v.id} cites no task specification`);
@@ -48,8 +49,9 @@ describe("3b-DTG groups TC and CEX", () => {
       // CEX-024 asks for two things the text cannot both give (consentRequired and indistinguishable refusals): the default reference observes fail, see the test below
       for (const x of r.results.filter((y) => DTG(y.id) && y.status === "CLARIFY" && y.id !== "CEX-024")) assert.match(x.reason ?? "", /observed: pass/, x.id);
     }
-    assert.equal(dtgResults(t1).filter((x) => x.status === "PASS").length, 40);
-    assert.equal(dtgResults(t2).filter((x) => x.status === "PASS").length, 43);
+    // + 6 PASS for the gating present 0.2 vectors CEX-040, 042..046 (CEX-041 is CLARIFY, observed pass)
+    assert.equal(dtgResults(t1).filter((x) => x.status === "PASS").length, 46);
+    assert.equal(dtgResults(t2).filter((x) => x.status === "PASS").length, 49);
     assert.deepEqual(dtgResults(t1).filter((x) => x.status === "SKIP").map((x) => x.id), []);
     // the Tier 2 rows are left out of the Tier 1 run by tier, recorded apart and never SKIP
     assert.deepEqual((t1.excludedByTier ?? []).filter((e) => DTG(e.id)).map((e) => e.id), ["CEX-010", "CEX-017", "CEX-018"]);
@@ -58,7 +60,7 @@ describe("3b-DTG groups TC and CEX", () => {
   it("the decision vectors hold under both values of ceremony.proposerApproves", async () => {
     const r = await run(new ReferenceAdapter({ proposerApproves: false }));
     assert.deepEqual(dtgResults(r).filter((x) => x.status === "FAIL"), []);
-    assert.equal(dtgResults(r).filter((x) => x.status === "PASS").length, 40);
+    assert.equal(dtgResults(r).filter((x) => x.status === "PASS").length, 46);
   });
 
   it("CEX-024 (refusals indistinguishable) is observed fail under the code table's reading and pass under the uniform-refusal reading; CEX-022 holds only under the first", async () => {
@@ -158,7 +160,8 @@ describe("3b-DTG groups TC and CEX", () => {
     const overHttp = dtgResults(await run(viaHttp, 2));
     assert.deepEqual(overStdio, inProcess);
     assert.deepEqual(overHttp, inProcess);
-    assert.equal(inProcess.length, 63);
+    // re-pin 98dda36f8: + 7, CEX-040..046 (credential-exchange/present 0.2)
+    assert.equal(inProcess.length, 70);
   });
 
   it("the example server serves no 3b-DTG task with --no-dtg", async () => {

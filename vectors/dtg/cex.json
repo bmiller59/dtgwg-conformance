@@ -2372,6 +2372,531 @@
           }
         }
       ]
+    },
+    {
+      "id": "CEX-040",
+      "title": "present 0.2: a keyed vp_token (credential query id to an array of presentations) whose Data Integrity presentation binds the verifier's nonce and audience as the holder proof's challenge and domain is accepted: no reply document, and the presentation is kept",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.2/spec.md:73 (\"**Keyed (canonical).** A JSON object whose every member name is the `id` of a credential query in the query's `dcql_query`, and whose value is an array of one or more presentations answering that credential query\")",
+        "specs/credential-exchange/present/0.2/spec.md:90-92 (\"**Data Integrity.** The nonce and the audience have two accepted placements: the holder proof's `challenge` (the nonce) and `domain` (the audience) ... or `nonce` and `domain` members of the presentation itself, which the holder proof signs.\")",
+        "specs/credential-exchange/present/0.2/spec.md:106 (\"Consumer: accept the keyed shape, and the bare SD-JWT-VC string for compatibility.\")",
+        "specs/credential-exchange/present/0.2/payload.schema.json (vp_token oneOf KeyedVpToken or string)"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.2",
+        "pinnedDigest": "sha256:4eb0f8a4c0c5a31cf9f9ff187b2a45778a49a5f37a0da16cf9409eabce1b4fe2",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.2/spec.md",
+          "commit": "98dda36f854ba028205923866450dbc1753c3bf6",
+          "status": "draft"
+        },
+        "tfCommit": "98dda36f854ba028205923866450dbc1753c3bf6",
+        "specHash": "sha256:ba75c4d996330db81428d529f6056a9073e9d190b57bd19ce8d9d9236ac658ae",
+        "schemaHash": "sha256:6e689fa9aa23da2d9881cb6c67a38e3b2152921d5dac26bd45c50e5a21bc1307"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.2",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cex2PresentationPlacementOnly",
+        "cexNeverStores"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId",
+            "presQuery": "/credentialQueryId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "type": "https://trusttasks.org/spec/credential-exchange/present/0.2"
+            },
+            "presentation": {
+              "keyed": "$cap(presQuery)"
+            }
+          },
+          "expect": {
+            "disposition": "silence",
+            "state": {
+              "storedPresentation": 1,
+              "handled": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-041",
+      "title": "present 0.2: a bare SD-JWT-VC presentation string, the shape 0.1 producers send, with a key-binding JWT over the verifier's nonce and audience, is accepted for compatibility",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.2/spec.md:74 (\"**Bare string (compatibility).** A JSON string holding a single SD-JWT-VC presentation, the shape `0.1` producers send. A consumer **SHOULD** accept it, as an answer to the query's only credential query; a producer **MUST NOT** send it.\")",
+        "specs/credential-exchange/present/0.2/spec.md:64 (\"A bare SD-JWT-VC string is still accepted, for compatibility with `0.1` producers\")",
+        "specs/credential-exchange/present/0.2/spec.md:89 (\"**SD-JWT-VC.** The key-binding JWT carries `nonce` equal to the verifier's nonce and `aud` equal to the audience.\")"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.2",
+        "pinnedDigest": "sha256:4eb0f8a4c0c5a31cf9f9ff187b2a45778a49a5f37a0da16cf9409eabce1b4fe2",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.2/spec.md",
+          "commit": "98dda36f854ba028205923866450dbc1753c3bf6",
+          "status": "draft"
+        },
+        "tfCommit": "98dda36f854ba028205923866450dbc1753c3bf6",
+        "specHash": "sha256:ba75c4d996330db81428d529f6056a9073e9d190b57bd19ce8d9d9236ac658ae",
+        "schemaHash": "sha256:6e689fa9aa23da2d9881cb6c67a38e3b2152921d5dac26bd45c50e5a21bc1307"
+      },
+      "clarify": "The text says a consumer SHOULD accept the compatibility string; a verifier that refuses it is within the text. Not gating.",
+      "clarifyClass": "vector-overreads",
+      "clarifySince": "2026-11-25",
+      "clarifyQuestions": [],
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.2",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cex2NoCompatString"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId",
+            "presQuery": "/credentialQueryId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "type": "https://trusttasks.org/spec/credential-exchange/present/0.2"
+            },
+            "presentation": {
+              "format": "sd-jwt"
+            }
+          },
+          "expect": {
+            "disposition": "silence",
+            "state": {
+              "storedPresentation": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-042",
+      "title": "present 0.2: a bare Data Integrity presentation object as the vp_token (the 0.1 shape) is malformedRequest, and nothing is kept",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.2/spec.md:64 (\"`0.1` defined a bare string or a bare Data Integrity presentation object ... A bare SD-JWT-VC string is still accepted, for compatibility with `0.1` producers; a bare Data Integrity presentation object is not.\")",
+        "specs/credential-exchange/present/0.2/payload.schema.json (vp_token oneOf: a KeyedVpToken, whose member names match ^[A-Za-z0-9_-]+$ and whose values are arrays, or a string)",
+        "SPEC.md:1131 (7.2 item 2: \"Validate the document's payload member against the JSON Schema\")"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.2",
+        "pinnedDigest": "sha256:4eb0f8a4c0c5a31cf9f9ff187b2a45778a49a5f37a0da16cf9409eabce1b4fe2",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.2/spec.md",
+          "commit": "98dda36f854ba028205923866450dbc1753c3bf6",
+          "status": "draft"
+        },
+        "tfCommit": "98dda36f854ba028205923866450dbc1753c3bf6",
+        "specHash": "sha256:ba75c4d996330db81428d529f6056a9073e9d190b57bd19ce8d9d9236ac658ae",
+        "schemaHash": "sha256:6e689fa9aa23da2d9881cb6c67a38e3b2152921d5dac26bd45c50e5a21bc1307"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.2",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cex2BareObjectAccepted"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId",
+            "presQuery": "/credentialQueryId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "type": "https://trusttasks.org/spec/credential-exchange/present/0.2"
+            },
+            "presentation": {}
+          },
+          "expect": {
+            "disposition": "error",
+            "code": "malformedRequest",
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-043",
+      "title": "present 0.2: a Data Integrity presentation that states the nonce and the audience as its own signed nonce and domain members is accepted, and so is one that states the nonce in the proof and the audience on the presentation",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.2/spec.md:90-92 (\"**Data Integrity.** The nonce and the audience have two accepted placements: the holder proof's `challenge` (the nonce) and `domain` (the audience) ... or `nonce` and `domain` members of the presentation itself, which the holder proof signs.\")",
+        "specs/credential-exchange/present/0.2/spec.md:94 (\"A consumer **MUST** accept either placement, for each of the two values independently. Where a value is stated in both places, the two **MUST** agree, and a consumer **MUST** refuse the presentation when they do not. A consumer **MUST** refuse a presentation that states the value in neither place.\")"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.2",
+        "pinnedDigest": "sha256:4eb0f8a4c0c5a31cf9f9ff187b2a45778a49a5f37a0da16cf9409eabce1b4fe2",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.2/spec.md",
+          "commit": "98dda36f854ba028205923866450dbc1753c3bf6",
+          "status": "draft"
+        },
+        "tfCommit": "98dda36f854ba028205923866450dbc1753c3bf6",
+        "specHash": "sha256:ba75c4d996330db81428d529f6056a9073e9d190b57bd19ce8d9d9236ac658ae",
+        "schemaHash": "sha256:6e689fa9aa23da2d9881cb6c67a38e3b2152921d5dac26bd45c50e5a21bc1307"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.2",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cex2ProofPlacementOnly"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId",
+            "presQuery": "/credentialQueryId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "type": "https://trusttasks.org/spec/credential-exchange/present/0.2"
+            },
+            "presentation": {
+              "keyed": "$cap(presQuery)",
+              "nonceAt": "presentation",
+              "audienceAt": "presentation"
+            }
+          },
+          "expect": {
+            "disposition": "silence",
+            "state": {
+              "storedPresentation": 1
+            }
+          }
+        },
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId",
+            "presQuery": "/credentialQueryId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "type": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+              "id": "$id(cxp2)"
+            },
+            "presentation": {
+              "keyed": "$cap(presQuery)",
+              "nonceAt": "proof",
+              "audienceAt": "presentation"
+            }
+          },
+          "expect": {
+            "disposition": "silence",
+            "state": {
+              "storedPresentation": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-044",
+      "title": "present 0.2: a Data Integrity presentation that states the same nonce and audience both in the holder proof and on the presentation is accepted",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.2/spec.md:94 (\"A consumer **MUST** accept either placement, for each of the two values independently. Where a value is stated in both places, the two **MUST** agree, and a consumer **MUST** refuse the presentation when they do not. A consumer **MUST** refuse a presentation that states the value in neither place.\")",
+        "specs/credential-exchange/present/0.2/spec.md:94 (\"during the transition it **MAY** state the same values on the presentation as well\")",
+        "specs/credential-exchange/present/0.2/spec.md:213 (\"A presentation that also states `\"nonce\": \"n-0S6_WzA2Mj\"` and `\"domain\": \"did:example:verifier\"` beside `holder` is accepted too\")"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.2",
+        "pinnedDigest": "sha256:4eb0f8a4c0c5a31cf9f9ff187b2a45778a49a5f37a0da16cf9409eabce1b4fe2",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.2/spec.md",
+          "commit": "98dda36f854ba028205923866450dbc1753c3bf6",
+          "status": "draft"
+        },
+        "tfCommit": "98dda36f854ba028205923866450dbc1753c3bf6",
+        "specHash": "sha256:ba75c4d996330db81428d529f6056a9073e9d190b57bd19ce8d9d9236ac658ae",
+        "schemaHash": "sha256:6e689fa9aa23da2d9881cb6c67a38e3b2152921d5dac26bd45c50e5a21bc1307"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.2",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cexNeverStores"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId",
+            "presQuery": "/credentialQueryId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "type": "https://trusttasks.org/spec/credential-exchange/present/0.2"
+            },
+            "presentation": {
+              "keyed": "$cap(presQuery)",
+              "nonceAt": "both",
+              "audienceAt": "both"
+            }
+          },
+          "expect": {
+            "disposition": "silence",
+            "state": {
+              "storedPresentation": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-045",
+      "title": "present 0.2: a Data Integrity presentation whose own nonce, or own domain, disagrees with the holder proof's challenge or domain is refused, and nothing is kept (the refusal's code is not asserted)",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.2/spec.md:94 (\"A consumer **MUST** accept either placement, for each of the two values independently. Where a value is stated in both places, the two **MUST** agree, and a consumer **MUST** refuse the presentation when they do not. A consumer **MUST** refuse a presentation that states the value in neither place.\")",
+        "specs/credential-exchange/present/0.2/spec.md:213 (\"one whose members disagree with the proof's `challenge` or `domain` is refused\")",
+        "specs/credential-exchange/present/0.2/spec.md:106 (\"Verify holder binding, freshness and audience — in either Data Integrity placement, refusing values that disagree — before reading any claim.\")"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.2",
+        "pinnedDigest": "sha256:4eb0f8a4c0c5a31cf9f9ff187b2a45778a49a5f37a0da16cf9409eabce1b4fe2",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.2/spec.md",
+          "commit": "98dda36f854ba028205923866450dbc1753c3bf6",
+          "status": "draft"
+        },
+        "tfCommit": "98dda36f854ba028205923866450dbc1753c3bf6",
+        "specHash": "sha256:ba75c4d996330db81428d529f6056a9073e9d190b57bd19ce8d9d9236ac658ae",
+        "schemaHash": "sha256:6e689fa9aa23da2d9881cb6c67a38e3b2152921d5dac26bd45c50e5a21bc1307"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.2",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cex2NoAgreementCheck"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId",
+            "presQuery": "/credentialQueryId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "type": "https://trusttasks.org/spec/credential-exchange/present/0.2"
+            },
+            "presentation": {
+              "keyed": "$cap(presQuery)",
+              "nonceAt": "both",
+              "presentationNonce": "zNotTheVerifiersNonce"
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "type": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+              "id": "$id(cxp2)"
+            },
+            "presentation": {
+              "keyed": "$cap(presQuery)",
+              "audienceAt": "both",
+              "presentationAudience": "$Q"
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "CEX-046",
+      "title": "present 0.2: a Data Integrity presentation that states the nonce in neither place, or the audience in neither place, is refused, and nothing is kept (the refusal's code is not asserted)",
+      "tier": 1,
+      "spec": [
+        "specs/credential-exchange/present/0.2/spec.md:94 (\"A consumer **MUST** accept either placement, for each of the two values independently. Where a value is stated in both places, the two **MUST** agree, and a consumer **MUST** refuse the presentation when they do not. A consumer **MUST** refuse a presentation that states the value in neither place.\")",
+        "specs/credential-exchange/present/0.2/spec.md:98 (\"A consumer MUST verify both, for every presentation in the `vp_token`\")"
+      ],
+      "source": {
+        "slug": "credential-exchange/present",
+        "version": "0.2",
+        "channel": "registry",
+        "ref": "kit:specs/credential-exchange/present/0.2",
+        "pinnedDigest": "sha256:4eb0f8a4c0c5a31cf9f9ff187b2a45778a49a5f37a0da16cf9409eabce1b4fe2",
+        "tfRef": {
+          "repoPath": "specs/credential-exchange/present/0.2/spec.md",
+          "commit": "98dda36f854ba028205923866450dbc1753c3bf6",
+          "status": "draft"
+        },
+        "tfCommit": "98dda36f854ba028205923866450dbc1753c3bf6",
+        "specHash": "sha256:ba75c4d996330db81428d529f6056a9073e9d190b57bd19ce8d9d9236ac658ae",
+        "schemaHash": "sha256:6e689fa9aa23da2d9881cb6c67a38e3b2152921d5dac26bd45c50e5a21bc1307"
+      },
+      "clarify": null,
+      "requires": [
+        "carrier:consequential",
+        "https://trusttasks.org/spec/credential-exchange/present/0.2",
+        "optional:trigger.presentationNonce"
+      ],
+      "mutants": [
+        "cex2NeitherSkipsCheck"
+      ],
+      "steps": [
+        {
+          "trigger": {
+            "action": "presentationNonce"
+          },
+          "capture": {
+            "presNonce": "/nonce",
+            "presThread": "/threadId",
+            "presQuery": "/credentialQueryId"
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "type": "https://trusttasks.org/spec/credential-exchange/present/0.2"
+            },
+            "presentation": {
+              "keyed": "$cap(presQuery)",
+              "nonceAt": "neither"
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 0
+            }
+          }
+        },
+        {
+          "send": {
+            "template": "cex.present",
+            "params": {
+              "type": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+              "id": "$id(cxp2)"
+            },
+            "presentation": {
+              "keyed": "$cap(presQuery)",
+              "audienceAt": "neither"
+            }
+          },
+          "expect": {
+            "disposition": "any-refusal",
+            "noSideEffect": true,
+            "state": {
+              "storedPresentation": 0
+            }
+          }
+        }
+      ]
     }
   ]
 }

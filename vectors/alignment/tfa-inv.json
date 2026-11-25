@@ -28068,6 +28068,321 @@
      }
     }
    ]
+  },
+  {
+   "id": "TFA-INV-220",
+   "title": "credential-exchange/present 0.2: the payload examples the specification lists as invalid and no other set sends are refused (11)",
+   "tier": 1,
+   "spec": [
+    "SPEC.md:1012 (7.2 item 2: validate the payload against the schema of the type; a payload that fails is rejected with malformedRequest, 8.3)",
+    "payload.invalid-examples.json of https://trusttasks.org/spec/credential-exchange/present/0.2 (entries 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11): `vp_token` is required. | `vp_token` must be a keyed object or a string, not a bare array. | `vp_token` must not be a number. | A bare Data Integrity presentation object is not a keyed vp_token: its members are not arrays of presentations. | Each keyed value is an array of presentations, not a single presentation. | Each keyed value carries at least one presentation. | A keyed vp_token answers at least one credential query. | A credential query id uses only alphanumerics, underscore and hyphen. ",
+    "Each payload was checked against the task's payload schema when this vector was generated, and the schema refuses it",
+    "malformedRequest, permissionDenied and the task's own standing codes are accepted: SPEC.md 7.2 items 2 and 10 do not order validation against the authorisation decision (O-03)"
+   ],
+   "source": {
+    "slug": "credential-exchange/present",
+    "version": "0.2",
+    "channel": "proposed",
+    "profile": "tf-alignment",
+    "ref": "kit:specs/credential-exchange/present/0.2",
+    "pinnedDigest": "sha256:4eb0f8a4c0c5a31cf9f9ff187b2a45778a49a5f37a0da16cf9409eabce1b4fe2",
+    "note": "Advisory, outside every first-share figure. Spec maturity: draft (a draft). Written from the examples the task force lists as invalid that no other vector set sends (decision D920).",
+    "tfRef": {
+     "repoPath": "specs/credential-exchange/present/0.2/spec.md",
+     "commit": "98dda36f854ba028205923866450dbc1753c3bf6",
+     "status": "draft"
+    }
+   },
+   "clarify": null,
+   "requires": [
+    "https://trusttasks.org/spec/credential-exchange/present/0.2"
+   ],
+   "mutants": [
+    "noPayloadValidation"
+   ],
+   "steps": [
+    {
+     "send": {
+      "document": {
+       "id": "$id(i1)",
+       "type": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {}
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i2)",
+       "type": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "vp_token": [
+         "a",
+         "b"
+        ]
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i3)",
+       "type": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "vp_token": 42
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i4)",
+       "type": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "vp_token": {
+         "@context": [
+          "https://www.w3.org/ns/credentials/v2"
+         ],
+         "type": [
+          "VerifiablePresentation"
+         ],
+         "proof": {
+          "type": "DataIntegrityProof"
+         }
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i5)",
+       "type": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "vp_token": {
+         "pid": "<jws>~<disclosure>~<kb-jwt>"
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i6)",
+       "type": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "vp_token": {
+         "pid": []
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i7)",
+       "type": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "vp_token": {}
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i8)",
+       "type": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "vp_token": {
+         "p id": [
+          "<jws>~<kb-jwt>"
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i9)",
+       "type": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "vp_token": {
+         "pid": [
+          42
+         ]
+        }
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i10)",
+       "type": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "vp_token": ""
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    },
+    {
+     "send": {
+      "document": {
+       "id": "$id(i11)",
+       "type": "https://trusttasks.org/spec/credential-exchange/present/0.2",
+       "issuer": "$A",
+       "recipient": "$iut",
+       "issuedAt": "$now+0s",
+       "payload": {
+        "vp_token": {
+         "pid": [
+          "<jws>~<disclosure>~<kb-jwt>"
+         ]
+        },
+        "__notARealMember__": true
+       }
+      }
+     },
+     "expect": {
+      "disposition": "error",
+      "code": [
+       "malformedRequest",
+       "permissionDenied"
+      ],
+      "noSideEffect": true,
+      "errorReply": "should"
+     }
+    }
+   ]
   }
  ]
 }

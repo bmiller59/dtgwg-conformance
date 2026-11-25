@@ -228,6 +228,13 @@ export const MUTANTS = {
   cexStringStored: "stores a credential given as an unverified string",
   cexVpTokenUnchecked: "accepts a vp_token that is neither a string nor an object",
   cexNoPresentedCredentialCheck: "does not verify the credential inside a presentation",
+  // credential-exchange/present 0.2 (vectors CEX-040 to CEX-046)
+  cex2NoCompatString: "present 0.2: refuses the bare SD-JWT-VC string that 0.1 producers send",
+  cex2BareObjectAccepted: "present 0.2: accepts a bare Data Integrity presentation object (the 0.1 shape) as the vp_token",
+  cex2ProofPlacementOnly: "present 0.2: reads the nonce and audience only from the proof's challenge and domain",
+  cex2PresentationPlacementOnly: "present 0.2: reads the nonce and audience only from the presentation's own nonce and domain",
+  cex2NoAgreementCheck: "present 0.2: takes the proof's value where the proof and the presentation state disagreeing values",
+  cex2NeitherSkipsCheck: "present 0.2: skips the nonce or audience check for a value the presentation states in neither place",
   qryPurposeOptional: "accepts a query with no purpose or an empty one",
   qryPurposeUnbounded: "accepts a query purpose longer than 500 characters",
   qryEnumerates: "answers a query that names no credential type from everything it holds",

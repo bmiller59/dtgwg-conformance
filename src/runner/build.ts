@@ -3,6 +3,7 @@
 import { createHash } from "node:crypto";
 import type { Ed25519Signer } from "../crypto/didkey.ts";
 import { signDocument } from "../crypto/proof.ts";
+import { buildSdJwtPresentation } from "../crypto/sdjwt.ts";
 import { specifiedProofPurpose } from "../crypto/proof-purpose.ts";
 import { deepClone, isObject } from "../util/json.ts";
 import { removePointer, setPointer } from "../util/pointer.ts";
@@ -385,20 +386,39 @@ export function buildCredential(spec: CredentialSpec, ctx: BuildContext): Record
 }
 
 /** The presentation of a `credential-exchange/present` request: a Data-Integrity VP over one credential, bound by `challenge` (nonce) and `domain` (audience). */
-export function buildPresentation(spec: PresentationSpec, ctx: BuildContext): Record<string, unknown> {
+// A keyed vp_token (present 0.2) wraps it as `{ <key>: [presentation] }`; `format: "sd-jwt"` builds an SD-JWT-VC string instead; the
+// nonce and audience go in the proof, in the presentation's own signed members, in both or in neither (`nonceAt`, `audienceAt`).
+export function buildPresentation(spec: PresentationSpec, ctx: BuildContext): unknown {
   const holder = ctx.actors[spec.holder ?? "A"];
   if (holder === undefined) throw new Error("presentation: unknown holder");
   const signer = ctx.actors[spec.signer ?? holder.name]!;
-  const vc = buildCredential({ issuer: "$X", subject: `$${holder.name}`, ...(spec.credential ?? {}) }, ctx);
-  return signDocument(
-    { "@context": ["https://www.w3.org/ns/credentials/v2"], type: ["VerifiablePresentation"], holder: holder.vid, verifiableCredential: [vc] },
-    signer.signer,
-    {
-      created: ctx.startMs ?? ctx.nowMs, purpose: spec.purpose ?? "authentication", controllerMember: "holder",
-      challenge: substituteString(spec.nonce ?? "$cap(presNonce)", ctx), domain: substituteString(spec.audience ?? "$iut", ctx),
-      ...(signer.vid === holder.vid ? {} : { allowIssuerMismatch: true }),
-    },
-  ) as Record<string, unknown>;
+  const nonce = substituteString(spec.nonce ?? "$cap(presNonce)", ctx);
+  const audience = substituteString(spec.audience ?? "$iut", ctx);
+  let vp: unknown;
+  if (spec.format === "sd-jwt") {
+    const issuer = ctx.actors[(spec.credential?.signer ?? spec.credential?.issuer ?? "X").replace(/^\$/, "")];
+    if (issuer === undefined) throw new Error("presentation: unknown credential issuer");
+    vp = buildSdJwtPresentation({ issuer: issuer.signer, holder: signer.signer, claims: { memberOf: "https://example.org/conformance" }, vct: "https://example.org/conformance#ConformanceCredential", nonce, audience, iatSec: Math.floor((ctx.startMs ?? ctx.nowMs) / 1000) });
+  } else {
+    const inProof = (at: string | undefined): boolean => at === undefined || at === "proof" || at === "both";
+    const inVp = (at: string | undefined): boolean => at === "presentation" || at === "both";
+    const vc = buildCredential({ issuer: "$X", subject: `$${holder.name}`, ...(spec.credential ?? {}) }, ctx);
+    vp = signDocument(
+      {
+        "@context": ["https://www.w3.org/ns/credentials/v2"], type: ["VerifiablePresentation"], holder: holder.vid,
+        ...(inVp(spec.nonceAt) ? { nonce: spec.presentationNonce === undefined ? nonce : substituteString(spec.presentationNonce, ctx) } : {}),
+        ...(inVp(spec.audienceAt) ? { domain: spec.presentationAudience === undefined ? audience : substituteString(spec.presentationAudience, ctx) } : {}),
+        verifiableCredential: [vc],
+      },
+      signer.signer,
+      {
+        created: ctx.startMs ?? ctx.nowMs, purpose: spec.purpose ?? "authentication", controllerMember: "holder",
+        ...(inProof(spec.nonceAt) ? { challenge: nonce } : {}), ...(inProof(spec.audienceAt) ? { domain: audience } : {}),
+        ...(signer.vid === holder.vid ? {} : { allowIssuerMismatch: true }),
+      },
+    );
+  }
+  return spec.keyed === undefined ? vp : { [substituteString(spec.keyed, ctx)]: [vp] };
 }
 
 /** The multibase spellings of a SHA-256 multihash a citation may use, and a multihash the verifier does not implement. */

@@ -37,8 +37,9 @@ describe("channel classification of the shipped vectors", () => {
     // decision 39 adds the three per-declared-E ceremony vectors as candidates and moves the 19 ceremony-design vectors to proposed, so the
     // registry (gating) part of core is 394 - 32 - 19 = 343. The WIT group (witness/session and witness/session/submit, 40 vectors, all registry: the specs are in
     // the task-force repository) was added by the final integration: 434 in all (437 with WIT-017, WIT-018 and WIT-052 added by the retarget to 0.2, decision D290), 386 registry, 32 candidate and 19 proposed as before.
-    assert.equal(core.length, 437);
-    assert.equal(core.filter((v) => v.source!.channel === "registry").length, 386);
+    // re-pin to 98dda36f8 (D960), second commit: + 7 registry vectors CEX-040..046 (credential-exchange/present 0.2, a new task version upstream): 444 and 393
+    assert.equal(core.length, 444);
+    assert.equal(core.filter((v) => v.source!.channel === "registry").length, 393);
     assert.equal(core.filter((v) => /^WIT-/.test(v.id)).length, 43);
     assert.equal(core.filter((v) => v.source!.channel === "candidate").length, 32);
     assert.equal(core.filter((v) => v.source!.channel === "proposed").length, 19);
@@ -113,7 +114,12 @@ describe("default channel accounting", () => {
   // Seventh conscious update (re-pin to task-force 98dda36f8, D960): auth/oob/redeem 0.1 is retired upstream (successor 0.2), so PP-AUT-035..038 and EM-AUT-015
   // are excluded from every run like the other retired-spec vectors: plain 540 to 536 (PASS 435 to 432, CLARIFY 93 to 92: PP-AUT-037 was the CLARIFY), emit
   // 179 to 178 (PASS 173 to 172). No other verdict moved; the hashes change only because the five ids leave the list.
+  // Eighth conscious update (re-pin to 98dda36f8, second commit): CEX-040..046 (credential-exchange/present 0.2) join core, all registry. Like the WIT
+  // vectors they are left out of the legacy figures (same counts, same hash: nothing else moved) and checked beside in PRESENT02_GOLDEN: six PASS and
+  // CEX-041 (a SHOULD: the compatibility string) CLARIFY, observed pass, at both tiers.
   const WIT_GOLDEN: Record<1 | 2, Record<string, number>> = { 1: { PASS: 38, CLARIFY: 5 }, 2: { PASS: 38, CLARIFY: 5 } };
+  const PRESENT02 = /^CEX-04[0-6]$/;
+  const PRESENT02_GOLDEN: Record<1 | 2, Record<string, number>> = { 1: { PASS: 6, CLARIFY: 1 }, 2: { PASS: 6, CLARIFY: 1 } };
   type Fig = [number, Record<string, number>, string];
   const GOLDEN: [string, 1 | 2, Fig, Fig, number, number, number][] = [
     ["", 1, [394, { PASS: 255, CLARIFY: 73, SKIP: 66 }, "093ac67409ac33ef"], [343, { PASS: 233, CLARIFY: 63, SKIP: 47 }, "35694cdbcbd1522e"], 32, 0, 19],
@@ -133,12 +139,16 @@ describe("default channel accounting", () => {
         for (const e of r.excludedByTier ?? []) { assert.ok(!byId.has(e.id), e.id); byId.set(e.id, "SKIP"); }
         const everyone = suite.files.flatMap((f) => f.file.vectors.map((v) => v.id)).filter((id) => byId.has(id)).map((id) => ({ id, status: byId.get(id)! }));
         const wit = everyone.filter((x) => /^WIT-/.test(x.id));
-        const legacy = everyone.filter((x) => !/^WIT-/.test(x.id));
+        const present02 = everyone.filter((x) => PRESENT02.test(x.id));
+        const legacy = everyone.filter((x) => !/^WIT-/.test(x.id) && !PRESENT02.test(x.id));
         if (dir === "") {
           const w: Record<string, number> = {};
           for (const x of wit) w[x.status] = (w[x.status] ?? 0) + 1;
           assert.deepEqual(w, WIT_GOLDEN[tier]);
-        } else assert.equal(wit.length, 0);
+          const p: Record<string, number> = {};
+          for (const x of present02) p[x.status] = (p[x.status] ?? 0) + 1;
+          assert.deepEqual(p, PRESENT02_GOLDEN[tier]);
+        } else { assert.equal(wit.length, 0); assert.equal(present02.length, 0); }
         const c: Record<string, number> = {};
         for (const x of legacy) c[x.status] = (c[x.status] ?? 0) + 1;
         assert.equal(legacy.length, total);

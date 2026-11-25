@@ -37,18 +37,18 @@ Used = a suite vector carries a payload equal to the example, as a document of t
 
 | Item | Count | Of | Share |
 |---|---|---|---|
-| Invalid examples used (all sets) | 4236 | 5272 | 80.3% |
+| Invalid examples used (all sets) | 4247 | 5272 | 80.6% |
 |   of those, without the advisory alignment set | 3451 | 5272 | 65.5% |
-|   of those, in a step that expects a refusal | 4229 | 5272 | 80.2% |
-| Request entries (not marked `variant: response`) used | 4236 | 4421 | 95.8% |
+|   of those, in a step that expects a refusal | 4240 | 5272 | 80.4% |
+| Request entries (not marked `variant: response`) used | 4247 | 4421 | 96.1% |
 | Response entries (`variant: response`) used in a response | 0 | 851 | 0.0% |
 | Response entries whose payload equals a request a vector sends (a coincidence such as `{}`; not counted as used) | 43 | 851 | 5.1% |
 | Invalid examples named only | 955 | 5272 | 18.1% |
-| Invalid examples not mapped | 81 | 5272 | 1.5% |
+| Invalid examples not mapped | 70 | 5272 | 1.3% |
 | Request examples used | 546 | 1870 | 29.2% |
-| Tasks with a vector step | 1416 | 1427 | 99.2% |
+| Tasks with a vector step | 1417 | 1427 | 99.3% |
 | Tasks named only in text | 1 | 1427 | 0.1% |
-| Tasks with no vector at all | 10 | 1427 | 0.7% |
+| Tasks with no vector at all | 9 | 1427 | 0.6% |
 | Fixture files imported unchanged | 39 | 39 | 100.0% |
 | Fixture files used by a vector | 35 | 39 | 89.7% |
 | Ceremony definitions with a scenario | 3 | 3 | 100.0% |
@@ -56,14 +56,14 @@ Used = a suite vector carries a payload equal to the example, as a document of t
 Why invalid examples were not matched:
 
 - taskRetired: 14
-- taskNotInSuite: 19
+- taskNotInSuite: 8
 - taskInSuiteNoVectorFromExamples: 50
 - taskVectorFromExamplesButThisOneNotMatched: 953
 
 ## Citations
 
-- Trust Tasks files the vectors cite: 1433; no longer in the checkout: 0; only on a pull request or branch (cited at that head, so not missing): 3
-- Vectors whose recorded text hash was re-checked: 9076; unchanged: 9076; files whose text changed: 0
+- Trust Tasks files the vectors cite: 1435; no longer in the checkout: 0; only on a pull request or branch (cited at that head, so not missing): 3
+- Vectors whose recorded text hash was re-checked: 9083; unchanged: 9083; files whose text changed: 0
 - Imported fixture files no longer in the checkout: 0; changed since import: 0; checkout fixtures not imported: 0
 - ceremonies/mutual-attestation/0.1/ceremony.json: 3 scenarios cite it; quoted checksum current
 - ceremonies/vetting/identity-vetting/0.1/ceremony.json: 7 scenarios cite it; quoted checksum current
