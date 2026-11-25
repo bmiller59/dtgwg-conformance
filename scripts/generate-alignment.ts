@@ -27,7 +27,8 @@ import { labelVersionRole } from "../src/vectors/version-role.ts";
 import type { VectorSource } from "../src/vectors/source.ts";
 import type { Step, Vector, VectorFile } from "../src/vectors/types.ts";
 import { payloadMatches } from "../src/tfalign/analyse.ts";
-import { assignStableIds } from "../src/vectors/stable-ids.ts";
+import { assignStableIds, restampCommit } from "../src/vectors/stable-ids.ts";
+import { RETIRED_REASON } from "../src/vectors/source.ts";
 import { loadSuiteFacts } from "../src/tfalign/suite.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -93,8 +94,27 @@ vectors.sort((a, b) => numberOf(a.id) - numberOf(b.id));
 const files: VectorFile[] = [{ format: "tt-conformance-vectors/0.1", group: GROUP, family: "tf-alignment", clock: { start: "2026-11-12T10:00:00Z" }, vectors }];
 applyErrorReply(files);
 labelVersionRole(files);
-// a committed vector no longer written (all of its examples were response entries) stays as a tombstone: ids are never deleted (docs/04 section 20.3)
-files[0]!.vectors = assignStableIds(vectors, { group: GROUP, committedFile, ledger: [], keyOf: (v) => String(v.requires?.[0] ?? v.id), retire: { reason: "no longer generated: every example it sent was a response entry (`variant: response`) of payload.invalid-examples.json, which is an invalid reply and is never sent as a request (src/plain/invalid-examples.ts)", since: "0.1.0-draft" } });
+// a committed vector no longer written stays as a tombstone: ids are never deleted (docs/04 section 20.3). Its reason says why: the task's specification
+// is now retired in the committed manifest (named with its successor), or all of its examples were response entries
+const retiredSpec = (v: Vector): { supersededBy?: string } | undefined => { const p = (v.source as { tfRef?: { repoPath?: string } } | undefined)?.tfRef?.repoPath; const m = p === undefined ? undefined : manifest.paths[p]; return m?.status === "retired" ? m : undefined; };
+const retireReason = (v: Vector): { reason: string; since: string } => {
+  const r = retiredSpec(v);
+  if (r !== undefined) return { reason: `no longer generated: the cited specification is retired in the committed manifest${r.supersededBy === undefined ? "" : ` (superseded by ${r.supersededBy})`}, and a vector on a retired specification is never run`, since: "0.1.0-draft" };
+  return { reason: "no longer generated: every example it sent was a response entry (`variant: response`) of payload.invalid-examples.json, which is an invalid reply and is never sent as a request (src/plain/invalid-examples.ts)", since: "0.1.0-draft" };
+};
+// a tombstone cites the manifest's commit and the status the manifest gives its specification; one on a retired specification is excluded from every run
+// with the successor named, as every vector on a retired specification is (src/vectors/validate.ts)
+function restampTomb(t: Vector): Vector {
+  const v = restampCommit(t, manifest.main.commit) as Vector & { source: { tfRef?: Record<string, unknown>; versionRole?: string }; excludedFromRun?: unknown };
+  const r = retiredSpec(v);
+  if (r === undefined || v.source.tfRef === undefined) return v;
+  v.source.tfRef = { ...v.source.tfRef, status: "retired", supersededBy: r.supersededBy ?? "unknown" };
+  v.source.versionRole = "retired";
+  // the same reason the other generators give (src/vectors/source.ts, src/vectors/version-role.ts)
+  v.excludedFromRun = r.supersededBy !== undefined && /\/0\.2$/.test(r.supersededBy) ? { reason: RETIRED_REASON } : { reason: `cites a retired TF spec; successor ${r.supersededBy ?? "unknown"} is draft on main` };
+  return v;
+}
+files[0]!.vectors = assignStableIds(vectors, { group: GROUP, committedFile, ledger: [], keyOf: (v) => String(v.requires?.[0] ?? v.id), retire: retireReason, restamp: restampTomb });
 mkdirSync(outDir, { recursive: true });
 writeFileSync(join(outDir, "tfa-inv.json"), JSON.stringify(files[0], null, 1) + "\n");
 writeFileSync(join(outDir, "manifest.json"), JSON.stringify({ format: "tt-conformance-manifest/0.1", files: ["tfa-inv.json"] }, null, 2) + "\n");

@@ -10,7 +10,7 @@
 import { labelVersionRole } from "../src/vectors/version-role.ts";
 import { applyErrorReply } from "../src/vectors/error-reply.ts";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { assignStableIds, taskKindKey } from "../src/vectors/stable-ids.ts";
+import { assignStableIds, restampCommit, taskKindKey } from "../src/vectors/stable-ids.ts";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadVectors } from "../src/coverage/matrix/vectors.ts";
@@ -59,7 +59,7 @@ function sourceOf(g: GapTask, id: string): { source: VectorSource; excluded?: { 
 // vector takes the next number after every id its group has issued, and a committed vector no longer generated stays as a tombstone (src/vectors/stable-ids.ts).
 const LEDGER = (JSON.parse(readFileSync(join(root, "vectors-src", "id-ledger.json"), "utf8")) as { ids: string[] }).ids;
 const RETIRE = { reason: "no longer generated: every step it had sent a response entry (`variant: response`) of payload.invalid-examples.json as a request; a response entry is an invalid reply and is never sent as a request (src/plain/invalid-examples.ts)", since: "0.1.0-draft" };
-const stable = (group: string, list: Vector[]): Vector[] => assignStableIds(list, { group, committedFile: join(root, "vectors", "gap", `${group.toLowerCase()}.json`), ledger: LEDGER, keyOf: taskKindKey, retire: RETIRE });
+const stable = (group: string, list: Vector[]): Vector[] => assignStableIds(list, { group, committedFile: join(root, "vectors", "gap", `${group.toLowerCase()}.json`), ledger: LEDGER, keyOf: taskKindKey, retire: RETIRE, restamp: (v) => restampCommit(v, snap.tfCommit) });
 const files: VectorFile[] = [];
 const notGenerated: Record<string, unknown>[] = [];
 const covered: Record<string, number> = {};

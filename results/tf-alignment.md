@@ -4,32 +4,32 @@
 
 > Draft proposal for discussion and review by the DTGWG. Every specification measured here is a draft; this report says nothing about adoption or endorsement.
 
-Read: revision origin/main, commit bd0c05013277b83f23fa90db699671ebb48dd24c (2026-11-19).
-The clone's remote main is bd0c05013 (2026-11-19), 0 commits ahead of what was read.
+Read: revision 98dda36f854ba028205923866450dbc1753c3bf6, commit 98dda36f854ba028205923866450dbc1753c3bf6 (2026-11-24).
+The clone's remote main is 98dda36f8 (2026-11-24), 0 commits ahead of what was read.
 
 ## Is the suite's snapshot stale?
 
 | Suite input | Commit | Known to checkout | In what was read | Commits read has beyond it | Commits it has beyond read |
 |---|---|---|---|---|---|
-| vectors/tf-manifest.json (main) | bd0c05013 | true | true | 0 | 0 |
-| vectors/tf-manifest.json (kit) | bd0c05013 | true | true | 0 | 0 |
-| vectors-src/gap/tf-snapshot.json | bd0c05013 | true | true | 0 | 0 |
-| vectors-src/complete/tf-extra.json | bd0c05013 | true | true | 0 | 0 |
-| vectors-src/coverage/tf-invalid-examples.json | bd0c05013 | true | true | 0 | 0 |
-| vectors/complete/not-generated.json (scope input) | bd0c05013 | true | true | 0 | 0 |
-| vectors-src/spec-hashes.json | bd0c05013 | true | true | 0 | 0 |
-| vectors/imported/PROVENANCE.json | bd0c05013 | true | true | 0 | 0 |
+| vectors/tf-manifest.json (main) | 98dda36f8 | true | true | 0 | 0 |
+| vectors/tf-manifest.json (kit) | 98dda36f8 | true | true | 0 | 0 |
+| vectors-src/gap/tf-snapshot.json | 98dda36f8 | true | true | 0 | 0 |
+| vectors-src/complete/tf-extra.json | 98dda36f8 | true | true | 0 | 0 |
+| vectors-src/coverage/tf-invalid-examples.json | 98dda36f8 | true | true | 0 | 0 |
+| vectors/complete/not-generated.json (scope input) | 98dda36f8 | true | true | 0 | 0 |
+| vectors-src/spec-hashes.json | 98dda36f8 | true | true | 0 | 0 |
+| vectors/imported/PROVENANCE.json | 98dda36f8 | true | true | 0 | 0 |
 
 Task specifications in what was read but not in the suite's manifest: 0. In the manifest but gone: 0. Retired since the manifest: 0.
 
 ## What the checkout holds
 
-- Task specifications: 1417 (1342 draft, 75 retired)
+- Task specifications: 1427 (1351 draft, 76 retired)
 - Per-task valid example files (payload.examples.json): 0
-- Invalid-example files: 1086, holding 5252 examples
-- Request examples written in the specifications: 1853; response examples: 1289
+- Invalid-example files: 1088, holding 5272 examples
+- Request examples written in the specifications: 1870; response examples: 1299
 - Fixture files: 39; ceremony definitions: 3; ceremony invalid cases: 21
-- Reference library test files: rust 1395 in 8 packages; typescript 17 in 5 packages; go 38 in 1 packages; dart 37 in 6 packages
+- Reference library test files: rust 1405 in 8 packages; typescript 17 in 5 packages; go 38 in 1 packages; dart 37 in 6 packages
 
 ## What the suite uses
 
@@ -37,28 +37,28 @@ Used = a suite vector carries a payload equal to the example, as a document of t
 
 | Item | Count | Of | Share |
 |---|---|---|---|
-| Invalid examples used (all sets) | 4235 | 5252 | 80.6% |
-|   of those, without the advisory alignment set | 3450 | 5252 | 65.7% |
-|   of those, in a step that expects a refusal | 4228 | 5252 | 80.5% |
-| Request entries (not marked `variant: response`) used | 4235 | 4401 | 96.2% |
+| Invalid examples used (all sets) | 4236 | 5272 | 80.3% |
+|   of those, without the advisory alignment set | 3451 | 5272 | 65.5% |
+|   of those, in a step that expects a refusal | 4229 | 5272 | 80.2% |
+| Request entries (not marked `variant: response`) used | 4236 | 4421 | 95.8% |
 | Response entries (`variant: response`) used in a response | 0 | 851 | 0.0% |
 | Response entries whose payload equals a request a vector sends (a coincidence such as `{}`; not counted as used) | 43 | 851 | 5.1% |
-| Invalid examples named only | 955 | 5252 | 18.2% |
-| Invalid examples not mapped | 62 | 5252 | 1.2% |
-| Request examples used | 546 | 1853 | 29.5% |
-| Tasks with a vector step | 1416 | 1417 | 99.9% |
-| Tasks named only in text | 1 | 1417 | 0.1% |
-| Tasks with no vector at all | 0 | 1417 | 0.0% |
+| Invalid examples named only | 955 | 5272 | 18.1% |
+| Invalid examples not mapped | 81 | 5272 | 1.5% |
+| Request examples used | 546 | 1870 | 29.2% |
+| Tasks with a vector step | 1416 | 1427 | 99.2% |
+| Tasks named only in text | 1 | 1427 | 0.1% |
+| Tasks with no vector at all | 10 | 1427 | 0.7% |
 | Fixture files imported unchanged | 39 | 39 | 100.0% |
 | Fixture files used by a vector | 35 | 39 | 89.7% |
 | Ceremony definitions with a scenario | 3 | 3 | 100.0% |
 
 Why invalid examples were not matched:
 
-- taskRetired: 12
-- taskNotInSuite: 0
+- taskRetired: 14
+- taskNotInSuite: 19
 - taskInSuiteNoVectorFromExamples: 50
-- taskVectorFromExamplesButThisOneNotMatched: 955
+- taskVectorFromExamplesButThisOneNotMatched: 953
 
 ## Citations
 

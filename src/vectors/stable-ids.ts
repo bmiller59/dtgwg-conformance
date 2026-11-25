@@ -13,8 +13,17 @@ export interface StableIdOptions {
   ledger: readonly string[];
   /** Identity of a vector across regenerations (for example task and kind); must be unique within the group. */
   keyOf: (v: Vector) => string;
-  /** Why a committed vector that is no longer generated is retired, and the suite version that retires it. */
-  retire: { reason: string; since: string };
+  /** Why a committed vector that is no longer generated is retired, and the suite version that retires it (or a function of the vector, when the reason differs by vector). */
+  retire: { reason: string; since: string } | ((v: Vector) => { reason: string; since: string });
+  /** Brings a tombstone's citation up to the current pin (the commit and the status it cites), so a tombstone obeys the same tfRef rules as a generated vector. */
+  restamp?: (v: Vector) => Vector;
+}
+
+/** Restamps a tombstone that cites the task-force text on main at an older commit: every mention of that commit (full or the 9-character prefix) becomes the current one. */
+export function restampCommit(v: Vector, commit: string): Vector {
+  const old = (v as unknown as { source?: { tfRef?: { commit?: string; status?: string } } }).source?.tfRef;
+  if (old?.commit === undefined || old.status === "pr" || old.commit === commit) return v;
+  return JSON.parse(JSON.stringify(v).split(old.commit).join(commit).split(old.commit.slice(0, 9)).join(commit.slice(0, 9))) as Vector;
 }
 
 const numberOf = (group: string, id: string): number => Number(id.slice(group.length + 1));
@@ -33,8 +42,9 @@ export function assignStableIds(generated: Vector[], o: StableIdOptions): Vector
     seen.add(k);
     v.id = byKey.get(k)?.id ?? `${o.group}-${String(next++).padStart(3, "0")}`;
   }
-  const tombs = committed.filter((v) => v.retired !== undefined || !seen.has(o.keyOf(v))).map((v) => (v.retired !== undefined ? v : ({ ...v, retired: { ...o.retire } } as Vector)));
-  return [...generated, ...tombs].sort((a, b) => numberOf(o.group, a.id) - numberOf(o.group, b.id));
+  const tombs = committed.filter((v) => v.retired !== undefined || !seen.has(o.keyOf(v))).map((v) => (v.retired !== undefined ? v : ({ ...v, retired: { ...(typeof o.retire === "function" ? o.retire(v) : o.retire) } } as Vector)));
+  const restamped = o.restamp === undefined ? tombs : tombs.map(o.restamp);
+  return [...generated, ...restamped].sort((a, b) => numberOf(o.group, a.id) - numberOf(o.group, b.id));
 }
 
 /** A key from a vector's task and the kind its title names: "<slug> <version>: <kind> (<details>)" without the trailing details. */

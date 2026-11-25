@@ -17,7 +17,8 @@ import { tmpdir } from "node:os";
 const all = collectAllVectors();
 const manifest = loadTfManifest();
 const SYNTHETIC_IDS = ["TC-015", "TC-016", "TC-017", "ENV-006", "ENV-007", ...Array.from({ length: 13 }, (_, i) => `DUP-${101 + i}`), "ERR-004", "ERR-005", "ENV-009", "BND-004", "BND-007", "RCPT-069", "RCPT-020"];
-const RETIRED_IDS = ["EM-PSH-001", "EM-PSH-003", "EM-PSH-005", "EM-VLT-003", "PP-VLT-009", "PP-VLT-010", "PP-VLT-011"];
+// EM-AUT-015, PP-AUT-035 to 038 and the alignment tombstone TFA-INV-071 cite auth/oob/redeem 0.1, retired at the 98dda36f8 pin (successor 0.2, D960)
+const RETIRED_IDS = ["EM-AUT-015", "EM-PSH-001", "EM-PSH-003", "EM-PSH-005", "EM-VLT-003", "PP-AUT-035", "PP-AUT-036", "PP-AUT-037", "PP-AUT-038", "PP-VLT-009", "PP-VLT-010", "PP-VLT-011", "TFA-INV-071"];
 
 describe("every vector cites a Trust Tasks artifact or is a candidate (all families)", () => {
   it("covers every family: 1429 vectors in the shipped files", () => {
@@ -74,7 +75,7 @@ describe("every vector cites a Trust Tasks artifact or is a candidate (all famil
   it("every tfRef resolves in the committed manifest at the manifest's main commit with the status it names", () => {
     // the gap vectors (vectors/gap) cite the task-force text at the snapshot commit (vectors-src/gap/tf-snapshot.json), not the manifest commit; test/gap.test.ts checks them against the snapshot
     assert.deepEqual(verifyAgainstManifest(all.filter((x) => !x.file.startsWith("gap/") && !x.file.startsWith("complete/"))), []);
-    assert.equal(manifest.main.commit, "bd0c05013277b83f23fa90db699671ebb48dd24c");
+    assert.equal(manifest.main.commit, "98dda36f854ba028205923866450dbc1753c3bf6");
     assert.equal(manifest.kit.commit, manifest.main.commit, "one agreed commit: the kit pin equals the manifest's commit (scripts/check-pins.ts)");
   });
   it("the tfRef follows the source ref (a vector cannot cite one TF path and carry another)", () => {
@@ -142,7 +143,7 @@ describe("candidate channel (decision 79 by the project owner)", () => {
 });
 
 describe("excluded-from-run and synthetic vectors", () => {
-  it("exactly the seven retired-spec vectors are excluded from every run, with the reason, and cite a retired tfRef", () => {
+  it("exactly the thirteen retired-spec vectors are excluded from every run, with the reason, and cite a retired tfRef", () => {
     // the retired gap specifications are excluded too, with their own reason (test/gap.test.ts)
     const heldAll = all.filter((v) => v.excludedFromRun !== undefined && !v.file.startsWith("gap/") && !v.file.startsWith("complete/"));
     // three more cite vta/webvh/dids/list 1.0, which the task force retired after the first manifest pin (the manifest now lists it as retired, successor vta/dids/list/0.1): excluded from every run with that successor named (D901)

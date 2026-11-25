@@ -110,13 +110,16 @@ describe("default channel accounting", () => {
   // Sixth conscious update (final integration, group WIT): 40 witness vectors join core, so the core loaded is 434 and the default (registry) core is 383. The figures
   // below are still those of the 394 and 343 vectors that existed before, found by leaving the WIT ids out (same counts, same hash: nothing else moved); the WIT
   // verdicts on the reference are checked beside them in WIT_GOLDEN. O-14 and O-07 made AUTHZ-001, WIT-009 and WIT-029 CLARIFY (spec-silent, class C): the legacy core figures lose one PASS to CLARIFY (AUTHZ-001) and the WIT figures two. This is the suite growing, not a platform result.
+  // Seventh conscious update (re-pin to task-force 98dda36f8, D960): auth/oob/redeem 0.1 is retired upstream (successor 0.2), so PP-AUT-035..038 and EM-AUT-015
+  // are excluded from every run like the other retired-spec vectors: plain 540 to 536 (PASS 435 to 432, CLARIFY 93 to 92: PP-AUT-037 was the CLARIFY), emit
+  // 179 to 178 (PASS 173 to 172). No other verdict moved; the hashes change only because the five ids leave the list.
   const WIT_GOLDEN: Record<1 | 2, Record<string, number>> = { 1: { PASS: 38, CLARIFY: 5 }, 2: { PASS: 38, CLARIFY: 5 } };
   type Fig = [number, Record<string, number>, string];
   const GOLDEN: [string, 1 | 2, Fig, Fig, number, number, number][] = [
     ["", 1, [394, { PASS: 255, CLARIFY: 73, SKIP: 66 }, "093ac67409ac33ef"], [343, { PASS: 233, CLARIFY: 63, SKIP: 47 }, "35694cdbcbd1522e"], 32, 0, 19],
     ["", 2, [394, { PASS: 281, CLARIFY: 72, SKIP: 41 }, "95c4c5ef313eb30d"], [343, { PASS: 244, CLARIFY: 61, SKIP: 38 }, "01f941247e589ecf"], 32, 0, 19],
-    ["plain", 1, [540, { PASS: 435, CLARIFY: 93, SKIP: 12 }, "168e7ba9cfe7c144"], [540, { PASS: 435, CLARIFY: 93, SKIP: 12 }, "168e7ba9cfe7c144"], 0, 3, 0],
-    ["emit", 1, [179, { PASS: 173, SKIP: 6 }, "e6329b505155d050"], [179, { PASS: 173, SKIP: 6 }, "e6329b505155d050"], 0, 4, 0],
+    ["plain", 1, [536, { PASS: 432, CLARIFY: 92, SKIP: 12 }, "66bab7e42033c54c"], [536, { PASS: 432, CLARIFY: 92, SKIP: 12 }, "66bab7e42033c54c"], 0, 7, 0],
+    ["emit", 1, [178, { PASS: 172, SKIP: 6 }, "9a17f9efb5572569"], [178, { PASS: 172, SKIP: 6 }, "9a17f9efb5572569"], 0, 5, 0],
   ];
   for (const [dir, tier, allFig, dfltFig, nCandidate, nExcludedFromRun, nProposed] of GOLDEN) {
     it(`reference, ${dir === "" ? "core" : dir}, tier ${tier}: default ${dfltFig[0]} vectors ${JSON.stringify(dfltFig[1])}; all channels ${allFig[0]} (without the WIT vectors; those are checked beside)`, async () => {

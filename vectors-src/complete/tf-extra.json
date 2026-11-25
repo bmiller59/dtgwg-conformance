@@ -1,8 +1,8 @@
 {
  "format": "tt-gap-snapshot/0.1",
  "about": "Task-force facts for scope tasks the main gap snapshot does not hold (other vector sets cover them), read by scripts/generate-complete.ts only; loadTask never reads this file (scripts/gap-snapshot.ts, rev named in tfCommit).",
- "tfCommit": "bd0c05013277b83f23fa90db699671ebb48dd24c",
- "tfDate": "2026-11-19",
+ "tfCommit": "98dda36f854ba028205923866450dbc1753c3bf6",
+ "tfDate": "2026-11-24",
  "families": [
   "backup",
   "config",
@@ -606,7 +606,7 @@
    "title": "Credential Exchange \u2014 Issue",
    "status": "draft",
    "tfPath": "specs/credential-exchange/issue/0.1/spec.md",
-   "dirDigest": "sha256:7a1a15b579bf4b04f6fe61f95cb8940c03b23bee04dbeaf622e024d614ee4212",
+   "dirDigest": "sha256:2f684e7a86136fc919f3537716c69809795306e06193cdeae7ebd4dfba701262",
    "specHash": "sha256:d2760cde7958ca6f3a7eb8181908bb8eed206701a44302b430558a830b85f34e",
    "schemaHash": "sha256:0492768325cecfd5a882d078d60fd6de7279c9f0c0b759a4a605a70325cc9c51",
    "inPackage": true,
@@ -711,7 +711,8 @@
      "payload": {
       "fingerprint": "zQmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
       "setAt": "2026-10-10T10:00:01Z"
-     }
+     },
+     "variant": "response"
     }
    ],
    "examples": [
@@ -1396,14 +1397,16 @@
       "urls": [
        "https://storage.example/rooms/x?X-Amz-Signature=abc"
       ]
-     }
+     },
+     "variant": "response"
     },
     {
      "note": "A response that echoes no grant. It says which of `scope` or `presign` it answered.",
      "payload": {
       "sealedCredential": "-----BEGIN VTA SEALED BUNDLE-----\nBundle-Id: 2b7e\u2026\nDigest-Algo: sha-256\nChunk: 0/1\n\nRXh0ZXJuYWxDcmVkZW50aWFsQ2lwaGVydGV4dEV4dGVybmFsQ3JlZGVudGlhbA\n=Q1JD\n-----END VTA SEALED BUNDLE-----",
       "expiresAt": "2026-10-10T10:05:00Z"
-     }
+     },
+     "variant": "response"
     },
     {
      "note": "A response echoing 65 operations. The echo is the batch actually presigned, and no batch above 64 is presigned; a custodian whose sealed set would not fit refuses with responseTooLarge rather than answer with more.",
@@ -1807,7 +1810,8 @@
        ],
        "uploadId": "VXBsb2FkSWQtZXhhbXBsZQ"
       }
-     }
+     },
+     "variant": "response"
     }
    ],
    "examples": [
@@ -2165,7 +2169,8 @@
       "document": {
        "claims": []
       }
-     }
+     },
+     "variant": "response"
     },
     {
      "note": "Response with an empty `lists` \u2014 a contact on no list has no `lists` member.",
@@ -2179,7 +2184,8 @@
       },
       "starred": false,
       "lists": []
-     }
+     },
+     "variant": "response"
     },
     {
      "note": "Response with a list name in `lists` \u2014 it carries ListIds; a name is resolved through persona/contact/lists/show, so renaming a list touches no contact.",
@@ -2195,7 +2201,8 @@
       "lists": [
        "Mentors"
       ]
-     }
+     },
+     "variant": "response"
     }
    ],
    "examples": []
@@ -2247,7 +2254,8 @@
      "payload": {
       "listId": "01JA8Z5M2N3P4Q5R6S7T8V9W0X",
       "contactsUpdated": 0
-     }
+     },
+     "variant": "response"
     },
     {
      "note": "Response echoing the list's name \u2014 additionalProperties: false; nothing deleted is echoed into logs that outlive it.",
@@ -2256,7 +2264,8 @@
       "existed": true,
       "contactsUpdated": 3,
       "name": "People I don't trust"
-     }
+     },
+     "variant": "response"
     }
    ],
    "examples": []
@@ -2369,7 +2378,8 @@
        "updatedAt": "2026-10-18T08:00:00Z"
       },
       "wasCreated": true
-     }
+     },
+     "variant": "response"
     },
     {
      "note": "Response carrying the pre-1.1 `created` flag \u2014 renamed `wasCreated`, since `created` is reserved for a timestamp; additionalProperties: false rejects the old name and `wasCreated` is required.",
@@ -2384,7 +2394,8 @@
       },
       "created": true,
       "changed": true
-     }
+     },
+     "variant": "response"
     }
    ],
    "examples": []
@@ -2443,7 +2454,8 @@
        "createdAt": "2026-10-18T08:00:00Z",
        "updatedAt": "2026-10-18T08:00:00Z"
       }
-     }
+     },
+     "variant": "response"
     },
     {
      "note": "Response inlining the list's contacts \u2014 additionalProperties: false catches `contacts`; members are read with persona/contact/list and `listId`.",
@@ -2459,7 +2471,8 @@
         "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A"
        ]
       }
-     }
+     },
+     "variant": "response"
     }
    ],
    "examples": []
@@ -2625,7 +2638,8 @@
       "contactId": "01JA8Z3Q4R5S6T7V8W9X0Y1Z2A",
       "rev": 3,
       "wasCreated": false
-     }
+     },
+     "variant": "response"
     },
     {
      "note": "Response echoing the petname \u2014 additionalProperties: false; a response carries identifiers and flags, never annotation text that a log would then keep.",
@@ -2635,7 +2649,8 @@
       "wasCreated": false,
       "annotationsChanged": true,
       "petname": "Sam from the climbing gym"
-     }
+     },
+     "variant": "response"
     },
     {
      "note": "Linking with a DID as well \u2014 a request naming `subjectDid` and a document is a filing, and one naming neither is a link; one that named a DID beside a bare directory link would leave the agent to guess which contact it means.",
@@ -2668,7 +2683,8 @@
       "rev": 1,
       "created": true,
       "annotationsChanged": false
-     }
+     },
+     "variant": "response"
     }
    ],
    "examples": []
