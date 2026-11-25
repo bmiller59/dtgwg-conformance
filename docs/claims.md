@@ -4,7 +4,7 @@
 
 A result of this suite is a measurement of one surface of one platform, at one commit, by one suite version. This page says how to state such a result, so that a summary, a README badge or a slide says no more than the run shows. It applies to the suite's own pages and is offered to platforms that cite the suite.
 
-Back to [the docs index](README.md). Terms are defined in the [glossary](03-glossary.md); how results are read is in STATUS.md ("How to read these results").
+Back to [the docs index](README.md). Terms are defined in the [glossary](03-glossary.md); how results are read is in [reading-results](reading-results.md). STATUS.md and the other dated results pages are generated locally by `npm run regen` and are not published ([D959](decisions/06-runs-and-results.md#d959)).
 
 ## 1. The claim template
 
@@ -46,7 +46,7 @@ Use instead: "passes", "fails", "measured", "differs from the specification text
 
 ## 3. The lint
 
-`scripts/lint-claims.ts` (`npm run lint:claims`) and `test/claims-lint.test.ts` scan `README.md`, `STATUS.md`, `CONTRIBUTING.md`, `CHANGELOG.md`, `platforms.md`, every Markdown page under `results/` (the generated pages and the run READMEs too) and everything under `docs/` for the words above, whole words in any case, and fail on any use. `npm test` and `npm run check:docs` both run it. A page may quote the words, as section 2 does, only inside a `lint:skip` block:
+`scripts/lint-claims.ts` (`npm run lint:claims`) and `test/claims-lint.test.ts` scan the tracked pages among `README.md`, `STATUS.md`, `CONTRIBUTING.md`, `CHANGELOG.md`, `platforms.md`, the Markdown pages under `results/` and everything under `docs/`, plus the run READMEs in the results directory when it holds run folders (STATUS.md and the generated results pages are untracked, [D959](decisions/06-runs-and-results.md#d959), so they are scanned only if tracked) for the words above, whole words in any case, and fail on any use. `npm test` and `npm run check:docs` both run it. A page may quote the words, as section 2 does, only inside a `lint:skip` block:
 
 ```
 <!-- lint:skip -->

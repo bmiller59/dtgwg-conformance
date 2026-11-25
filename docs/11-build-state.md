@@ -3,7 +3,7 @@
 > **Status: draft proposal.** This is a draft proposal for discussion and review by the DTGWG (Trust over IP Decentralized Trust Graph Working Group). It is not an adopted or endorsed standard or test suite.
 
 
-This is the detailed inventory of the parts of the suite, moved here from the repository README so the README can stay short. For run results see ../results/README.md.
+This is the detailed inventory of the parts of the suite, moved here from the repository README so the README can stay short. Dated run results are published separately and are not part of this repository (results/README.md is generated locally by `npm run regen` and is not published, [D959](decisions/06-runs-and-results.md#d959)).
 
 ## What exists
 

@@ -189,7 +189,7 @@ The suite is black-box: the harness sends exact bytes and receives bytes; adapte
 
 **Capability gating.** Each vector declares the task types it requires; an implementation that does not declare them gets SKIP (not applicable), never a pass. The other outcomes: PASS, FAIL, KNOWN-FAIL (a gap recorded by the implementation's maintainers, asserted so that closing it forces the record's removal), and CLARIFY (a vector that depends on an unsettled specification point; reported, never gating).
 
-**Capability matrix.** Per 3d family, per implementation, per tier: pass, fail, known-fail, skip counts and the declared capabilities. It reports implementation status; that is kept out of this model document: each run writes its own matrix, and the current figures are in results/README.md.
+**Capability matrix.** Per 3d family, per implementation, per tier: pass, fail, known-fail, skip counts and the declared capabilities. It reports implementation status; that is kept out of this model document: each run writes its own matrix, and dated results are published separately and are not part of this repository.
 
 **Non-vacuity.** Every vector must also pass against a reference adapter built on a framework runtime, so that a wrong vector cannot hide behind a failing implementation.
 

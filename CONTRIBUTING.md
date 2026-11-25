@@ -105,7 +105,7 @@ The governance probes are a separate command, `npm run governance` ([docs/17](do
 
 Run folders, the run index and the other run records are not committed: they live in a results directory outside this repository, named by `SUITE_RESULTS_DIR` (or `--results-dir <dir>` on any command; default `results-local/`, which is git-ignored). The layout and the reasons are in [docs/04 section 21](docs/04-suite-design.md#21-where-run-records-live-built).
 
-- The generated pages (README and STATUS blocks, `platforms.md`, `results/README.md`, AT-A-GLANCE, the platform pages, the pair matrix page, the independent-implementations page) are committed snapshots. Each names the run set it was generated from. Commit them after `npm run regen` against the results directory, never by hand.
+- The generated blocks of README and `platforms.md` are committed. The other generated pages (STATUS, `results/README.md`, AT-A-GLANCE, the platform pages, the pair matrix page, the independent-implementations page) are local working outputs: git-ignored and not published ([D959](docs/decisions/06-runs-and-results.md#d959)). Each names the run set it was generated from. Write them with `npm run regen` against the results directory, never by hand.
 - `npm run check:docs` checks the snapshots against the results directory when it holds run folders, and skips that part with a message when it does not. The other checks always run.
 - `npm test` passes without run folders: tests that need them skip and say why. Run the full set with the results directory set:
 

@@ -45,7 +45,7 @@ Trust tasks have a sender (client side: builds and signs the document) and a rec
 | keyring-wallet witness server over real DIDComm | Measured (witness vectors) | Not measured |
 | truststackers (original) | Not reachable by the suite | Not reachable by the suite |
 
-The figures for every surface are generated: see STATUS.md and results/README.md. Every SKIP is classified; a "not reached" SKIP is a limit of the suite's test setup, not of the platform ([glossary](03-glossary.md#status-codes-and-plain-words)).
+The figures for every surface are generated locally by `npm run regen` (STATUS.md, results/README.md) and are not published ([D959](decisions/06-runs-and-results.md#d959)); dated results are published separately and are not part of this repository. Every SKIP is classified; a "not reached" SKIP is a limit of the suite's test setup, not of the platform ([glossary](03-glossary.md#status-codes-and-plain-words)).
 
 ## 3. Conformance-implied evidence today: the pair matrix
 
@@ -168,7 +168,7 @@ VTI, keyring-wallet and truststackers are three platforms (truststackers as in s
 4. Where a recorded difference was a defect of the suite's own harness rather than of the platform (the adapters' reply filter, a missing DID resolver in the stand-in carrier, host seeding, the proof purpose the harness signs with), it is fixed in the suite, for every platform alike, and the platform is re-run under the fixed harness; the figures are the re-run's, and each change in them is explained by the harness fix that caused it.
 5. A platform is not a ranking position. Its numbers are never compared with another platform's as a league table (CONTRIBUTING, "Not a ranking").
 
-The figures are generated: STATUS.md and results/README.md.
+The figures are generated locally by `npm run regen` (STATUS.md, results/README.md) and are not published ([D959](decisions/06-runs-and-results.md#d959)); dated results are published separately and are not part of this repository.
 
 ## 10. Scope-relative summary: default inputs and wording
 

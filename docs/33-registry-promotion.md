@@ -14,7 +14,7 @@ This page is the working process for moving advisory vectors (channels `proposed
 | 4. Non-vacuity | Every mutant a promoted vector names makes it fail on the oracle | `test/promotion.test.ts` (runs `checkNonVacuity` over the promoted ids) |
 | 5. Run evidence | Three consecutive recorded runs with `run.json` (the pre-screen reads them), then a gating run of the oracle and every surface after the promotion | `npm run suite`; row scripts are kept with the run records |
 | 6. The edit | `vectors-src/promotions.json` lists the ids by batch and by the rule that let them gate. The generators (`generate-coverage.ts`, `generate-gap.ts`) call `applyPromotions` (`src/vectors/promotion.ts`) after the vectors are built: channel to `registry`, the suite-defined `profile` removed, `source.promotion` added (batch, rule, provisional, former channel and profile), `tfRef` kept. No id, step or expectation changes | the two generators, then `npm run pins` and `npm run regen` |
-| 7. Record | CHANGELOG (major), [decisions](decisions/README.md), STATUS.md, the generated pages | `npm run regen` |
+| 7. Record | CHANGELOG (major), [decisions](decisions/README.md); the generated pages (STATUS.md among them) are regenerated locally and are not published ([D959](decisions/06-runs-and-results.md#d959)) | `npm run regen` |
 
 Demotion is the same edit the other way: delete the id from `vectors-src/promotions.json` and regenerate. A vector that is promoted and later fails on a surface is triaged like any other (class A to D, [results/vector-review.md](../results/vector-review.md#classes)); a class B fix changes the vector in the generator and is a major change.
 

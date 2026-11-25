@@ -2,7 +2,7 @@
 
 > **Status: draft proposal.** This is a draft proposal for discussion and review by the DTGWG (Trust over IP Decentralized Trust Graph Working Group). It is not an adopted or endorsed standard or test suite. Nothing here has been filed with, sent to, or agreed by any project. Every item marked "not sent" or "DRAFT" is local.
 
-This page gathers, in one place, where the suite's coverage stands, which decisions are taken and which are open, and the ordered list of what remains. It states no counts: they live in results/README.md and ../STATUS.md.
+This page gathers, in one place, where the suite's coverage stands, which decisions are taken and which are open, and the ordered list of what remains. It states no counts: dated results are published separately and are not part of this repository (results/README.md and STATUS.md are generated locally by `npm run regen` and are not published, [D959](decisions/06-runs-and-results.md#d959)).
 
 Related pages: [12 interoperability vocabulary](12-interoperability-interworking-meta-layer.md), [13 DIDComm carrier and witness-server vectors](13-didcomm-carrier-and-witness-server.md), [14 interoperability tracking](14-interoperability-tracking.md), [15 keyring-wallet DIDComm v2](15-keyring-wallet-didcomm-v2.md), and the proposals under [proposals/](proposals/).
 

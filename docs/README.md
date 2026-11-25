@@ -17,12 +17,12 @@ There is no need to read everything. Start from what you want to know:
 | What the suite tests and what is advisory | [01 layer model](01-layer-model.md) (sections 1 to 3), [02 core criteria](02-core-trust-task-criteria.md), [04](04-suite-design.md) sections 2, 8, 10 and 18 |
 | What results may claim about interoperability | [14](14-interoperability-tracking.md), then [12](12-interoperability-interworking-meta-layer.md) part 2 |
 | How to write an adapter | [add-a-platform](add-a-platform.md), [04 section 4](04-suite-design.md#4-adapter-contract-built-typescript-types-client-and-example-server), then [CONTRIBUTING](../CONTRIBUTING.md) |
-| A specific platform | results/platforms/ (one page per platform); background [05](05-reference-implementations.md) (VTI, keyring-wallet) and [06](06-truststackers-conformance-plan.md) (truststackers) |
+| A specific platform | Dated results are published separately and are not part of this repository; background [05](05-reference-implementations.md) (VTI, keyring-wallet) and [06](06-truststackers-conformance-plan.md) (truststackers) |
 | Why something was decided | [decisions](decisions/README.md) (by topic), then [21](21-vector-group-rationale.md) for a vector group and [06 section 12](06-truststackers-conformance-plan.md#12-design-rationale-and-alternatives-rejected) for the truststackers plan |
 | How results and vector ids are cited, versioned and retired | [04 section 20](04-suite-design.md#20-releases-run-provenance-and-vector-ids-built) (run.json, semver, test-id policy), [CHANGELOG](../CHANGELOG.md) |
 | How to dispute a vector | [challenges.md](challenges.md) (the challenge process, owner acknowledgement of an exception) |
 | What a platform may claim from a run | [claims.md](claims.md) (the claim template, the words not used, the lint) |
-| Where each platform stands now | STATUS.md and AT-A-GLANCE |
+| Where each platform stands now | Dated results are published separately and are not part of this repository. STATUS.md and AT-A-GLANCE are generated locally by `npm run regen` and are not published ([D959](decisions/06-runs-and-results.md#d959)). |
 | How the suite lines up with the Trust Tasks repository (unused examples, stale snapshot) | [tf-alignment](tf-alignment.md) |
 | How a platform's figures are built (suites attempted, completeness, conformance) | [34](34-suite-attempts.md) |
 
@@ -59,7 +59,7 @@ There is no need to read everything. Start from what you want to know:
 | [33-registry-promotion.md](33-registry-promotion.md) | Registry promotion: the process, the pre-screen and review tools, the provisional single-implementer rule (D353), the batch B1, B2 and B2b records, and the gating runs. |
 | [35-live-vti-rows.md](35-live-vti-rows.md) | The ceremony scenarios and the core run against VTI's service containers: one stack, the stand-ins the control layer holds, the outcomes by row, the classes of what did not complete (wallet refusals, FC-MBR-007, CEX-031). Advisory; never a conformance count. |
 | [36-didcomm-wire-rows.md](36-didcomm-wire-rows.md) | Wire rows: ceremonies over a real DIDComm v2 wire (adapter, stand-ins, what is not carried). |
-| results/coverage.md | Generated page: types, vectors and recorded runs of the coverage families at version grain, beside the task-grain figure. |
+| results/coverage.md | Generated locally by `npm run regen`, not published ([D959](decisions/06-runs-and-results.md#d959)): types, vectors and recorded runs of the coverage families at version grain, beside the task-grain figure. |
 | [tf-alignment.md](tf-alignment.md) | Task-force alignment: what the suite takes from the Trust Tasks repository, how each item is matched to a vector, how to re-run `npm run tf-alignment`, the advisory alignment set, and what is not used. |
 | [23-spec-drift.md](23-spec-drift.md) | Spec drift: the hashes of the cited Trust Tasks text and schema, the on-demand check, the SPEC-CHANGED state and re-pinning. |
 | [24-candidate-task-notes.md](24-candidate-task-notes.md) | The local text behind the candidate coverage vectors: the platform's own source quoted for the used task types that have no Trust Tasks specification (decision CV-6). |
@@ -95,7 +95,7 @@ Documents 05 and 06 describe named implementations from a reading of their sourc
 
 ## Generated pages
 
-These are generated from the recorded run folders by `npm run regen`; do not edit them by hand (`npm run check:docs` fails when one is stale).
+These are generated from the recorded run folders by `npm run regen` as local working outputs: they are git-ignored and not published ([D959](decisions/06-runs-and-results.md#d959)); dated results are published separately and are not part of this repository. Do not edit them by hand (`npm run check:docs` fails when one is stale).
 
 | Page | What it is |
 |---|---|
@@ -103,7 +103,7 @@ These are generated from the recorded run folders by `npm run regen`; do not edi
 | ../results/AT-A-GLANCE.md, ../results/at-a-glance.html | The plain-language view, as Markdown and as one self-contained HTML file. |
 | ../results/platforms/ | One page per platform (a short hand header plus a generated block). |
 | `<results dir>/runs/INDEX.md` | Which run folders are current, and which are superseded. |
-| [../results/interop/](../results/interop/) | The conformance-implied pair matrix and the ledger view. |
+| [../results/interop/](../results/interop/) | The ledger view (tracked) and the conformance-implied pair matrix (a local working output). |
 
 Their hand-written inputs, which hold no numbers: [../results/at-a-glance.config.json](../results/at-a-glance.config.json) (which run folders belong to which surface, plain descriptions) and [../results/skip-classes.json](../results/skip-classes.json) (the class of each SKIP reason; reasons no rule covers are shown as unclassified).
 

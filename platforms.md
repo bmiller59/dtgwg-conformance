@@ -4,7 +4,7 @@
 
 A directory, in the order VTI, keyring-wallet, truststackers. It holds no figures: dated results are published separately and are not part of this repository. Platforms are reported separately, never added or averaged.
 
-| Platform | Role in the authority order | GitHub | Adapter in this repository | Platform page |
+| Platform | Role in the authority order | GitHub | Adapter in this repository | Platform page (generated locally by `npm run regen`, not published) |
 |---|---|---|---|---|
 | VTI (verifiable-trust-infrastructure) | Most authoritative implementation after the specifications (anchor 1 of 2). Not built against the suite. | [OpenVTC/verifiable-trust-infrastructure](https://github.com/OpenVTC/verifiable-trust-infrastructure) (public) | `src/adapters/vti/` (live service, and in process against a VTC host in `src/adapters/vti/vtc-host/`), `src/adapters/vti-inprocess/` (agent handlers in process) and `src/adapters/vti-emit/` (VTI's own client builders, the sending side) | results/platforms/vti.md |
 | keyring-wallet | Second anchor, after VTI. Not built against the suite. | [berkmancenter/keyring-wallet](https://github.com/berkmancenter/keyring-wallet) (public) | `src/adapters/keyring-wallet/`, `src/adapters/keyring-wallet-didcomm/` and `src/adapters/witness-server/` | results/platforms/keyring-wallet.md |
